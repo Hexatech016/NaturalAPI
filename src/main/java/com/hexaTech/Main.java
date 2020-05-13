@@ -13,7 +13,6 @@ package com.hexaTech;
 
 import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
-import com.hexaTech.entities.Document;
 import com.hexaTech.interactor.*;
 import com.hexaTech.model.ModelDesign;
 import com.hexaTech.model.ModelDevelop;
@@ -38,15 +37,17 @@ public class Main{
         FileSystem fileSystem=new FileSystem();
         RepoDiscover repoDiscover=new RepoDiscover(fileSystem);
         RepoDesign repoDesign=new RepoDesign(fileSystem);
-        RepoDevelop repoDevelop=new RepoDevelop(fileSystem);
-        RepoInterface repoInterface=new RepoDocument();
+
+        RepoBAL repoBAL=new RepoBAL();
+        RepoPLA repoPLA=new RepoPLA();
+        RepoDocument repoDocument=new RepoDocument();
         Swagger swagger=new Swagger();
         Stanford stanford=new Stanford();
 
         ModelDiscover modelDiscover=new ModelDiscover(stanford);
         ModelDesign modelDesign=new ModelDesign(stanford);
         ModelDevelop modelDevelop=new ModelDevelop(swagger);
-        AddDocToParse addDocToParse=new AddDocToParse(presenterDiscover,repoInterface);
+        AddDocToParse addDocToParse=new AddDocToParse(presenterDiscover,repoDocument);
         CheckThereAreDoc checkThereAreDoc=new CheckThereAreDoc(presenterDiscover,repoDiscover);
         CreateBDL createBDL=new CreateBDL(presenterDiscover,repoDiscover,modelDiscover);
         DeleteDoc deleteDoc=new DeleteDoc(presenterDiscover,repoDiscover);
@@ -55,9 +56,9 @@ public class Main{
         AddBDL addBDL=new AddBDL(presenterDesign,repoDesign);
         CreateBAL createBAL=new CreateBAL(presenterDesign,repoDesign,modelDesign);
 
-        AddDocument addDocument=new AddDocument(presenterDevelop,repoDevelop);
-        RemoveDocument removeDocument=new RemoveDocument(presenterDevelop,repoDevelop);
-        CreateAPI createAPI=new CreateAPI(presenterDevelop,repoDevelop,modelDevelop);
+        AddDocument addDocument=new AddDocument(presenterDevelop,repoPLA,repoBAL);
+        RemoveDocument removeDocument=new RemoveDocument(presenterDevelop,repoBAL);
+        CreateAPI createAPI=new CreateAPI(presenterDevelop,repoPLA,repoBAL,modelDevelop);
 
         ControllerDiscover controllerDiscover=new ControllerDiscover(addDocToParse,createBDL,deleteDoc,checkThereAreDoc);
         ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL);

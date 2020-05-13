@@ -1,0 +1,26 @@
+/*
+    <--classComment-->
+    <--classExtension: java
+    <--integer: int
+    <--string: String
+*/
+
+<--struct.start-->
+private class <--structName-->{
+    <--structParamType--> <--structParamName-->
+}
+<--struct.end-->
+
+<--method.start-->
+public <--methodReturn--> <--methodName-->(<--methodParamType--><--methodParamName-->){
+    //<--methodComment-->
+}
+<--method.end-->
+
+public class <--className-->{
+
+    <--struct.here-->
+
+    <--method.here-->
+
+}

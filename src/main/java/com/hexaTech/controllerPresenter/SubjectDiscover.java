@@ -27,7 +27,7 @@ public class SubjectDiscover {
      * Adds an observer to subject's observers list.
      * @param observer MyObserver - observer to add.
      */
-    public void addObservers(MyObserver observer){
+    public void addObserver(MyObserver observer){
         observers.add(observer);
     }
 

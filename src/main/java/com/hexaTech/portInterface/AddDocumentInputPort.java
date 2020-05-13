@@ -19,14 +19,15 @@ public interface AddDocumentInputPort {
     /**
      * Loads a new document.
      * @throws IOException if an error occurs during loading process.
+     * @param directory string - directory to use.
      */
-    void addDocument() throws IOException;
+    void addBAL(String directory) throws IOException;
 
     /**
      * Loads a new PLA.
      * @throws IOException if an error occurs during loading process.
      */
-    void addPLA() throws IOException;
+    void addPLA(String directory) throws IOException;
 
     /**
      * Updates PLA's reference.
@@ -39,6 +40,8 @@ public interface AddDocumentInputPort {
      * Load a backup file.
      * @throws IOException if the file doesn't exist.
      */
-    void loadBackUp() throws IOException;
+    void loadBackUp(String directory) throws IOException;
+
+    void existsDoc(String path);
 
 }//AddDocumentInputPort

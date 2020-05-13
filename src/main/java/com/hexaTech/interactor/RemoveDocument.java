@@ -12,23 +12,23 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.RemoveDocumentInputPort;
 import com.hexaTech.portInterface.RemoveDocumentOutputPort;
-import com.hexaTech.repo.RepoDevelopInterface;
+import com.hexaTech.repo.RepoBAL;
 
 /**
  * Class used to manage a document removal.
  */
 public class RemoveDocument implements RemoveDocumentInputPort {
     RemoveDocumentOutputPort removeDocumentOutputPort;
-    RepoDevelopInterface repoInterface;
+    RepoBAL repoBAL;
 
     /**
      * RemoveDocument class standard constructor.
      * @param removeDocumentOutputPort RemoveDocumentOutputPort - used to send output notifications.
-     * @param repoInterface RepoInterface - used to communicate with Repo.
+     * @param repoBAL RepoInterface - used to communicate with Repo.
      */
-    public RemoveDocument(RemoveDocumentOutputPort removeDocumentOutputPort, RepoDevelopInterface repoInterface) {
+    public RemoveDocument(RemoveDocumentOutputPort removeDocumentOutputPort, RepoBAL repoBAL) {
         this.removeDocumentOutputPort=removeDocumentOutputPort;
-        this.repoInterface=repoInterface;
+        this.repoBAL=repoBAL;
     }
 
     /**
@@ -36,8 +36,10 @@ public class RemoveDocument implements RemoveDocumentInputPort {
      * @param path string - path to the document to be deleted.
      */
     public void removeDoc(String path){
-        repoInterface.deleteDocument(path);
-        removeDocumentOutputPort.showRemovedDoc("Document deleted.");
+        if(repoBAL.deleteDoc(path))
+            removeDocumentOutputPort.showRemovedDoc("Document deleted.");
+        else
+            removeDocumentOutputPort.showRemovedDoc("Error. Please retry.");
     }
 
 }//RemoveDocument

@@ -41,16 +41,16 @@ public class ControllerDevelop {
      * Invokes AddDocument method to add a new document.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addDocController() throws IOException {
-        addDocumentInputPort.addDocument();
+    public void addDocController(String directory) throws IOException {
+        addDocumentInputPort.addBAL(directory);
     }
 
     /**
      * Invokes AddDocument method to restore backup.
      * @throws IOException if the document to restore doesn't exist.
      */
-    public void restoreDocController() throws IOException{
-        addDocumentInputPort.loadBackUp();
+    public void restoreDocController(String directory) throws IOException{
+        addDocumentInputPort.loadBackUp(directory);
     }
 
     /**
@@ -73,8 +73,8 @@ public class ControllerDevelop {
      * Invokes AddDocument method to add a PLA file.
      * @throws IOException if the specified file doesn't exist.
      */
-    public void addPLAController() throws IOException{
-        addDocumentInputPort.addPLA();
+    public void addPLAController(String directory) throws IOException{
+        addDocumentInputPort.addPLA(directory);
     }
 
     /**
@@ -84,6 +84,10 @@ public class ControllerDevelop {
      */
     public void refreshPLAController(String path) throws IOException{
         addDocumentInputPort.updatePLA(path);
+    }
+
+    public void existsDocController(String path){
+        addDocumentInputPort.existsDoc(path);
     }
 
 }//Controller

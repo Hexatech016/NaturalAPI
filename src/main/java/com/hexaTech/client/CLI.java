@@ -41,6 +41,9 @@ public class CLI implements MyObserver {
         this.presenterDesign=presenterDesign;
         this.controllerDevelop=controllerDevelop;
         this.presenterDevelop=presenterDevelop;
+        presenterDesign.addObserver(this);
+        presenterDiscover.addObserver(this);
+        presenterDevelop.addObserver(this);
     }
 
     public void useCaseNaturalAPI() throws IOException {
@@ -56,7 +59,11 @@ public class CLI implements MyObserver {
                 useCaseDesign();
                 break;
             case ("3"):
-                useCaseDevelop(false);
+                controllerDevelop.existsDocController(".\\Develop\\BackupBAL.txt");
+                if(notifyMeDone())
+                    useCaseDevelop(existsBackUpDevelop());
+                else
+                    useCaseDevelop(false);
                 break;
             case ("4"):
                 System.out.println("Bye!");
@@ -71,19 +78,19 @@ public class CLI implements MyObserver {
      * @return boolean - true if user decide to reload a backup file; false if user doesn't want to reload it.
      * @throws IOException if the document path specified in backup is not valid anymore.
      */
-    public boolean existsBackUp() throws IOException {
+    public boolean existsBackUpDevelop() throws IOException {
         System.out.println("A document is already stored. Do you want to load it? (Y/N)");
         Scanner scan = new Scanner(System.in);
-        String risp = scan.nextLine();
-        if (risp.equalsIgnoreCase("y")) {
-            controllerDevelop.restoreDocController();
+        String answer = scan.nextLine();
+        if (answer.equalsIgnoreCase("y")) {
+            controllerDevelop.restoreDocController("Develop");
             return true;
-        }else if (risp.equalsIgnoreCase("n")){
-            controllerDevelop.deleteDocController(".\\Develop\\temp.txt");
+        }else if (answer.equalsIgnoreCase("n")){
+            controllerDevelop.deleteDocController(".\\Develop\\BackupBAL.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
-            return existsBackUp();
+            return existsBackUpDevelop();
         }//if_else
     }//existsBackup
 
@@ -100,7 +107,7 @@ public class CLI implements MyObserver {
             temp = scan.nextLine();
             switch (temp) {
                 case ("1"):
-                    controllerDevelop.addDocController();
+                    controllerDevelop.addDocController("Develop");
                     if(!notifyMeDone())
                         System.out.println("Please select a .json file.");
                     useCaseDevelop(notifyMeDone());
@@ -147,7 +154,7 @@ public class CLI implements MyObserver {
                 controllerDevelop.createAPIController();
                 checkUseCase(notifyMeError());
             case("3"):
-                controllerDevelop.addPLAController();
+                controllerDevelop.addPLAController("Develop");
                 if(notifyMeDone()){
                     controllerDevelop.createAPIController();
                     checkUseCase(notifyMeError());

@@ -14,7 +14,8 @@ import com.hexaTech.entities.API;
 import com.hexaTech.model.ModelDevelopInterface;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
-import com.hexaTech.repo.RepoDevelopInterface;
+import com.hexaTech.repo.RepoBAL;
+import com.hexaTech.repo.RepoPLA;
 
 import java.io.IOException;
 
@@ -23,18 +24,20 @@ import java.io.IOException;
  */
 public class CreateAPI implements CreateAPIInputPort {
     CreateAPIOutputPort createAPIOutputPort;
-    RepoDevelopInterface repoInterface;
+    RepoPLA repoPLA;
+    RepoBAL repoBAL;
     ModelDevelopInterface modelDevelopInterface;
 
     /**
      * CreateAPI class standard constructor.
      * @param createAPIOutputPort CreateAPIOutputPort - used to send output notifications.
-     * @param repoInterface RepoInterface - used to communicate with Repo.
+     * @param repoPLA RepoInterface - used to communicate with Repo.
      * @param modelDevelopInterface ModelInterface - used to communicate with Model.
      */
-    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoDevelopInterface repoInterface, ModelDevelopInterface modelDevelopInterface) {
+    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLA repoPLA, RepoBAL repoBAL, ModelDevelopInterface modelDevelopInterface) {
         this.createAPIOutputPort=createAPIOutputPort;
-        this.repoInterface=repoInterface;
+        this.repoPLA=repoPLA;
+        this.repoBAL=repoBAL;
         this.modelDevelopInterface=modelDevelopInterface;
     }
 
@@ -45,30 +48,30 @@ public class CreateAPI implements CreateAPIInputPort {
      */
     @Override
     public void createAPI() throws IOException,IllegalArgumentException{
-        if(!repoInterface.existsPLA() && !repoInterface.existsPLAJar()){
+        if(!repoPLA.existsDoc(repoPLA.getPLA().getPath()) && !repoPLA.existsDocJar(repoPLA.getPLA().getPath())){
             createAPIOutputPort.showErrorTextAPI("PLA file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(1);
-        }else if(!repoInterface.existsBAL()){
+        }else if(!repoBAL.existsDoc(repoBAL.getBAL().getPath())){
             createAPIOutputPort.showErrorTextAPI("BAL file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(2);
         }else{//if_else_1
             API api;
-            String str=repoInterface.getBAL(), pla=repoInterface.getPLA();
+            String str=repoBAL.getBAL().getPath(), pla=repoPLA.getPLA().getPath();
             api=modelDevelopInterface.setAPI(str);
             if(api==null){
-                repoInterface.deleteDocument(".\\Develop\\temp.txt");
+                repoBAL.deleteDoc(".\\Develop\\temp.txt");
                 createAPIOutputPort.showErrorCodeAPI(3);
             }else{//if_else_2
-                if(repoInterface.returnDocumentContent(pla).equals("")){
+                if(repoPLA.getContentFromPath(pla).equals("")){
                     createAPIOutputPort.showErrorTextAPI("PLA file is empty.");
                     createAPIOutputPort.showErrorCodeAPI(4);
-                }else if(repoInterface.returnPLAExtension(pla).equals("")) {
+                }else if(repoPLA.getExtensionFromPLA(pla).equals("")) {
                     createAPIOutputPort.showErrorTextAPI("Input PLA is not valid. Check file syntax or extension (.pla).");
                     createAPIOutputPort.showErrorCodeAPI(4);
                 }else{//if_else_3
-                    repoInterface.saveAPI(api, api.getAPIName(), repoInterface.returnPLAExtension(pla));
-                    repoInterface.deleteDocument(".\\Develop\\temp.txt");
-                    createAPIOutputPort.showCreatedAPI("API ."+repoInterface.returnPLAExtension(pla)+" generated into folder: Develop.");
+                    repoPLA.saveOutput(api.replacePLA(repoPLA.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLA.getPLA().getExtension());
+                    repoBAL.deleteDoc(".\\Develop\\BackupBAL.txt");
+                    createAPIOutputPort.showCreatedAPI("API ."+repoPLA.getPLA().getExtension()+" generated into folder: Develop.");
                     createAPIOutputPort.showErrorCodeAPI(0);
                 }//if_else_3
             }//if_else_2

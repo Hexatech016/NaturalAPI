@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Class used to represent a BAL object.
  */
-public class BAL {
+public class BAL{
     String intro;
     List<MethodBAL> methods;
 

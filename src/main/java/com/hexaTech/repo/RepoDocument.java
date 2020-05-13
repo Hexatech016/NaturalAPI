@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class RepoDocument implements RepoInterface{
+public class RepoDocument extends RepoFile{
     private List<Document> documents;
 
     public RepoDocument() {
@@ -24,7 +24,7 @@ public class RepoDocument implements RepoInterface{
     }
 
     @Override
-    public boolean importDoc(String directory) {
+    public boolean importDoc(String directory) throws IOException {
         String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -72,46 +72,14 @@ public class RepoDocument implements RepoInterface{
     }//saveDoc
 
     @Override
-    public boolean existsDoc(String path){
-        File file=new File(path);
-        return file.exists();
-    }//existsDoc
-
-    public boolean deleteDoc(String path){
-        File temp=new File(path);
-        return temp.delete();
-    }
-
-    public String getContentFromPath(String path) throws IOException{
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
-        InputStream input=null;
-        BufferedReader br;
-        if(FileSystem.class.getResourceAsStream(jarName)!=null)
-            input = Main.class.getResourceAsStream(jarName);
-        if(input==null){
-            File file=new File(path);
-            br=new BufferedReader(new FileReader(file));
-        }else{
-            br = new BufferedReader(new InputStreamReader(input));
-        }//if_else
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line);
-            sb.append("\n");
-            line = br.readLine();
-        }//while
-        return sb.toString();
-    }//getContentFromPath
-
-    @Override
-    public void loadBackup(String directory) throws FileNotFoundException {
+    public void loadBackup(String directory) throws IOException {
         Scanner s = new Scanner(new File(".\\" + directory + "\\BackupDocument.txt"));
-        while (s.hasNextLine()){
-            documents.add(new Document((s.nextLine().substring(s.nextLine().lastIndexOf("\\")+1)), s.nextLine()));
+        String temp=s.nextLine();
+        while (temp!=null){
+            documents.add(new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp));
+            temp=s.nextLine();
         }//while
         s.close();
-        System.out.println(directory);
     }//loadBackUp
 
 }//RepoDocument

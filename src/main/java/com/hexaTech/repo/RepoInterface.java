@@ -11,7 +11,7 @@ public interface RepoInterface {
          * @throws IOException if an error occurs during file loading process.
          * @return boolean - false if something goes wrong, true if not.
          */
-        boolean importDoc(String directory);
+        boolean importDoc(String directory) throws IOException;
 
         /**
          * Saves the doucment's path into a backup file.
@@ -48,6 +48,6 @@ public interface RepoInterface {
          * @param directory string - directory used to search the file in.
          * @throws IOException if the backup file doesn't exist.
          */
-        void loadBackup(String directory) throws FileNotFoundException;
+        void loadBackup(String directory) throws IOException;
 
 }//RepoInterface
