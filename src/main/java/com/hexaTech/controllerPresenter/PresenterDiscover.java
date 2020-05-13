@@ -45,8 +45,8 @@ public class PresenterDiscover extends SubjectDiscover implements AddDocToParseO
      * @param result string - message.
      */
     @Override
-    public void showAddDocument(String result) {
-        this.presenter=result;
+    public void showAddDocument(boolean result) {
+        this.flag=result;
         notifySubMe();
     }
 

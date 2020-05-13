@@ -41,8 +41,10 @@ public class AddDocToParse implements AddDocToParseInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     public void addDocument(String directory) throws IOException {
-        repoInterface.importDoc(directory);
-        addDocToParseOutputPort.showAddDocument("Document added");
+        if(repoInterface.importDoc(directory))
+            addDocToParseOutputPort.showAddDocument(true);
+        else
+            addDocToParseOutputPort.showAddDocument(false);
     }
 
     /**

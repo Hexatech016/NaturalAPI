@@ -24,7 +24,7 @@ public class RepoDocument implements RepoInterface{
     }
 
     @Override
-    public void importDoc(String directory) {
+    public boolean importDoc(String directory) {
         String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -43,7 +43,9 @@ public class RepoDocument implements RepoInterface{
         if(!temp.equalsIgnoreCase("")) {
             documents.add(new Document(temp.substring(temp.lastIndexOf("\\")+1),temp));
             saveDoc(".\\BackupDocument.txt", directory);
-        }//if
+            return true;
+        }else
+            return false;
     }//returnPath
 
     @Override

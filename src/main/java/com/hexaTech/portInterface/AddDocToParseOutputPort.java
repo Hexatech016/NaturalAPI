@@ -19,7 +19,7 @@ public interface AddDocToParseOutputPort {
      * Notifies the message from adding document action.
      * @param result string - message text.
      */
-    void showAddDocument(String result);
+    void showAddDocument(boolean result);
 
     /**
      * Notifies the message from restoring backup action.

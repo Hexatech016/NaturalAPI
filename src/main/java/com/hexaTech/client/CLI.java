@@ -231,9 +231,9 @@ public class CLI implements MyObserver {
                         System.out.println("There's a saved document. Do you want to load it? (Y/N)");
                         Scanner secondScanner = new Scanner(System.in);
                         String secondCase = secondScanner.nextLine();
-                        if (secondCase.equalsIgnoreCase("y")) {
+                        if(secondCase.equalsIgnoreCase("y")) {
                             controllerDiscover.restoreDocController("Discover");
-                        }else if (secondCase.equalsIgnoreCase("n")){
+                        }else if(secondCase.equalsIgnoreCase("n")){
                             controllerDiscover.deleteDocController(".\\Discover\\temp.txt");
                         }else{
                             System.out.println("Please type Y or N");
@@ -245,6 +245,10 @@ public class CLI implements MyObserver {
                     break;
                 case ("2"):
                     controllerDiscover.addDocController("Discover");
+                    if(!notifyMeDone())
+                        System.out.println("Please select a .txt file.");
+                    else
+                        System.out.println("Document added.");
                     break;
                 case ("3"):
                     controllerDiscover.checkThereAreDoc();
@@ -256,10 +260,9 @@ public class CLI implements MyObserver {
                 case ("4"):
                     System.out.println("Bye!");
                     System.exit(0);
-                case ("5"):
+                    /*case ("5"):
                     System.out.println("Restore Backup");
-                    controllerDiscover.restoreDocController("Discover");
-
+                    controllerDiscover.restoreDocController("Discover");*/
             }//switch
         }//while
     }//useCase
