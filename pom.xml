@@ -101,7 +101,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>com.HexaTech.Main</mainClass>
+                <mainClass>com.hexaTech.Main</mainClass>
               </manifest>
             </archive>
             <descriptorRefs>
