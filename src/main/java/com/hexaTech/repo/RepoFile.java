@@ -5,18 +5,37 @@ import com.hexaTech.fileSystem.FileSystem;
 
 import java.io.*;
 
+/**
+ * Class used to manage a generic file repository.
+ */
 abstract class RepoFile implements RepoInterface{
 
+    /**
+     * Verifies if the specified document exists.
+     * @param path string - path to the document to be searched.
+     * @return boolean - true if the document exists, false if not.
+     */
     public boolean existsDoc(String path){
         File file=new File(path);
         return file.exists();
     }//existsDoc
 
+    /**
+     * Deletes the specified document.
+     * @param path string - path to the document to be deleted.
+     * @return boolean - false if an error occurs, true if not.
+     */
     public boolean deleteDoc(String path){
         File temp=new File(path);
         return temp.delete();
     }
 
+    /**
+     * Extrapolates content from a document.
+     * @param path string - document's path.
+     * @return string - document's content.
+     * @throws IOException if the specified document doesn't exist.
+     */
     public String getContentFromPath(String path) throws IOException {
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
         InputStream input=null;
@@ -39,4 +58,4 @@ abstract class RepoFile implements RepoInterface{
         return sb.toString();
     }//getContentFromPath
 
-}
+}//RepoFile

@@ -13,8 +13,6 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddDocToParseInputPort;
 import com.hexaTech.portInterface.AddDocToParseOutputPort;
-import com.hexaTech.repo.RepoDiscoverInterface;
-import com.hexaTech.repo.RepoDocument;
 import com.hexaTech.repo.RepoInterface;
 
 import java.io.IOException;

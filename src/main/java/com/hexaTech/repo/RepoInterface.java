@@ -1,8 +1,10 @@
 package com.hexaTech.repo;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Repository class interface.
+ */
 public interface RepoInterface {
 
         /**

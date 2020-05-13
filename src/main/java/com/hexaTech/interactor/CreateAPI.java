@@ -11,9 +11,9 @@
 package com.hexaTech.interactor;
 
 import com.hexaTech.entities.API;
-import com.hexaTech.model.ModelDevelopInterface;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
+import com.hexaTech.repo.RepoAPI;
 import com.hexaTech.repo.RepoBAL;
 import com.hexaTech.repo.RepoPLA;
 
@@ -26,19 +26,20 @@ public class CreateAPI implements CreateAPIInputPort {
     CreateAPIOutputPort createAPIOutputPort;
     RepoPLA repoPLA;
     RepoBAL repoBAL;
-    ModelDevelopInterface modelDevelopInterface;
+    RepoAPI repoAPI;
 
     /**
      * CreateAPI class standard constructor.
      * @param createAPIOutputPort CreateAPIOutputPort - used to send output notifications.
      * @param repoPLA RepoInterface - used to communicate with Repo.
-     * @param modelDevelopInterface ModelInterface - used to communicate with Model.
+     * @param repoBAL RepoInterface - used to communicate with Repo.
+     * @param repoAPI RepoAPI - used to communicate with Repo.
      */
-    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLA repoPLA, RepoBAL repoBAL, ModelDevelopInterface modelDevelopInterface) {
+    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLA repoPLA, RepoBAL repoBAL, RepoAPI repoAPI){
         this.createAPIOutputPort=createAPIOutputPort;
         this.repoPLA=repoPLA;
         this.repoBAL=repoBAL;
-        this.modelDevelopInterface=modelDevelopInterface;
+        this.repoAPI=repoAPI;
     }
 
     /**
@@ -57,7 +58,7 @@ public class CreateAPI implements CreateAPIInputPort {
         }else{//if_else_1
             API api;
             String str=repoBAL.getBAL().getPath(), pla=repoPLA.getPLA().getPath();
-            api=modelDevelopInterface.setAPI(str);
+            api=repoAPI.setAPI(str);
             if(api==null){
                 repoBAL.deleteDoc(".\\Develop\\temp.txt");
                 createAPIOutputPort.showErrorCodeAPI(3);

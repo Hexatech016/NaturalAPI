@@ -102,6 +102,12 @@ public class RepoPLA extends RepoFile{
         s.close();
     }//loadBackup
 
+    /**
+     * Saves a backup file.
+     * @param title string - document title.
+     * @param directory string - document directory.
+     * @throws IOException if occurs an error while creating the file or writing into it.
+     */
     @Override
     public void saveDoc(String title, String directory) {
         try {
@@ -118,6 +124,12 @@ public class RepoPLA extends RepoFile{
         }//try_catch
     }//saveDoc
 
+    /**
+     * Saves a new document.
+     * @param content string - document content.
+     * @param path string - document path.
+     * @throws IOException if occurs an error while creating the file or writing into it.
+     */
     public void saveOutput(String content,String path){
         try{
             File directory = new File("Develop");
@@ -134,6 +146,6 @@ public class RepoPLA extends RepoFile{
         }catch (IOException e) {
             System.out.println("exception occurred" + e);
         }//try_catch
-    }
+    }//saveOutput
 
 }//RepoPLA

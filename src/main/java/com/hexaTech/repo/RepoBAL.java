@@ -11,10 +11,17 @@ import java.util.Scanner;
 public class RepoBAL extends RepoFile{
     Document BAL;
 
+    /**
+     * RepoBAL empty constructor.
+     */
     public RepoBAL() {
         super();
     }
 
+    /**
+     * Returns BAL object.
+     * @return BAL - BAL object.
+     */
     public Document getBAL() {
         return BAL;
     }
@@ -63,6 +70,12 @@ public class RepoBAL extends RepoFile{
         s.close();
     }
 
+    /**
+     * Saves a backup file.
+     * @param title string - document title.
+     * @param directory string - document directory.
+     * @throws IOException if occurs an error while creating the file or writing into it.
+     */
     @Override
     public void saveDoc(String title, String directory) {
         try {
