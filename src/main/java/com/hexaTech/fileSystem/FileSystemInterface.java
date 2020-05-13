@@ -24,18 +24,6 @@ public interface FileSystemInterface{
     String importPath();
 
     /**
-     * Imports a new BAL.
-     * @return string - new BAL's path.
-     */
-    String importPathBAL();
-
-    /**
-     * Imports a new PLA.
-     * @return string new PLA's path.
-     */
-    String importPathPLA();
-
-    /**
      * Imports a BDL's path from disk.
      * @return string - BDL's path. Empty string if an error occurs.
      */
@@ -54,22 +42,6 @@ public interface FileSystemInterface{
      * @throws IOException if the document doesn't exist.
      */
     String getContentFromPath(String path) throws IOException;
-
-    /**
-     * Gets PLA required extension.
-     * @param PLA string - PLA's path.
-     * @return string - required output extension.
-     * @throws IOException if the PAL doesn't exist.
-     */
-    String getExtensionFromPLA(String PLA) throws IOException;
-
-    /**
-     * Saves the document's content into Develop folder.
-     * @param doc string - document's content.
-     * @param path string - document's path.
-     * @throws IOException if an error occurs while document's saving process.
-     */
-    void saveDocDevelop(String doc, String path) throws IOException;
 
     /**
      * Saves the document's content into Discover folder.
@@ -93,13 +65,6 @@ public interface FileSystemInterface{
      * @return boolean - true if document exists, false if not.
      */
     boolean existsDoc(String doc);
-
-    /**
-     * Verifies if the specified document exists into JAR archive.
-     * @param doc string - path to the document to be searched.
-     * @return boolean - true if the document exists, false if not.
-     */
-    boolean existsDocJar(String doc);
 
     /**
      * Delete the specified document.

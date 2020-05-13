@@ -12,7 +12,6 @@ package com.hexaTech.controllerPresenter;
 
 import com.hexaTech.portInterface.AddDocumentInputPort;
 import com.hexaTech.portInterface.CreateAPIInputPort;
-import com.hexaTech.portInterface.RemoveDocumentInputPort;
 
 import java.io.IOException;
 
@@ -22,19 +21,15 @@ import java.io.IOException;
 public class ControllerDevelop {
     private final AddDocumentInputPort addDocumentInputPort;
     private final CreateAPIInputPort createAPIInputPort;
-    private final RemoveDocumentInputPort removeDocumentInputPort;
 
     /**
      * Controller class constructor.
      * @param addDocumentInputPort AddDocumentInputPort - used to communicate with AddDocument interactor.
      * @param createAPIInputPort CreateAPIInputPort - used to communicate with CreateAPI interactor.
-     * @param removeDocumentInputPort RemoveDocumentInputPort - used to communicate with RemoveDocument interactor.
      */
-    public ControllerDevelop(AddDocumentInputPort addDocumentInputPort, CreateAPIInputPort createAPIInputPort,
-                             RemoveDocumentInputPort removeDocumentInputPort) {
+    public ControllerDevelop(AddDocumentInputPort addDocumentInputPort, CreateAPIInputPort createAPIInputPort) {
         this.addDocumentInputPort=addDocumentInputPort;
         this.createAPIInputPort=createAPIInputPort;
-        this.removeDocumentInputPort=removeDocumentInputPort;
     }//Controller
 
     /**
@@ -58,7 +53,7 @@ public class ControllerDevelop {
      * @param path string - path to the file to be removed.
      */
     public void deleteDocController(String path){
-        removeDocumentInputPort.removeDoc(path);
+        addDocumentInputPort.deleteDoc(path);
     }
 
     /**

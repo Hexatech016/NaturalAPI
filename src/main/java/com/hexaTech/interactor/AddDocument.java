@@ -89,4 +89,11 @@ public class AddDocument implements AddDocumentInputPort {
             addDocumentOutputPort.showDone(false);
     }
 
+    public void deleteDoc(String path){
+        if(repoBAL.deleteDoc(path))
+            addDocumentOutputPort.showRemovedDocument("Document deleted.");
+        else
+            addDocumentOutputPort.showRemovedDocument("Error. Please retry.");
+    }
+
 }//AddDocument

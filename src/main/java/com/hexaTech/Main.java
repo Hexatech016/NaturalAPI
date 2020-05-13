@@ -57,12 +57,11 @@ public class Main{
         CreateBAL createBAL=new CreateBAL(presenterDesign,repoDesign,modelDesign);
 
         AddDocument addDocument=new AddDocument(presenterDevelop,repoPLA,repoBAL);
-        RemoveDocument removeDocument=new RemoveDocument(presenterDevelop,repoBAL);
         CreateAPI createAPI=new CreateAPI(presenterDevelop,repoPLA,repoBAL,modelDevelop);
 
         ControllerDiscover controllerDiscover=new ControllerDiscover(addDocToParse,createBDL,deleteDoc,checkThereAreDoc);
         ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL);
-        ControllerDevelop controllerDevelop=new ControllerDevelop(addDocument,createAPI,removeDocument);
+        ControllerDevelop controllerDevelop=new ControllerDevelop(addDocument,createAPI);
 
         CLI client=new CLI(controllerDiscover,presenterDiscover,controllerDesign,presenterDesign,controllerDevelop,presenterDevelop);
         client.useCaseNaturalAPI();

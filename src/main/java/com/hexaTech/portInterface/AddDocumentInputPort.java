@@ -44,4 +44,6 @@ public interface AddDocumentInputPort {
 
     void existsDoc(String path);
 
+    void deleteDoc(String path);
+
 }//AddDocumentInputPort

@@ -12,12 +12,11 @@ package com.hexaTech.controllerPresenter;
 
 import com.hexaTech.portInterface.AddDocumentOutputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
-import com.hexaTech.portInterface.RemoveDocumentOutputPort;
 
 /**
  * Class used to manage different output messages from interactor's actions.
  */
-public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutputPort, RemoveDocumentOutputPort, CreateAPIOutputPort {
+public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutputPort, CreateAPIOutputPort {
     private String message;
     private boolean done;
     private int code;
@@ -60,7 +59,7 @@ public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutpu
      * Sets message from document removing action.
      * @param result string - message.
      */
-    public void showRemovedDoc(String result){
+    public void showRemovedDocument(String result){
         message=result;
         notifySubMe();
     }

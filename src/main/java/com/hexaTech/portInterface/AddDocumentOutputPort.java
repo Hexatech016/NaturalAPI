@@ -16,13 +16,19 @@ package com.hexaTech.portInterface;
 public interface AddDocumentOutputPort {
 
     /**
-     * Notifies the message from adding document action.
+     * Notifies the message from adding document.
      * @param result string - message text.
      */
     void showAddedDocument(String result);
 
     /**
-     * Notifies the message from restoring backup action.
+     * Notifies the message from removing document.
+     * @param result string - message text.
+     */
+    void showRemovedDocument(String result);
+
+    /**
+     * Notifies the message from restoring backup.
      * @param result string - message text.
      */
     void showRestoredBackUp(String result);
@@ -32,5 +38,7 @@ public interface AddDocumentOutputPort {
      * @param b boolean - status; false if an error occurred, true if not.
      */
     void showDone(boolean b);
+
+
 
 }//AddDocumentOutputPort
