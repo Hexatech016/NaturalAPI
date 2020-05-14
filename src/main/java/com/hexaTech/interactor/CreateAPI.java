@@ -13,9 +13,7 @@ package com.hexaTech.interactor;
 import com.hexaTech.entities.API;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
-import com.hexaTech.repo.RepoAPI;
-import com.hexaTech.repo.RepoBAL;
-import com.hexaTech.repo.RepoPLA;
+import com.hexaTech.repo.*;
 
 import java.io.IOException;
 
@@ -24,22 +22,23 @@ import java.io.IOException;
  */
 public class CreateAPI implements CreateAPIInputPort {
     CreateAPIOutputPort createAPIOutputPort;
-    RepoPLA repoPLA;
-    RepoBAL repoBAL;
-    RepoAPI repoAPI;
+    RepoPLAInterface repoPLAInterface;
+    RepoBALInterface repoBALInterface;
+    RepoAPIInterface repoAPIInterface;
 
     /**
      * CreateAPI class standard constructor.
      * @param createAPIOutputPort CreateAPIOutputPort - used to send output notifications.
-     * @param repoPLA RepoInterface - used to communicate with Repo.
-     * @param repoBAL RepoInterface - used to communicate with Repo.
-     * @param repoAPI RepoAPI - used to communicate with Repo.
+     * @param repoPLAInterface RepoInterface - used to communicate with Repo.
+     * @param repoBALInterface RepoInterface - used to communicate with Repo.
+     * @param repoAPIInterface RepoAPI - used to communicate with Repo.
      */
-    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLA repoPLA, RepoBAL repoBAL, RepoAPI repoAPI){
+    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface, RepoBALInterface repoBALInterface,
+                     RepoAPIInterface repoAPIInterface){
         this.createAPIOutputPort=createAPIOutputPort;
-        this.repoPLA=repoPLA;
-        this.repoBAL=repoBAL;
-        this.repoAPI=repoAPI;
+        this.repoPLAInterface=repoPLAInterface;
+        this.repoBALInterface=repoBALInterface;
+        this.repoAPIInterface=repoAPIInterface;
     }
 
     /**
@@ -49,30 +48,30 @@ public class CreateAPI implements CreateAPIInputPort {
      */
     @Override
     public void createAPI() throws IOException,IllegalArgumentException{
-        if(!repoPLA.existsDoc(repoPLA.getPLA().getPath()) && !repoPLA.existsDocJar(repoPLA.getPLA().getPath())){
+        if(!repoPLAInterface.existsDoc(repoPLAInterface.getPLA().getPath()) && !repoPLAInterface.existsDocJar(repoPLAInterface.getPLA().getPath())){
             createAPIOutputPort.showErrorTextAPI("PLA file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(1);
-        }else if(!repoBAL.existsDoc(repoBAL.getBAL().getPath())){
+        }else if(!repoBALInterface.existsDoc(repoBALInterface.getBAL().getPath())){
             createAPIOutputPort.showErrorTextAPI("BAL file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(2);
         }else{//if_else_1
             API api;
-            String str=repoBAL.getBAL().getPath(), pla=repoPLA.getPLA().getPath();
-            api=repoAPI.setAPI(str);
+            String str=repoBALInterface.getBAL().getPath(), pla=repoPLAInterface.getPLA().getPath();
+            api=repoAPIInterface.setAPI(str);
             if(api==null){
-                repoBAL.deleteDoc(".\\Develop\\temp.txt");
+                repoBALInterface.deleteDoc(".\\Develop\\temp.txt");
                 createAPIOutputPort.showErrorCodeAPI(3);
             }else{//if_else_2
-                if(repoPLA.getContentFromPath(pla).equals("")){
+                if(repoPLAInterface.getContentFromPath(pla).equals("")){
                     createAPIOutputPort.showErrorTextAPI("PLA file is empty.");
                     createAPIOutputPort.showErrorCodeAPI(4);
-                }else if(repoPLA.getExtensionFromPLA(pla).equals("")) {
+                }else if(repoPLAInterface.getExtensionFromPLA(pla).equals("")) {
                     createAPIOutputPort.showErrorTextAPI("Input PLA is not valid. Check file syntax or extension (.pla).");
                     createAPIOutputPort.showErrorCodeAPI(4);
                 }else{//if_else_3
-                    repoPLA.saveOutput(api.replacePLA(repoPLA.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLA.getPLA().getExtension());
-                    repoBAL.deleteDoc(".\\Develop\\BackupBAL.txt");
-                    createAPIOutputPort.showCreatedAPI("API ."+repoPLA.getPLA().getExtension()+" generated into folder: Develop.");
+                    repoPLAInterface.saveOutput(api.replacePLA(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLAInterface.getPLA().getExtension());
+                    repoBALInterface.deleteDoc(".\\Develop\\BackupBAL.txt");
+                    createAPIOutputPort.showCreatedAPI("API ."+repoPLAInterface.getPLA().getExtension()+" generated into folder: Develop.");
                     createAPIOutputPort.showErrorCodeAPI(0);
                 }//if_else_3
             }//if_else_2

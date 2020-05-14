@@ -11,7 +11,7 @@
 package com.hexaTech.portInterface;
 
 /**
- * AddDocument output interface.
+ * AddPDocToParse output interface.
  */
 public interface AddDocToParseOutputPort {
 

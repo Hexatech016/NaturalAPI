@@ -16,9 +16,11 @@ import com.hexaTech.controllerPresenter.*;
 import com.hexaTech.interactor.*;
 import com.hexaTech.model.ModelDesign;
 import com.hexaTech.model.ModelDiscover;
+import com.hexaTech.portInterface.AddBALInputPort;
+import com.hexaTech.portInterface.AddPLAInputPort;
+import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.repo.*;
 import com.hexaTech.stanford.Stanford;
-import com.hexaTech.swagger.Swagger;
 import com.hexaTech.fileSystem.FileSystem;
 
 import java.io.IOException;
@@ -36,18 +38,16 @@ public class Main{
         FileSystem fileSystem=new FileSystem();
         //REPOS
             //DISCOVER
-        RepoDiscover repoDiscover=new RepoDiscover(fileSystem);
-        RepoDocument repoDocument=new RepoDocument();
+        RepoDiscoverInterface repoDiscover=new RepoDiscover(fileSystem);
+        RepoDocumentInterface repoDocument=new RepoDocument();
             //DESIGN
-        RepoDesign repoDesign=new RepoDesign(fileSystem);
+        RepoDesignInterface repoDesign=new RepoDesign(fileSystem);
             //DEVELOP
-        RepoAPI repoAPI=new RepoAPI();
-        RepoBAL repoBAL=new RepoBAL();
-        RepoPLA repoPLA=new RepoPLA();
-        //UTILS
-        Swagger swagger=new Swagger();
-        Stanford stanford=new Stanford();
+        RepoAPIInterface repoAPI=new RepoAPI();
+        RepoBALInterface repoBAL=new RepoBAL();
+        RepoPLAInterface repoPLA=new RepoPLA();
         //DA_RIMUOVERE
+        Stanford stanford=new Stanford();
         ModelDiscover modelDiscover=new ModelDiscover(stanford);
         ModelDesign modelDesign=new ModelDesign(stanford);
         //INTERACTORS
@@ -61,12 +61,13 @@ public class Main{
         AddBDL addBDL=new AddBDL(presenterDesign,repoDesign);
         CreateBAL createBAL=new CreateBAL(presenterDesign,repoDesign,modelDesign);
             //DEVELOP
-        AddDocument addDocument=new AddDocument(presenterDevelop,repoPLA,repoBAL);
-        CreateAPI createAPI=new CreateAPI(presenterDevelop,repoPLA,repoBAL,repoAPI);
+        AddPLAInputPort addPLA=new AddPLA(presenterDevelop,repoPLA);
+        AddBALInputPort addBAL=new AddBAL(presenterDevelop,repoBAL);
+        CreateAPIInputPort createAPI=new CreateAPI(presenterDevelop,repoPLA,repoBAL,repoAPI);
         //CONTROLLERS
         ControllerDiscover controllerDiscover=new ControllerDiscover(addDocToParse,createBDL,deleteDoc,checkThereAreDoc);
         ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL);
-        ControllerDevelop controllerDevelop=new ControllerDevelop(addDocument,createAPI);
+        ControllerDevelop controllerDevelop=new ControllerDevelop(addPLA,addBAL,createAPI);
         //CLIENT
         CLI client=new CLI(controllerDiscover,presenterDiscover,controllerDesign,presenterDesign,controllerDevelop,presenterDevelop);
         client.useCaseNaturalAPI();

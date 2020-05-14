@@ -83,7 +83,7 @@ public class CLI implements MyObserver {
         Scanner scan = new Scanner(System.in);
         String answer = scan.nextLine();
         if (answer.equalsIgnoreCase("y")) {
-            controllerDevelop.restoreDocController("Develop");
+            controllerDevelop.restoreBackupController("Develop");
             return true;
         }else if (answer.equalsIgnoreCase("n")){
             controllerDevelop.deleteDocController(".\\Develop\\BackupBAL.txt");
@@ -107,14 +107,13 @@ public class CLI implements MyObserver {
             temp = scan.nextLine();
             switch (temp) {
                 case ("1"):
-                    controllerDevelop.addDocController("Develop");
+                    controllerDevelop.addBALController("Develop");
                     if(!notifyMeDone())
                         System.out.println("Please select a .json file.");
                     useCaseDevelop(notifyMeDone());
                     break;
                 case ("2"):
-                    System.out.println("Bye!");
-                    System.exit(0);
+                    useCaseNaturalAPI();
                 default:
                     useCaseDevelop(condition);
             }//switch
@@ -127,8 +126,7 @@ public class CLI implements MyObserver {
                     useCasePLA();
                     break;
                 case ("2"):
-                    System.out.println("Bye!");
-                    System.exit(0);
+                    useCaseNaturalAPI();
                 default:
                     useCaseDevelop(condition);
             }//switch
@@ -162,8 +160,7 @@ public class CLI implements MyObserver {
                     System.out.println("Please select a .pla file.");
                 useCasePLA();
             case ("4"):
-                System.out.println("Bye!");
-                System.exit(0);
+                useCaseNaturalAPI();
             default:
                 useCasePLA();
         }//switch
@@ -269,7 +266,7 @@ public class CLI implements MyObserver {
                     System.exit(0);
                     /*case ("5"):
                     System.out.println("Restore Backup");
-                    controllerDiscover.restoreDocController("Discover");*/
+                    controllerDiscover.restoreBackupController("Discover");*/
             }//switch
         }//while
     }//useCase

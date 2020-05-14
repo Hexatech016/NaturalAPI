@@ -10,13 +10,14 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.portInterface.AddDocumentOutputPort;
+import com.hexaTech.portInterface.AddBALOutputPort;
+import com.hexaTech.portInterface.AddPLAOutputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
 
 /**
  * Class used to manage different output messages from interactor's actions.
  */
-public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutputPort, CreateAPIOutputPort {
+public class PresenterDevelop extends SubjectDevelop implements AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
     private String message;
     private boolean done;
     private int code;
@@ -50,7 +51,7 @@ public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutpu
      * @param result string - message.
      */
     @Override
-    public void showAddedDocument(String result) {
+    public void showAddedPLA(String result) {
         message=result;
         notifySubMe();
     }
@@ -59,7 +60,7 @@ public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutpu
      * Sets message from document removing action.
      * @param result string - message.
      */
-    public void showRemovedDocument(String result){
+    public void showRemovedPLA(String result){
         message=result;
         notifySubMe();
     }
@@ -96,6 +97,28 @@ public class PresenterDevelop extends SubjectDevelop implements AddDocumentOutpu
      * @param result string - message text.
      */
     public void showErrorTextAPI(String result){
+        message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Notifies the message from adding document.
+     *
+     * @param result string - message text.
+     */
+    @Override
+    public void showAddedBAL(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Notifies the message from removing document.
+     *
+     * @param result string - message text.
+     */
+    @Override
+    public void showRemovedBAL(String result) {
         message=result;
         notifySubMe();
     }

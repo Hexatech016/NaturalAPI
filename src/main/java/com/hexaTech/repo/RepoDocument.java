@@ -1,3 +1,13 @@
+/**
+ * @file RepoDocument
+ * @version 1.0.0
+ * @type java
+ * @data 2020-05-13
+ * @author Eduard Serban
+ * @email hexatech016@gmail.com
+ * @license MIT
+ */
+
 package com.hexaTech.repo;
 
 import com.google.common.io.Files;
@@ -12,19 +22,82 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class RepoDocument extends RepoFile{
-    private List<Document> documents;
+/**
+ * RepoDocument class.
+ */
+public class RepoDocument implements RepoDocumentInterface {
+    private final List<Document> documents;
 
+    /**
+     * RepoDocument empty constructor.
+     */
     public RepoDocument() {
         this.documents=new ArrayList<>();
     }
 
+    /**
+     * Returns documents' list.
+     * @return List<Document> - list of documents stored.
+     */
     public List<Document> getDocuments() {
         return documents;
     }
 
+    /**
+     * Verifies if the specified document exists.
+     * @param path string - path to the document to be searched.
+     * @return boolean - true if the document exists, false if not.
+     */
+    public boolean existsDoc(String path){
+        File file=new File(path);
+        return file.exists();
+    }//existsDoc
+
+    /**
+     * Deletes the specified document.
+     * @param path string - path to the document to be deleted.
+     * @return boolean - false if an error occurs, true if not.
+     */
+    public boolean deleteDoc(String path){
+        File temp=new File(path);
+        return temp.delete();
+    }
+
+    /**
+     * Extrapolates content from a document.
+     * @param path string - document's path.
+     * @return string - document's content.
+     * @throws IOException if the specified document doesn't exist.
+     */
+    public String getContentFromPath(String path) throws IOException {
+        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        InputStream input=null;
+        BufferedReader br;
+        if(FileSystem.class.getResourceAsStream(jarName)!=null)
+            input = Main.class.getResourceAsStream(jarName);
+        if(input==null){
+            File file=new File(path);
+            br=new BufferedReader(new FileReader(file));
+        }else{
+            br = new BufferedReader(new InputStreamReader(input));
+        }//if_else
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            sb.append(line);
+            sb.append("\n");
+            line = br.readLine();
+        }//while
+        return sb.toString();
+    }//getContentFromPath
+
+    /**
+     * Loads a new document from file system.
+     * @param directory string - directory used to save the file.
+     * @return boolean - false if something goes wrong, true if not.
+     */
     @Override
-    public boolean importDoc(String directory) throws IOException {
+    public boolean importDoc(String directory){
         String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -48,6 +121,11 @@ public class RepoDocument extends RepoFile{
             return false;
     }//returnPath
 
+    /**
+     * Saves a backup file.
+     * @param title string - document title.
+     * @param directory string - document directory.
+     */
     @Override
     public void saveDoc(String title, String directory) {
         StringBuilder temp= new StringBuilder();
@@ -71,6 +149,11 @@ public class RepoDocument extends RepoFile{
         }//try_catch
     }//saveDoc
 
+    /**
+     * Loads content from a backup file and restore it.
+     * @param directory string - directory used to search the file in.
+     * @throws IOException if the backup file doesn't exist.
+     */
     @Override
     public void loadBackup(String directory) throws IOException {
         Scanner s = new Scanner(new File(".\\" + directory + "\\BackupDocument.txt"));

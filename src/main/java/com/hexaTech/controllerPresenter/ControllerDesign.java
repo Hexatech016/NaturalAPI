@@ -27,9 +27,9 @@ public class ControllerDesign {
 
     /**
      * Controller class constructor.
-     * @param addBDL AddBDLInputPort - used to communicate with AddDocument interactor.
+     * @param addBDL AddBDLInputPort - used to communicate with AddBDL interactor.
      * @param addGherkin AddGherkinInputPort - used to communicate with CreateAPI interactor.
-     * @param createBAL CreateBALInputPort - used to communicate with RemoveDocument interactor.
+     * @param createBAL CreateBALInputPort - used to communicate with CreateBAL interactor.
      */
     public ControllerDesign(AddBDLInputPort addBDL, AddGherkinInputPort addGherkin, CreateBALInputPort createBAL){
         addBDLInputPort=addBDL;

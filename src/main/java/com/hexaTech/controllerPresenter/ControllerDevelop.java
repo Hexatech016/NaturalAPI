@@ -10,7 +10,8 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.portInterface.AddDocumentInputPort;
+import com.hexaTech.portInterface.AddBALInputPort;
+import com.hexaTech.portInterface.AddPLAInputPort;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 
 import java.io.IOException;
@@ -19,33 +20,35 @@ import java.io.IOException;
  * Class used to invoke methods to perform, based on input actions.
  */
 public class ControllerDevelop {
-    private final AddDocumentInputPort addDocumentInputPort;
+    private final AddPLAInputPort addPLAInputPort;
+    private final AddBALInputPort addBALInputPort;
     private final CreateAPIInputPort createAPIInputPort;
 
     /**
      * Controller class constructor.
-     * @param addDocumentInputPort AddDocumentInputPort - used to communicate with AddDocument interactor.
+     * @param addPLAInputPort AddDocumentInputPort - used to communicate with AddPLA interactor.
      * @param createAPIInputPort CreateAPIInputPort - used to communicate with CreateAPI interactor.
      */
-    public ControllerDevelop(AddDocumentInputPort addDocumentInputPort, CreateAPIInputPort createAPIInputPort) {
-        this.addDocumentInputPort=addDocumentInputPort;
+    public ControllerDevelop(AddPLAInputPort addPLAInputPort, AddBALInputPort addBALInputPort, CreateAPIInputPort createAPIInputPort) {
+        this.addPLAInputPort=addPLAInputPort;
+        this.addBALInputPort=addBALInputPort;
         this.createAPIInputPort=createAPIInputPort;
-    }//Controller
-
-    /**
-     * Invokes AddDocument method to add a new document.
-     * @throws IOException if the document to add doesn't exist.
-     */
-    public void addDocController(String directory) throws IOException {
-        addDocumentInputPort.addBAL(directory);
     }
 
     /**
-     * Invokes AddDocument method to restore backup.
+     * Invokes AddPLA method to add a new document.
+     * @throws IOException if the document to add doesn't exist.
+     */
+    public void addBALController(String directory) throws IOException {
+        addBALInputPort.addBAL(directory);
+    }
+
+    /**
+     * Invokes AddPLA method to restore backup.
      * @throws IOException if the document to restore doesn't exist.
      */
-    public void restoreDocController(String directory) throws IOException{
-        addDocumentInputPort.loadBackUp(directory);
+    public void restoreBackupController(String directory) throws IOException{
+        addBALInputPort.loadBackUp(directory);
     }
 
     /**
@@ -53,7 +56,7 @@ public class ControllerDevelop {
      * @param path string - path to the file to be removed.
      */
     public void deleteDocController(String path){
-        addDocumentInputPort.deleteDoc(path);
+        addBALInputPort.deleteDoc(path);
     }
 
     /**
@@ -65,24 +68,24 @@ public class ControllerDevelop {
     }
 
     /**
-     * Invokes AddDocument method to add a PLA file.
+     * Invokes AddPLA method to add a PLA file.
      * @throws IOException if the specified file doesn't exist.
      */
     public void addPLAController(String directory) throws IOException{
-        addDocumentInputPort.addPLA(directory);
+        addPLAInputPort.addPLA(directory);
     }
 
     /**
-     * Invokes AddDocument method to change PLA file source.
+     * Invokes AddPLA method to change PLA file source.
      * @param path string - PLA source file path.
      * @throws IOException if the specified path doesn't exist.
      */
     public void refreshPLAController(String path) throws IOException{
-        addDocumentInputPort.updatePLA(path);
+        addPLAInputPort.updatePLA(path);
     }
 
     public void existsDocController(String path){
-        addDocumentInputPort.existsDoc(path);
+        addBALInputPort.existsDoc(path);
     }
 
 }//Controller

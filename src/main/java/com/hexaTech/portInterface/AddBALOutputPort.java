@@ -1,9 +1,9 @@
 /**
- * @file AddDocumentOutputPort
+ * @file AddBALOutputPort
  * @version 1.0.0
  * @type java
- * @data 2020-04-30
- * @author Luca Marcon
+ * @data 2020-05-14
+ * @author Alessio Barbiero
  * @email hexatech016@gmail.com
  * @license MIT
  */
@@ -11,27 +11,21 @@
 package com.hexaTech.portInterface;
 
 /**
- * AddDocument output interface.
+ * AddBAL output port.
  */
-public interface AddDocumentOutputPort {
+public interface AddBALOutputPort {
 
     /**
      * Notifies the message from adding document.
      * @param result string - message text.
      */
-    void showAddedDocument(String result);
+    void showAddedBAL(String result);
 
     /**
      * Notifies the message from removing document.
      * @param result string - message text.
      */
-    void showRemovedDocument(String result);
-
-    /**
-     * Notifies the message from restoring backup.
-     * @param result string - message text.
-     */
-    void showRestoredBackUp(String result);
+    void showRemovedBAL(String result);
 
     /**
      * Notifies the status after the performed action.
@@ -39,6 +33,10 @@ public interface AddDocumentOutputPort {
      */
     void showDone(boolean b);
 
+    /**
+     * Notifies the message from restoring backup.
+     * @param result string - message text.
+     */
+    void showRestoredBackUp(String result);
 
-
-}//AddDocumentOutputPort
+}//AddBALOutputPort
