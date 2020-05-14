@@ -10,9 +10,14 @@
 
 package com.hexaTech.repo;
 
+import com.hexaTech.entities.Document;
+
+import java.util.List;
+
 /**
  * RepoDocument class interface.
  */
 public interface RepoDocumentInterface extends RepoInterface{
+    List<Document> getDocuments();
 
 }//RepoDocumentInterface

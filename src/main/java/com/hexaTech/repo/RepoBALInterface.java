@@ -10,6 +10,7 @@
 
 package com.hexaTech.repo;
 
+import com.hexaTech.entities.BAL;
 import com.hexaTech.entities.Document;
 
 /**
@@ -21,4 +22,6 @@ public interface RepoBALInterface extends RepoInterface{
      * @return BAL - BAL object.
      */
     Document getBAL();
+
+    BAL setBALFromGherkin(String text);
 }//RepoBALInterface

@@ -10,14 +10,14 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.portInterface.AddBALOutputPort;
-import com.hexaTech.portInterface.AddPLAOutputPort;
-import com.hexaTech.portInterface.CreateAPIOutputPort;
+import com.hexaTech.portInterface.*;
 
 /**
  * Class used to manage different output messages from interactor's actions.
  */
-public class PresenterDevelop extends SubjectDevelop implements AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
+public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
+        AddBDLOutputPort, AddGherkinOutputPort, CreateBALOutputPort,
+        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
     private String message;
     private boolean done;
     private int code;
@@ -45,6 +45,91 @@ public class PresenterDevelop extends SubjectDevelop implements AddPLAOutputPort
     public boolean isDone() {
         return done;
     }
+
+    //Discover
+
+    /**
+     * Sets message from document adding action.
+     * @param result string - message.
+     */
+    @Override
+    public void showAddDocument(boolean result) {
+        this.done=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets message from BDL creation.
+     * @param result string - message.
+     */
+    @Override
+    public void showCreateBdl(String result) {
+        this.message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets message from document deleting action.
+     * @param result string - message.
+     */
+    @Override
+    public void showDeletedDoc(String result){
+        this.message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets message from backup restoring action.
+     * @param result string - message.
+     */
+    @Override
+    public void showBackUpRestored(String result){
+        this.message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets flag from document searching action.
+     * @param flag boolean - search result.
+     */
+    @Override
+    public void thereAreDoc(boolean flag){
+        this.done=flag;
+        notifySubMeDone();
+    }
+
+    //Design
+
+    /**
+     * Sets message from BDL addition.
+     * @param result string - message.
+     */
+    @Override
+    public void showAddedBDL(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets message from Gherkin addition.
+     * @param result string - message.
+     */
+    public void showAddedGherkin(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets message from BAL creation.
+     * @param result string - message.
+     */
+    public void showCreatedBAL(String result){
+        message=result;
+        notifySubMe();
+    }
+
+    //Develop
+
 
     /**
      * Sets message from document adding action.

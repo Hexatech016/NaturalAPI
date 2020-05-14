@@ -2,14 +2,13 @@
  * @file Subject
  * @version 1.0.0
  * @type java
- * @data 2020-04-25
- * @author Eduard Serban
+ * @data 2020-04-30
+ * @author Luca Marcon
  * @email hexatech016@gmail.com
  * @license MIT
  */
 
 package com.hexaTech.controllerPresenter;
-
 
 import com.hexaTech.client.MyObserver;
 
@@ -19,8 +18,7 @@ import java.util.List;
 /**
  * Class used to synchronize actions and output messages.
  */
-public class SubjectDiscover {
-
+public class Subject {
     List<MyObserver> observers=new ArrayList<>();
 
     /**
@@ -35,18 +33,27 @@ public class SubjectDiscover {
      * Notifies all observers' message change.
      */
     public void notifySubMe(){
-        for(MyObserver observer: this.observers) {
+        for(MyObserver observer: observers) {
             observer.notifyMe();
-        }//for
+        }
     }//notifySubMe
 
     /**
-     * Notifies all observers' flag status.
+     * Notifies all observers' errors code.
      */
-    public void notifyFlagMe(){
-        for(MyObserver observer: this.observers) {
+    public void notifySubMeError(){
+        for(MyObserver observer: observers) {
+            observer.notifyMeError();
+        }
+    }//notifySubMeError
+
+    /**
+     * Notifies all observers' status.
+     */
+    public void notifySubMeDone(){
+        for(MyObserver observer: observers) {
             observer.notifyMeDone();
-        }//for
-    }//notifyFlagMe
+        }
+    }//notifySubMeDone
 
 }//Subject

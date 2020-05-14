@@ -15,7 +15,13 @@ import java.io.IOException;
 /**
  * AddDocToParse input interface.
  */
-public interface AddDocToParseInputPort {
+public interface AddDocumentInputPort {
+
+    /**
+     * Verifies if there are any loaded documents.
+     * @param path
+     */
+    void checkThereAreDoc(String path);
 
     /**
      * Loads a new document.
@@ -28,5 +34,11 @@ public interface AddDocToParseInputPort {
      * @throws IOException if the file doesn't exist.
      */
     void loadBackUp(String directory) throws IOException;
+
+    /**
+     * Delete the specified document.
+     * @param path string - document to be deleted.
+     */
+    void deleteDocs(String path);
 
 }//AddDocToParseInputPort

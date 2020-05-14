@@ -13,7 +13,13 @@ package com.hexaTech.portInterface;
 /**
  * AddPDocToParse output interface.
  */
-public interface AddDocToParseOutputPort {
+public interface AddDocumentOutputPort {
+
+    /**
+     * Notifies the flag from document search action.
+     * @param flag boolean - true if backup was found, false if not.
+     */
+    void thereAreDoc(boolean flag);
 
     /**
      * Notifies the message from adding document action.
@@ -26,5 +32,11 @@ public interface AddDocToParseOutputPort {
      * @param result string - message text.
      */
     void showBackUpRestored(String result);
+
+    /**
+     * Notifies the message from deleting document action.
+     * @param result string - message text.
+     */
+    void showDeletedDoc(String result);
 
 }//AddDocToParseOutputPort

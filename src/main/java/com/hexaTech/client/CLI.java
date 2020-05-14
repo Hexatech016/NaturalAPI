@@ -21,29 +21,21 @@ import java.util.Scanner;
 public class CLI implements MyObserver {
 
     private final ControllerDiscover controllerDiscover;
-    private final PresenterDiscover presenterDiscover;
     private final ControllerDesign controllerDesign;
-    private final PresenterDesign presenterDesign;
     private final ControllerDevelop controllerDevelop;
-    private final PresenterDevelop presenterDevelop;
+    private final Presenter presenter;
 
     /**
      * CLI class constructor.
      * @param controllerDevelop Controller - controllerDevelop class parameter value.
-     * @param presenterDevelop Presenter - presenterDevelop class parameter value.
+     * @param presenter Presenter - presenter class parameter value.
      */
-    public CLI(ControllerDiscover controllerDiscover, PresenterDiscover presenterDiscover,
-               ControllerDesign controllerDesign, PresenterDesign presenterDesign,
-               ControllerDevelop controllerDevelop, PresenterDevelop presenterDevelop) {
-        this.controllerDiscover=controllerDiscover;
-        this.presenterDiscover=presenterDiscover;
-        this.controllerDesign=controllerDesign;
-        this.presenterDesign=presenterDesign;
-        this.controllerDevelop=controllerDevelop;
-        this.presenterDevelop=presenterDevelop;
-        presenterDesign.addObserver(this);
-        presenterDiscover.addObserver(this);
-        presenterDevelop.addObserver(this);
+    public CLI(ControllerDiscover controllerDiscover, ControllerDesign controllerDesign, ControllerDevelop controllerDevelop, Presenter presenter) {
+        this.controllerDiscover = controllerDiscover;
+        this.controllerDesign = controllerDesign;
+        this.controllerDevelop = controllerDevelop;
+        this.presenter = presenter;
+        this.presenter.addObserver(this);
     }
 
     public void useCaseNaturalAPI() throws IOException {
@@ -230,7 +222,7 @@ public class CLI implements MyObserver {
             firstCase = firstScanner.nextLine();
             switch (firstCase) {
                 case ("1"):
-                    controllerDiscover.checkThereAreDoc();
+                    controllerDiscover.checkThereAreDoc(".\\Discover\\BackupDocument.txt");
                     if(notifyMeDone()){
                         System.out.println("There's a saved document. Do you want to load it? (Y/N)");
                         Scanner secondScanner = new Scanner(System.in);
@@ -238,7 +230,7 @@ public class CLI implements MyObserver {
                         if(secondCase.equalsIgnoreCase("y")) {
                             controllerDiscover.restoreDocController("Discover");
                         }else if(secondCase.equalsIgnoreCase("n")){
-                            controllerDiscover.deleteDocController(".\\Discover\\temp.txt");
+                            controllerDiscover.deleteDocController(".\\Discover\\BackupDocument.txt");
                         }else{
                             System.out.println("Please type Y or N");
                             break;
@@ -255,11 +247,12 @@ public class CLI implements MyObserver {
                         System.out.println("Document added.");
                     break;
                 case ("3"):
-                    controllerDiscover.checkThereAreDoc();
+                    /*controllerDiscover.checkThereAreDoc();
                     if(notifyMeDone())
                         controllerDiscover.createBDL();
                     else
-                        System.out.println("There are no loaded documents to extract BDL");
+                        System.out.println("There are no loaded documents to extract BDL");*/
+                    controllerDiscover.createBDL();
                     break;
                 case ("4"):
                     System.out.println("Bye!");
@@ -276,7 +269,7 @@ public class CLI implements MyObserver {
      */
     @Override
     public void notifyMe(){
-        System.out.println(presenterDevelop.getMessage());
+        System.out.println(presenter.getMessage());
     }
 
     /**
@@ -284,7 +277,7 @@ public class CLI implements MyObserver {
      * @return integer - error code.
      */
     public int notifyMeError(){
-        return presenterDevelop.getCode();
+        return presenter.getCode();
     }
 
     /**
@@ -292,7 +285,7 @@ public class CLI implements MyObserver {
      * @return boolean - presenterDevelop status.
      */
     public boolean notifyMeDone(){
-        return presenterDevelop.isDone();
+        return presenter.isDone();
     }
 
 }//CLI

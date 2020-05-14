@@ -10,8 +10,6 @@
 
 package com.hexaTech.interactor;
 
-
-import com.hexaTech.model.ModelDesignInterface;
 import com.hexaTech.portInterface.AddGherkinInputPort;
 import com.hexaTech.portInterface.AddGherkinOutputPort;
 import com.hexaTech.repo.RepoDesignInterface;
@@ -25,18 +23,15 @@ public class AddGherkin implements AddGherkinInputPort {
 
     AddGherkinOutputPort addGherkinOutputPort;
     RepoDesignInterface repoDesignInterface;
-    ModelDesignInterface modelDesignInterface;
 
     /**
      * AddGherkin class constructor.
      * @param addGherkinOutputPort AddGherkinOutputPort - used to send output notifications.
      * @param repoDesignInterface RepoInterface - used to communicate with repo.
-     * @param modelDesignInterface ModelInterface - used to communicate with model.
      */
-    public AddGherkin(AddGherkinOutputPort addGherkinOutputPort, RepoDesignInterface repoDesignInterface, ModelDesignInterface modelDesignInterface){
-        this.addGherkinOutputPort=addGherkinOutputPort;
-        this.repoDesignInterface=repoDesignInterface;
-        this.modelDesignInterface=modelDesignInterface;
+    public AddGherkin(AddGherkinOutputPort addGherkinOutputPort, RepoDesignInterface repoDesignInterface) {
+        this.addGherkinOutputPort = addGherkinOutputPort;
+        this.repoDesignInterface = repoDesignInterface;
     }
 
     /**

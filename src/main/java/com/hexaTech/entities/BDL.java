@@ -213,4 +213,37 @@ public class BDL {
         return toReturn.toString();
     }//predToCVS
 
+    /**
+     * Fills BDL's nouns list with found elements.
+     * @param list List<DoubleStruct> -  extracted elements' list.
+     */
+    public void addSostFromDoubleStruct(List<DoubleStruct> list){
+        for(DoubleStruct doubleStruct : list){
+            if(doubleStruct.getToken().contains("NN"))
+               addNoun(doubleStruct.getLemma(),1);
+        }//for
+    }//addSost
+
+    /**
+     * Fills BDL's verbs list with found elements.
+     * @param list List<DoubleStruct> -  extracted elements' list.
+     */
+    public void addVerbFromDoubleStruct(List<DoubleStruct> list){
+        for(DoubleStruct doubleStruct : list){
+            if(doubleStruct.getToken().contains("VB"))
+                addVerb(doubleStruct.getLemma(),1);
+        }//for
+    }//addVerb
+
+    /**
+     * Fills BDL's predicates list with found elements.
+     * @param list List<DoubleStruct> -  extracted elements' list.
+     */
+    public void addPredFromDoubleStruct(List<DoubleStruct> list){
+        for(DoubleStruct doubleStruct : list){
+            if(doubleStruct.getToken().contains("obj"))
+                addPredicate(doubleStruct.getLemma(),1);
+        }//for
+    }//addPred
+
 }//BDL

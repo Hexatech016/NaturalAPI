@@ -12,12 +12,21 @@ package com.hexaTech.repo;
 
 import com.google.common.io.Files;
 import com.hexaTech.Main;
-import com.hexaTech.entities.Document;
+import com.hexaTech.entities.*;
 import com.hexaTech.fileSystem.FileSystem;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.trees.GrammaticalStructure;
+import edu.stanford.nlp.trees.TypedDependency;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -32,6 +41,109 @@ public class RepoBAL implements RepoBALInterface {
     public RepoBAL() {
         super();
     }
+    /**
+     * Splits the given text into an array of strings.
+     * @param text string - text.
+     * @return string[] - array of strings.
+     */
+    private String[] getTextSplit(String text){
+        String[] gherkinSplit;
+        String delimiter = "[\n]+[\n]";
+        gherkinSplit = text.split(delimiter);
+        String part ="";
+        return gherkinSplit;
+    }
+
+    /**
+     * Fills a BAL object with the given text parsed elements.
+     * @param text string - text to be parsed.
+     * @return BAL - filled BAL object.
+     */
+    public BAL setBALFromGherkin(String text){
+        Properties props = new Properties();
+        props.put("annotators", "tokenize, ssplit, pos, lemma");
+        StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
+        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
+        BAL baLjSon = new BAL();
+        ArrayList<MethodBAL> methods = new ArrayList<MethodBAL>();
+        String[] gherkinSplit = getTextSplit(text);
+        for (String temp: gherkinSplit) {
+            MethodBAL meth = new MethodBAL();
+            Gherkin gherkin = extractGherkin(temp,pipeline,depparser);
+            meth.setName(gherkin.getScenario());
+            meth.setDescription(gherkin.getDescription());
+            meth.setTags("-");
+            ToReturn toRet=new ToReturn();
+            toRet.setDescription(gherkin.getThen());
+            meth.setToRet(toRet);
+            ArrayList<Parameter> params = new ArrayList<Parameter>();
+            for(String parameter : gherkin.getWhen()){
+                Parameter param = new Parameter();
+                param.setDescription("Default");
+                param.setName(parameter);
+                param.setType("string");
+                params.add(param);
+            }//for
+            meth.setParameters(params);
+            methods.add(meth);
+        }//for
+        baLjSon.setMethods(methods);
+        return baLjSon;
+    }//setBALFromGherkin
+
+    private Gherkin extractGherkin(String text,StanfordCoreNLP pipeline,DependencyParser depparser) {
+        String delimiter = "[\n]+";
+        String[] arr= text.split(delimiter);
+        Gherkin toRit = new Gherkin();
+        String sentinel="";
+        for (String str : arr) {
+            CoreDocument documents = new CoreDocument(str);
+            pipeline.annotate(documents);
+            StringBuilder builder = new StringBuilder();
+            String firstToken = documents.sentences().get(0).tokensAsStrings().get(0);
+            if (firstToken.equalsIgnoreCase("AND")){
+                firstToken=sentinel;
+            }//if
+            Annotation document = new Annotation(str);
+            pipeline.annotate(document);
+            GrammaticalStructure gStruct = depparser.predict(document);
+            Collection<TypedDependency> dependencies = gStruct.typedDependencies();
+            switch (firstToken.toLowerCase()) {
+                case ("scenario"):
+                    for (int i = 2; i < documents.sentences().get(0).lemmas().size(); i++) {
+                        if(i>2)
+                            builder.append(documents.sentences().get(0).lemmas().get(i).substring(0, 1).toUpperCase()).append(documents.sentences().get(0).lemmas().get(i).substring(1));
+                        else
+                            builder.append(documents.sentences().get(0).lemmas().get(i));
+                    }//for
+                    toRit.setScenario(builder.toString());
+                    break;
+                case ("given"):
+                    toRit.setGiven("given");
+                    sentinel="given";
+                    break;
+                case ("when"):
+                    for (TypedDependency dep : dependencies) {
+                        if (dep.reln().getShortName().equalsIgnoreCase("obj"))
+                            builder.append(dep.dep().lemma()).append(" ");
+                    }//for
+                    toRit.getWhen().add(builder.toString());
+                    sentinel="when";
+                    break;
+                case ("then"):
+                    for (TypedDependency dep : dependencies) {
+                        if (dep.reln().getShortName().equalsIgnoreCase("obj"))
+                            builder.append(dep.dep().lemma()).append(" ");
+                    }//for
+                    toRit.setThen(builder.toString());
+                    sentinel="then";
+                    break;
+            }//switch
+        }//for
+        return toRit;
+    }//extractGherkin
+
+
 
     /**
      * Returns BAL object.

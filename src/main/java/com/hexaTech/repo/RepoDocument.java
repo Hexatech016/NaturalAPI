@@ -154,13 +154,17 @@ public class RepoDocument implements RepoDocumentInterface {
      * @param directory string - directory used to search the file in.
      * @throws IOException if the backup file doesn't exist.
      */
+
     @Override
     public void loadBackup(String directory) throws IOException {
         Scanner s = new Scanner(new File(".\\" + directory + "\\BackupDocument.txt"));
         String temp=s.nextLine();
         while (temp!=null){
             documents.add(new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp));
-            temp=s.nextLine();
+            if(!s.hasNextLine())
+                temp=null;
+            else
+                temp=s.nextLine();
         }//while
         s.close();
     }//loadBackUp

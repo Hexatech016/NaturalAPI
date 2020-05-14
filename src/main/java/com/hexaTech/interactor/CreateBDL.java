@@ -12,10 +12,11 @@ package com.hexaTech.interactor;
 
 
 import com.hexaTech.entities.BDL;
-import com.hexaTech.model.ModelDiscoverInterface;
+import com.hexaTech.entities.Document;
 import com.hexaTech.portInterface.CreateBDLInputPort;
 import com.hexaTech.portInterface.CreateBDLOutputPort;
-import com.hexaTech.repo.RepoDiscoverInterface;
+import com.hexaTech.repo.RepoBDLInterface;
+import com.hexaTech.repo.RepoDocumentInterface;
 
 import java.io.IOException;
 
@@ -24,26 +25,30 @@ import java.io.IOException;
  */
 public class CreateBDL implements CreateBDLInputPort {
     CreateBDLOutputPort createBDLOutputPort;
-    RepoDiscoverInterface repoDiscoverInterface;
-    ModelDiscoverInterface modelDiscoverInterface;
+    RepoBDLInterface repoBDLInterface;
+    RepoDocumentInterface repoDocumentInterface;
 
     /**
      * CreateBDL standard constructor.
-     * @param output CreateBDLOutputPort - used to send output notifications.
-     * @param repo RepoInterface - used to communicate with Repo.
-     * @param model ModelInterface - used to communicate with Model.
+     * @param createBDLOutputPort CreateBDLOutputPort - used to send output notifications.
+     * @param repoBDLInterface RepoInterface - used to communicate with Repo.
+     * @param repoDocumentInterface ModelInterface - used to communicate with Model.
+     *              JAVADOC TO CORRECT
      */
-    public CreateBDL(CreateBDLOutputPort output, RepoDiscoverInterface repo, ModelDiscoverInterface model) {
-        this.createBDLOutputPort = output;
-        this.repoDiscoverInterface= repo;
-        this.modelDiscoverInterface= model;
+
+
+    public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface, RepoDocumentInterface repoDocumentInterface) {
+        this.createBDLOutputPort = createBDLOutputPort;
+        this.repoBDLInterface = repoBDLInterface;
+        this.repoDocumentInterface = repoDocumentInterface;
     }
+
 
     /**
      * Creates a new BDL object.
      * @throws IOException if an error occurs while loading or parsing any file.
      */
-    public void createBDL() throws IOException {
+    /*public void createBDL() throws IOException {
         BDL bdl=new BDL();
         for(String path: repoDiscoverInterface.getLista()) {
             String document = repoDiscoverInterface.returnContentFromTxt(path);
@@ -52,6 +57,19 @@ public class CreateBDL implements CreateBDLInputPort {
         }//for
         repoDiscoverInterface.saveBDL(bdl);
         repoDiscoverInterface.delete(".\\Discover\\temp.txt");
+        createBDLOutputPort.showCreateBdl("BDL created into folder: Discover");
+    }//createBDL*/
+
+    public void createBDL() throws IOException {
+        BDL bdl=new BDL();
+        for(Document doc: repoDocumentInterface.getDocuments()) {
+            String path=doc.getPath();
+            String document = repoDocumentInterface.getContentFromPath(path);
+            BDL bdlToMerge=repoBDLInterface.extractBDL(document);
+            bdl.mergeBDL(bdlToMerge);
+        }//for
+        repoBDLInterface.saveBDL(bdl);
+        repoDocumentInterface.deleteDoc((".\\Discover\\BackupDocument.txt"));
         createBDLOutputPort.showCreateBdl("BDL created into folder: Discover");
     }//createBDL
 

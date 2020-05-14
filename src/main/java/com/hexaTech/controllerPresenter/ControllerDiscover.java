@@ -10,11 +10,8 @@
 
 package com.hexaTech.controllerPresenter;
 
-
-import com.hexaTech.portInterface.AddDocToParseInputPort;
-import com.hexaTech.portInterface.CheckThereAreDocInputPort;
+import com.hexaTech.portInterface.AddDocumentInputPort;
 import com.hexaTech.portInterface.CreateBDLInputPort;
-import com.hexaTech.portInterface.DeleteDocInputPort;
 
 import java.io.IOException;
 
@@ -22,24 +19,17 @@ import java.io.IOException;
  * Class used to invoke methods to perform, based on input actions.
  */
 public class ControllerDiscover {
-    AddDocToParseInputPort addDocToParseInputPort;
+    AddDocumentInputPort addDocumentInputPort;
     CreateBDLInputPort createBDLInputPort;
-    DeleteDocInputPort deleteDocInputPort;
-    CheckThereAreDocInputPort checkThereAreDocInputPort;
 
     /**
      * Controller class constructor.
-     * @param addDocToParseInputPort AddDocToParseInputPort - used to communicate with AddDocToParse interactor.
+     * @param addDocumentInputPort AddDocToParseInputPort - used to communicate with AddDocToParse interactor.
      * @param createBDLInputPort CreateBDLInputPort - used to communicate with CreateBDL interactor.
-     * @param deleteDocInputPort DeleteDocInputPort - used to communicate with DeleteDoc interactor.
-     * @param checkThereAreDocInputPort CheckThereAreDocInputPort - used to communicate with CheckThereAreDoc interactor.
      */
-    public ControllerDiscover(AddDocToParseInputPort addDocToParseInputPort, CreateBDLInputPort createBDLInputPort,
-                      DeleteDocInputPort deleteDocInputPort, CheckThereAreDocInputPort checkThereAreDocInputPort) {
-        this.addDocToParseInputPort = addDocToParseInputPort;
+    public ControllerDiscover(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort) {
+        this.addDocumentInputPort = addDocumentInputPort;
         this.createBDLInputPort = createBDLInputPort;
-        this.deleteDocInputPort = deleteDocInputPort;
-        this.checkThereAreDocInputPort = checkThereAreDocInputPort;
     }
 
     /**
@@ -47,7 +37,7 @@ public class ControllerDiscover {
      * @throws IOException if the document to add doesn't exist.
      */
     public void addDocController(String directory) throws IOException {
-        addDocToParseInputPort.addDocument(directory);
+        addDocumentInputPort.addDocument(directory);
     }
 
     /**
@@ -55,7 +45,7 @@ public class ControllerDiscover {
      * @throws IOException if the backup file doesn't exist.
      */
     public void restoreDocController(String directory) throws IOException {
-        addDocToParseInputPort.loadBackUp(directory);
+        addDocumentInputPort.loadBackUp(directory);
     }
 
     /**
@@ -71,14 +61,14 @@ public class ControllerDiscover {
      * @param path string - path to the file to be removed.
      */
     public void deleteDocController(String path){
-        deleteDocInputPort.deleteDocs(path);
+        addDocumentInputPort.deleteDocs(path);
     }
 
     /**
      * Invokes CheckThereAreDoc method to check the presence of a stored document.
      */
-    public void checkThereAreDoc() {
-        checkThereAreDocInputPort.checkThereAreDoc();
+    public void checkThereAreDoc(String path) {
+        addDocumentInputPort.checkThereAreDoc(path);
     }
 
 }//ControllerDiscover
