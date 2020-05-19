@@ -182,7 +182,7 @@ public class RepoBAL implements RepoBALInterface {
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
         InputStream input=null;
         BufferedReader br;
-        if(FileSystem.class.getResourceAsStream(jarName)!=null)
+        if(RepoBAL.class.getResourceAsStream(jarName)!=null)
             input = Main.class.getResourceAsStream(jarName);
         if(input==null){
             File file=new File(path);

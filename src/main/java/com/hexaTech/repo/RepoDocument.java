@@ -72,7 +72,7 @@ public class RepoDocument implements RepoDocumentInterface {
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
         InputStream input=null;
         BufferedReader br;
-        if(FileSystem.class.getResourceAsStream(jarName)!=null)
+        if(RepoDocument.class.getResourceAsStream(jarName)!=null)
             input = Main.class.getResourceAsStream(jarName);
         if(input==null){
             File file=new File(path);

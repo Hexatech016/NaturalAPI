@@ -67,7 +67,7 @@ public class RepoPLA implements RepoPLAInterface{
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
         InputStream input=null;
         BufferedReader br;
-        if(FileSystem.class.getResourceAsStream(jarName)!=null)
+        if(RepoPLA.class.getResourceAsStream(jarName)!=null)
             input = Main.class.getResourceAsStream(jarName);
         if(input==null){
             File file=new File(path);
@@ -148,7 +148,7 @@ public class RepoPLA implements RepoPLAInterface{
      */
     public boolean existsDocJar(String path){
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
-        return FileSystem.class.getResourceAsStream(jarName)!=null;
+        return RepoPLA.class.getResourceAsStream(jarName)!=null;
     }
 
     /**
