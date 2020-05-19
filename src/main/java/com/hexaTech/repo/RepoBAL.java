@@ -13,6 +13,7 @@ package com.hexaTech.repo;
 import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.*;
+import com.hexaTech.repointerface.RepoBALInterface;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;

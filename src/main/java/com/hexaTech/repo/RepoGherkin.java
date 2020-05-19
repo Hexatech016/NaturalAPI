@@ -3,6 +3,7 @@ package com.hexaTech.repo;
 import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.Document;
+import com.hexaTech.repointerface.RepoGherkinInterface;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class RepoGherkin implements  RepoGherkinInterface{
+public class RepoGherkin implements RepoGherkinInterface {
     private final List<Document> gherkins;
 
     public RepoGherkin() {

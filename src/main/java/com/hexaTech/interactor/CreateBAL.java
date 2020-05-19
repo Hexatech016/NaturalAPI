@@ -15,8 +15,8 @@ import com.hexaTech.entities.BAL;
 import com.hexaTech.entities.Document;
 import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
-import com.hexaTech.repo.RepoBALInterface;
-import com.hexaTech.repo.RepoGherkinInterface;
+import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoGherkinInterface;
 
 import java.io.IOException;
 

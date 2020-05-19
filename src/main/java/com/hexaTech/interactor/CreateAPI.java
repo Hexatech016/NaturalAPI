@@ -13,7 +13,9 @@ package com.hexaTech.interactor;
 import com.hexaTech.entities.API;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
-import com.hexaTech.repo.*;
+import com.hexaTech.repointerface.RepoAPIInterface;
+import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoPLAInterface;
 
 import java.io.IOException;
 

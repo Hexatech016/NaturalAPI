@@ -1,4 +1,4 @@
-package com.hexaTech.repo;
+package com.hexaTech.repointerface;
 
 import com.hexaTech.entities.Document;
 

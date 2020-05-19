@@ -13,13 +13,14 @@ package com.hexaTech.repo;
 import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.PLA;
+import com.hexaTech.repointerface.RepoPLAInterface;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.Scanner;
 
-public class RepoPLA implements RepoPLAInterface{
+public class RepoPLA implements RepoPLAInterface {
     PLA PLA;
 
     /**

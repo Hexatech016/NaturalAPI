@@ -13,6 +13,7 @@ package com.hexaTech.repo;
 import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.Document;
+import com.hexaTech.repointerface.RepoDocumentInterface;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

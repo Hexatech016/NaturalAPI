@@ -12,7 +12,7 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddDocumentInputPort;
 import com.hexaTech.portInterface.AddDocumentOutputPort;
-import com.hexaTech.repo.RepoInterface;
+import com.hexaTech.repointerface.RepoInterface;
 
 import java.io.IOException;
 

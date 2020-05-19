@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.repo;
+package com.hexaTech.repointerface;
 
 import com.hexaTech.entities.BAL;
 import com.hexaTech.entities.Document;

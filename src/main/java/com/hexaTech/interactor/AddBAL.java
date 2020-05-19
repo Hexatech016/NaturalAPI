@@ -12,7 +12,7 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddBALInputPort;
 import com.hexaTech.portInterface.AddBALOutputPort;
-import com.hexaTech.repo.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBALInterface;
 
 import java.io.IOException;
 

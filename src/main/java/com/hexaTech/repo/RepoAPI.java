@@ -13,6 +13,7 @@ package com.hexaTech.repo;
 import com.hexaTech.entities.API;
 import com.hexaTech.entities.Method;
 import com.hexaTech.entities.Structure;
+import com.hexaTech.repointerface.RepoAPIInterface;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -31,7 +32,7 @@ import java.util.Map;
 /**
  * RepoAPI class.
  */
-public class RepoAPI implements RepoAPIInterface{
+public class RepoAPI implements RepoAPIInterface {
     API API;
 
     /**
