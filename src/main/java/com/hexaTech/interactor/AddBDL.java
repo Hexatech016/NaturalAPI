@@ -12,7 +12,6 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddBDLInputPort;
 import com.hexaTech.portInterface.AddBDLOutputPort;
-import com.hexaTech.repo.RepoDesignInterface;
 
 import java.io.IOException;
 
@@ -22,16 +21,13 @@ import java.io.IOException;
 public class AddBDL implements AddBDLInputPort {
 
     AddBDLOutputPort addBDLOutputPort;
-    RepoDesignInterface repoDesignInterface;
 
     /**
      * AddBDL class constructor.
      * @param addBDLOutputPort AddBDLOutputPort - used to send output notifications.
-     * @param repoDesignInterface RepoInterface - used to communicate with repo.
      */
-    public AddBDL(AddBDLOutputPort addBDLOutputPort, RepoDesignInterface repoDesignInterface){
+    public AddBDL(AddBDLOutputPort addBDLOutputPort){
         this.addBDLOutputPort=addBDLOutputPort;
-        this.repoDesignInterface=repoDesignInterface;
     }
 
     /**
@@ -40,8 +36,11 @@ public class AddBDL implements AddBDLInputPort {
      */
     @Override
     public void addBDL() throws IOException {
-        repoDesignInterface.setBDLPath();
+        /*
+        DA FARE
         addBDLOutputPort.showAddedBDL("BDL added.");
+         */
+
     }
 
 }//AddBDL

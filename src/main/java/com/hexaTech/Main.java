@@ -18,7 +18,6 @@ import com.hexaTech.portInterface.AddBALInputPort;
 import com.hexaTech.portInterface.AddPLAInputPort;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.repo.*;
-import com.hexaTech.fileSystem.FileSystem;
 
 import java.io.IOException;
 
@@ -29,14 +28,12 @@ public class Main{
     public static void main(String[] args) throws IOException {
         //PRESENTERS
         Presenter presenter=new Presenter();
-        //DA_RIMOUVERE
-        FileSystem fileSystem=new FileSystem();
         //REPOS
             //DISCOVER
         RepoDocumentInterface repoDocument=new RepoDocument();
         RepoBDLInterface repoBDLInterface=new RepoBDL();
             //DESIGN
-        RepoDesignInterface repoDesign=new RepoDesign(fileSystem);
+        RepoGherkin repoGherkin=new RepoGherkin();
             //DEVELOP
         RepoAPIInterface repoAPI=new RepoAPI();
         RepoBALInterface repoBAL=new RepoBAL();
@@ -46,9 +43,9 @@ public class Main{
         AddDocument addDocument =new AddDocument(presenter,repoDocument);
         CreateBDL createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument);
             //DESIGN
-        AddGherkin addGherkin=new AddGherkin(presenter,repoDesign);
-        AddBDL addBDL=new AddBDL(presenter,repoDesign);
-        CreateBAL createBAL=new CreateBAL(presenter,repoDesign,repoBAL);
+        AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
+        AddBDL addBDL=new AddBDL(presenter);
+        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin,repoBAL);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter,repoBAL);

@@ -12,10 +12,11 @@ package com.hexaTech.interactor;
 
 
 import com.hexaTech.entities.BAL;
+import com.hexaTech.entities.Document;
 import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
 import com.hexaTech.repo.RepoBALInterface;
-import com.hexaTech.repo.RepoDesignInterface;
+import com.hexaTech.repo.RepoGherkinInterface;
 
 import java.io.IOException;
 
@@ -24,17 +25,18 @@ import java.io.IOException;
  */
 public class CreateBAL implements CreateBALInputPort {
     CreateBALOutputPort createBALOutputPort;
-    RepoDesignInterface repoInterface;
+    RepoGherkinInterface repoGherkinInterface;
     RepoBALInterface repoBALInterface;
 
     /**
      * CreateBAL class constructor.
      * @param createBALOutputPort CreateBALOutputPort - used to send output notifications.
-     * @param repoInterface RepoInterface - used to communicate with repo.
+     * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
-    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoDesignInterface repoInterface, RepoBALInterface repoBALInterface) {
+
+    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALInterface repoBALInterface) {
         this.createBALOutputPort = createBALOutputPort;
-        this.repoInterface = repoInterface;
+        this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALInterface = repoBALInterface;
     }
 
@@ -44,10 +46,11 @@ public class CreateBAL implements CreateBALInputPort {
      */
     @Override
     public void createBAL() throws IOException {
-        for (String path: repoInterface.getList()) {
-            String document = repoInterface.returnDocumentContent(path);
+        for (Document doc: repoGherkinInterface.getGherkin()) {
+            String path=doc.getPath();
+            String document = repoGherkinInterface.getContentFromPath(path);
             BAL BAL=repoBALInterface.setBALFromGherkin(document);
-            repoInterface.saveBAL(BAL);
+            repoBALInterface.saveBAL(BAL);
         }//for
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
     }//createBAL

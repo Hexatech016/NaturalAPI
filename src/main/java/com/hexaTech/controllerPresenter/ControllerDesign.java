@@ -49,8 +49,8 @@ public class ControllerDesign {
      * Invokes AddGherkin method to add a new scenario.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addGherkinController() throws IOException {
-        addGherkinInputPort.addGherkin();
+    public void addGherkinController(String directory) throws IOException {
+        addGherkinInputPort.addGherkin(directory);
     }
 
     /**

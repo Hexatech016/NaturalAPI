@@ -13,7 +13,6 @@ package com.hexaTech.repo;
 import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.*;
-import com.hexaTech.fileSystem.FileSystem;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;
@@ -264,5 +263,36 @@ public class RepoBAL implements RepoBALInterface {
             System.out.println("exception occurred " + e);
         }//try_catch
     }//saveDoc
+
+    /**
+     * Saves the BAL object into a new file.
+     * @param bal BAL - BAL object.
+     * @throws IOException if an error occurs during saving process.
+     */
+    @Override
+    public void saveBAL(BAL bal) throws IOException {
+        saveDocDesign(bal.toString(),".\\BAL.json");
+    }
+
+    /**
+     * Saves the specified content into Design folder.
+     * @param doc string - new document's content.
+     * @param path string - new document's path.
+     * @throws IOException if occurs an error while creating the file or writing into it.
+     */
+    private void saveDocDesign(String doc, String path) throws IOException {
+        File directory = new File("Design");
+        if (! directory.exists())
+            directory.mkdir();
+        // Open given file in append mode.
+        BufferedWriter out = new BufferedWriter(
+                new FileWriter(directory + "/" + path));
+        String[] rows=doc.split("\n");
+        for(String riga: rows){
+            out.write(riga);
+            out.newLine();
+        }//for
+        out.close();
+    }//saveDocDesign
 
 }//RepoBAL

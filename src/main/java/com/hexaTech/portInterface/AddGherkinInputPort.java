@@ -21,6 +21,6 @@ public interface AddGherkinInputPort {
      * Loads a new Gherkin scenario.
      * @throws IOException if an error occurs during loading process.
      */
-    void addGherkin() throws IOException;
+    void addGherkin(String directory) throws IOException;
 
 }//AddGherkinInputInterface

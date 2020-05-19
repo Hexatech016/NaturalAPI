@@ -12,7 +12,7 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddGherkinInputPort;
 import com.hexaTech.portInterface.AddGherkinOutputPort;
-import com.hexaTech.repo.RepoDesignInterface;
+import com.hexaTech.repo.RepoGherkinInterface;
 
 import java.io.IOException;
 
@@ -22,16 +22,16 @@ import java.io.IOException;
 public class AddGherkin implements AddGherkinInputPort {
 
     AddGherkinOutputPort addGherkinOutputPort;
-    RepoDesignInterface repoDesignInterface;
+    RepoGherkinInterface repoGherkinInterface;
 
     /**
      * AddGherkin class constructor.
      * @param addGherkinOutputPort AddGherkinOutputPort - used to send output notifications.
-     * @param repoDesignInterface RepoInterface - used to communicate with repo.
+     * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
-    public AddGherkin(AddGherkinOutputPort addGherkinOutputPort, RepoDesignInterface repoDesignInterface) {
+    public AddGherkin(AddGherkinOutputPort addGherkinOutputPort, RepoGherkinInterface repoGherkinInterface) {
         this.addGherkinOutputPort = addGherkinOutputPort;
-        this.repoDesignInterface = repoDesignInterface;
+        this.repoGherkinInterface = repoGherkinInterface;
     }
 
     /**
@@ -39,9 +39,11 @@ public class AddGherkin implements AddGherkinInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     @Override
-    public void addGherkin() throws IOException {
-        repoDesignInterface.setGherkinPath();
-        addGherkinOutputPort.showAddedGherkin("Scenario added.");
+    public void addGherkin(String directory) throws IOException {
+        if(repoGherkinInterface.importDoc(directory))
+            addGherkinOutputPort.showAddedGherkin("Scenario added");
+        else
+            addGherkinOutputPort.showAddedGherkin("Scenario not added!");
     }
 
 }//AddGherkin

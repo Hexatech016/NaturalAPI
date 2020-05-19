@@ -197,7 +197,7 @@ public class CLI implements MyObserver {
                     controller.addBDLController();
                     break;*/
                 case ("1"):
-                    controllerDesign.addGherkinController();
+                    controllerDesign.addGherkinController("Design");
                     break;
                 case ("2"):
                     controllerDesign.createBALController();
