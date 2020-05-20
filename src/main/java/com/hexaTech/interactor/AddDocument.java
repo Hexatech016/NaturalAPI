@@ -12,7 +12,7 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddDocumentInputPort;
 import com.hexaTech.portInterface.AddDocumentOutputPort;
-import com.hexaTech.repointerface.RepoInterface;
+import com.hexaTech.repointerface.RepoDocumentInterface;
 
 import java.io.IOException;
 
@@ -21,16 +21,16 @@ import java.io.IOException;
  */
 public class AddDocument implements AddDocumentInputPort {
     AddDocumentOutputPort addDocumentOutputPort;
-    RepoInterface repoInterface;
+    RepoDocumentInterface repoDocumentInterface;
 
     /**
      * AddDocuToParse standard constructor.
      * @param addDocumentOutputPort AddDocToParseOutputPort - used to send output notifications.
-     * @param repoInterface RepoInterface - used to communicate with Repo.
+     * @param repoDocumentInterface RepoInterface - used to communicate with Repo.
      */
-    public AddDocument(AddDocumentOutputPort addDocumentOutputPort, RepoInterface repoInterface) {
+    public AddDocument(AddDocumentOutputPort addDocumentOutputPort, RepoDocumentInterface repoDocumentInterface) {
         this.addDocumentOutputPort = addDocumentOutputPort;
-        this.repoInterface = repoInterface;
+        this.repoDocumentInterface = repoDocumentInterface;
     }
 
     /**
@@ -39,7 +39,7 @@ public class AddDocument implements AddDocumentInputPort {
      */
     @Override
     public void checkThereAreDoc(String path) {
-        addDocumentOutputPort.thereAreDoc(repoInterface.existsDoc(path));
+        addDocumentOutputPort.thereAreDoc(repoDocumentInterface.existsDoc(path));
     }
 
     /**
@@ -47,10 +47,7 @@ public class AddDocument implements AddDocumentInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     public void addDocument(String directory) throws IOException {
-        if(repoInterface.importDoc(directory))
-            addDocumentOutputPort.showAddDocument(true);
-        else
-            addDocumentOutputPort.showAddDocument(false);
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.importDoc(directory));
     }
 
     /**
@@ -58,7 +55,7 @@ public class AddDocument implements AddDocumentInputPort {
      * @throws IOException if the file doesn't exist.
      */
     public void loadBackUp(String directory) throws IOException {
-        repoInterface.loadBackup(directory);
+        repoDocumentInterface.loadBackup(directory);
         addDocumentOutputPort.showBackUpRestored("Backup loaded");
     }
 
@@ -67,7 +64,7 @@ public class AddDocument implements AddDocumentInputPort {
      * @param path string - document to be deleted.
      */
     public void deleteDocs(String path){
-        if(repoInterface.deleteDoc(path));
+        if(repoDocumentInterface.deleteDoc(path));
             addDocumentOutputPort.showDeletedDoc("Document deleted");
     }
 
