@@ -61,4 +61,8 @@ public class ControllerDesign {
         createBALInputPort.createBAL();
     }
 
+    public void checkSuggestions() throws IOException {
+        createBALInputPort.checkTypes();
+    }
+
 }//Controller

@@ -12,7 +12,7 @@ package com.hexaTech.interactor;
 
 import com.hexaTech.portInterface.AddBALInputPort;
 import com.hexaTech.portInterface.AddBALOutputPort;
-import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBALDocumentInterface;
 
 import java.io.IOException;
 
@@ -21,16 +21,16 @@ import java.io.IOException;
  */
 public class AddBAL implements AddBALInputPort {
     AddBALOutputPort addBALOutputPort;
-    RepoBALInterface repoBALInterface;
+    RepoBALDocumentInterface repoBALDocumentInterface;
 
     /**
      * Add document standard constructor.
      * @param addBALOutputPort AddBALOutputPort - used to send output notifications.
-     * @param repoBALInterface RepoBALInterface - used to communicate with Repo.
+     * @param repoBALDocumentInterface RepoBALDocumentInterface - used to communicate with Repo.
      */
-    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALInterface repoBALInterface) {
+    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface) {
         this.addBALOutputPort=addBALOutputPort;
-        this.repoBALInterface=repoBALInterface;
+        this.repoBALDocumentInterface=repoBALDocumentInterface;
     }
 
     /**
@@ -38,7 +38,7 @@ public class AddBAL implements AddBALInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     public void addBAL(String directory) throws IOException {
-        boolean loaded=repoBALInterface.importDoc(directory);
+        boolean loaded=repoBALDocumentInterface.importDoc(directory);
         if(loaded) {
             addBALOutputPort.showAddedBAL("BAL loaded");
             addBALOutputPort.showDone(true);
@@ -51,16 +51,16 @@ public class AddBAL implements AddBALInputPort {
      * @throws IOException if the file doesn't exist.
      */
     public void loadBackUp(String directory) throws IOException {
-        repoBALInterface.loadBackup(directory);
+        repoBALDocumentInterface.loadBackup(directory);
         addBALOutputPort.showRestoredBackUp("Backup restored");
     }
 
     public void existsDoc(String path){
-        addBALOutputPort.showDone(repoBALInterface.existsDoc(path));
+        addBALOutputPort.showDone(repoBALDocumentInterface.existsDoc(path));
     }
 
     public void deleteDoc(String path){
-        if(repoBALInterface.deleteDoc(path))
+        if(repoBALDocumentInterface.deleteDoc(path))
             addBALOutputPort.showRemovedBAL("Document deleted.");
         else
             addBALOutputPort.showRemovedBAL("Error. Please retry.");

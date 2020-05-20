@@ -38,6 +38,7 @@ public class Main{
             //DEVELOP
         RepoAPIInterface repoAPI=new RepoAPI();
         RepoBALInterface repoBAL=new RepoBAL();
+        RepoBALDocumentInterface repoBALDocument=new RepoBALDocument();
         RepoPLAInterface repoPLA=new RepoPLA();
         //INTERACTORS
             //DISCOVER
@@ -46,11 +47,11 @@ public class Main{
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter);
-        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin,repoBAL);
+        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument,repoBAL);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
-        AddBALInputPort addBAL=new AddBAL(presenter,repoBAL);
-        CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA,repoBAL,repoAPI);
+        AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);
+        CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI);
         //CONTROLLERS
         ControllerDiscover controllerDiscover=new ControllerDiscover(addDocument,createBDL);
         ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL);

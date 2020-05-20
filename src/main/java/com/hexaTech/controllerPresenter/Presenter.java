@@ -128,6 +128,11 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
         notifySubMe();
     }
 
+    public void showErrorBAL(String result){
+        message=result;
+        notifySubMe();
+    }
+
     //Develop
 
 

@@ -22,6 +22,14 @@ public class MethodBAL {
     ToReturn toReturn;
     List<Parameter> parameters;
 
+    public ToReturn getToReturn(){
+        return toReturn;
+    }
+
+    public String getName(){
+        return name;
+    }
+
     /**
      * Sets method's name to the new value.
      * @param name string - new name.
@@ -52,6 +60,10 @@ public class MethodBAL {
      */
     public void setToRet(ToReturn toReturn) {
         this.toReturn = toReturn;
+    }
+
+    public void setToRet(String toReturn) {
+        this.toReturn.setType(toReturn);
     }
 
     /**

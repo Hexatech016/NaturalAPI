@@ -23,4 +23,6 @@ public interface CreateBALInputPort {
      */
     void createBAL() throws IOException;
 
+    void checkTypes() throws IOException;
+
 }//CreateBALInputPort

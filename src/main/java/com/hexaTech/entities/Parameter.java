@@ -77,7 +77,7 @@ public class Parameter {
                 "            				\"description\": \""+description+"\",\n"+
                 "            				\"required\": true,\n"+
                 "                           \"schema\": {\n"+
-                "             				    \"type\": \"string\" \n"+
+                "             				    \"type\": \""+type+"\" \n"+
                 "                           }\n	"+
                 "         				}\n";
 

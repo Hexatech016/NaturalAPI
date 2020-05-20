@@ -16,7 +16,13 @@ package com.hexaTech.entities;
 public class ToReturn {
     String response="200";
     String description="toRet.des";
-    String type="string";
+    String type="string";;
+
+    public ToReturn(){}
+
+    public ToReturn(String type){
+        this.type=type;
+    }
 
     /**
      * Sets return's description to the new value.
@@ -52,7 +58,7 @@ public class ToReturn {
                 "                               \"content\": {\n"+
                 "                                   \"*/*\":  {\n"+
                 "            					         \"schema\": {\n"+
-                "              						         \"type\": \"string\"\n"+
+                "              						         \"type\": \""+type+"\"\n"+
                 "            					         }\n"+
                 "                                   }\n"+
                 "                              }\n"+

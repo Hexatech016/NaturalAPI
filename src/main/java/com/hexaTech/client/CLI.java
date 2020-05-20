@@ -201,6 +201,7 @@ public class CLI implements MyObserver {
                     break;
                 case ("2"):
                     controllerDesign.createBALController();
+                    controllerDesign.checkSuggestions();
                     break;
                 case ("3"):
                     System.out.println("Bye!");

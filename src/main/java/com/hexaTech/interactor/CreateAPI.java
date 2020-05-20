@@ -14,7 +14,7 @@ import com.hexaTech.entities.API;
 import com.hexaTech.portInterface.CreateAPIInputPort;
 import com.hexaTech.portInterface.CreateAPIOutputPort;
 import com.hexaTech.repointerface.RepoAPIInterface;
-import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBALDocumentInterface;
 import com.hexaTech.repointerface.RepoPLAInterface;
 
 import java.io.IOException;
@@ -25,21 +25,21 @@ import java.io.IOException;
 public class CreateAPI implements CreateAPIInputPort {
     CreateAPIOutputPort createAPIOutputPort;
     RepoPLAInterface repoPLAInterface;
-    RepoBALInterface repoBALInterface;
+    RepoBALDocumentInterface repoBALDocumentInterface;
     RepoAPIInterface repoAPIInterface;
 
     /**
      * CreateAPI class standard constructor.
      * @param createAPIOutputPort CreateAPIOutputPort - used to send output notifications.
      * @param repoPLAInterface RepoInterface - used to communicate with Repo.
-     * @param repoBALInterface RepoInterface - used to communicate with Repo.
+     * @param repoBALDocumentInterface RepoInterface - used to communicate with Repo.
      * @param repoAPIInterface RepoAPI - used to communicate with Repo.
      */
-    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface, RepoBALInterface repoBALInterface,
+    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface, RepoBALDocumentInterface repoBALDocumentInterface,
                      RepoAPIInterface repoAPIInterface){
         this.createAPIOutputPort=createAPIOutputPort;
         this.repoPLAInterface=repoPLAInterface;
-        this.repoBALInterface=repoBALInterface;
+        this.repoBALDocumentInterface=repoBALDocumentInterface;
         this.repoAPIInterface=repoAPIInterface;
     }
 
@@ -53,15 +53,15 @@ public class CreateAPI implements CreateAPIInputPort {
         if(!repoPLAInterface.existsDoc(repoPLAInterface.getPLA().getPath()) && !repoPLAInterface.existsDocJar(repoPLAInterface.getPLA().getPath())){
             createAPIOutputPort.showErrorTextAPI("PLA file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(1);
-        }else if(!repoBALInterface.existsDoc(repoBALInterface.getBAL().getPath())){
+        }else if(!repoBALDocumentInterface.existsDoc(repoBALDocumentInterface.getBAL().getPath())){
             createAPIOutputPort.showErrorTextAPI("BAL file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(2);
         }else{//if_else_1
             API api;
-            String str=repoBALInterface.getBAL().getPath(), pla=repoPLAInterface.getPLA().getPath();
+            String str=repoBALDocumentInterface.getBAL().getPath(), pla=repoPLAInterface.getPLA().getPath();
             api=repoAPIInterface.setAPI(str);
             if(api==null){
-                repoBALInterface.deleteDoc(".\\Develop\\temp.txt");
+                repoBALDocumentInterface.deleteDoc(".\\Develop\\temp.txt");
                 createAPIOutputPort.showErrorCodeAPI(3);
             }else{//if_else_2
                 if(repoPLAInterface.getContentFromPath(pla).equals("")){
@@ -72,7 +72,7 @@ public class CreateAPI implements CreateAPIInputPort {
                     createAPIOutputPort.showErrorCodeAPI(4);
                 }else{//if_else_3
                     repoPLAInterface.saveOutput(api.replacePLA(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLAInterface.getPLA().getExtension());
-                    repoBALInterface.deleteDoc(".\\Develop\\BackupBAL.txt");
+                    repoBALDocumentInterface.deleteDoc(".\\Develop\\BackupBAL.txt");
                     createAPIOutputPort.showCreatedAPI("API ."+repoPLAInterface.getPLA().getExtension()+" generated into folder: Develop.");
                     createAPIOutputPort.showErrorCodeAPI(0);
                 }//if_else_3
