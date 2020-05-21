@@ -92,7 +92,6 @@ public class Structure {
      * @return string - structure's parameters with user-defined nomenclature.
      */
     public String getStringParam(String[] types,boolean typed){
-        String intType=types[0], stringType=types[1];
         StringBuilder param=new StringBuilder();
         Iterator it=structureParam.entrySet().iterator();
         if(typed){
@@ -110,7 +109,7 @@ public class Structure {
                     value=types[2];
                 if(value.contains("boolean"))
                     value=types[3];
-                if(array)
+                if(array && !value.contains("[]"))
                     value=value+"[]";
                 param.append(value).append(" ").append(pair.getKey());
                 if(it.hasNext())

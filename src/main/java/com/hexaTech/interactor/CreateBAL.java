@@ -88,7 +88,7 @@ public class CreateBAL implements CreateBALInputPort {
                     if(getType(line.toUpperCase()).equalsIgnoreCase(""))
                         methodBAL.setToRet(getObj(bal));
                     else
-                        methodBAL.setToRet(getType(line.toUpperCase()));
+                        methodBAL.setToRet(isAnArray(getType(line.toUpperCase())));
                 }else if(line.equalsIgnoreCase("n")){
                     b=false;
                 }else{
@@ -114,7 +114,7 @@ public class CreateBAL implements CreateBALInputPort {
                         if(getType(line.toUpperCase()).equalsIgnoreCase(""))
                             parameter.setType(getObj(bal));
                         else
-                            parameter.setType(getType(line.toUpperCase()));
+                            parameter.setType(isAnArray(getType(line.toUpperCase())));
                     }else if(line.equalsIgnoreCase("n")){
                         b=false;
                     }else{
@@ -166,9 +166,9 @@ public class CreateBAL implements CreateBALInputPort {
             line=scan.nextLine();
         }//while
         if(line.equals("0"))
-            return addObj(bal);
+            return isAnArray(addObj(bal));
         else
-            return bal.getStructures().get(Integer.parseInt(line)-1).getName();
+            return isAnArray(bal.getStructures().get(Integer.parseInt(line)-1).getName());
     }//getObj
 
     private String addObj(BAL bal){
@@ -190,7 +190,7 @@ public class CreateBAL implements CreateBALInputPort {
                 createBALOutputPort.showErrorBAL("Wrong character. Please retry.");
                 line=scanner.nextLine();
             }//while
-            paramType=getType(line.toUpperCase());
+            paramType=isAnArray(getType(line.toUpperCase()));
             parameterList.add(new Parameter("description",paramName,paramType));
             createBALOutputPort.showMessage("Type EXIT to stop. \n\tParameter name: ");
             line=scanner.nextLine();
@@ -207,5 +207,19 @@ public class CreateBAL implements CreateBALInputPort {
         }//while
         return line;
     }//notNumericCheck
+
+    private String isAnArray(String name){
+        Scanner scanner=new Scanner(System.in);
+        String line;
+        createBALOutputPort.showMessage("Is it an array? (Y/N)");
+        line=scanner.nextLine();
+        while(!line.equalsIgnoreCase("n") && !line.equalsIgnoreCase("y")){
+            createBALOutputPort.showErrorBAL("Please type Y or N");
+            line=scanner.nextLine();
+        }//while
+        if(line.equalsIgnoreCase("y"))
+            name+="[]";
+        return name;
+    }//isAnArray
 
 }//CreateBAL

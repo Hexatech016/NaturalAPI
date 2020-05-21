@@ -130,8 +130,8 @@ public class Method {
                 methodReturnType=types[2];
             if(methodReturnType.contains("boolean"))
                 methodReturnType=types[3];
-            if(array)
-                methodReturnType=methodReturnType+"[]";
+            if(array && !methodReturnType.contains("[]"))
+                methodReturnType+="[]";
         }
         return methodReturnType;
     }//getStringReturnType
@@ -160,7 +160,7 @@ public class Method {
                     value=types[2];
                 if(value.contains("boolean"))
                     value=types[3];
-                if(array)
+                if(array && !value.contains("[]"))
                     value=value+"[]";
                 param.append(value).append(" ").append(pair.getKey());
                 if(it.hasNext())
