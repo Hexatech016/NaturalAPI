@@ -23,4 +23,6 @@ public interface CreateBALOutputPort {
 
     void showErrorBAL(String result);
 
+    void showMessage(String result);
+
 }//CreateBAL

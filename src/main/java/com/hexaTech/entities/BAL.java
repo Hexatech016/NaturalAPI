@@ -10,6 +10,7 @@
 
 package com.hexaTech.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,12 @@ import java.util.List;
  */
 public class BAL{
     List<MethodBAL> methods;
+    List<StructureBAL> structures;
+
+    public BAL(){
+        methods=new ArrayList<>();
+        structures=new ArrayList<>();
+    }
 
     /**
      * Sets BAL's methods field with the given ones.
@@ -26,9 +33,15 @@ public class BAL{
         this.methods = methods;
     }
 
+    public void addStructure(StructureBAL structure){
+        structures.add(structure);
+    }
+
     public List<MethodBAL> getMethods(){
         return methods;
     }
+
+    public List<StructureBAL> getStructures(){return structures;}
 
     /**
      * Returns BAL's content into a string.
@@ -51,12 +64,23 @@ public class BAL{
         int count=0;
         for(MethodBAL method: this.methods){
             toRit+=method.toString();
-            if (count<last){
+            if (count<last)
                 toRit+=",";
-            }//if
-            count+=1;
+
+            count++;
         }//for
-        toRit+="}\n}";
+        toRit+="\n}," +
+                "   \"components\": {\n" +
+                "   \"schemas\": {\n";
+        last=structures.size()-1;
+        count=0;
+        for(StructureBAL structure: this.structures){
+            toRit+=structure.toString();
+            if(count<last)
+                toRit+=",";
+            count++;
+        }//for
+        toRit+="\n}\n}\n}";
         return toRit;
     }//toString
 

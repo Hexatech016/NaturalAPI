@@ -118,19 +118,22 @@ public class Method {
      * @return string - method's return type with user-defined nomenclature.
      */
     public String getStringReturnType(String[] types,boolean typed){
-        if(typed) {
-            String intType=types[0], stringType=types[1];
-            if(methodReturnType.equals("string"))
-                methodReturnType=stringType;
-            if(methodReturnType.equals("integer"))
-                methodReturnType=intType;
-            if(methodReturnType.equals("string[]"))
-                methodReturnType=stringType+"[]";
-            if(methodReturnType.equals("integer[]"))
-                methodReturnType=intType+"[]";
-            return methodReturnType;
-        }else
-            return methodReturnType;
+        boolean array=false;
+        if(typed){
+            if(methodReturnType.contains("[]"))
+                array=true;
+            if(methodReturnType.contains("integer"))
+                methodReturnType=types[0];
+            if(methodReturnType.contains("float"))
+                methodReturnType=types[1];
+            if(methodReturnType.contains("string"))
+                methodReturnType=types[2];
+            if(methodReturnType.contains("boolean"))
+                methodReturnType=types[3];
+            if(array)
+                methodReturnType=methodReturnType+"[]";
+        }
+        return methodReturnType;
     }//getStringReturnType
 
     /**
@@ -140,21 +143,25 @@ public class Method {
      * @return string - method's parameters with user-defined nomenclature.
      */
     public String getStringParam(String[] types,boolean typed){
-        String intType=types[0], stringType=types[1];
         StringBuilder param=new StringBuilder();
         Iterator it=methodParam.entrySet().iterator();
         if(typed){
             while(it.hasNext()){
                 Map.Entry pair=(Map.Entry) it.next();
                 String value=pair.getValue().toString();
-                if(value.equals("string"))
-                    value=stringType;
-                if(value.equals("integer"))
-                    value=intType;
-                if(value.equals("string[]"))
-                    value=stringType+"[]";
-                if(value.equals("integer[]"))
-                    value=intType+"[]";
+                boolean array=false;
+                if(value.contains("[]"))
+                    array=true;
+                if(value.contains("integer"))
+                    value=types[0];
+                if(value.contains("float"))
+                    value=types[1];
+                if(value.contains("string"))
+                    value=types[2];
+                if(value.contains("boolean"))
+                    value=types[3];
+                if(array)
+                    value=value+"[]";
                 param.append(value).append(" ").append(pair.getKey());
                 if(it.hasNext())
                     param.append(", ");

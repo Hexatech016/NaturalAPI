@@ -133,6 +133,11 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
         notifySubMe();
     }
 
+    public void showMessage(String result){
+        message=result;
+        notifySubMe();
+    }
+
     //Develop
 
 

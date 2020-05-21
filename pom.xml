@@ -45,6 +45,11 @@
       <artifactId>swagger-parser</artifactId>
       <version>2.0.17</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.8</version>
+    </dependency>
   </dependencies>
   
   <build>
@@ -74,7 +79,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>HexaTech.MainDesign</mainClass>
+                <mainClass>com.hexaTech.Main</mainClass>
               </manifest>
             </archive>
           </configuration>

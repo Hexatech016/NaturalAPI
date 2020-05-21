@@ -94,23 +94,25 @@ public class Structure {
     public String getStringParam(String[] types,boolean typed){
         String intType=types[0], stringType=types[1];
         StringBuilder param=new StringBuilder();
+        Iterator it=structureParam.entrySet().iterator();
         if(typed){
-            Iterator it=structureParam.entrySet().iterator();
             while(it.hasNext()) {
                 Map.Entry pair=(Map.Entry) it.next();
                 String value=pair.getValue().toString();
-                if(value.equals("string"))
-                    value=stringType;
-                if(value.equals("integer"))
-                    value=intType;
-                if(value.equals("string[]"))
-                    value=stringType+"[]";
-                if(value.equals("integer[]"))
-                    value=intType+"[]";
-                if(value.equals("/"))
-                    param.append(pair.getKey());
-                else
-                    param.append(value).append(" ").append(pair.getKey());
+                boolean array=false;
+                if(value.contains("[]"))
+                    array=true;
+                if(value.contains("integer"))
+                    value=types[0];
+                if(value.contains("float"))
+                    value=types[1];
+                if(value.contains("string"))
+                    value=types[2];
+                if(value.contains("boolean"))
+                    value=types[3];
+                if(array)
+                    value=value+"[]";
+                param.append(value).append(" ").append(pair.getKey());
                 if(it.hasNext())
                     param.append(";\n\t");
                 else
@@ -118,7 +120,6 @@ public class Structure {
                 it.remove();
             }//while
         }else{
-            Iterator it=structureParam.entrySet().iterator();
             while(it.hasNext()){
                 Map.Entry pair=(Map.Entry) it.next();
                 param.append(pair.getKey());

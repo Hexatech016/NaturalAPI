@@ -2,7 +2,9 @@
     <--classComment-->
     <--classExtension: js
     <--integer: /
+    <--float: /
     <--string: /
+    <--boolean: /
 */
 
 <--struct.start-->

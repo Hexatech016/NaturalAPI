@@ -92,19 +92,8 @@ public class API{
         String[] content=PLA.split("\n");
         int startMethod=0,endMethod=0,startStructure=0,endStructure=0,methodHere=0,structureHere=0;
         boolean typed=true;
-        String intType="",stringType="";
-        String[] types=new String[2];
+        String[] types=searchTypes(content);
         for(int i=0;i<content.length;i++){
-            if(content[i].contains("<--integer:")){
-                intType=content[i].substring((content[i].lastIndexOf(":")+1));
-                intType=intType.trim();
-                types[0]=intType;
-            }//if
-            if(content[i].contains("<--string:")){
-                stringType=content[i].substring((content[i].lastIndexOf(":")+1));
-                stringType=stringType.trim();
-                types[1]=stringType;
-            }//if
             if(content[i].contains("<--method.start-->"))
                 startMethod=i;
             if(content[i].contains("<--method.end-->"))
@@ -139,5 +128,33 @@ public class API{
 
         return String.join("\n", ArrayUtils.addAll(Arrays.copyOfRange(content,0,startStructure-1),Arrays.copyOfRange(content,endMethod+1,content.length)));
     }//replacePLA
+
+    private String[] searchTypes(String[] content) {
+        String[] types=new String[4];
+        String intType, stringType, floatType, boolType;
+        for(int i=0; i<content.length; i++){
+            if(content[i].contains("<--integer:")) {
+                intType=content[i].substring((content[i].lastIndexOf(":")+1));
+                intType=intType.trim();
+                types[0]=intType;
+            }//if
+            if(content[i].contains("<--float:")) {
+                floatType=content[i].substring((content[i].lastIndexOf(":")+1));
+                floatType=floatType.trim();
+                types[1]=floatType;
+            }//if
+            if(content[i].contains("<--string:")) {
+                stringType=content[i].substring((content[i].lastIndexOf(":")+1));
+                stringType=stringType.trim();
+                types[2]=stringType;
+            }//if
+            if(content[i].contains("<--boolean:")) {
+                boolType=content[i].substring((content[i].lastIndexOf(":")+1));
+                boolType=boolType.trim();
+                types[3]=boolType;
+            }//if
+        }//for
+        return types;
+    }//searchTypes
 
 }//API

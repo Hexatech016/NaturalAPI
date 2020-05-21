@@ -2,7 +2,9 @@
     <--classComment-->
     <--classExtension: java
     <--integer: int
+    <--float: float
     <--string: String
+    <--boolean: boolean
 */
 
 <--struct.start-->

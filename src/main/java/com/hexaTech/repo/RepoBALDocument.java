@@ -64,7 +64,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
         DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
-        BAL baLjSon = new BAL();
+        BAL BALjSon= new BAL();
         ArrayList<MethodBAL> methods = new ArrayList<MethodBAL>();
         String[] gherkinSplit = getTextSplit(text);
         for (String temp: gherkinSplit) {
@@ -87,8 +87,8 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             meth.setParameters(params);
             methods.add(meth);
         }//for
-        baLjSon.setMethods(methods);
-        return baLjSon;
+        BALjSon.setMethods(methods);
+        return BALjSon;
     }//setBALFromGherkin
 
     private Gherkin extractGherkin(String text,StanfordCoreNLP pipeline,DependencyParser depparser) {

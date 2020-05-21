@@ -18,6 +18,14 @@ public class Parameter {
     String name;
     String type="string";
 
+    public Parameter(){}
+
+    public Parameter(String description, String name, String type) {
+        this.description=description;
+        this.name=name;
+        this.type=type;
+    }
+
     /**
      * Returns parameter's description.
      * @return string - description.
