@@ -35,6 +35,7 @@ public class Main{
         RepoBDLInterface repoBDLInterface=new RepoBDL();
             //DESIGN
         RepoGherkin repoGherkin=new RepoGherkin();
+        RepoBO repoBO=new RepoBO();
             //DEVELOP
         RepoAPIInterface repoAPI=new RepoAPI();
         RepoBALInterface repoBAL=new RepoBAL();
@@ -47,6 +48,8 @@ public class Main{
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter);
+        AddBO addBO=new AddBO(presenter);
+        CreateBO createBO= new CreateBO(presenter, repoBO);
         CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument,repoBAL);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
@@ -54,7 +57,7 @@ public class Main{
         CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI);
         //CONTROLLERS
         ControllerDiscover controllerDiscover=new ControllerDiscover(addDocument,createBDL);
-        ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL);
+        ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL, addBO, createBO);
         ControllerDevelop controllerDevelop=new ControllerDevelop(addPLA,addBAL,createAPI);
         //CLIENT
         CLI client=new CLI(controllerDiscover,controllerDesign,controllerDevelop,presenter);
