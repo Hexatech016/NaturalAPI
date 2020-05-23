@@ -138,6 +138,20 @@ public class BDL {
         return toReturn.toString();
     }//toString
 
+    public int getTotalFrequency() {
+        int totalFrenquncy=0;
+        for (Map.Entry<String, Integer> sost : nouns.entrySet()) {
+            totalFrenquncy+=sost.getValue();
+        }//for
+        for (Map.Entry<String, Integer> verb : verbs.entrySet()) {
+            totalFrenquncy+=verb.getValue();
+        }//for
+        for (Map.Entry<String, Integer> pred : predicates.entrySet()) {
+            totalFrenquncy+=pred.getValue();
+        }//for
+        return totalFrenquncy;
+    }//toString
+
     /**
      * Sorts BDL's content alphabetically.
      * @param hm HashMap<String, Integer> - map to be sorted.
@@ -181,7 +195,7 @@ public class BDL {
      * Returns a string representative of BDL's nouns in CVS format.
      * @return string - BDL nouns.
      */
-    public String sostToCVS(){
+    public String sostToCSV(){
         StringBuilder toReturn = new StringBuilder();
         for (Map.Entry<String, Integer> sost : nouns.entrySet()) {
             toReturn.append(sost.getKey().substring(0, 1).toUpperCase()).append(sost.getKey().substring(1)).append(",").append(sost.getValue()).append("\n");
@@ -193,7 +207,7 @@ public class BDL {
      * Returns a string representative of BDL's verbs in CVS format.
      * @return string - BDL verbs.
      */
-    public String verbToCVS(){
+    public String verbToCSV(){
         StringBuilder toReturn = new StringBuilder();
         for (Map.Entry<String, Integer> verb : verbs.entrySet()) {
             toReturn.append(verb.getKey().substring(0, 1).toUpperCase()).append(verb.getKey().substring(1)).append(",").append(verb.getValue()).append("\n");
@@ -205,13 +219,23 @@ public class BDL {
      * Returns a string representative of BDL's predicates in CVS format.
      * @return string - BDL predicates.
      */
-    public String predToCVS(){
+    public String predToCSV(){
         StringBuilder toReturn = new StringBuilder();
         for (Map.Entry<String, Integer> pred : predicates.entrySet()) {
             toReturn.append(pred.getKey().substring(0, 1).toUpperCase()).append(pred.getKey().substring(1)).append(",").append(pred.getValue()).append("\n");
         }//for
         return toReturn.toString();
     }//predToCVS
+
+    public String BDLtoCSV(){
+        StringBuilder toReturn=new StringBuilder();
+
+        toReturn.append("%\n"+ "SOSTS\n"+ sostToCSV() + "\n");
+        toReturn.append("%\n"+ "VERBS\n" + verbToCSV() + "\n");
+        toReturn.append("%\n"+ "PREDS\n" + predToCSV());
+
+        return toReturn.toString();
+    }
 
     /**
      * Fills BDL's nouns list with found elements.

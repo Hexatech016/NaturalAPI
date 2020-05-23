@@ -20,7 +20,8 @@ public interface CreateBDLInputPort {
     /**
      * Creates a new BDL object.
      * @throws IOException if an error occurs while loading or parsing any file.
+     * @param BDLpath
      */
-    void createBDL() throws IOException;
+    void createBDL(String BDLpath) throws IOException;
 
 }//CreateBDLInputPort
