@@ -40,7 +40,7 @@ public interface RepoBOInterface{
 
     BO setBOFromJSON(String document) throws JsonProcessingException;
 
-    void setBO(BO bo);
+    void setBO(BO bo) throws IOException;
 
     void saveBo(BO bo);
 }

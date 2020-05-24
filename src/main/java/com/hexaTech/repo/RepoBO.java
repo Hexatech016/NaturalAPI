@@ -57,7 +57,7 @@ public class RepoBO implements RepoBOInterface{
     public boolean importDoc(String directory){
         String temp;
         System.out.println("brr brr");
-        JFrame dialog = new JFrame();
+       JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("File JSON", "json");
         chooser.setFileFilter(filter);
@@ -66,7 +66,7 @@ public class RepoBO implements RepoBOInterface{
         dialog.setVisible(false);
         dialog.dispose();
         int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
             temp=chooser.getSelectedFile().getAbsolutePath();
         }else{
             temp="";
@@ -81,7 +81,7 @@ public class RepoBO implements RepoBOInterface{
 
     @Override
     public void saveBO(com.hexaTech.entities.BO bo) throws IOException {
-
+        saveDocDesign(bo.toOpenAPI(),".\\BO.json");
     }
 
     /**
@@ -97,7 +97,7 @@ public class RepoBO implements RepoBOInterface{
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(directory + "/" + title));
-            //out.write(BO.getPath());
+            out.write(BO.getPath());
             out.close();
         }catch (IOException e) {
             System.out.println("exception occurred " + e);
@@ -154,7 +154,7 @@ public class RepoBO implements RepoBOInterface{
      * @throws FileNotFoundException if the backup file doesn't exist.
      */
     public void loadBackup(String directory) throws FileNotFoundException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupBAL.txt"));
+        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupBO.txt"));
         String temp=s.nextLine();
         BO=new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp);
         s.close();
@@ -164,34 +164,62 @@ public class RepoBO implements RepoBOInterface{
         ObjectMapper objectMapper=new ObjectMapper();
         JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
         BO bo= new BO();
+        bo.setOntologyName(node.get("nomeOntologia").asText());
 
-        node.get("nomeOntologia").asText();/*estrazione nome BO(string)*/
-        List<JsonNode> objects=objectMapper.convertValue(node.get("Oggetti"), ArrayList.class);/*estrazione lista oggetti BO (JSON)*/
+        JsonNode objlist=node.get("Oggetti");
+        List<JsonNode> objects=new ArrayList<JsonNode>();
+        if(objlist.isArray()){
+            for(JsonNode tmp: objlist){
+                objects.add(tmp);
+            }
+        }
 
         for(JsonNode tmp: objects) {
             BOObject bobj = new BOObject();/*creazione BOObject*/
+            List<String> params= new ArrayList<String>();
+            List<String> types=new ArrayList<String>();
 
-            List<String> params=objectMapper.convertValue(tmp.get("parametri"), ArrayList.class);/*estrazione parametri*/
+            if(tmp.get("parametri").isArray()){
+                for(JsonNode iter: tmp.get("parametri")){
+                    params.add(iter.toString());
+                    System.out.println(params);
+                }
+            }
+            if(tmp.get("TipoValori").isArray()){
+                for(JsonNode iter: tmp.get("TipoValori")){
+                    types.add(iter.toString());
+                    System.out.println(types);
+                }
+            }
+
             bobj.setBOParams(params);/*inizializazione BOObject-Param con i parametri*/
-            List<String> types=objectMapper.convertValue(tmp.get("TipoValori"), ArrayList.class);/*estrazione tipi*/
             bobj.setBOValueTypes(types);/*inizializazione BOObject-Tipi con i tipi*/
             bobj.setNome(tmp.get("name").asText());/*estrazione ed inizializzazione BOObject-Nome con il nome*/
 
             bo.setBOObjects(bobj);
-
         }
         System.out.println(bo.toString());
         return bo;
     }
 
     @Override
-    public void setBO(com.hexaTech.entities.BO bo) {
-
-    }
+    public void setBO(com.hexaTech.entities.BO bo) throws IOException {}
+    private void saveDocDesign(String doc, String path) throws IOException {
+        File directory = new File("Design");
+        if (! directory.exists())
+            directory.mkdir();
+        // Open given file in append mode.
+        BufferedWriter out = new BufferedWriter(
+                new FileWriter(directory + "/" + path));
+        String[] rows=doc.split("\n");
+        for(String riga: rows){
+            out.write(riga);
+            out.newLine();
+        }//for
+        out.close();
+    }//saveDocDesign
 
     @Override
-    public void saveBo(com.hexaTech.entities.BO bo) {
-
-    }
+    public void saveBo(com.hexaTech.entities.BO bo) {}
 
 }

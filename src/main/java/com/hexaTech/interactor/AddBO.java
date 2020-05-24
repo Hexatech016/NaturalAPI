@@ -14,6 +14,7 @@ import com.hexaTech.portInterface.AddBDLOutputPort;
 import com.hexaTech.portInterface.AddBOInputPort;
 import com.hexaTech.portInterface.AddBOOutputPort;
 import com.hexaTech.repointerface.RepoBOInterface;
+import com.hexaTech.repointerface.RepoGherkinInterface;
 
 import java.io.IOException;
 
@@ -28,8 +29,9 @@ public class AddBO implements AddBOInputPort {
      * AddBO class constructor.
      * @param addBOOutputPort AddBOOutputPort - used to send output notifications.
      */
-    public AddBO(AddBOOutputPort addBOOutputPort){
+    public AddBO(AddBOOutputPort addBOOutputPort,  RepoBOInterface repoBOInterface){
         this.addBOOutputPort=addBOOutputPort;
+        this.repoBOInterface=repoBOInterface;
     }
 
     /**
@@ -39,8 +41,8 @@ public class AddBO implements AddBOInputPort {
     @Override
     public void addBO(String directory) throws IOException {
         if(repoBOInterface.importDoc(directory))
-            addBOOutputPort.showAddedBO("Scenario added");
+            addBOOutputPort.showAddedBO("BO added");
         else
-            addBOOutputPort.showAddedBO("Scenario not added!");
+            addBOOutputPort.showAddedBO("BO not added!");
     }
 }//AddBO

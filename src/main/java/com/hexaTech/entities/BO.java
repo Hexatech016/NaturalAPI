@@ -17,7 +17,7 @@ import java.util.*;
  */
 public class BO {
     String ontologyName;
-    List<BOObject> BOObjects;
+    List<BOObject> BOObjects= new ArrayList<BOObject>();
 
     /**
      * BO class empty constructor.
@@ -55,7 +55,7 @@ public class BO {
      * @param ontologyName string - name to give at the BO.
      */
     public void setOntologyName(String ontologyName) {
-        ontologyName = ontologyName;
+        this.ontologyName = ontologyName;
     }
 
     /**
@@ -65,6 +65,7 @@ public class BO {
     public void setBOObjects(List<BOObject> BOObjects) {
         this.BOObjects = BOObjects;
     }
+
     public void setBOObjects(BOObject BOObjecto) {
         this.BOObjects.add(BOObjecto);
     }
@@ -75,5 +76,18 @@ public class BO {
                 "ontologyName='" + ontologyName + '\'' +
                 ", BOObjects=" + BOObjects.toString() +
                 '}';
+    }
+
+    public String toOpenAPI(){
+        String toRet="\"components\":{\n\t\"schemas\":[\n";
+        int last=BOObjects.size()-1;
+        int count=0;
+        for(BOObject tmp: BOObjects){
+            toRet+=tmp.toOpenAPI();
+            if(count<last) toRet+=",";
+            count++;
+        }
+        toRet+="\t]\n}";
+        return toRet;
     }
 }

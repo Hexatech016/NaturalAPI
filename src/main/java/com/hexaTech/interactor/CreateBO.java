@@ -25,8 +25,7 @@ public class CreateBO implements CreateBOInputPort {
         String path=doc.getPath();
         String document = repoBOInterface.getContentFromPath(path);
         BO bo=repoBOInterface.setBOFromJSON(document);
-        repoBOInterface.setBO(bo);
-        repoBOInterface.saveBo(bo);
-        createBOOutputPort.showCreatedBO("BAL created into folder: Design.");
+        repoBOInterface.saveBO(bo);
+        createBOOutputPort.showCreatedBO("BO created into folder: Design.");
     }
 }

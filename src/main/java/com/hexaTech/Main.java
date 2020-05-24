@@ -48,7 +48,7 @@ public class Main{
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter);
-        AddBO addBO=new AddBO(presenter);
+        AddBO addBO=new AddBO(presenter, repoBO);
         CreateBO createBO= new CreateBO(presenter, repoBO);
         CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument,repoBAL);
             //DEVELOP

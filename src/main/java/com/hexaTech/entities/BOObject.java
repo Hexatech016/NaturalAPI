@@ -63,7 +63,7 @@ public class BOObject {
 
     /**
      * Changes BO's parameters names.
-     * @param BOParams List<String> - nams to give at the BO parameters.
+     * @param BOParams List<String> - names to give at the BO parameters.
      */
     public void setBOParams(List<String> BOParams) {
         this.BOParams = BOParams;
@@ -92,5 +92,16 @@ public class BOObject {
                 ", BOParams=" + BOParams +
                 ", BOValueTypes=" + BOValueTypes +
                 '}';
+    }
+
+    public String toOpenAPI(){
+        String toRet= "{\""+nome+"\":{\n\"type\":\"object\",\n\"proprieties\":[";
+        for(int i=0;i<BOParams.size();i++){
+            toRet+="{\n"+BOParams.get(i)+":{\n"+
+                    "\"type\": "+BOValueTypes.get(i)+"}}";
+            if(i!=BOParams.size()-1) toRet+=",";
+        }
+        toRet+="]}}";
+        return toRet;
     }
 }
