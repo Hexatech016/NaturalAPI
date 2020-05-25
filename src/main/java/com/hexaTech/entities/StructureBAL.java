@@ -1,10 +1,13 @@
 package com.hexaTech.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StructureBAL {
     String name;
-    List<Parameter> parameters;
+    List<Parameter> parameters=new ArrayList<Parameter>();
+
+    public StructureBAL(){}
 
     public StructureBAL(String name, List<Parameter> parameters) {
         this.name=name;
@@ -25,6 +28,9 @@ public class StructureBAL {
 
     public void setParameters(List<Parameter> parameters) {
         this.parameters=parameters;
+    }
+    public void setParameters(Parameter parameter) {
+        this.parameters.add(parameter);
     }
 
     public String toString(){

@@ -12,6 +12,7 @@ package com.hexaTech.repointerface;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hexaTech.entities.BO;
+import com.hexaTech.entities.BO2;
 import com.hexaTech.entities.Document;
 
 import java.io.IOException;
@@ -34,11 +35,12 @@ public interface RepoBOInterface{
      */
     boolean importDoc(String directory) throws IOException;
 
-    void saveBO(BO bo) throws IOException;
+    void saveBO(BO2 bo) throws IOException;
 
     String getContentFromPath(String path) throws IOException;
 
     BO setBOFromJSON(String document) throws JsonProcessingException;
+    BO2 setBOFromJSON2(String document) throws JsonProcessingException;
 
     void setBO(BO bo) throws IOException;
 

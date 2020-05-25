@@ -80,6 +80,11 @@ public class RepoBO implements RepoBOInterface{
     }//importDoc
 
     @Override
+    public void saveBO(BO2 bo) throws IOException {
+        saveDocDesign(bo.toOpenAPI(),".\\BO.json");
+
+    }
+
     public void saveBO(com.hexaTech.entities.BO bo) throws IOException {
         saveDocDesign(bo.toOpenAPI(),".\\BO.json");
     }
@@ -164,9 +169,7 @@ public class RepoBO implements RepoBOInterface{
         ObjectMapper objectMapper=new ObjectMapper();
         JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
         BO bo= new BO();
-        /*StructureBAL bo=new StructureBAL();*/
         bo.setOntologyName(node.get("nomeOntologia").asText());
-        /*bo.setName(node.get("nomeOntologia").asText());*/
 
         JsonNode objlist=node.get("Oggetti");
         List<JsonNode> objects=new ArrayList<JsonNode>();
@@ -201,6 +204,50 @@ public class RepoBO implements RepoBOInterface{
         }
         System.out.println(bo.toString());
         return bo;
+    }
+
+    public BO2 setBOFromJSON2(String text) throws JsonProcessingException{
+        ObjectMapper objectMapper=new ObjectMapper();
+        JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
+        BO2 bo= new BO2();
+        bo.setOntologyName(node.get("nomeOntologia").asText());
+
+        JsonNode objlist=node.get("Oggetti");
+        List<JsonNode> objects=new ArrayList<JsonNode>();
+        if(objlist.isArray()){
+            for(JsonNode tmp: objlist){
+                objects.add(tmp);
+            }
+        }
+
+        for(JsonNode tmp: objects) {
+            StructureBAL bobj = new StructureBAL();
+            List<String> params = new ArrayList<String>();
+            List<String> types = new ArrayList<String>();
+
+            if (tmp.get("parametri").isArray()) {
+                for (JsonNode iter : tmp.get("parametri")) {
+                    params.add(iter.toString());
+                }
+            }
+            if (tmp.get("TipoValori").isArray()) {
+                for (JsonNode iter : tmp.get("TipoValori")) {
+                    types.add(iter.toString());
+                }
+            }
+            bobj.setName(tmp.get("name").asText());
+            /*ciclo for che ciclando sulle due liste crea un oggetto parameter con la coppia nome-tipovalore*/
+            for(int i=0; i<params.size(); i++){
+                Parameter par= new Parameter();
+                par.setName(params.get(i));
+                par.setType(types.get(i));
+                bobj.setParameters(par);
+            }
+            bo.setBOObjects(bobj);
+        }
+    return bo;
+
+
     }
 
     @Override
