@@ -16,8 +16,8 @@ import com.hexaTech.portInterface.*;
  * Class used to manage different output messages from interactor's actions.
  */
 public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
-        AddBDLOutputPort, AddGherkinOutputPort, CreateBALOutputPort,
-        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
+        AddBDLOutputPort, AddGherkinOutputPort, CreateBALOutputPort, CreateBOOutputPort,
+        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort, AddBOOutputPort{
     private String message;
     private boolean done;
     private int code;
@@ -133,6 +133,18 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
         notifySubMe();
     }
 
+    @Override
+    public void showCreatedBO(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    @Override
+    public void showErrorBO(String result) {
+        message=result;
+        notifySubMe();
+    }
+
     public void showMessage(String result){
         message=result;
         notifySubMe();
@@ -214,6 +226,12 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
      */
     @Override
     public void showRemovedBAL(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    @Override
+    public void showAddedBO(String result) {
         message=result;
         notifySubMe();
     }

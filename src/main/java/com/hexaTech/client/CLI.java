@@ -206,6 +206,14 @@ public class CLI implements MyObserver {
                 case ("3"):
                     System.out.println("Bye!");
                     System.exit(0);
+                case ("4"):
+                    System.out.println("Hai selezionato l'opzione segreta 1");
+                    controllerDesign.addBOController("Design");
+                    break;
+                case ("5"):
+                    System.out.println("Hai selezionato l'opzione segreta 2");
+                    controllerDesign.createBOController();
+                    break;
             }//switch
         }//while
     }//useCase
