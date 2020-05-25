@@ -19,6 +19,7 @@ public class BOObject {
     String nome;
     List<String> BOParams;
     List<String> BOValueTypes;
+    /*List<Parameter> BOParams  da fare getter e setter*/
 
     /**
      * BO object class empty constructor.

@@ -14,7 +14,7 @@ package com.hexaTech.entities;
  * Class used to represent parameter object.
  */
 public class Parameter {
-    String description;
+    String description="";
     String name;
     String type="string";
 

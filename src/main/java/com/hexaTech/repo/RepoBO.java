@@ -164,7 +164,9 @@ public class RepoBO implements RepoBOInterface{
         ObjectMapper objectMapper=new ObjectMapper();
         JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
         BO bo= new BO();
+        /*StructureBAL bo=new StructureBAL();*/
         bo.setOntologyName(node.get("nomeOntologia").asText());
+        /*bo.setName(node.get("nomeOntologia").asText());*/
 
         JsonNode objlist=node.get("Oggetti");
         List<JsonNode> objects=new ArrayList<JsonNode>();
@@ -175,23 +177,22 @@ public class RepoBO implements RepoBOInterface{
         }
 
         for(JsonNode tmp: objects) {
-            BOObject bobj = new BOObject();/*creazione BOObject*/
+            BOObject bobj = new BOObject();
+            /*Parameter boparam= new Parameter();*/
             List<String> params= new ArrayList<String>();
             List<String> types=new ArrayList<String>();
 
             if(tmp.get("parametri").isArray()){
                 for(JsonNode iter: tmp.get("parametri")){
                     params.add(iter.toString());
-                    System.out.println(params);
                 }
             }
             if(tmp.get("TipoValori").isArray()){
                 for(JsonNode iter: tmp.get("TipoValori")){
                     types.add(iter.toString());
-                    System.out.println(types);
                 }
             }
-
+            /*ciclo for che ciclando sulle due liste crea un oggetto parameter con la coppia nome-tipovalore*/
             bobj.setBOParams(params);/*inizializazione BOObject-Param con i parametri*/
             bobj.setBOValueTypes(types);/*inizializazione BOObject-Tipi con i tipi*/
             bobj.setNome(tmp.get("name").asText());/*estrazione ed inizializzazione BOObject-Nome con il nome*/
