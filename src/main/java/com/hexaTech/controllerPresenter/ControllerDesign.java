@@ -41,8 +41,8 @@ public class ControllerDesign {
      * Invokes AddBDL method to add a BDL.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addBDLController() throws IOException {
-        addBDLInputPort.addBDL();
+    public void addBDLController(String directory) throws IOException {
+        addBDLInputPort.addBDL(directory);
     }
 
     /**

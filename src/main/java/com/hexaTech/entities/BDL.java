@@ -138,6 +138,46 @@ public class BDL {
         return toReturn.toString();
     }//toString
 
+
+    public String toStringTag() {
+        StringBuilder toReturn =new StringBuilder("Nouns: ");
+        int count=0;
+        for (Map.Entry<String, Integer> sost : nouns.entrySet()) {
+         if(count<5){
+             toReturn.append(sost.getKey().substring(0, 1).toUpperCase()).append(sost.getKey().substring(1)).append(", ");
+             count=count+1;
+         }
+        }//for
+        count=0;
+        toReturn.append(" Verbs: ");
+        for (Map.Entry<String, Integer> verb : verbs.entrySet()) {
+         if(count<5){
+            toReturn.append(verb.getKey().substring(0, 1).toUpperCase()).append(verb.getKey().substring(1)).append(", ");
+            count=count+1;
+            }
+        }//for
+        count=0;
+        toReturn.append(" Predicates: ");
+        for (Map.Entry<String, Integer> pred : predicates.entrySet()) {
+            if(count<5) {
+            toReturn.append(pred.getKey().substring(0, 1).toUpperCase()).append(pred.getKey().substring(1)).append(", ");
+            count=count+1;
+            }
+        }//for
+        return toReturn.toString();
+    }//toString
+
+
+
+
+
+
+
+
+
+
+
+
     public int getTotalFrequency() {
         int totalFrenquncy=0;
         for (Map.Entry<String, Integer> sost : nouns.entrySet()) {

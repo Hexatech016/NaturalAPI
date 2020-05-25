@@ -23,7 +23,7 @@ import java.util.*;
 
 public class RepoBDL implements RepoBDLInterface {
 
-    private BDL bdl;
+    BDL bdl;
 
     public BDL extractBDL(String text) throws IOException {
         BDL bdlToReturn =new BDL();
@@ -174,4 +174,13 @@ public class RepoBDL implements RepoBDLInterface {
     public void loadBackup(String directory) throws IOException {
 
     }
+
+    public void setBDL(BDL newbdl) {
+        this.bdl = newbdl;
+    }
+
+    public BDL getbdl() {
+        return this.bdl;
+    }
+
 }

@@ -38,6 +38,7 @@ public class Main{
         RepoBDLInterface repoBDLInterface=new RepoBDL();
             //DESIGN
         RepoGherkin repoGherkin=new RepoGherkin();
+        RepoBDL repoBDL=new RepoBDL();
             //DEVELOP
         RepoAPIInterface repoAPI=new RepoAPI();
         RepoBALInterface repoBAL=new RepoBAL();
@@ -50,8 +51,8 @@ public class Main{
         CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin,wordNetFramework);
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
-        AddBDL addBDL=new AddBDL(presenter);
-        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument,repoBAL);
+        AddBDL addBDL=new AddBDL(presenter, repoBDL);
+        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBDL);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);

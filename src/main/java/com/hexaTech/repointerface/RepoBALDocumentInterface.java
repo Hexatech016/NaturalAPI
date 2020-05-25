@@ -70,7 +70,7 @@ public interface RepoBALDocumentInterface {
      */
     Document getBAL();
 
-    BAL setBALFromGherkin(String text);
+    BAL setBALFromGherkin(String text,String text2);
 
     void saveBAL(BAL bal) throws IOException;
 }//RepoBALDocumentInterface

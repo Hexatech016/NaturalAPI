@@ -10,8 +10,10 @@
 
 package com.hexaTech.interactor;
 
+import com.hexaTech.entities.BDL;
 import com.hexaTech.portInterface.AddBDLInputPort;
 import com.hexaTech.portInterface.AddBDLOutputPort;
+import com.hexaTech.repointerface.RepoBDLInterface;
 
 import java.io.IOException;
 
@@ -21,13 +23,15 @@ import java.io.IOException;
 public class AddBDL implements AddBDLInputPort {
 
     AddBDLOutputPort addBDLOutputPort;
+    RepoBDLInterface repoBDLInterface;
 
     /**
      * AddBDL class constructor.
      * @param addBDLOutputPort AddBDLOutputPort - used to send output notifications.
      */
-    public AddBDL(AddBDLOutputPort addBDLOutputPort){
+    public AddBDL(AddBDLOutputPort addBDLOutputPort ,RepoBDLInterface repoBDLInterface){
         this.addBDLOutputPort=addBDLOutputPort;
+        this.repoBDLInterface=repoBDLInterface;
     }
 
     /**
@@ -35,12 +39,19 @@ public class AddBDL implements AddBDLInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     @Override
-    public void addBDL() throws IOException {
-        /*
-        DA FARE
-        addBDLOutputPort.showAddedBDL("BDL added.");
-         */
-
+    public void addBDL(String directory) throws IOException {
+        BDL bdl=new BDL();
+        String path=repoBDLInterface.importPathOfBDL();
+        if(path=="")
+        {
+            System.out.println("Please select a .json file.");
+            addBDLOutputPort.showAddedBDL("BDL not added");
+        }
+        else {
+            bdl = repoBDLInterface.loadBDLFromJsonFile(path);
+            repoBDLInterface.setBDL(bdl);
+            addBDLOutputPort.showAddedBDL("BDL added");
+        }
     }
 
 }//AddBDL

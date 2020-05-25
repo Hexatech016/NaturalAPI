@@ -16,6 +16,7 @@ import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
 import com.hexaTech.repointerface.RepoBALDocumentInterface;
 import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBDLInterface;
 import com.hexaTech.repointerface.RepoGherkinInterface;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class CreateBAL implements CreateBALInputPort {
     RepoGherkinInterface repoGherkinInterface;
     RepoBALDocumentInterface repoBALDocumentInterface;
     RepoBALInterface repoBALInterface;
+    RepoBDLInterface repoBDLInterface;
 
     /**
      * CreateBAL class constructor.
@@ -37,11 +39,12 @@ public class CreateBAL implements CreateBALInputPort {
      */
 
     public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
-                     RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface) {
+                     RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBDLInterface repoBDLInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
+        this.repoBDLInterface = repoBDLInterface;
     }
 
     /**
@@ -53,7 +56,13 @@ public class CreateBAL implements CreateBALInputPort {
         for (Document doc: repoGherkinInterface.getGherkin()) {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
-            BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
+            String document2 = "-";
+            if (this.repoBDLInterface.getbdl() != null) {
+                new BDL();
+                BDL bdl = this.repoBDLInterface.getbdl();
+                document2 = bdl.toStringTag();
+            }
+            BAL bal=repoBALDocumentInterface.setBALFromGherkin(document,document2);
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         }//for
