@@ -138,20 +138,6 @@ public class BDL {
         return toReturn.toString();
     }//toString
 
-    public int getTotalFrequency() {
-        int totalFrenquncy=0;
-        for (Map.Entry<String, Integer> sost : nouns.entrySet()) {
-            totalFrenquncy+=sost.getValue();
-        }//for
-        for (Map.Entry<String, Integer> verb : verbs.entrySet()) {
-            totalFrenquncy+=verb.getValue();
-        }//for
-        for (Map.Entry<String, Integer> pred : predicates.entrySet()) {
-            totalFrenquncy+=pred.getValue();
-        }//for
-        return totalFrenquncy;
-    }//toString
-
     /**
      * Sorts BDL's content alphabetically.
      * @param hm HashMap<String, Integer> - map to be sorted.

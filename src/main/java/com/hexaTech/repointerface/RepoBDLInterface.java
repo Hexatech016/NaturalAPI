@@ -3,6 +3,7 @@ package com.hexaTech.repointerface;
 import com.hexaTech.entities.BDL;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface RepoBDLInterface {
 
@@ -49,4 +50,5 @@ public interface RepoBDLInterface {
     void saveBDL(BDL bdl, String BDLpath) throws IOException;
 
     String importPathOfBDL();
+    int getTotalFrequency(Map<String,Integer> list);
 }

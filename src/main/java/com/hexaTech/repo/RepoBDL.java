@@ -57,11 +57,31 @@ public class RepoBDL implements RepoBDLInterface {
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 if (token.tag().contains("VB") || token.tag().contains("NN"))
+                    if(!isACommonVerb(token.lemma()))
                     doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
         }//for
         return doubleStructs;
     }//extract
+
+    private boolean isACommonVerb(String verb){
+        String [] commonVerbs= {"be", "have", "do", "say", "go", "get", "make", "know", "think",
+        "take", "see", "come", "want", "look", "use", "find", "give", "tell",
+        "work"};
+        for(String commonV: commonVerbs) {
+            if (commonV.equalsIgnoreCase(verb))
+                return true;
+        }
+        return false;
+    }
+
+    public int getTotalFrequency(Map<String,Integer> list) {
+        int totalFrenquncy=0;
+        for (Map.Entry<String, Integer> lista : list.entrySet()) {
+            totalFrenquncy+=lista.getValue();
+        }//for
+        return totalFrenquncy;
+    }//toString
 
     public void saveBDL(BDL bdl, String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

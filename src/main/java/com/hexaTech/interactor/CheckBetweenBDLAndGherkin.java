@@ -46,9 +46,10 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     private void checkNounsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
         StringBuilder shouldUse=new StringBuilder();
+        int totalFrequency=repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns());
         for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
             boolean found = false;
-            if (nounsOfTexts.getValue()>6) {
+            if (nounsOfTexts.getValue()>2 && thisNounIsRelevant(nounsOfTexts.getValue(),totalFrequency)) {
                 for (Map.Entry<String, Integer> nounsOfGherkin : bdlOfGherkin.getNouns().entrySet()) {
                     if (nounsOfTexts.getKey().equalsIgnoreCase(nounsOfGherkin.getKey())) {
                         found = true;
@@ -69,9 +70,10 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     private void checkVerbsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
         StringBuilder shouldUse=new StringBuilder();
+        int totalFrequency=repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs());
         for (Map.Entry<String, Integer> verbOfTexts : bdlOfTexts.getVerbs().entrySet()) {
             boolean found = false;
-            if (verbOfTexts.getValue()>4) {
+            if (verbOfTexts.getValue()>2 && thisVerbIsRelevant(verbOfTexts.getValue(),totalFrequency)) {
                 for (Map.Entry<String, Integer> verbOfGherkin : bdlOfGherkin.getVerbs().entrySet()) {
                     if(verbOfTexts.getKey().equalsIgnoreCase(verbOfGherkin.getKey())){
                         found = true;
@@ -123,7 +125,8 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 }
                 if (!found) {
                     for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
-                        if (wordParsingInterface.
+                        if (thisNounIsRelevant(nounsOfTexts.getValue(),
+                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
                                 thisNounIsASynonymOf(nounsOfGherkin.getKey(),
                                         nounsOfTexts.getKey())) {
                             System.out.println("You could use: " + nounsOfTexts.getKey() +
@@ -151,7 +154,8 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
             }
             if (!found) {
                 for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
-                    if (wordParsingInterface.
+                    if (thisNounIsRelevant(verbsOfTexts.getValue(),
+                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
                             thisVerbIsASynonymOf(verbsOfGherkin.getKey(),
                                     verbsOfTexts.getKey())) {
                         System.out.println("You could use: " + verbsOfTexts.getKey() +
@@ -182,4 +186,16 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         System.out.println("You are using the following predicates but they are not common:");
         System.out.println(notCommon.toString() + "\n");
     }
+
+    private boolean thisNounIsRelevant(int value, int totalFrequency){
+        if(value*1.0/totalFrequency*100>1)
+            return true;
+        return false;
+    }
+    private boolean thisVerbIsRelevant(int value, int totalFrequency){
+        if(value*1.0/totalFrequency*100>0.5)
+            return true;
+        return false;
+    }
+
 }
