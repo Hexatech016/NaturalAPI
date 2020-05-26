@@ -29,14 +29,14 @@ import java.util.*;
  */
 public class RepoBO implements RepoBOInterface{
     Document BO;
-    BO boOpenAPI= new BO();
+    BO boOpenAPI=new BO();
 
     public void setBoOpenAPI(BO boOpenAPI) {
         this.boOpenAPI = boOpenAPI;
     }
 
-    public BO getBoOpenAPI() {
-        return boOpenAPI;
+    public List<StructureBAL> getBoOpenAPI() {
+        return boOpenAPI.getBOObjects();
     }
 
     /**
@@ -45,6 +45,7 @@ public class RepoBO implements RepoBOInterface{
     public RepoBO() {
         super();
     }
+
     /**
      * Returns BO object.
      * @return BO - BO object.
@@ -52,6 +53,7 @@ public class RepoBO implements RepoBOInterface{
     public Document getBO() {
         return BO;
     }
+
     /**
      * Loads a new document from file system.
      * @param directory string - directory used to save the file.
@@ -61,7 +63,7 @@ public class RepoBO implements RepoBOInterface{
         String temp;
        JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File JSON", "json");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt");
         chooser.setFileFilter(filter);
         dialog.getContentPane().add(chooser);
         dialog.setAlwaysOnTop(true);
@@ -80,12 +82,6 @@ public class RepoBO implements RepoBOInterface{
         }else
             return false;
     }//importDoc
-
-    @Override
-    public void saveBO(BO bo) throws IOException {
-        saveDocDesign(bo.toOpenAPI(),".\\BO.json");
-
-    }
 
     /**
      * Saves a backup file.
@@ -106,6 +102,7 @@ public class RepoBO implements RepoBOInterface{
             System.out.println("exception occurred " + e);
         }//try_catch
     }//saveDoc
+
     /**
      * Verifies if the specified document exists.
      * @param path string - path to the document to be searched.
@@ -115,6 +112,7 @@ public class RepoBO implements RepoBOInterface{
         File file=new File(path);
         return file.exists();
     }//existsDoc
+
     /**
      * Deletes the specified document.
      * @param path string - path to the document to be deleted.
@@ -124,6 +122,7 @@ public class RepoBO implements RepoBOInterface{
         File temp=new File(path);
         return temp.delete();
     }
+
     /**
      * Extrapolates content from a document.
      * @param path string - document's path.
@@ -205,12 +204,18 @@ public class RepoBO implements RepoBOInterface{
             bo.setBOObjects(bobj);
         }
     return bo;
-
-
     }
 
     @Override
-    public void setBO(com.hexaTech.entities.BO bo) throws IOException {}
+    public void setBO(BO bo){
+        boOpenAPI=bo;
+    }
+
+    @Override
+    public void saveBo(com.hexaTech.entities.BO bo) {
+
+    }
+
     private void saveDocDesign(String doc, String path) throws IOException {
         File directory = new File("Design");
         if (! directory.exists())
@@ -226,7 +231,4 @@ public class RepoBO implements RepoBOInterface{
         out.close();
     }//saveDocDesign
 
-    @Override
-    public void saveBo(com.hexaTech.entities.BO bo) {}
-
-}
+}//RepoBO

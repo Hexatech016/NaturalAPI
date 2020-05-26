@@ -14,14 +14,12 @@ package com.hexaTech.interactor;
 import com.hexaTech.entities.*;
 import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
-import com.hexaTech.repo.RepoBO;
 import com.hexaTech.repointerface.RepoBALDocumentInterface;
 import com.hexaTech.repointerface.RepoBALInterface;
 import com.hexaTech.repointerface.RepoBOInterface;
 import com.hexaTech.repointerface.RepoGherkinInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +60,7 @@ public class CreateBAL implements CreateBALInputPort {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
-            String tmp= repoBOInterface.getBoOpenAPI().toOpenAPI();
-            System.out.println(tmp);
-            bal.setBO(tmp);
+            bal.joinBO(repoBOInterface.getBoOpenAPI());
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         }//for
@@ -79,7 +75,6 @@ public class CreateBAL implements CreateBALInputPort {
         for(MethodBAL methodBAL:bal.getMethods()){
             b=true;
             suggestion="\nMethod name: "+methodBAL.getName();
-            //suggestion+="\nDescription: "+methodBAL.getDescription();
             suggestion+="\nReturn type: "+methodBAL.getToReturn().getType();
             createBALOutputPort.showMessage(suggestion+"\n Do you want to change return type? (Y/N)");
             line=scan.nextLine();

@@ -13,7 +13,6 @@ public class RepoBAL implements RepoBALInterface {
         bal=new BAL();
     }
 
-
     /**
      * Fills API object with Swagger found arguments into the specified PLA.
      * @param bal BAL - BAL object.
@@ -31,4 +30,5 @@ public class RepoBAL implements RepoBALInterface {
     public BAL getBAL() {
         return bal;
     }
-}
+
+}//RepoBAL

@@ -19,15 +19,14 @@ import java.util.List;
 public class BAL{
     List<MethodBAL> methods;
     List<StructureBAL> structures;
-    String BO="";
 
     public BAL(){
         methods=new ArrayList<>();
         structures=new ArrayList<>();
     }
 
-    public void setBO(String BO) {
-        this.BO = BO;
+    public void joinBO(List<StructureBAL> BO){
+        structures.addAll(BO);
     }
 
     /**
@@ -53,8 +52,8 @@ public class BAL{
      * @return string - BAL's content.
      */
     public String toString(){
-        String toRit=
-                "{\n"+
+        StringBuilder toRit=
+                new StringBuilder("{\n"+
                         "	\"openapi\": \"3.0.0\",\n"+
                         "	\"info\": {\n"+
                         "		\"version\": \"1.0.0\",\n"+
@@ -63,32 +62,28 @@ public class BAL{
                         "			\"name\": \"MIT\"\n	"+
                         "		}\n	"+
                         "	},\n"+
-                        "	\"paths\": {\n";
+                        "	\"paths\": {\n");
         //
         int last=methods.size()-1;
         int count=0;
         for(MethodBAL method: this.methods){
-            toRit+=method.toString();
+            toRit.append(method.toString());
             if (count<last)
-                toRit+=",";
+                toRit.append(",");
 
             count++;
         }//for
-        toRit+="\n}," +
-                "   \"components\": {\n" +
-                "   \"schemas\": {\n";
+        toRit.append("\n},"+"   \"components\": {\n"+"   \"schemas\": {\n");
         last=structures.size()-1;
         count=0;
         for(StructureBAL structure: this.structures){
-            toRit+=structure.toString();
+            toRit.append(structure.toString());
             if(count<last)
-                toRit+=",";
+                toRit.append(",");
             count++;
         }//for
-
-        toRit+=BO;
-        toRit+="\n}\n}\n}";
-        return toRit;
+        toRit.append("\n}\n}\n}");
+        return toRit.toString();
     }//toString
 
 }//BAL
