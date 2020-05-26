@@ -111,7 +111,7 @@ public class Method {
         return result.toString();
     }//createAPI
 
-    public String createTests(String[] PLA, int start, int end, String[] types, boolean typed) {
+    public String createTests(String[] PLA, int start, int end, String[] types, boolean typed, String name) {
         String[] content=PLA;
         StringBuilder result=new StringBuilder();
         for(int temp=start;temp<end;temp++) {
@@ -132,10 +132,10 @@ public class Method {
             if(content[temp].contains("<--methodName-->"))
                 content[temp]=content[temp].replace("<--methodName-->",methodName+"Test");
             if(content[temp].contains("<--methodComment-->"))
-                content[temp]=content[temp].replace("<--methodComment-->",methodComment);
+                content[temp]=content[temp].replace("<--methodComment-->",methodComment+"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");");
+            result.append(content[temp]).append("\n");
         }
-
-        return "";
+        return result.toString();
     }
 
     /**
@@ -203,4 +203,39 @@ public class Method {
         }//if_else
         return param.toString();
     }//getStringParam
+
+    private String getStringTests(String[] types, boolean typed) {
+        StringBuilder param=new StringBuilder();
+        Iterator it=methodParam.entrySet().iterator();
+        if(typed){
+            while(it.hasNext()){
+                Map.Entry pair=(Map.Entry) it.next();
+                String value=pair.getValue().toString();
+                boolean array=false;
+                if(value.contains("[]"))
+                    array=true;
+                if(value.contains("integer"))
+                    value=types[0];
+                if(value.contains("float"))
+                    value=types[1];
+                if(value.contains("string"))
+                    value=types[2];
+                if(value.contains("boolean"))
+                    value=types[3];
+                if(array && !value.contains("[]"))
+                    value=value+"[]";
+                param.append(value);
+                if(it.hasNext())
+                    param.append(", ");
+            }//while
+        }else{
+            while(it.hasNext()){
+                Map.Entry pair=(Map.Entry) it.next();
+                param.append(pair.getKey().toString());
+                if(it.hasNext())
+                    param.append(", ");
+            }//while
+        }//if_else
+        return param.toString();
+    }
 }//Method

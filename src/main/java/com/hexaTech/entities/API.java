@@ -144,7 +144,7 @@ public class API{
             if(content[i].contains("<--struct.here-->"))
                 content[i]="";
             if(content[i].contains("<--className-->"))
-                content[i]=content[i].replace("<--className-->",APIName);
+                content[i]=content[i].replace("<--className-->",APIName+"Test");
             if(content[i].contains("<--classComment-->"))
                 content[i]=content[i].replace("<--classComment-->",APIComment);
         }//for
@@ -155,7 +155,7 @@ public class API{
             }//if
         StringBuilder methods=new StringBuilder();
         for(Method method:APIMethods)
-            methods.append("\t").append(method.createTests(content.clone(), startMethod, endMethod, types, typed));
+            methods.append("\t").append(method.createTests(content.clone(), startMethod, endMethod, types, typed, getAPIName()));
         content[methodHere]=methods.toString();
 
         return String.join("\n", Arrays.copyOfRange(content,endMethod+1,content.length));
