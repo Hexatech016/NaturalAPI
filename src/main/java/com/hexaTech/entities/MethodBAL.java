@@ -18,9 +18,19 @@ import java.util.List;
 public class MethodBAL {
     String name;
     String description;
-    String tag;
+    List<String> tag;
     ToReturn toReturn;
     List<Parameter> parameters;
+
+
+
+
+
+    public List<String> getTag() {
+        return tag;
+    }
+
+
 
     public ToReturn getToReturn(){
         return toReturn;
@@ -50,9 +60,7 @@ public class MethodBAL {
      * Sets method's tag to the new value.
      * @param tag string - new tag.
      */
-    public void setTags(String tag) {
-        this.tag = tag;
-    }
+
 
     /**
      * Sets method's return type to the new vale.
@@ -88,14 +96,16 @@ public class MethodBAL {
      */
     public String toString(){
         String toReturnString=
-                "		\"/"+name+"\": {\n"+
+               "		\"/"+name+"\": {\n"+
                         "			\"get\": {\n"+
                         "				\"operationId\": \""+name+"\",\n"+
                         "				\"description\": \""+description+"\",\n"+
-                        "      				\"tags\": [\n"+//qua andrebbe una funzione per stampare i tags
-                        "       				\""+tag+"\"\n"+
-                        "    				 ],\n"+
-                        "			        \"parameters\": [\n";
+                        "      				   \"tags\": [\n"+
+                        "                                 \"{Nouns:["+tag.get(0)+"]}\",\n"+
+                        "                                 \"{Verbs:["+tag.get(1)+"]}\",\n"+
+                        "                                 \"{Predicates:["+tag.get(2)+"]}\"\n"+
+              			"    				],\n"+
+                        "			      \"parameters\": [\n";
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parametersIterator: parameters){
@@ -112,4 +122,7 @@ public class MethodBAL {
         return toReturnString;
     }//toString
 
+    public void setTags(List<String> text2) {
+        this.tag=text2;
+    }
 }//MethodBAL

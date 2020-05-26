@@ -11,7 +11,6 @@
 package com.hexaTech.entities;
 
 import java.util.*;
-
 /**
  * Class used to represent a BDL object.
  */
@@ -32,9 +31,10 @@ public class BDL {
      * @param predicates Map<String, Integer> - map with BDL predicates and their frequency.
      */
     public BDL(Map<String, Integer> nouns, Map<String, Integer> verbs, Map<String, Integer> predicates) {
-        this.nouns=sortMap((HashMap<String, Integer>) nouns);
-        this.verbs =sortMap((HashMap<String, Integer>) verbs);
-        this.predicates =sortMap((HashMap<String, Integer>) predicates);
+        this.nouns = sortMap((HashMap)nouns);
+        this.verbs = sortMap((HashMap)verbs);
+        this.predicates = sortMap((HashMap)predicates);
+
     }
 
     /**
@@ -96,7 +96,7 @@ public class BDL {
         }//for
         if (!found)
             this.verbs.put(verbs, frequency);
-        this.verbs =sortMap((HashMap<String, Integer>) this.verbs);
+       this.verbs =sortMap((HashMap<String, Integer>) this.verbs);
     }//addVerb
 
     /**
@@ -115,7 +115,7 @@ public class BDL {
         }//for
         if (!found)
             this.predicates.put(preds, frequency);
-        predicates =sortMap((HashMap<String, Integer>) this.predicates);
+      predicates =sortMap((HashMap<String, Integer>) this.predicates);
     }//addPredicate
 
     /**
@@ -138,44 +138,35 @@ public class BDL {
         return toReturn.toString();
     }//toString
 
+    public static <String, Integer extends Comparable<Integer>> Map<String, Integer> order (final Map<String, Integer> map) {
+        Comparator<String> valueComparator = (k1, k2) -> {
+            int compare = map.get(k2).compareTo(map.get(k1));
+            if (compare == 0) return 1;
+            else return compare;
+        };
+        Map<String, Integer> sortedByValues = new TreeMap<String, Integer>(valueComparator);
+        sortedByValues.putAll(map);
+        return sortedByValues;
+    }
 
-    public String toStringTag() {
-        StringBuilder toReturn =new StringBuilder("Nouns: ");
+
+    public String BDLtotag(Map<String,Integer> text)
+    {
+        StringBuilder toReturn =new StringBuilder();
         int count=0;
-        for (Map.Entry<String, Integer> sost : nouns.entrySet()) {
-         if(count<5){
-             toReturn.append(sost.getKey().substring(0, 1).toUpperCase()).append(sost.getKey().substring(1)).append(", ");
-             count=count+1;
-         }
-        }//for
-        count=0;
-        toReturn.append(" Verbs: ");
-        for (Map.Entry<String, Integer> verb : verbs.entrySet()) {
-         if(count<5){
-            toReturn.append(verb.getKey().substring(0, 1).toUpperCase()).append(verb.getKey().substring(1)).append(", ");
-            count=count+1;
+        int valore=0;
+        Map <String, Integer> stringtag=order(text);
+        for (Map.Entry<String, Integer> s : stringtag.entrySet()) {
+            if(count<5 && s.getValue()!=valore){
+                //toReturn = toReturn + " "+"\""+s.getKey()+"\",";
+                toReturn.append(s.getKey()).append(" ").append(s.getValue()).append(", ");
+                valore=s.getValue();
+                count=count+1;
             }
         }//for
-        count=0;
-        toReturn.append(" Predicates: ");
-        for (Map.Entry<String, Integer> pred : predicates.entrySet()) {
-            if(count<5) {
-            toReturn.append(pred.getKey().substring(0, 1).toUpperCase()).append(pred.getKey().substring(1)).append(", ");
-            count=count+1;
-            }
-        }//for
-        return toReturn.toString();
-    }//toString
+       return toReturn.toString();
 
-
-
-
-
-
-
-
-
-
+    }
 
 
     public int getTotalFrequency() {
@@ -197,7 +188,7 @@ public class BDL {
      * @param hm HashMap<String, Integer> - map to be sorted.
      * @return HashMap<String, Integer> - map's sorted clone.
      */
-    public HashMap<String,Integer> sortMap(HashMap<String, Integer> hm) {
+  public HashMap<String,Integer> sortMap(HashMap<String, Integer> hm) {
         List<Map.Entry<String, Integer>> list =
                 new LinkedList<>(hm.entrySet());
         // Sort the list
@@ -214,6 +205,10 @@ public class BDL {
         }//for
         return temp;
     }//sortMap
+
+
+
+
 
     /**
      * Merges BDL parameter with object.

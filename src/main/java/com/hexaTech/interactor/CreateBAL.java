@@ -20,6 +20,8 @@ import com.hexaTech.repointerface.RepoBDLInterface;
 import com.hexaTech.repointerface.RepoGherkinInterface;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -56,11 +58,13 @@ public class CreateBAL implements CreateBALInputPort {
         for (Document doc: repoGherkinInterface.getGherkin()) {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
-            String document2 = "-";
+            List<String> document2 = new ArrayList<>();
             if (this.repoBDLInterface.getbdl() != null) {
                 new BDL();
                 BDL bdl = this.repoBDLInterface.getbdl();
-                document2 = bdl.toStringTag();
+                document2.add(bdl.BDLtotag(bdl.getNouns()));
+                document2.add(bdl.BDLtotag(bdl.getVerbs()));
+                document2.add(bdl.BDLtotag(bdl.getPredicates()));
             }
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document,document2);
             repoBALInterface.setBAL(bal);
