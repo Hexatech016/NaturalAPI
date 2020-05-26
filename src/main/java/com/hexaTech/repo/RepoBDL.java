@@ -1,6 +1,10 @@
 package com.hexaTech.repo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
+import com.hexaTech.Main;
 import com.hexaTech.entities.BDL;
+import com.hexaTech.entities.Document;
 import com.hexaTech.entities.DoubleStruct;
 import com.hexaTech.repointerface.RepoBDLInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -12,15 +16,14 @@ import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 import java.util.*;
 
 public class RepoBDL implements RepoBDLInterface {
 
-
+    private BDL bdl;
 
     public BDL extractBDL(String text) throws IOException {
         BDL bdlToReturn =new BDL();
@@ -54,17 +57,45 @@ public class RepoBDL implements RepoBDLInterface {
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 if (token.tag().contains("VB") || token.tag().contains("NN"))
+                    if(!isACommonVerb(token.lemma()))
                     doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
         }//for
         return doubleStructs;
     }//extract
 
-    public void saveBDL(BDL bdl) throws IOException {
-        saveDocDiscover(bdl.toString(),".\\BDLreadble.txt");
-        saveDocDiscover(bdl.sostToCVS(),".\\BDLsost.csv");
-        saveDocDiscover(bdl.verbToCVS(),".\\BDLverbs.csv");
-        saveDocDiscover(bdl.predToCVS(),".\\BDLpred.csv");
+    private boolean isACommonVerb(String verb){
+        String [] commonVerbs= {"be", "have", "do", "say", "go", "get", "make", "know", "think",
+        "take", "see", "come", "want", "look", "use", "find", "give", "tell",
+        "work"};
+        for(String commonV: commonVerbs) {
+            if (commonV.equalsIgnoreCase(verb))
+                return true;
+        }
+        return false;
+    }
+
+    public int getTotalFrequency(Map<String,Integer> list) {
+        int totalFrenquncy=0;
+        for (Map.Entry<String, Integer> lista : list.entrySet()) {
+            totalFrenquncy+=lista.getValue();
+        }//for
+        return totalFrenquncy;
+    }//toString
+
+    public void saveBDL(BDL bdl, String BDLpath) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(bdl);
+        saveDocDiscover(jsonInString,".\\" + BDLpath + "CompleteBDL.json");
+        saveDocDiscover(bdl.sostToCSV(),".\\" + BDLpath + "BDLsost.csv");
+        saveDocDiscover(bdl.verbToCSV(),".\\" + BDLpath + "BDLverbs.csv");
+        saveDocDiscover(bdl.predToCSV(),".\\" + BDLpath + "BDLpred.csv");
+    }
+
+    public BDL loadBDLFromJsonFile(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString=getContentFromPath(path);
+        return mapper.readValue(jsonInString, BDL.class);
     }
 
     private void saveDocDiscover(String doc, String path) throws IOException {
@@ -103,12 +134,46 @@ public class RepoBDL implements RepoBDLInterface {
         System.out.println(BDLtoGet.toString());
     }//getBDLFromContentPath*/
 
-
+    public String getContentFromPath(String path) throws IOException {
+        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        InputStream input=null;
+        BufferedReader br;
+        if(RepoBDL.class.getResourceAsStream(jarName)!=null)
+            input = Main.class.getResourceAsStream(jarName);
+        if(input==null){
+            File file=new File(path);
+            br=new BufferedReader(new FileReader(file));
+        }else{
+            br = new BufferedReader(new InputStreamReader(input));
+        }//if_else
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            sb.append(line);
+            sb.append("\n");
+            line = br.readLine();
+        }//while
+        return sb.toString();
+    }//getContentFromPath
 
     @Override
-    public boolean importDoc(String directory) throws IOException {
-        return false;
-    }
+    public String importPathOfBDL(){
+        JFrame dialog = new JFrame();
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Json file", "json");
+        chooser.setFileFilter(filter);
+        dialog.getContentPane().add(chooser);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(false);
+        dialog.dispose();
+        int returnVal = chooser.showOpenDialog(dialog);
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json")){
+            return chooser.getSelectedFile().getAbsolutePath();
+        }else{
+            return "";
+        }//if_else
+    }//returnPath
+
 
     @Override
     public void saveDoc(String title, String directory) {
@@ -123,11 +188,6 @@ public class RepoBDL implements RepoBDLInterface {
     @Override
     public boolean deleteDoc(String path) {
         return false;
-    }
-
-    @Override
-    public String getContentFromPath(String path) throws IOException {
-        return null;
     }
 
     @Override

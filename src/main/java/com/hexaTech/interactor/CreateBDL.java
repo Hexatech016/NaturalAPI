@@ -47,6 +47,7 @@ public class CreateBDL implements CreateBDLInputPort {
     /**
      * Creates a new BDL object.
      * @throws IOException if an error occurs while loading or parsing any file.
+     * @param BDLpath
      */
     /*public void createBDL() throws IOException {
         BDL bdl=new BDL();
@@ -60,7 +61,7 @@ public class CreateBDL implements CreateBDLInputPort {
         createBDLOutputPort.showCreateBdl("BDL created into folder: Discover");
     }//createBDL*/
 
-    public void createBDL() throws IOException {
+    public void createBDL(String BDLpath) throws IOException {
         BDL bdl=new BDL();
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
@@ -68,9 +69,9 @@ public class CreateBDL implements CreateBDLInputPort {
             BDL bdlToMerge=repoBDLInterface.extractBDL(document);
             bdl.mergeBDL(bdlToMerge);
         }//for
-        repoBDLInterface.saveBDL(bdl);
+        repoBDLInterface.saveBDL(bdl, BDLpath);
         repoDocumentInterface.deleteDoc((".\\Discover\\BackupDocument.txt"));
-        createBDLOutputPort.showCreateBdl("BDL created into folder: Discover");
+        createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover");
     }//createBDL
 
 }//CreateBDL
