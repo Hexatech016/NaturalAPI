@@ -65,6 +65,10 @@ public class CreateBAL implements CreateBALInputPort {
                 document2.add(bdl.BDLtotag(bdl.getNouns()));
                 document2.add(bdl.BDLtotag(bdl.getVerbs()));
                 document2.add(bdl.BDLtotag(bdl.getPredicates()));
+            }else{
+                document2.add(null);
+                document2.add(null);
+                document2.add(null);
             }
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document,document2);
             repoBALInterface.setBAL(bal);
