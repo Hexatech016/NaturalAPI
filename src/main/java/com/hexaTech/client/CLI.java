@@ -189,7 +189,7 @@ public class CLI implements MyObserver {
     public void useCaseDesign() throws IOException{
         String temp;
         while (true){
-            System.out.println("Use case: \n 1: Add a Gherkin file  \n 2: Extract BAL \n 3: Exit");
+            System.out.println("Use case: \n 1: Add a Gherkin file  \n 2: Extract BAL \n 3: Add a Business Ontology \n 4: Extract a BO \n 5: Exit ");
             Scanner scan = new Scanner(System.in);
             temp = scan.nextLine();
             switch (temp) {
@@ -203,15 +203,13 @@ public class CLI implements MyObserver {
                     controllerDesign.createBALController();
                     controllerDesign.checkSuggestions();
                     break;
-                case ("3"):
+                case ("5"):
                     System.out.println("Bye!");
                     System.exit(0);
-                case ("4"):
-                    System.out.println("Hai selezionato l'opzione segreta 1");
+                case ("3"):
                     controllerDesign.addBOController("Design");
                     break;
-                case ("5"):
-                    System.out.println("Hai selezionato l'opzione segreta 2");
+                case ("4"):
                     controllerDesign.createBOController();
                     break;
             }//switch

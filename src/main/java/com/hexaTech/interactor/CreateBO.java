@@ -1,9 +1,7 @@
 package com.hexaTech.interactor;
 
-import com.hexaTech.entities.BAL;
-import com.hexaTech.entities.BO2;
+import com.hexaTech.entities.BO;
 import com.hexaTech.entities.Document;
-import com.hexaTech.portInterface.CreateBALOutputPort;
 import com.hexaTech.portInterface.CreateBOInputPort;
 import com.hexaTech.portInterface.CreateBOOutputPort;
 import com.hexaTech.repointerface.RepoBOInterface;
@@ -24,7 +22,7 @@ public class CreateBO implements CreateBOInputPort {
         Document doc=repoBOInterface.getBO();
         String path=doc.getPath();
         String document = repoBOInterface.getContentFromPath(path);
-        BO2 bo=repoBOInterface.setBOFromJSON2(document);
+        BO bo=repoBOInterface.setBOFromJSON(document);
         repoBOInterface.saveBO(bo);
         createBOOutputPort.showCreatedBO("BO created into folder: Design.");
     }

@@ -58,7 +58,7 @@ public class CreateBAL implements CreateBALInputPort {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
-            repoBALInterface.setBAL(bal);
+           // repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         }//for
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
