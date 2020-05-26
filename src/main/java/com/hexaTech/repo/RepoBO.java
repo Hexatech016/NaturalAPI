@@ -17,14 +17,7 @@ import com.google.common.io.Files;
 import com.hexaTech.Main;
 import com.hexaTech.entities.*;
 import com.hexaTech.repointerface.RepoBOInterface;
-import edu.stanford.nlp.parser.nndep.DependencyParser;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.trees.GrammaticalStructure;
-import edu.stanford.nlp.trees.TypedDependency;
 
-import javax.json.JsonArray;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
