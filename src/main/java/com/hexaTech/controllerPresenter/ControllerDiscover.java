@@ -10,8 +10,10 @@
 
 package com.hexaTech.controllerPresenter;
 
+import com.hexaTech.interactor.CheckBetweenBDLAndGherkinInputPort;
 import com.hexaTech.portInterface.AddDocumentInputPort;
 import com.hexaTech.portInterface.CreateBDLInputPort;
+import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;
 
@@ -21,15 +23,17 @@ import java.io.IOException;
 public class ControllerDiscover {
     AddDocumentInputPort addDocumentInputPort;
     CreateBDLInputPort createBDLInputPort;
+    CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort;
 
     /**
      * Controller class constructor.
      * @param addDocumentInputPort AddDocToParseInputPort - used to communicate with AddDocToParse interactor.
      * @param createBDLInputPort CreateBDLInputPort - used to communicate with CreateBDL interactor.
      */
-    public ControllerDiscover(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort) {
+    public ControllerDiscover(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort, CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort) {
         this.addDocumentInputPort = addDocumentInputPort;
         this.createBDLInputPort = createBDLInputPort;
+        this.checkBetweenBDLAndGherkinInputPort = checkBetweenBDLAndGherkinInputPort;
     }
 
     /**
@@ -51,9 +55,10 @@ public class ControllerDiscover {
     /**
      * Invokes CreateBDL method to create a new BDL object;
      * @throws IOException if BDL can't be created from repo's stored document.
+     * @param BDLpath
      */
-    public void createBDL() throws IOException {
-        createBDLInputPort.createBDL();
+    public void createBDL(String BDLpath) throws IOException {
+        createBDLInputPort.createBDL(BDLpath);
     }
 
     /**
@@ -69,6 +74,10 @@ public class ControllerDiscover {
      */
     public void checkThereAreDoc(String path) {
         addDocumentInputPort.checkThereAreDoc(path);
+    }
+
+    public void checkBetweenBDLAndGherkin(String directory) throws IOException, JWNLException {
+        checkBetweenBDLAndGherkinInputPort.check(directory);
     }
 
 }//ControllerDiscover

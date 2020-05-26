@@ -73,8 +73,8 @@ public class ControllerDesign {
         //createBOInputPort.createBO();
     }
 
-    public void createBOController() throws IOException {
-        createBOInputPort.createBO();
+    public void createBOController(String directory) throws IOException {
+        createBOInputPort.createBO(directory);
     }
 
     public void checkSuggestions() throws IOException {

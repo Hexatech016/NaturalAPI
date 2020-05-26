@@ -11,6 +11,7 @@
 package com.hexaTech.client;
 
 import com.hexaTech.controllerPresenter.*;
+import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -38,7 +39,7 @@ public class CLI implements MyObserver {
         this.presenter.addObserver(this);
     }
 
-    public void useCaseNaturalAPI() throws IOException {
+    public void useCaseNaturalAPI() throws IOException, JWNLException {
         String temp;
         System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Exit");
         Scanner scan = new Scanner(System.in);
@@ -91,7 +92,7 @@ public class CLI implements MyObserver {
      * @param condition boolean - true if there's a loaded BAL file, false if not.
      * @throws IOException if the specified file path doesn't exist.
      */
-    public void useCaseDevelop(boolean condition) throws IOException {
+    public void useCaseDevelop(boolean condition) throws IOException, JWNLException {
         String temp;
         if (!condition) {
             System.out.println("Use case: \n 1: Add a new BAL \n 2: Exit");
@@ -129,7 +130,7 @@ public class CLI implements MyObserver {
      * Asks the user which programming language he want for the output file. He also can load a PLA file.
      * @throws IOException if the specified PLA file path doesn't exist.
      */
-    public void useCasePLA() throws IOException {
+    public void useCasePLA() throws IOException, JWNLException {
         String temp;
         System.out.println("In which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n 3: Generate from an external PLA \n 4: Exit");
         Scanner scan = new Scanner(System.in);
@@ -163,7 +164,7 @@ public class CLI implements MyObserver {
      * @param code integer - error code.
      * @throws IOException propagation of the exception.
      */
-    public void checkUseCase(int code) throws IOException {
+    public void checkUseCase(int code) throws IOException, JWNLException {
         switch(code){
             case(0):
                 useCasePLA();
@@ -210,7 +211,7 @@ public class CLI implements MyObserver {
                     controllerDesign.addBOController("Design");
                     break;
                 case ("4"):
-                    controllerDesign.createBOController();
+                    controllerDesign.createBOController("Design");
                     break;
             }//switch
         }//while
@@ -220,11 +221,11 @@ public class CLI implements MyObserver {
      * Shows to user which actions he could do with this software.
      * @throws IOException if the specified file path doesn't exist.
      */
-    public void useCaseDiscover() throws IOException {
+    public void useCaseDiscover() throws IOException, JWNLException {
         String firstCase;
         while (true) {
             System.out.println("Use Case: \n 1: Check if there are saved documents \n 2: Add a document  " +
-                    "\n 3: Extract BDL \n 4: Exit");
+                    "\n 3: Extract BDL \n 4: Check between BDL and Gherkin \n 5: Exit");
             Scanner firstScanner = new Scanner(System.in);
             firstCase = firstScanner.nextLine();
             switch (firstCase) {
@@ -259,9 +260,16 @@ public class CLI implements MyObserver {
                         controllerDiscover.createBDL();
                     else
                         System.out.println("There are no loaded documents to extract BDL");*/
-                    controllerDiscover.createBDL();
+                    System.out.println("Give a name to BDL files");
+                    Scanner fileName = new Scanner(System.in);
+                    String BDLpath = firstScanner.nextLine();
+                    controllerDiscover.createBDL(BDLpath);
                     break;
                 case ("4"):
+                    System.out.println("Add a BDL file");
+                    controllerDiscover.checkBetweenBDLAndGherkin("Discover");
+                    break;
+                case ("5"):
                     System.out.println("Bye!");
                     System.exit(0);
                     /*case ("5"):

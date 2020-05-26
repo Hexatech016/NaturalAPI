@@ -3,16 +3,10 @@ package com.hexaTech.repointerface;
 import com.hexaTech.entities.BDL;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface RepoBDLInterface {
 
-    /**
-     * Loads a new document from file system.
-     * @param directory string - directory used to save the file.
-     * @throws IOException if an error occurs during file loading process.
-     * @return boolean - false if something goes wrong, true if not.
-     */
-    boolean importDoc(String directory) throws IOException;
 
     /**
      * Saves the doucment's path into a backup file.
@@ -44,6 +38,8 @@ public interface RepoBDLInterface {
      */
     String getContentFromPath(String path) throws IOException;
 
+    BDL loadBDLFromJsonFile(String path) throws IOException;
+
     /**
      * Loads content from a backup file and restore it.
      * @param directory string - directory used to search the file in.
@@ -51,5 +47,8 @@ public interface RepoBDLInterface {
      */
     void loadBackup(String directory) throws IOException;
     BDL extractBDL(String text) throws IOException;
-    void saveBDL(BDL bdl) throws IOException;
+    void saveBDL(BDL bdl, String BDLpath) throws IOException;
+
+    String importPathOfBDL();
+    int getTotalFrequency(Map<String,Integer> list);
 }

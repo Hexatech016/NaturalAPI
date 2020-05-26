@@ -79,7 +79,7 @@ public class BO {
     }
 
     public String toOpenAPI(){
-        String toRet="\"components\":{\n\t\"schemas\":[\n";
+        String toRet="";
         int last=BOObjects.size()-1;
         int count=0;
         for(StructureBAL tmp: BOObjects){
@@ -87,7 +87,6 @@ public class BO {
             if(count<last) toRet+=",";
             count++;
         }
-        toRet+="\t]\n}";
         return toRet;
     }
 }

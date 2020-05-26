@@ -16,10 +16,10 @@ import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
 import com.hexaTech.repointerface.RepoBALDocumentInterface;
 import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBOInterface;
 import com.hexaTech.repointerface.RepoGherkinInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,8 @@ public class CreateBAL implements CreateBALInputPort {
     RepoGherkinInterface repoGherkinInterface;
     RepoBALDocumentInterface repoBALDocumentInterface;
     RepoBALInterface repoBALInterface;
+    RepoBOInterface repoBOInterface;
+
 
     /**
      * CreateBAL class constructor.
@@ -40,12 +42,12 @@ public class CreateBAL implements CreateBALInputPort {
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
 
-    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
-                     RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface) {
+    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBOInterface repoBOInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
+        this.repoBOInterface = repoBOInterface;
     }
 
     /**
@@ -58,7 +60,8 @@ public class CreateBAL implements CreateBALInputPort {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
-           // repoBALInterface.setBAL(bal);
+            bal.joinBO(repoBOInterface.getBoOpenAPI());
+            repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         }//for
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
@@ -72,7 +75,6 @@ public class CreateBAL implements CreateBALInputPort {
         for(MethodBAL methodBAL:bal.getMethods()){
             b=true;
             suggestion="\nMethod name: "+methodBAL.getName();
-            //suggestion+="\nDescription: "+methodBAL.getDescription();
             suggestion+="\nReturn type: "+methodBAL.getToReturn().getType();
             createBALOutputPort.showMessage(suggestion+"\n Do you want to change return type? (Y/N)");
             line=scan.nextLine();
