@@ -88,7 +88,7 @@ public class API{
      * @param PLA string - PLA's parametrized content.
      * @return string - PLA's developed content.
      */
-    public String replacePLA(String PLA){
+    public String createAPI(String PLA){
         String[] content=PLA.split("\n");
         int startMethod=0,endMethod=0,startStructure=0,endStructure=0,methodHere=0,structureHere=0;
         boolean typed=true;
@@ -119,15 +119,47 @@ public class API{
         StringBuilder methods=new StringBuilder();
         StringBuilder structure=new StringBuilder();
         for(Method method:APIMethods)
-            methods.append("\t").append(method.replacePLA(content.clone(), startMethod, endMethod, types, typed));
+            methods.append("\t").append(method.createAPI(content.clone(), startMethod, endMethod, types, typed));
         content[methodHere]=methods.toString();
 
         for(Structure struct:APIStructures)
-            structure.append(struct.replacePLA(content.clone(), startStructure, endStructure,types,typed));
+            structure.append(struct.createAPI(content.clone(), startStructure, endStructure,types,typed));
         content[structureHere]=structure.toString();
 
         return String.join("\n", ArrayUtils.addAll(Arrays.copyOfRange(content,0,startStructure-1),Arrays.copyOfRange(content,endMethod+1,content.length)));
-    }//replacePLA
+    }//createAPI
+
+    public String createTests(String PLA) {
+        String[] content=PLA.split("\n");
+        int startMethod=0,endMethod=0,methodHere=0;
+        boolean typed=true;
+        String[] types=searchTypes(content);
+        for(int i=0;i<content.length;i++){
+            if(content[i].contains("<--method.start-->"))
+                startMethod=i;
+            if(content[i].contains("<--method.end-->"))
+                endMethod=i;
+            if(content[i].contains("<--method.here-->"))
+                methodHere=i;
+            if(content[i].contains("<--struct.here-->"))
+                content[i]="";
+            if(content[i].contains("<--className-->"))
+                content[i]=content[i].replace("<--className-->",APIName);
+            if(content[i].contains("<--classComment-->"))
+                content[i]=content[i].replace("<--classComment-->",APIComment);
+        }//for
+        for(String type : types)
+            if(type.contains("/")){
+                typed=false;
+                break;
+            }//if
+        StringBuilder methods=new StringBuilder();
+        for(Method method:APIMethods)
+            methods.append("\t").append(method.createTests(content.clone(), startMethod, endMethod, types, typed));
+        content[methodHere]=methods.toString();
+
+        return String.join("\n", Arrays.copyOfRange(content,endMethod+1,content.length));
+    }//createTests
 
     private String[] searchTypes(String[] content) {
         String[] types=new String[4];

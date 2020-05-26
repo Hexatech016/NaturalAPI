@@ -62,7 +62,7 @@ public class Structure {
      * @param typed boolean - true if output language is typed, false if it's not.
      * @return string - PLA developed structures's content.
      */
-    public String replacePLA(String[] PLA,int start,int end,String[] types,boolean typed){
+    public String createAPI(String[] PLA, int start, int end, String[] types, boolean typed){
         String[] content=PLA;
         StringBuilder result=new StringBuilder();
         for(int temp=start;temp<end;temp++){
@@ -83,7 +83,7 @@ public class Structure {
             result.append(content[temp]).append("\n");
         }//for
         return result.toString();
-    }//replacePLA
+    }//createAPI
 
     /**
      * Returns structure's parameters.
