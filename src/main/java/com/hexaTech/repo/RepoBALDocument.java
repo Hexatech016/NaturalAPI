@@ -23,7 +23,9 @@ import edu.stanford.nlp.trees.TypedDependency;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
@@ -59,7 +61,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * @param text string - text to be parsed.
      * @return BAL - filled BAL object.
      */
-    public BAL setBALFromGherkin(String text){
+    public BAL setBALFromGherkin(String text, List<String> text2){
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
@@ -72,7 +74,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             Gherkin gherkin = extractGherkin(temp,pipeline,depparser);
             meth.setName(gherkin.getScenario());
             meth.setDescription(gherkin.getDescription());
-            meth.setTags("-");
+            meth.setTags(text2);
             ToReturn toRet=new ToReturn();
             toRet.setDescription(gherkin.getThen());
             meth.setToRet(toRet);

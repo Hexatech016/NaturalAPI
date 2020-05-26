@@ -14,10 +14,7 @@ package com.hexaTech.interactor;
 import com.hexaTech.entities.*;
 import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
-import com.hexaTech.repointerface.RepoBALDocumentInterface;
-import com.hexaTech.repointerface.RepoBALInterface;
-import com.hexaTech.repointerface.RepoBOInterface;
-import com.hexaTech.repointerface.RepoGherkinInterface;
+import com.hexaTech.repointerface.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
 import java.io.IOException;
@@ -34,6 +31,7 @@ public class CreateBAL implements CreateBALInputPort {
     RepoBALDocumentInterface repoBALDocumentInterface;
     RepoBALInterface repoBALInterface;
     RepoBOInterface repoBOInterface;
+    RepoBDLInterface repoBDLInterface;
 
 
     /**
@@ -42,12 +40,13 @@ public class CreateBAL implements CreateBALInputPort {
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
 
-    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBOInterface repoBOInterface) {
+    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
         this.repoBOInterface = repoBOInterface;
+        this.repoBDLInterface = repoBDLInterface;
     }
 
     /**
@@ -59,7 +58,18 @@ public class CreateBAL implements CreateBALInputPort {
         for (Document doc: repoGherkinInterface.getGherkin()) {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
-            BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
+            List<String> document2= new ArrayList<>();
+            if (this.repoBDLInterface.getBDL()!=null) {
+                BDL bdl = this.repoBDLInterface.getBDL();
+                document2.add(bdl.BDLtotag(bdl.getNouns()));
+                document2.add(bdl.BDLtotag(bdl.getVerbs()));
+                document2.add(bdl.BDLtotag(bdl.getPredicates()));
+            }else{
+                document2.add("");
+                document2.add("");
+                document2.add("");
+            }
+            BAL bal=repoBALDocumentInterface.setBALFromGherkin(document,document2);
             bal.joinBO(repoBOInterface.getBoOpenAPI());
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);

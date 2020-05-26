@@ -14,6 +14,7 @@ import com.hexaTech.entities.BAL;
 import com.hexaTech.entities.Document;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * RepoBALDocument class interface.
@@ -70,7 +71,7 @@ public interface RepoBALDocumentInterface {
      */
     Document getBAL();
 
-    BAL setBALFromGherkin(String text);
+    BAL setBALFromGherkin(String text, List<String> text2);
 
     void saveBAL(BAL bal) throws IOException;
 }//RepoBALDocumentInterface

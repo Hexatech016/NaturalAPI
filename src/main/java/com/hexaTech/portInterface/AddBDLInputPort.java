@@ -20,7 +20,8 @@ public interface AddBDLInputPort {
     /**
      * Loads a new BDL.
      * @throws IOException if an error occurs during loading process.
+     * @param directory
      */
-    void addBDL() throws IOException;
+    void addBDL(String directory) throws IOException;
 
 }//AddBDLInputPort

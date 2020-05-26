@@ -23,7 +23,7 @@ import java.util.*;
 
 public class RepoBDL implements RepoBDLInterface {
 
-    private BDL bdl;
+    BDL bdl= new BDL();
 
     public BDL extractBDL(String text) throws IOException {
         BDL bdlToReturn =new BDL();
@@ -83,6 +83,13 @@ public class RepoBDL implements RepoBDLInterface {
         return totalFrenquncy;
     }//toString
 
+    @Override
+    public void setBDL(BDL bdl) {
+        this.bdl=bdl;
+    }
+    public BDL getBDL() {
+        return bdl;
+    }
     public void saveBDL(BDL bdl, String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(bdl);

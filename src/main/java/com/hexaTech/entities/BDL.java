@@ -138,6 +138,35 @@ public class BDL {
         return toReturn.toString();
     }//toString
 
+    // Ordina in modo crescente il BDL aggiunto su design
+    public static <String, Integer extends Comparable<Integer>> Map<String, Integer> order (final Map<String, Integer> map) {
+        Comparator<String> valueComparator = (k1, k2) -> {
+            int compare = map.get(k2).compareTo(map.get(k1));
+            if (compare == 0) return 1;
+            else return compare;
+        };
+        Map<String, Integer> sortedByValues = new TreeMap<String, Integer>(valueComparator);
+        sortedByValues.putAll(map);
+        return sortedByValues;
+    }
+    // Funzione per la stampa dei campi dati sul campo tag
+    public String BDLtotag(Map<String,Integer> text)
+    {
+        StringBuilder toReturn =new StringBuilder();
+        int count=0;
+        int valore=0;
+        Map <String, Integer> stringtag=order(text);
+        for (Map.Entry<String, Integer> s : stringtag.entrySet()) {
+            if(count<5 && s.getValue()!=valore){
+                toReturn.append(s.getKey()).append(", ");
+                valore=s.getValue();
+                count=count+1;
+            }
+        }//for
+        return toReturn.toString();
+
+    }
+
     /**
      * Sorts BDL's content alphabetically.
      * @param hm HashMap<String, Integer> - map to be sorted.

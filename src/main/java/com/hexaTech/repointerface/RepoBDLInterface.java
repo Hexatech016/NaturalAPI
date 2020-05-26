@@ -51,4 +51,6 @@ public interface RepoBDLInterface {
 
     String importPathOfBDL();
     int getTotalFrequency(Map<String,Integer> list);
+    BDL getBDL();
+    void setBDL(BDL bdl);
 }
