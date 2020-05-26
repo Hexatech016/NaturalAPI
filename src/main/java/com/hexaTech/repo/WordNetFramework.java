@@ -12,7 +12,7 @@ public class WordNetFramework implements WordParsingInterface{
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;
-        JWNL.initialize(new FileInputStream(".\\properties.xml"));
+        JWNL.initialize(new FileInputStream(".\\src\\main\\resources\\properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         //final PointerUtils pointerUtils= PointerUtils.getInstance();
         //final RelationshipFinder relationshipFinder=RelationshipFinder.getInstance();
@@ -34,7 +34,7 @@ public class WordNetFramework implements WordParsingInterface{
 
     public boolean thisVerbIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;
-        JWNL.initialize(new FileInputStream(".\\properties.xml"));
+        JWNL.initialize(new FileInputStream(".\\src\\main\\resources\\properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.VERB, target);
         if(indexWord==null)
