@@ -114,9 +114,9 @@ public class Method {
     public String createTests(String[] PLA, int start, int end, String[] types, boolean typed, String name) {
         String[] content=PLA;
         StringBuilder result=new StringBuilder();
-        for(int temp=start;temp<end;temp++) {
+        for(int temp=start;temp<end;temp++){
             content[temp] = PLA[temp];
-            if (content[temp].contains("<--methodParamName-->")) {
+            if(content[temp].contains("<--methodParamName-->")) {
                 content[temp] = content[temp].replace("<--methodParamName-->", "");
                 content[temp] = content[temp].replace("<--methodParamType-->", "");
             } else if (content[temp].contains("<--methodParamType-->")) {
@@ -134,9 +134,9 @@ public class Method {
             if(content[temp].contains("<--methodComment-->"))
                 content[temp]=content[temp].replace("<--methodComment-->",methodComment+"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");");
             result.append(content[temp]).append("\n");
-        }
+        }//for
         return result.toString();
-    }
+    }//createTests
 
     /**
      * Returns method's return type.
@@ -237,5 +237,6 @@ public class Method {
             }//while
         }//if_else
         return param.toString();
-    }
+    }//getStringTests
+
 }//Method
