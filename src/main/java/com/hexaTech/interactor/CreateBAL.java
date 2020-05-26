@@ -14,8 +14,10 @@ package com.hexaTech.interactor;
 import com.hexaTech.entities.*;
 import com.hexaTech.portInterface.CreateBALInputPort;
 import com.hexaTech.portInterface.CreateBALOutputPort;
+import com.hexaTech.repo.RepoBO;
 import com.hexaTech.repointerface.RepoBALDocumentInterface;
 import com.hexaTech.repointerface.RepoBALInterface;
+import com.hexaTech.repointerface.RepoBOInterface;
 import com.hexaTech.repointerface.RepoGherkinInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
@@ -33,6 +35,8 @@ public class CreateBAL implements CreateBALInputPort {
     RepoGherkinInterface repoGherkinInterface;
     RepoBALDocumentInterface repoBALDocumentInterface;
     RepoBALInterface repoBALInterface;
+    RepoBOInterface repoBOInterface;
+
 
     /**
      * CreateBAL class constructor.
@@ -40,12 +44,12 @@ public class CreateBAL implements CreateBALInputPort {
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
 
-    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
-                     RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface) {
+    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBOInterface repoBOInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
+        this.repoBOInterface = repoBOInterface;
     }
 
     /**
@@ -58,7 +62,10 @@ public class CreateBAL implements CreateBALInputPort {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(document);
-           // repoBALInterface.setBAL(bal);
+            String tmp= repoBOInterface.getBoOpenAPI().toOpenAPI();
+            System.out.println(tmp);
+            bal.setBO(tmp);
+            repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         }//for
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");

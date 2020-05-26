@@ -210,7 +210,7 @@ public class CLI implements MyObserver {
                     controllerDesign.addBOController("Design");
                     break;
                 case ("4"):
-                    controllerDesign.createBOController();
+                    controllerDesign.createBOController("Design");
                     break;
             }//switch
         }//while

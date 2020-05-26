@@ -19,10 +19,15 @@ import java.util.List;
 public class BAL{
     List<MethodBAL> methods;
     List<StructureBAL> structures;
+    String BO="";
 
     public BAL(){
         methods=new ArrayList<>();
         structures=new ArrayList<>();
+    }
+
+    public void setBO(String BO) {
+        this.BO = BO;
     }
 
     /**
@@ -80,6 +85,8 @@ public class BAL{
                 toRit+=",";
             count++;
         }//for
+
+        toRit+=BO;
         toRit+="\n}\n}\n}";
         return toRit;
     }//toString

@@ -43,4 +43,8 @@ public interface RepoBOInterface{
     void setBO(BO bo) throws IOException;
 
     void saveBo(BO bo);
+
+    void setBoOpenAPI(BO boOpenAPI);
+
+    BO getBoOpenAPI();
 }

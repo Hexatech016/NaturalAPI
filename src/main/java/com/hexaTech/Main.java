@@ -50,7 +50,7 @@ public class Main{
         AddBDL addBDL=new AddBDL(presenter);
         AddBO addBO=new AddBO(presenter, repoBO);
         CreateBO createBO= new CreateBO(presenter, repoBO);
-        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument,repoBAL);
+        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBO);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);
