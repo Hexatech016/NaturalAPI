@@ -111,6 +111,33 @@ public class Method {
         return result.toString();
     }//replacePLA
 
+    public String replacePLATest(String[] PLA,int start,int end,String[] types,boolean typed, String name){
+        String[] content=PLA;
+        StringBuilder result=new StringBuilder();
+        for(int temp=start;temp<end;temp++){
+            content[temp]=PLA[temp];
+            if(content[temp].contains("<--methodParamName-->")){
+                content[temp]=content[temp].replace("<--methodParamName-->", "");
+                content[temp]=content[temp].replace("<--methodParamType-->", "");
+            }else if(content[temp].contains("<--methodParamType-->")){
+                content[temp]=content[temp].replace("<--methodParamType-->", "");
+                content[temp]=content[temp].replace("<--methodParamName-->", "");
+            }//if_else_if
+            if(content[temp].contains("<--method.start-->"))
+                content[temp]=content[temp].replace("<--method.start-->","");
+            if(content[temp].contains("<--method.end-->"))
+                content[temp]=content[temp].replace("<--method.end-->","");
+            if(content[temp].contains("<--methodReturn-->"))
+                content[temp]=content[temp].replace("<--methodReturn-->",getStringReturnType(types,typed));
+            if(content[temp].contains("<--methodName-->"))
+                content[temp]=content[temp].replace("<--methodName-->",methodName+"Test");
+            if(content[temp].contains("<--methodComment-->"))
+                content[temp]=content[temp].replace("<--methodComment-->",methodComment+"\n\t"+name+" "+name.toLowerCase()+"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringParam(types,typed)+")");
+            result.append(content[temp]).append("\n");
+        }//for
+        return result.toString();
+    }//replacePLA
+
     /**
      * Returns method's return type.
      * @param types string[] - user-defined nomenclatures list.
@@ -129,7 +156,7 @@ public class Method {
             if(methodReturnType.equals("integer[]"))
                 methodReturnType=intType+"[]";
             return methodReturnType;
-        }else
+        }
             return methodReturnType;
     }//getStringReturnType
 
@@ -171,5 +198,4 @@ public class Method {
         }//if_else
         return param.toString();
     }//getStringParam
-
 }//Method

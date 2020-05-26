@@ -88,7 +88,7 @@ public class API{
      * @param PLA string - PLA's parametrized content.
      * @return string - PLA's developed content.
      */
-    public String replacePLA(String PLA){
+    public String replacePLA(String PLA, boolean test){
         String[] content=PLA.split("\n");
         int startMethod=0,endMethod=0,startStructure=0,endStructure=0,methodHere=0,structureHere=0;
         boolean typed=true;
@@ -118,7 +118,10 @@ public class API{
             if(content[i].contains("<--method.here-->"))
                 methodHere=i;
             if(content[i].contains("<--className-->"))
-                content[i]=content[i].replace("<--className-->",APIName);
+                if(test)
+                    content[i]=content[i].replace("<--className-->",APIName+"Tests");
+                else
+                    content[i]=content[i].replace("<--className-->",APIName);
             if(content[i].contains("<--classComment-->"))
                 content[i]=content[i].replace("<--classComment-->",APIComment);
         }//for
@@ -128,16 +131,25 @@ public class API{
                 break;
             }//if
         StringBuilder methods=new StringBuilder();
-        StringBuilder structure=new StringBuilder();
-        for(Method method:APIMethods)
+        if(!test){
+            for(Method method:APIMethods)
             methods.append("\t").append(method.replacePLA(content.clone(), startMethod, endMethod, types, typed));
-        content[methodHere]=methods.toString();
+            content[methodHere]=methods.toString();
 
-        for(Structure struct:APIStructures)
-            structure.append(struct.replacePLA(content.clone(), startStructure, endStructure,types,typed));
-        content[structureHere]=structure.toString();
+            StringBuilder structure=new StringBuilder();
+            for(Structure struct:APIStructures)
+                structure.append(struct.replacePLA(content.clone(), startStructure, endStructure,types,typed));
+            content[structureHere]=structure.toString();
 
-        return String.join("\n", ArrayUtils.addAll(Arrays.copyOfRange(content,0,startStructure-1),Arrays.copyOfRange(content,endMethod+1,content.length)));
+            return String.join("\n", ArrayUtils.addAll(Arrays.copyOfRange(content,0,startStructure-1),Arrays.copyOfRange(content,endMethod+1,content.length)));
+        }
+        else
+        {
+            for(Method method:APIMethods)
+                methods.append("\t").append(method.replacePLATest(content.clone(), startMethod, endMethod, types, typed, APIName));
+            content[methodHere]=methods.toString();
+            content[structureHere]=content[structureHere].replace("<--struct.here-->","");
+            return String.join("\n", Arrays.copyOfRange(content,endMethod+1,content.length));
+        }
     }//replacePLA
-
 }//API
