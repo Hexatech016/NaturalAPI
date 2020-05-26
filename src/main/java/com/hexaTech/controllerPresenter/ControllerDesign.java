@@ -70,6 +70,7 @@ public class ControllerDesign {
      */
     public void createBALController() throws IOException {
         createBALInputPort.createBAL();
+        //createBOInputPort.createBO();
     }
 
     public void createBOController() throws IOException {
