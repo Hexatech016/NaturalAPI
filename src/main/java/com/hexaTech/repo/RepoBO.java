@@ -85,7 +85,7 @@ public class RepoBO implements RepoBOInterface{
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BO=new Document(document.substring(document.lastIndexOf("\\")+1),document);
         saveDoc(".\\BackupBO.txt", directory);
@@ -224,20 +224,5 @@ public class RepoBO implements RepoBOInterface{
     public void saveBo(com.hexaTech.entities.BO bo) {
 
     }
-
-    private void saveDocDesign(String doc, String path) throws IOException {
-        File directory = new File("Design");
-        if (! directory.exists())
-            directory.mkdir();
-        // Open given file in append mode.
-        BufferedWriter out = new BufferedWriter(
-                new FileWriter(directory + "/" + path));
-        String[] rows=doc.split("\n");
-        for(String riga: rows){
-            out.write(riga);
-            out.newLine();
-        }//for
-        out.close();
-    }//saveDocDesign
 
 }//RepoBO

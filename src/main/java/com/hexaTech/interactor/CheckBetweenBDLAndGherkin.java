@@ -23,7 +23,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     }
 
     public void check(String directory) throws IOException, JWNLException {
-        BDL bdlOfTexts=new BDL();
+        BDL bdlOfTexts;
         String pathOfBDL=repoBDLInterface.importPathOfBDL();
         bdlOfTexts=repoBDLInterface.loadBDLFromJsonFile(pathOfBDL);
         System.out.println("Add a gherkin scenario");

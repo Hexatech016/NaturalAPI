@@ -88,16 +88,6 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
         notifySubMe();
     }
 
-    /**
-     * Sets flag from document searching action.
-     * @param flag boolean - search result.
-     */
-    @Override
-    public void thereAreDoc(boolean flag){
-        this.done=flag;
-        notifySubMeDone();
-    }
-
     //Design
 
     /**
@@ -135,12 +125,6 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
 
     @Override
     public void showCreatedBO(String result) {
-        message=result;
-        notifySubMe();
-    }
-
-    @Override
-    public void showErrorBO(String result) {
         message=result;
         notifySubMe();
     }

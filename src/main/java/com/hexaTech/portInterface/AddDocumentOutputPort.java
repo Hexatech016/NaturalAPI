@@ -19,7 +19,7 @@ public interface AddDocumentOutputPort {
      * Notifies the flag from document search action.
      * @param flag boolean - true if backup was found, false if not.
      */
-    void thereAreDoc(boolean flag);
+    void showDone(boolean flag);
 
     /**
      * Notifies the message from adding document action.

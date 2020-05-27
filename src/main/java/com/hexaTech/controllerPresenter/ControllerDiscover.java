@@ -72,7 +72,7 @@ public class ControllerDiscover {
     /**
      * Invokes CheckThereAreDoc method to check the presence of a stored document.
      */
-    public void checkThereAreDoc(String path) {
+    public void existsDoc(String path) {
         addDocumentInputPort.checkThereAreDoc(path);
     }
 

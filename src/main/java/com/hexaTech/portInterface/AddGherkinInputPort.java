@@ -23,4 +23,18 @@ public interface AddGherkinInputPort {
      */
     void addGherkin(String directory) throws IOException;
 
+    void loadBackUp(String directory) throws IOException;
+
+    /**
+     * Delete a document.
+     * @param path string - path to the file.
+     */
+    void deleteDoc(String path);
+
+    /**
+     * Check if a document exists.
+     * @param path string - path to the file.
+     */
+    void existsDoc(String path);
+
 }//AddGherkinInputInterface

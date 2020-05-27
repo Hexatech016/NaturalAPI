@@ -40,9 +40,11 @@ public class AddBO implements AddBOInputPort {
      */
     @Override
     public void addBO(String directory) throws IOException {
-        if(repoBOInterface.importDoc(directory))
-            addBOOutputPort.showAddedBO("BO added");
-        else
-            addBOOutputPort.showAddedBO("BO not added!");
+        if(repoBOInterface.importDoc(directory)) {
+            addBOOutputPort.showDone(true);
+        }else {
+            addBOOutputPort.showDone(false);
+        }
     }
+
 }//AddBO

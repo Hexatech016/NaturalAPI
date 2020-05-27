@@ -21,4 +21,6 @@ public interface AddBDLOutputPort {
      */
     void showAddedBDL(String result);
 
+    void showDone(boolean done);
+
 }//AddBDLOutputPort

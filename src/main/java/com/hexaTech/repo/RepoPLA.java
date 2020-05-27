@@ -127,7 +127,7 @@ public class RepoPLA implements RepoPLAInterface {
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".pla"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".pla"))
             return false;
         PLA=new PLA(document,getExtensionFromPLA(document));
         return true;

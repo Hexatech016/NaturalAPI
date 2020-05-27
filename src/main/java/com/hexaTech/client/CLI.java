@@ -39,6 +39,8 @@ public class CLI implements MyObserver {
         this.presenter.addObserver(this);
     }
 
+    /* ************************ MAIN ************************ */
+
     public void useCaseNaturalAPI() throws IOException, JWNLException {
         String temp;
         System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Exit");
@@ -52,79 +54,275 @@ public class CLI implements MyObserver {
                 useCaseDesign();
                 break;
             case ("3"):
-                controllerDevelop.existsDocController(".\\Develop\\BackupBAL.txt");
-                if(notifyMeDone())
-                    useCaseDevelop(existsBackUpDevelop());
-                else
-                    useCaseDevelop(false);
+                useCaseDevelop();
                 break;
             case ("4"):
                 System.out.println("Bye!");
                 System.exit(0);
             default:
+                System.out.println("Invalid choice. Please retry.");
                 useCaseNaturalAPI();
         }//switch
-    }
+    }//useCaseNaturalAPI
+
+    /* ************************ DISCOVER ************************ */
+
+    public void useCaseDiscover() throws IOException, JWNLException {
+        System.out.println("Use Case: \n 0: Check if there are saved documents \n 1: Add a document (.txt) "+ "\n 3: Back");
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case("0"):
+                controllerDiscover.existsDoc(".\\Discover\\BackupDocument.txt");
+                if(notifyMeDone()){
+                    if(existsBackUpDocument())
+                        useCaseBDL();
+                    else
+                        useCaseDiscover();
+                }else {
+                    System.out.println("There are no saved documents");
+                    useCaseDiscover();
+                }
+            case ("1"):
+                System.out.println("Add document path:");
+                controllerDiscover.addDocController("Discover");
+                if(!notifyMeDone()) {
+                    System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
+                    useCaseDiscover();
+                }else{
+                    System.out.println("Document added.");
+                    useCaseBDL();
+                }//else
+            case ("2"):
+                System.out.println("Add a BDL file");
+                controllerDiscover.checkBetweenBDLAndGherkin("Discover");
+                /*if(!notifyMeDone())    EDUARD BISOGNA GESTIRE QUESTO CONTROLLO
+                    System.out.println("The file is not a valid BDL or it doesn't exist. Please retry.");*/
+            case ("3"):
+                useCaseNaturalAPI();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseDiscover();
+        }//switch
+    }//useCase
+
+    public void useCaseBDL() throws IOException, JWNLException {
+        System.out.println("Use Case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
+        Scanner scanner = new Scanner(System.in);
+        String choice=scanner.nextLine();
+        switch(choice){
+            case ("1"):
+                System.out.println("Choose a name for BDL.");
+                String pathBDL=scanner.nextLine();
+                if(!pathBDL.equals("")) {
+                    controllerDiscover.createBDL(pathBDL);
+                    useCaseDiscover();
+                }else{
+                    System.out.println("Please insert a valid name.");
+                    useCaseBDL();
+                }//if_else
+            case ("2"):
+                System.out.println("Add document path:");
+                controllerDiscover.addDocController("Discover");
+                if(!notifyMeDone()) {
+                    System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
+                    useCaseBDL();
+                }else{
+                    System.out.println("Document added.");
+                    useCaseBDL();
+                }//else
+            case ("3"):
+                useCaseDiscover();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseBDL();
+        }//switch
+    }//useCaseBDL
 
     /**
      * Asks to user if he wants to reload an existing backup file.
      * @return boolean - true if user decide to reload a backup file; false if user doesn't want to reload it.
      * @throws IOException if the document path specified in backup is not valid anymore.
      */
-    public boolean existsBackUpDevelop() throws IOException {
-        System.out.println("A document is already stored. Do you want to load it? (Y/N)");
+    public boolean existsBackUpDocument() throws IOException {
+        System.out.println("Some documents are already stored. Do you want to load them? (Y/N)");
         Scanner scan = new Scanner(System.in);
         String answer = scan.nextLine();
-        if (answer.equalsIgnoreCase("y")) {
-            controllerDevelop.restoreBackupController("Develop");
+        if(answer.equalsIgnoreCase("y")) {
+            controllerDiscover.restoreDocController("Discover");
             return true;
         }else if (answer.equalsIgnoreCase("n")){
-            controllerDevelop.deleteDocController(".\\Develop\\BackupBAL.txt");
+            controllerDiscover.deleteDocController(".\\Discover\\BackupDocument.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
-            return existsBackUpDevelop();
+            return existsBackUpDocument();
         }//if_else
-    }//existsBackup
+    }//existsBackupDocument
+
+    /* ************************ DESIGN ************************ */
+
+    /**
+     * Shows to user which action he could do with this software.
+     * @throws IOException if the specified file path doesn't exist.
+     */
+    public void useCaseDesign() throws IOException, JWNLException {
+        String choice;
+        System.out.println("Use case:\n 0: Check if there are saved documents\n 1: Add a Gherkin file (.scenario) \n 2: Back");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        switch (choice){
+            case ("0"):
+                controllerDesign.existsDocController(".\\Design\\BackupGherkin.txt");
+                if(notifyMeDone()) {
+                    if(existsBackUpGherkin())
+                        useCaseBDLDesign();
+                    else
+                        useCaseDesign();
+                }else{
+                    System.out.println("There are no saved documents");
+                    useCaseDevelop();
+                }//if_else
+            case ("1"):
+                System.out.println("Add document path:");
+                controllerDesign.addGherkinController("Design");
+                if(notifyMeDone()) {
+                    System.out.println("Scenario added.");
+                    useCaseBDLDesign();
+                }else {
+                    System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
+                    useCaseDesign();
+                }
+            case ("2"):
+                useCaseNaturalAPI();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseDesign();
+        }//switch
+    }//useCase
+
+    private void useCaseBDLDesign() throws IOException, JWNLException {
+        String choice;
+        System.out.println("Use case:\n 1: Add a BDL (.json) \n 2: Back ");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        switch (choice){
+            case ("1"):
+                System.out.println("Add document path:");
+                controllerDesign.addBDLController("Design");
+                if(notifyMeDone()) {
+                    System.out.println("BDL added.");
+                    useCaseBO();
+                }else {
+                    System.out.println("The file is not a BDL or it doesn't exist. Please retry.");
+                    useCaseBDLDesign();
+                }
+            case ("2"):
+                useCaseDesign();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseBDLDesign();
+        }//switch
+    }//useCaseBDLDesign
+
+    private void useCaseBO() throws IOException, JWNLException {
+        String choice;
+        System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Back ");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextLine();
+        switch (choice){
+            case ("1"):
+                System.out.println("Add document path:");
+                controllerDesign.createBOController("Design");
+                if(notifyMeDone()){
+                    System.out.println("BO added. Now a BAL document will be extracted.");
+                    controllerDesign.createBALController();
+                    controllerDesign.checkSuggestions();
+                    useCaseDesign();
+                }else{
+                    System.out.println("The file is not a .json or it doesn't exist. Please retry.");
+                    useCaseBO();
+                }
+            case ("2"):
+                controllerDesign.createBALController();
+                controllerDesign.checkSuggestions();
+                useCaseDesign();
+            case ("3"):
+                useCaseDesign();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseBO();
+        }//switch
+    }//useCaseBO
+
+    public boolean existsBackUpGherkin() throws IOException {
+        System.out.println("A Gherkin Scenario is already stored. Do you want to load it? (Y/N)");
+        Scanner scan = new Scanner(System.in);
+        String answer = scan.nextLine();
+        if (answer.equalsIgnoreCase("y")) {
+            controllerDesign.restoreBackupController("Design");
+            return true;
+        }else if (answer.equalsIgnoreCase("n")){
+            controllerDesign.deleteDocController(".\\Design\\BackupGherkin.txt");
+            return false;
+        }else{
+            System.out.println("Please insert Y or N.");
+            return existsBackUpGherkin();
+        }//if_else
+    }//existsBackupBAL
+
+    /* ************************ DEVELOP ************************ */
 
     /**
      * Shows to user which actions he could do with this software.
-     * @param condition boolean - true if there's a loaded BAL file, false if not.
      * @throws IOException if the specified file path doesn't exist.
      */
-    public void useCaseDevelop(boolean condition) throws IOException, JWNLException {
-        String temp;
-        if (!condition) {
-            System.out.println("Use case: \n 1: Add a new BAL \n 2: Exit");
-            Scanner scan = new Scanner(System.in);
-            temp = scan.nextLine();
-            switch (temp) {
-                case ("1"):
-                    controllerDevelop.addBALController("Develop");
-                    if(!notifyMeDone())
-                        System.out.println("Please select a .json file.");
-                    useCaseDevelop(notifyMeDone());
-                    break;
-                case ("2"):
-                    useCaseNaturalAPI();
-                default:
-                    useCaseDevelop(condition);
-            }//switch
-        }else{
-            System.out.println("Use case: \n 1: Generate API \n 2: Exit");
-            Scanner scan = new Scanner(System.in);
-            temp = scan.nextLine();
-            switch (temp) {
-                case ("1"):
+    public void useCaseDevelop() throws IOException, JWNLException {
+        System.out.println("Use case: \n 0: Check if there are saved documents\n 1: Add a new BAL (.json) \n 2: Back");
+        Scanner scan = new Scanner(System.in);
+        String choice = scan.nextLine();
+        switch(choice) {
+            case ("0"):
+                controllerDevelop.existsDocController(".\\Develop\\BackupBAL.txt");
+                if(notifyMeDone()) {
+                    if(existsBackUpBAL())
+                        useCaseBAL();
+                    else
+                        useCaseDevelop();
+                }else{
+                    System.out.println("There are no saved documents");
+                    useCaseDevelop();
+                }//if_else
+            case ("1"):
+                System.out.println("Add document path:");
+                controllerDevelop.addBALController("Develop");
+                if(!notifyMeDone()) {
+                    System.out.println("The file is not a .json or it doesn't exist. Please retry.");
+                    useCaseDevelop();
+                }else
                     useCasePLA();
-                    break;
-                case ("2"):
-                    useCaseNaturalAPI();
-                default:
-                    useCaseDevelop(condition);
-            }//switch
-        }//if_else
+            case ("2"):
+                useCaseNaturalAPI();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseDevelop();
+        }//switch
     }//useCaseDevelop
+
+    private void useCaseBAL() throws IOException, JWNLException {
+        System.out.println("Use case: \n 1: Generate API \n 2: Back");
+        Scanner scan = new Scanner(System.in);
+        String choice = scan.nextLine();
+        switch (choice) {
+            case ("1"):
+                useCasePLA();
+            case ("2"):
+                useCaseDevelop();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseBAL();
+        }//switch
+    }//useCaseBAL
 
     /**
      * Asks the user which programming language he want for the output file. He also can load a PLA file.
@@ -132,7 +330,7 @@ public class CLI implements MyObserver {
      */
     public void useCasePLA() throws IOException, JWNLException {
         String temp;
-        System.out.println("In which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n 3: Generate from an external PLA \n 4: Exit");
+        System.out.println("In which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n 3: Generate from an external PLA (.pla) \n 4: Back");
         Scanner scan = new Scanner(System.in);
         temp = scan.nextLine();
         switch(temp){
@@ -145,19 +343,43 @@ public class CLI implements MyObserver {
                 controllerDevelop.createAPIController();
                 checkUseCase(notifyMeError());
             case("3"):
+                System.out.println("Add document path:");
                 controllerDevelop.addPLAController("Develop");
                 if(notifyMeDone()){
                     controllerDevelop.createAPIController();
                     checkUseCase(notifyMeError());
-                }else
+                }else {
                     System.out.println("Please select a .pla file.");
-                useCasePLA();
+                    useCasePLA();
+                }
             case ("4"):
-                useCaseNaturalAPI();
+                useCaseDevelop();
             default:
+                System.out.println("Invalid choice. Please retry.");
                 useCasePLA();
         }//switch
     }//useCasePLA
+
+    /**
+     * Asks to user if he wants to reload an existing backup file.
+     * @return boolean - true if user decide to reload a backup file; false if user doesn't want to reload it.
+     * @throws IOException if the document path specified in backup is not valid anymore.
+     */
+    public boolean existsBackUpBAL() throws IOException {
+        System.out.println("A BAL is already stored. Do you want to load it? (Y/N)");
+        Scanner scan = new Scanner(System.in);
+        String answer = scan.nextLine();
+        if (answer.equalsIgnoreCase("y")) {
+            controllerDevelop.restoreBackupController("Develop");
+            return true;
+        }else if (answer.equalsIgnoreCase("n")){
+            controllerDevelop.deleteDocController(".\\Develop\\BackupBAL.txt");
+            return false;
+        }else{
+            System.out.println("Please insert Y or N.");
+            return existsBackUpBAL();
+        }//if_else
+    }//existsBackupBAL
 
     /**
      * Shows different errors messages in case of problems and redirect the user to the correct corrective action.
@@ -173,111 +395,15 @@ public class CLI implements MyObserver {
                 useCasePLA();
             case(2):
                 System.out.println("Add a BAL.");
-                useCaseDevelop(false);
+                useCaseDevelop();
             case(3):
                 System.out.println("Add a valid BAL.");
-                useCaseDevelop(false);
+                useCaseDevelop();
             case(4):
                 System.out.println("Add a valid PLA.");
                 useCasePLA();
         }//switch
     }//checkUseCase
-
-    /**
-     * Shows to user which action he could do with this software.
-     * @throws IOException if the specified file path doesn't exist.
-     */
-    public void useCaseDesign() throws IOException{
-        String temp;
-        while (true){
-            System.out.println("Use case:\n 1: Add a BDL \n 2: Add a Gherkin file  \n 3: Extract BAL \n 4: Add a Business Ontology \n 5: Extract a BO \n 6: Exit ");
-            Scanner scan = new Scanner(System.in);
-            temp = scan.nextLine();
-            switch (temp) {
-                case ("1"):
-                    controllerDesign.addBDLController("Design");
-                    break;
-                case ("2"):
-                    controllerDesign.addGherkinController("Design");
-                    break;
-                case ("3"):
-                    controllerDesign.createBALController();
-                    controllerDesign.checkSuggestions();
-                    break;
-                case ("4"):
-                    System.out.println("Bye!");
-                    System.exit(0);
-                case ("5"):
-                    controllerDesign.addBOController("Design");
-                    break;
-                case ("6"):
-                    controllerDesign.createBOController("Design");
-                    break;
-            }//switch
-        }//while
-    }//useCase
-
-    /**
-     * Shows to user which actions he could do with this software.
-     * @throws IOException if the specified file path doesn't exist.
-     */
-    public void useCaseDiscover() throws IOException, JWNLException {
-        String firstCase;
-        while (true) {
-            System.out.println("Use Case: \n 1: Check if there are saved documents \n 2: Add a document  " +
-                    "\n 3: Extract BDL \n 4: Check between BDL and Gherkin \n 5: Exit");
-            Scanner firstScanner = new Scanner(System.in);
-            firstCase = firstScanner.nextLine();
-            switch (firstCase) {
-                case ("1"):
-                    controllerDiscover.checkThereAreDoc(".\\Discover\\BackupDocument.txt");
-                    if(notifyMeDone()){
-                        System.out.println("There's a saved document. Do you want to load it? (Y/N)");
-                        Scanner secondScanner = new Scanner(System.in);
-                        String secondCase = secondScanner.nextLine();
-                        if(secondCase.equalsIgnoreCase("y")) {
-                            controllerDiscover.restoreDocController("Discover");
-                        }else if(secondCase.equalsIgnoreCase("n")){
-                            controllerDiscover.deleteDocController(".\\Discover\\BackupDocument.txt");
-                        }else{
-                            System.out.println("Please type Y or N");
-                            break;
-                        }//if_else
-                    }//if_else
-                    else
-                        System.out.println("There are no saved documents");
-                    break;
-                case ("2"):
-                    controllerDiscover.addDocController("Discover");
-                    if(!notifyMeDone())
-                        System.out.println("Please select a .txt file.");
-                    else
-                        System.out.println("Document added.");
-                    break;
-                case ("3"):
-                    /*controllerDiscover.checkThereAreDoc();
-                    if(notifyMeDone())
-                        controllerDiscover.createBDL();
-                    else
-                        System.out.println("There are no loaded documents to extract BDL");*/
-                    System.out.println("Give a name to BDL files");
-                    Scanner fileName = new Scanner(System.in);
-                    String BDLpath = firstScanner.nextLine();
-                    controllerDiscover.createBDL(BDLpath);
-                    break;
-                case ("4"):
-                    System.out.println("Add a BDL file");
-                    controllerDiscover.checkBetweenBDLAndGherkin("Discover");
-                    break;
-                case ("5"):
-                    System.out.println("Bye!");
-                    System.exit(0);
-                    /*case ("5"):
-                    System.out.println("Restore Backup");
-                    controllerDiscover.restoreBackupController("Discover");*/
-            }//switch
-        }//while
-    }//useCase
 
     /**
      * Receives presenterDevelop's message status and show it to user.

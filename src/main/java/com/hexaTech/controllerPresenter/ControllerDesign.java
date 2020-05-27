@@ -60,8 +60,20 @@ public class ControllerDesign {
         addGherkinInputPort.addGherkin(directory);
     }
 
-    public void addBOController(String directory) throws IOException {
-        addBOInputPort.addBO(directory);
+    /**
+     * Invokes AddPLA method to restore backup.
+     * @throws IOException if the document to restore doesn't exist.
+     */
+    public void restoreBackupController(String directory) throws IOException{
+        addGherkinInputPort.loadBackUp(directory);
+    }
+
+    /**
+     * Invokes DeleteDocument method to delete a document.
+     * @param path string - path to the file to be removed.
+     */
+    public void deleteDocController(String path){
+        addGherkinInputPort.deleteDoc(path);
     }
 
     /**
@@ -79,6 +91,10 @@ public class ControllerDesign {
 
     public void checkSuggestions() throws IOException {
         createBALInputPort.checkTypes();
+    }
+
+    public void existsDocController(String path){
+        addGherkinInputPort.existsDoc(path);
     }
 
 }//Controller

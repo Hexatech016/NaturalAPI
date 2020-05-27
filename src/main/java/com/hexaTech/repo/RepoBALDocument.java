@@ -236,7 +236,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BAL=new Document(document.substring(document.lastIndexOf("\\")+1),document);
         saveDoc(".\\BackupBAL.txt", directory);

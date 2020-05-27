@@ -10,7 +10,6 @@
 
 package com.hexaTech.interactor;
 
-import com.hexaTech.entities.BDL;
 import com.hexaTech.portInterface.AddBDLInputPort;
 import com.hexaTech.portInterface.AddBDLOutputPort;
 import com.hexaTech.repointerface.RepoBDLInterface;
@@ -41,11 +40,11 @@ public class AddBDL implements AddBDLInputPort {
     @Override
     public void addBDL(String directory) throws IOException {
         String path=repoBDLInterface.importPathOfBDL();
-        if(path.equals("")) {
-            addBDLOutputPort.showAddedBDL("Select an existing .json file. Please retry.");
+        if(path.equals("")){
+            addBDLOutputPort.showDone(false);
         }else{
+            addBDLOutputPort.showDone(true);
             repoBDLInterface.setBDL(repoBDLInterface.loadBDLFromJsonFile(path));
-            addBDLOutputPort.showAddedBDL("BDL added");
         }//if_else
     }//addBDL
 

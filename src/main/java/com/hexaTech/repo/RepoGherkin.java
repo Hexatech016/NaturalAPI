@@ -59,7 +59,7 @@ public class RepoGherkin implements RepoGherkinInterface {
         if(document.equals("") || !existsDoc(document))
             return false;
         System.out.println(document.substring(document.lastIndexOf(".")));
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
             return false;
         gherkins.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
         saveDoc(".\\BackupGherkin.txt", directory);

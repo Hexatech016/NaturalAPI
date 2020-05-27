@@ -123,7 +123,7 @@ public class RepoDocument implements RepoDocumentInterface {
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
             return false;
         documents.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
         saveDoc(".\\BackupDocument.txt", directory);

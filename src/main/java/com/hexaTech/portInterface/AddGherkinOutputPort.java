@@ -21,4 +21,6 @@ public interface AddGherkinOutputPort {
      */
     void showAddedGherkin(String result);
 
+    void showDone(boolean done);
+
 }//AddGherkinOutputPort

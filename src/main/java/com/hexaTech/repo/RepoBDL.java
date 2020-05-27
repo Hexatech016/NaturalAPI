@@ -183,7 +183,7 @@ public class RepoBDL implements RepoBDLInterface {
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return "";
-        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return "";
         return document;
     }//returnPath
@@ -195,14 +195,17 @@ public class RepoBDL implements RepoBDLInterface {
     }
 
     @Override
-    public boolean existsDoc(String path) {
-        return false;
-    }
+    public boolean existsDoc(String path){
+        File file=new File(path);
+        return file.exists();
+    }//existsDoc
 
     @Override
-    public boolean deleteDoc(String path) {
-        return false;
+    public boolean deleteDoc(String path){
+        File temp=new File(path);
+        return temp.delete();
     }
+
 
     @Override
     public void loadBackup(String directory) throws IOException {

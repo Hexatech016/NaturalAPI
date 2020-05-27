@@ -4,7 +4,6 @@ public interface CreateBOOutputPort {
 
     void showCreatedBO(String result);
 
-    void showErrorBO(String result);
+    void showDone(boolean done);
 
-    void showMessage(String result);
-}
+}//CreateBOOutputPort

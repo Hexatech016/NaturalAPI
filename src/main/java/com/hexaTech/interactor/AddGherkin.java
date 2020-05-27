@@ -40,10 +40,34 @@ public class AddGherkin implements AddGherkinInputPort {
      */
     @Override
     public void addGherkin(String directory) throws IOException {
-        if(repoGherkinInterface.importDoc(directory))
+        if(repoGherkinInterface.importDoc(directory)) {
             addGherkinOutputPort.showAddedGherkin("Scenario added");
-        else
+            addGherkinOutputPort.showDone(true);
+        }else {
             addGherkinOutputPort.showAddedGherkin("Scenario not added!");
+            addGherkinOutputPort.showDone(false);
+        }//if_else
+    }//addGherkin
+
+    /**
+     * Load a backup file.
+     * @throws IOException if the file doesn't exist.
+     */
+    public void loadBackUp(String directory) throws IOException {
+        repoGherkinInterface.loadBackup(directory);
+        addGherkinOutputPort.showAddedGherkin("Backup restored");
+        addGherkinOutputPort.showDone(true);
+    }
+
+    public void deleteDoc(String path){
+        if(repoGherkinInterface.deleteDoc(path))
+            addGherkinOutputPort.showAddedGherkin("Document deleted.");
+        else
+            addGherkinOutputPort.showAddedGherkin("Error. Please retry.");
+    }
+
+    public void existsDoc(String path){
+        addGherkinOutputPort.showDone(repoGherkinInterface.existsDoc(path));
     }
 
 }//AddGherkin
