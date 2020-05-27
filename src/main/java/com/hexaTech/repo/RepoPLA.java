@@ -12,6 +12,7 @@ package com.hexaTech.repo;
 
 import com.google.common.io.Files;
 import com.hexaTech.Main;
+import com.hexaTech.entities.Document;
 import com.hexaTech.entities.PLA;
 import com.hexaTech.repointerface.RepoPLAInterface;
 
@@ -102,7 +103,7 @@ public class RepoPLA implements RepoPLAInterface {
      */
     @Override
     public boolean importDoc(String directory) throws IOException {
-        String temp;
+        /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("File PLA", "pla");
@@ -118,10 +119,18 @@ public class RepoPLA implements RepoPLAInterface {
             temp="";
         if(!temp.equalsIgnoreCase("")) {
             PLA=new PLA(chooser.getSelectedFile().getAbsolutePath(),getExtensionFromPLA(chooser.getSelectedFile().getAbsolutePath()));
-            //saveDoc(".\\BackupPLA.txt", directory);
+            saveDoc(".\\BackupPLA.txt", directory);
             return true;
         }else
+            return false;*/
+        Scanner scanner=new Scanner(System.in);
+        String document=scanner.nextLine();
+        if(document.equals("") || !existsDoc(document))
             return false;
+        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".pla"))
+            return false;
+        PLA=new PLA(document,getExtensionFromPLA(document));
+        return true;
     }//importDoc
 
     /**

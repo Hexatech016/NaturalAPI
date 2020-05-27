@@ -41,16 +41,12 @@ public class AddBDL implements AddBDLInputPort {
     @Override
     public void addBDL(String directory) throws IOException {
         String path=repoBDLInterface.importPathOfBDL();
-        if(path=="")
-        {
-            System.out.println("Please select a .json file.");
-            addBDLOutputPort.showAddedBDL("BDL not added");
-        }
-        else {
+        if(path.equals("")) {
+            addBDLOutputPort.showAddedBDL("Select an existing .json file. Please retry.");
+        }else{
             repoBDLInterface.setBDL(repoBDLInterface.loadBDLFromJsonFile(path));
             addBDLOutputPort.showAddedBDL("BDL added");
-        }
-
-    }
+        }//if_else
+    }//addBDL
 
 }//AddBDL

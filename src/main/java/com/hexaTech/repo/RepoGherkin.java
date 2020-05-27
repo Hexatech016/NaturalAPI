@@ -33,7 +33,7 @@ public class RepoGherkin implements RepoGherkinInterface {
 
     @Override
     public boolean importDoc(String directory){
-        String temp;
+        /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Gherkin file", "scenario");
@@ -53,8 +53,17 @@ public class RepoGherkin implements RepoGherkinInterface {
             saveDoc(".\\BackupGherkin.txt", directory);
             return true;
         }else
+            return false;*/
+        Scanner scanner=new Scanner(System.in);
+        String document=scanner.nextLine();
+        if(document.equals("") || !existsDoc(document))
             return false;
-
+        System.out.println(document.substring(document.lastIndexOf(".")));
+        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
+            return false;
+        gherkins.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
+        saveDoc(".\\BackupGherkin.txt", directory);
+        return true;
     }//returnPath
 
     /**

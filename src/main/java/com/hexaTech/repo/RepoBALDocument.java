@@ -210,7 +210,8 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      */
     @Override
     public boolean importDoc(String directory){
-        String temp;
+        //GUI INSERTION
+        /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("File JSON", "json");
@@ -230,7 +231,16 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             saveDoc(".\\BackupBAL.txt", directory);
             return true;
         }else
+            return false;*/
+        Scanner scanner=new Scanner(System.in);
+        String document=scanner.nextLine();
+        if(document.equals("") || !existsDoc(document))
             return false;
+        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
+            return false;
+        BAL=new Document(document.substring(document.lastIndexOf("\\")+1),document);
+        saveDoc(".\\BackupBAL.txt", directory);
+        return true;
     }//importDoc
 
     /**

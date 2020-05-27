@@ -60,8 +60,8 @@ public class RepoBO implements RepoBOInterface{
      * @return boolean - false if something goes wrong, true if not.
      */
     public boolean importDoc(String directory){
-        String temp;
-       JFrame dialog = new JFrame();
+        /*String temp;
+        JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt");
         chooser.setFileFilter(filter);
@@ -80,7 +80,16 @@ public class RepoBO implements RepoBOInterface{
             saveDoc(".\\BackupBO.txt", directory);
             return true;
         }else
+            return false;*/
+        Scanner scanner=new Scanner(System.in);
+        String document=scanner.nextLine();
+        if(document.equals("") || !existsDoc(document))
             return false;
+        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
+            return false;
+        BO=new Document(document.substring(document.lastIndexOf("\\")+1),document);
+        saveDoc(".\\BackupBO.txt", directory);
+        return true;
     }//importDoc
 
     /**

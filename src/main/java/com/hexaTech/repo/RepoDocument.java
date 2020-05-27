@@ -98,7 +98,7 @@ public class RepoDocument implements RepoDocumentInterface {
      */
     @Override
     public boolean importDoc(String directory){
-        String temp;
+        /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt");
@@ -118,7 +118,16 @@ public class RepoDocument implements RepoDocumentInterface {
             saveDoc(".\\BackupDocument.txt", directory);
             return true;
         }else
+            return false;*/
+        Scanner scanner=new Scanner(System.in);
+        String document=scanner.nextLine();
+        if(document.equals("") || !existsDoc(document))
             return false;
+        if(!document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
+            return false;
+        documents.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
+        saveDoc(".\\BackupDocument.txt", directory);
+        return true;
     }//returnPath
 
     /**
