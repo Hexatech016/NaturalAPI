@@ -10,9 +10,9 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.portInterface.AddBALInputPort;
-import com.hexaTech.portInterface.AddPLAInputPort;
-import com.hexaTech.portInterface.CreateAPIInputPort;
+import com.hexaTech.interactor.portInterface.AddBALInputPort;
+import com.hexaTech.interactor.portInterface.AddPLAInputPort;
+import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
 
 import java.io.IOException;
 

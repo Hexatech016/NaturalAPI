@@ -11,11 +11,11 @@
 package com.hexaTech.controllerPresenter;
 
 
-import com.hexaTech.portInterface.AddBDLInputPort;
-import com.hexaTech.portInterface.AddBOInputPort;
-import com.hexaTech.portInterface.AddGherkinInputPort;
-import com.hexaTech.portInterface.CreateBALInputPort;
-import com.hexaTech.portInterface.CreateBOInputPort;
+import com.hexaTech.interactor.portInterface.AddBDLInputPort;
+import com.hexaTech.interactor.portInterface.AddBOInputPort;
+import com.hexaTech.interactor.portInterface.AddGherkinInputPort;
+import com.hexaTech.interactor.portInterface.CreateBALInputPort;
+import com.hexaTech.interactor.portInterface.CreateBOInputPort;
 
 import java.io.IOException;
 

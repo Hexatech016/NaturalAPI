@@ -10,9 +10,9 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.interactor.CheckBetweenBDLAndGherkinInputPort;
-import com.hexaTech.portInterface.AddDocumentInputPort;
-import com.hexaTech.portInterface.CreateBDLInputPort;
+import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.portInterface.AddDocumentInputPort;
+import com.hexaTech.interactor.portInterface.CreateBDLInputPort;
 import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;

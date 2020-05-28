@@ -10,7 +10,7 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.portInterface.*;
+import com.hexaTech.interactor.portInterface.*;
 
 /**
  * Class used to manage different output messages from interactor's actions.
