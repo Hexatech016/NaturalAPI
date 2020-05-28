@@ -13,7 +13,8 @@ package com.hexaTech;
 
 import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
-import com.hexaTech.frameworks.IWordNet;
+import com.hexaTech.frameworks.StanfordNLP;
+import com.hexaTech.frameworks.WordNet;
 import com.hexaTech.interactor.portInterface.AddBALInputPort;
 import com.hexaTech.interactor.portInterface.AddPLAInputPort;
 import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
@@ -26,10 +27,11 @@ import com.hexaTech.interactor.usecases.design.CreateBO;
 import com.hexaTech.interactor.usecases.develop.AddBAL;
 import com.hexaTech.interactor.usecases.develop.AddPLA;
 import com.hexaTech.interactor.usecases.develop.CreateAPI;
-import com.hexaTech.interactor.usecases.develop.CreateBAL;
+import com.hexaTech.interactor.usecases.design.CreateBAL;
 import com.hexaTech.interactor.usecases.discover.AddDocument;
 import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkin;
 import com.hexaTech.interactor.usecases.discover.CreateBDL;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;
@@ -42,8 +44,10 @@ public class Main{
 
         //PRESENTERS
         Presenter presenter=new Presenter();
+        //FRAMEWORK
+        WordNet wordNet =new WordNet();
+        StanfordNLP stanfordNLP=new StanfordNLP();
         //REPOS
-        IWordNet wordNet =new IWordNet();
             //DISCOVER
         RepoDocumentInterface repoDocument=new RepoDocument();
         RepoBDLInterface repoBDLInterface=new RepoBDL();
@@ -59,8 +63,8 @@ public class Main{
         //INTERACTORS
             //DISCOVER
         AddDocument addDocument =new AddDocument(presenter,repoDocument);
-        CreateBDL createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument);
-        CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet);
+        CreateBDL createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument,stanfordNLP);
+        CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter,repoBDL);

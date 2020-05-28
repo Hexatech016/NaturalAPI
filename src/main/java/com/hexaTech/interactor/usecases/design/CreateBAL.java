@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.interactor.usecases.develop;
+package com.hexaTech.interactor.usecases.design;
 
 
 import com.hexaTech.interactor.entities.*;

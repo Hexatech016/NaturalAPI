@@ -2,24 +2,32 @@ package com.hexaTech.interactor.usecases.discover;
 
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.frameworksInterface.IWordParsing;
+import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
+import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
     RepoBDLInterface repoBDLInterface;
     RepoGherkinInterface repoGherkinInterface;
-    IWordParsing IWordParsing;
+    WordParsingInterface wordParsingInterface;
+    TextsParsingInterface textsParsingInterface;
 
-    public CheckBetweenBDLAndGherkin(RepoBDLInterface repoBDLInterface, RepoGherkinInterface repoGherkinInterface, IWordParsing IWordParsing) {
+    public CheckBetweenBDLAndGherkin(RepoBDLInterface repoBDLInterface,
+                                     RepoGherkinInterface repoGherkinInterface,
+                                     WordParsingInterface wordParsingInterface,
+                                     TextsParsingInterface textsParsingInterface) {
         this.repoBDLInterface = repoBDLInterface;
         this.repoGherkinInterface = repoGherkinInterface;
-        this.IWordParsing = IWordParsing;
+        this.wordParsingInterface = wordParsingInterface;
+        this.textsParsingInterface = textsParsingInterface;
     }
 
     public void check(String directory) throws IOException, JWNLException {
@@ -32,7 +40,8 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         for(Document doc: repoGherkinInterface.getGherkin()) {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
-            BDL bdlToMerge=repoBDLInterface.extractBDL(document);
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extract(document);
+            BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdlOfGherkin.mergeBDL(bdlToMerge);
         }//for
         checkNounsOfBDL(bdlOfTexts,bdlOfGherkin);
@@ -126,7 +135,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 if (!found) {
                     for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
                         if (thisNounIsRelevant(nounsOfTexts.getValue(),
-                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && IWordParsing.
+                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
                                 thisNounIsASynonymOf(nounsOfGherkin.getKey(),
                                         nounsOfTexts.getKey())) {
                             System.out.println("You could use: " + nounsOfTexts.getKey() +
@@ -155,7 +164,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
             if (!found) {
                 for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
                     if (thisNounIsRelevant(verbsOfTexts.getValue(),
-                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && IWordParsing.
+                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
                             thisVerbIsASynonymOf(verbsOfGherkin.getKey(),
                                     verbsOfTexts.getKey())) {
                         System.out.println("You could use: " + verbsOfTexts.getKey() +

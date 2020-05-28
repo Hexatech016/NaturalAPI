@@ -1,13 +1,15 @@
 package com.hexaTech.interactor.repositoriesInterface;
 
 import com.hexaTech.interactor.entities.BDL;
+import com.hexaTech.interactor.entities.DoubleStruct;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public interface RepoBDLInterface {
 
-
+    BDL createBDL(List<DoubleStruct> tagsForBDLConstruction) throws IOException;
     /**
      * Saves the doucment's path into a backup file.
      * @param title string - title of the file to be saved.
@@ -46,7 +48,6 @@ public interface RepoBDLInterface {
      * @throws IOException if the backup file doesn't exist.
      */
     void loadBackup(String directory) throws IOException;
-    BDL extractBDL(String text) throws IOException;
     void saveBDL(BDL bdl, String BDLpath) throws IOException;
 
     String importPathOfBDL();

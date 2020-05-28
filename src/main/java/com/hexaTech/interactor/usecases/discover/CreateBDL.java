@@ -13,12 +13,15 @@ package com.hexaTech.interactor.usecases.discover;
 
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
+import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.portInterface.CreateBDLInputPort;
 import com.hexaTech.interactor.portInterface.CreateBDLOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Class used to manage a BDL object's creation.
@@ -27,22 +30,15 @@ public class CreateBDL implements CreateBDLInputPort {
     CreateBDLOutputPort createBDLOutputPort;
     RepoBDLInterface repoBDLInterface;
     RepoDocumentInterface repoDocumentInterface;
+    TextsParsingInterface textsParsingInterface;
 
-    /**
-     * CreateBDL standard constructor.
-     * @param createBDLOutputPort CreateBDLOutputPort - used to send output notifications.
-     * @param repoBDLInterface RepoInterface - used to communicate with Repo.
-     * @param repoDocumentInterface ModelInterface - used to communicate with Model.
-     *              JAVADOC TO CORRECT
-     */
-
-
-    public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface, RepoDocumentInterface repoDocumentInterface) {
+    public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface,
+                     RepoDocumentInterface repoDocumentInterface, TextsParsingInterface textsParsingInterface) {
         this.createBDLOutputPort = createBDLOutputPort;
         this.repoBDLInterface = repoBDLInterface;
         this.repoDocumentInterface = repoDocumentInterface;
+        this.textsParsingInterface = textsParsingInterface;
     }
-
 
     /**
      * Creates a new BDL object.
@@ -66,7 +62,8 @@ public class CreateBDL implements CreateBDLInputPort {
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
             String document = repoDocumentInterface.getContentFromPath(path);
-            BDL bdlToMerge=repoBDLInterface.extractBDL(document);
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extract(document);
+            BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
         }//for
         repoBDLInterface.saveBDL(bdl, BDLpath);

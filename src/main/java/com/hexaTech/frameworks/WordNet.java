@@ -1,6 +1,6 @@
 package com.hexaTech.frameworks;
 
-import com.hexaTech.interactor.frameworksInterface.IWordParsing;
+import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.*;
@@ -9,14 +9,12 @@ import net.didion.jwnl.dictionary.Dictionary;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class IWordNet implements IWordParsing {
+public class WordNet implements WordParsingInterface {
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;
         JWNL.initialize(new FileInputStream(".\\src\\main\\resources\\properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
-        //final PointerUtils pointerUtils= PointerUtils.getInstance();
-        //final RelationshipFinder relationshipFinder=RelationshipFinder.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.NOUN, target);
         if(indexWord==null)
             return found;
