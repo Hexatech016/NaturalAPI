@@ -39,7 +39,7 @@ public class RepoBDL implements RepoBDLInterface {
     public void saveBDL(BDL bdl, String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(bdl);
-        saveDocDiscover(jsonInString,".\\" + BDLpath + "CompleteBDL.json");
+        saveDocDiscover(jsonInString,".\\" + BDLpath + "Complete.bdl");
         saveDocDiscover(bdl.sostToCSV(),".\\" + BDLpath + "BDLsost.csv");
         saveDocDiscover(bdl.verbToCSV(),".\\" + BDLpath + "BDLverbs.csv");
         saveDocDiscover(bdl.predToCSV(),".\\" + BDLpath + "BDLpred.csv");

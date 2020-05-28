@@ -60,7 +60,8 @@ public class CLI implements MyObserver {
     /* ************************ DISCOVER ************************ */
 
     public void useCaseDiscover() throws IOException, JWNLException {
-        System.out.println("Use Case: \n 0: Check if there are saved documents \n 1: Add a document (.txt) "+ "\n 3: Back");
+        System.out.println("Use Case: \n 0: Check if there are saved documents \n 1: Add a document (.txt)" +
+                "\n 2: Check between BDL and Gherkin" + "\n 3: Back");
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch (choice) {
@@ -86,7 +87,9 @@ public class CLI implements MyObserver {
                     useCaseBDL();
                 }//else
             case ("2"):
-                System.out.println("Add a BDL file");
+                System.out.println("Which BDL do you want to use for checking Gherkin?");
+                choiceOfBdl();
+                System.out.println("Add a gherkin scenario");
                 controller.checkBetweenBDLAndGherkin("Discover");
                 /*if(!notifyMeDone())    EDUARD BISOGNA GESTIRE QUESTO CONTROLLO
                     System.out.println("The file is not a valid BDL or it doesn't exist. Please retry.");*/
@@ -97,6 +100,62 @@ public class CLI implements MyObserver {
                 useCaseDiscover();
         }//switch
     }//useCase
+
+    public void choiceOfBdl() throws IOException, JWNLException {
+        System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before" + "\n 3: Back");
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case ("1"):
+                System.out.println("Add BDL path:");
+                controller.addBDL("Discover");
+                if(notifyMeDone()) {
+                    System.out.println("BDL added.");
+                    break;
+                }else {
+                    System.out.println("The file is not a .bdl or it doesn't exist. Please retry.");
+                    choiceOfBdl();
+                }//else
+            case ("2"):
+                //controllo per vedere se c'è qualcosa
+                choiceOfBdl(); //se non c'è niente deve inserirlo
+            case ("3"):
+                useCaseDiscover();
+        }
+    }
+
+    public void useCaseBDLInCheckWithGherkin() throws IOException, JWNLException {
+        System.out.println("Use Case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
+        Scanner scanner = new Scanner(System.in);
+        String choice=scanner.nextLine();
+        switch(choice){
+            case ("1"):
+                System.out.println("Choose a name for BDL.");
+                String pathBDL=scanner.nextLine();
+                if(!pathBDL.equals("")) {
+                    controller.createBDL(pathBDL);
+                    break;
+                }else{
+                    System.out.println("Please insert a valid name.");
+                    useCaseBDLInCheckWithGherkin();
+                }//if_else
+            case ("2"):
+                System.out.println("Add document path:");
+                controller.addTextDoc("Discover");
+                if(!notifyMeDone()) {
+                    System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
+                    useCaseBDLInCheckWithGherkin();
+                }else{
+                    System.out.println("Document added.");
+                    useCaseBDLInCheckWithGherkin();
+                }//else
+            case ("3"):
+                useCaseDiscover();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                useCaseBDL();
+        }//switch
+    }//useCaseBDL
 
     public void useCaseBDL() throws IOException, JWNLException {
         System.out.println("Use Case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
