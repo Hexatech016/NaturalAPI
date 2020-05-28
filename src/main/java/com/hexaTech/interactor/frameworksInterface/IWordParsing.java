@@ -1,10 +1,10 @@
-package com.hexaTech.interactor.repoInterface;
+package com.hexaTech.interactor.frameworksInterface;
 
 import net.didion.jwnl.JWNLException;
 
 import java.io.FileNotFoundException;
 
-public interface WordParsingInterface {
+public interface IWordParsing {
     boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException;
     boolean thisVerbIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException;
 

@@ -12,7 +12,7 @@ package com.hexaTech.interactor.usecases.design;
 
 import com.hexaTech.interactor.portInterface.AddGherkinInputPort;
 import com.hexaTech.interactor.portInterface.AddGherkinOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoGherkinInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 
 import java.io.IOException;
 

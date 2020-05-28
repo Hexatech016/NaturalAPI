@@ -1,4 +1,4 @@
-package com.hexaTech.interactor.repoInterface;
+package com.hexaTech.interactor.repositoriesInterface;
 
 import com.hexaTech.interactor.entities.Document;
 

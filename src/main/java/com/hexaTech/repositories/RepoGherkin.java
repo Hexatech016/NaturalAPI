@@ -4,7 +4,7 @@ import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.entities.DoubleStruct;
-import com.hexaTech.interactor.repoInterface.RepoGherkinInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.parser.nndep.DependencyParser;

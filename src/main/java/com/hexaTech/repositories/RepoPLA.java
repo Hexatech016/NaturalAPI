@@ -12,7 +12,7 @@ package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.PLA;
-import com.hexaTech.interactor.repoInterface.RepoPLAInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
 
 import java.io.*;
 import java.util.Scanner;

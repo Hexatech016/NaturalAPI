@@ -2,9 +2,9 @@ package com.hexaTech.interactor.usecases.discover;
 
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.repoInterface.WordParsingInterface;
-import com.hexaTech.interactor.repoInterface.RepoBDLInterface;
-import com.hexaTech.interactor.repoInterface.RepoGherkinInterface;
+import com.hexaTech.interactor.frameworksInterface.IWordParsing;
+import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;
 
 import java.io.FileNotFoundException;
@@ -14,12 +14,12 @@ import java.util.Map;
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
     RepoBDLInterface repoBDLInterface;
     RepoGherkinInterface repoGherkinInterface;
-    WordParsingInterface wordParsingInterface;
+    IWordParsing IWordParsing;
 
-    public CheckBetweenBDLAndGherkin(RepoBDLInterface repoBDLInterface, RepoGherkinInterface repoGherkinInterface, WordParsingInterface wordParsingInterface) {
+    public CheckBetweenBDLAndGherkin(RepoBDLInterface repoBDLInterface, RepoGherkinInterface repoGherkinInterface, IWordParsing IWordParsing) {
         this.repoBDLInterface = repoBDLInterface;
         this.repoGherkinInterface = repoGherkinInterface;
-        this.wordParsingInterface = wordParsingInterface;
+        this.IWordParsing = IWordParsing;
     }
 
     public void check(String directory) throws IOException, JWNLException {
@@ -126,7 +126,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 if (!found) {
                     for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
                         if (thisNounIsRelevant(nounsOfTexts.getValue(),
-                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
+                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && IWordParsing.
                                 thisNounIsASynonymOf(nounsOfGherkin.getKey(),
                                         nounsOfTexts.getKey())) {
                             System.out.println("You could use: " + nounsOfTexts.getKey() +
@@ -155,7 +155,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
             if (!found) {
                 for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
                     if (thisNounIsRelevant(verbsOfTexts.getValue(),
-                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
+                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && IWordParsing.
                             thisVerbIsASynonymOf(verbsOfGherkin.getKey(),
                                     verbsOfTexts.getKey())) {
                         System.out.println("You could use: " + verbsOfTexts.getKey() +

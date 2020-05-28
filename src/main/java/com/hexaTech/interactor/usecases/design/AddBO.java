@@ -11,7 +11,7 @@ package com.hexaTech.interactor.usecases.design;
 
 import com.hexaTech.interactor.portInterface.AddBOInputPort;
 import com.hexaTech.interactor.portInterface.AddBOOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoBOInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
 
 import java.io.IOException;
 

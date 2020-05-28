@@ -12,7 +12,7 @@ package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
-import com.hexaTech.interactor.repoInterface.RepoBALDocumentInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;

@@ -1,6 +1,6 @@
 package com.hexaTech.frameworks;
 
-import com.hexaTech.interactor.repoInterface.WordParsingInterface;
+import com.hexaTech.interactor.frameworksInterface.IWordParsing;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.*;
@@ -9,7 +9,7 @@ import net.didion.jwnl.dictionary.Dictionary;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class WordNetFramework implements WordParsingInterface {
+public class IWordNet implements IWordParsing {
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;

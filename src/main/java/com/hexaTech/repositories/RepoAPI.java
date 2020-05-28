@@ -13,7 +13,7 @@ package com.hexaTech.repositories;
 import com.hexaTech.interactor.entities.API;
 import com.hexaTech.interactor.entities.Method;
 import com.hexaTech.interactor.entities.Structure;
-import com.hexaTech.interactor.repoInterface.RepoAPIInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoAPIInterface;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;

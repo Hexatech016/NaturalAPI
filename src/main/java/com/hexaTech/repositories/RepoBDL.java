@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.DoubleStruct;
-import com.hexaTech.interactor.repoInterface.RepoBDLInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.parser.nndep.DependencyParser;

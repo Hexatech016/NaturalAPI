@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
-import com.hexaTech.interactor.repoInterface.RepoBOInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
 
 import java.io.*;
 import java.util.*;

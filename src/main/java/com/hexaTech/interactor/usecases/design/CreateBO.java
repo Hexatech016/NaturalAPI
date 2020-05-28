@@ -4,7 +4,7 @@ import com.hexaTech.interactor.entities.BO;
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.portInterface.CreateBOInputPort;
 import com.hexaTech.interactor.portInterface.CreateBOOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoBOInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
 
 import java.io.IOException;
 

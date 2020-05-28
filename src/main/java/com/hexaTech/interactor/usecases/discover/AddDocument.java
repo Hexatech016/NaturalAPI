@@ -12,7 +12,7 @@ package com.hexaTech.interactor.usecases.discover;
 
 import com.hexaTech.interactor.portInterface.AddDocumentInputPort;
 import com.hexaTech.interactor.portInterface.AddDocumentOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoDocumentInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 
 import java.io.IOException;
 

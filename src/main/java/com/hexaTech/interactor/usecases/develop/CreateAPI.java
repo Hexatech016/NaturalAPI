@@ -13,9 +13,9 @@ package com.hexaTech.interactor.usecases.develop;
 import com.hexaTech.interactor.entities.API;
 import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
 import com.hexaTech.interactor.portInterface.CreateAPIOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoAPIInterface;
-import com.hexaTech.interactor.repoInterface.RepoBALDocumentInterface;
-import com.hexaTech.interactor.repoInterface.RepoPLAInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoAPIInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
 
 import java.io.IOException;
 

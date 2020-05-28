@@ -13,11 +13,11 @@ package com.hexaTech;
 
 import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
-import com.hexaTech.frameworks.WordNetFramework;
+import com.hexaTech.frameworks.IWordNet;
 import com.hexaTech.interactor.portInterface.AddBALInputPort;
 import com.hexaTech.interactor.portInterface.AddPLAInputPort;
 import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
-import com.hexaTech.interactor.repoInterface.*;
+import com.hexaTech.interactor.repositoriesInterface.*;
 import com.hexaTech.repositories.*;
 import com.hexaTech.interactor.usecases.design.AddBDL;
 import com.hexaTech.interactor.usecases.design.AddBO;
@@ -43,7 +43,7 @@ public class Main{
         //PRESENTERS
         Presenter presenter=new Presenter();
         //REPOS
-        WordNetFramework wordNetFramework=new WordNetFramework();
+        IWordNet wordNet =new IWordNet();
             //DISCOVER
         RepoDocumentInterface repoDocument=new RepoDocument();
         RepoBDLInterface repoBDLInterface=new RepoBDL();
@@ -60,7 +60,7 @@ public class Main{
             //DISCOVER
         AddDocument addDocument =new AddDocument(presenter,repoDocument);
         CreateBDL createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument);
-        CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin,wordNetFramework);
+        CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet);
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter,repoBDL);

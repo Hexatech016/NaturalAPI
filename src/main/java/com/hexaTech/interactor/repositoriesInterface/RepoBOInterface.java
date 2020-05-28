@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.interactor.repoInterface;
+package com.hexaTech.interactor.repositoriesInterface;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hexaTech.interactor.entities.BO;

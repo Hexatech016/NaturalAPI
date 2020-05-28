@@ -1,7 +1,7 @@
 package com.hexaTech.repositories;
 
 import com.hexaTech.interactor.entities.BAL;
-import com.hexaTech.interactor.repoInterface.RepoBALInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBALInterface;
 
 public class RepoBAL implements RepoBALInterface {
     BAL bal;

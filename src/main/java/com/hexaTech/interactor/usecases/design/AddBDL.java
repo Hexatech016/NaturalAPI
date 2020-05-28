@@ -12,7 +12,7 @@ package com.hexaTech.interactor.usecases.design;
 
 import com.hexaTech.interactor.portInterface.AddBDLInputPort;
 import com.hexaTech.interactor.portInterface.AddBDLOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoBDLInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 
 import java.io.IOException;
 

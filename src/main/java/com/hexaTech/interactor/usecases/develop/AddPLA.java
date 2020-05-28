@@ -13,7 +13,7 @@ package com.hexaTech.interactor.usecases.develop;
 import com.hexaTech.interactor.entities.PLA;
 import com.hexaTech.interactor.portInterface.AddPLAInputPort;
 import com.hexaTech.interactor.portInterface.AddPLAOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoPLAInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
 
 import java.io.IOException;
 

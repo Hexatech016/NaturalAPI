@@ -1,12 +1,33 @@
-package com.hexaTech.interactor.repoInterface;
+/**
+ * @file RepoBALDocumentInterface
+ * @version 1.0.0
+ * @type java
+ * @data 2020-05-13
+ * @author Alessio Barbiero
+ * @email hexatech016@gmail.com
+ * @license MIT
+ */
 
-import com.hexaTech.interactor.entities.BDL;
+package com.hexaTech.interactor.repositoriesInterface;
+
+import com.hexaTech.interactor.entities.BAL;
+import com.hexaTech.interactor.entities.Document;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
-public interface RepoBDLInterface {
+/**
+ * RepoBALDocument class interface.
+ */
+public interface RepoBALDocumentInterface {
 
+    /**
+     * Loads a new document from file system.
+     * @param directory string - directory used to save the file.
+     * @throws IOException if an error occurs during file loading process.
+     * @return boolean - false if something goes wrong, true if not.
+     */
+    boolean importDoc(String directory) throws IOException;
 
     /**
      * Saves the doucment's path into a backup file.
@@ -38,19 +59,19 @@ public interface RepoBDLInterface {
      */
     String getContentFromPath(String path) throws IOException;
 
-    BDL loadBDLFromJsonFile(String path) throws IOException;
-
     /**
      * Loads content from a backup file and restore it.
      * @param directory string - directory used to search the file in.
      * @throws IOException if the backup file doesn't exist.
      */
     void loadBackup(String directory) throws IOException;
-    BDL extractBDL(String text) throws IOException;
-    void saveBDL(BDL bdl, String BDLpath) throws IOException;
+    /**
+     * Returns BAL object.
+     * @return BAL - BAL object.
+     */
+    Document getBAL();
 
-    String importPathOfBDL();
-    int getTotalFrequency(Map<String,Integer> list);
-    BDL getBDL();
-    void setBDL(BDL bdl);
-}
+    BAL setBALFromGherkin(String text, List<String> text2);
+
+    void saveBAL(BAL bal) throws IOException;
+}//RepoBALDocumentInterface

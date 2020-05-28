@@ -15,8 +15,8 @@ import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.portInterface.CreateBDLInputPort;
 import com.hexaTech.interactor.portInterface.CreateBDLOutputPort;
-import com.hexaTech.interactor.repoInterface.RepoBDLInterface;
-import com.hexaTech.interactor.repoInterface.RepoDocumentInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 
 import java.io.IOException;
 

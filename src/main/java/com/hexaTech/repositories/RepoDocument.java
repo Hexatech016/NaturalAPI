@@ -12,7 +12,7 @@ package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.repoInterface.RepoDocumentInterface;
+import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 
 import java.io.*;
 import java.util.ArrayList;
