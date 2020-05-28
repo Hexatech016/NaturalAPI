@@ -17,7 +17,7 @@ import com.hexaTech.interactor.portInterface.*;
  */
 public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
         AddBDLOutputPort, AddGherkinOutputPort, CreateBALOutputPort, CreateBOOutputPort,
-        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort, AddBOOutputPort{
+        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
     private String message;
     private boolean done;
     private int code;
@@ -210,12 +210,6 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
      */
     @Override
     public void showRemovedBAL(String result) {
-        message=result;
-        notifySubMe();
-    }
-
-    @Override
-    public void showAddedBO(String result) {
         message=result;
         notifySubMe();
     }

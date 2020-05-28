@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Class used to synchronize actions and output messages.
  */
-public class Subject {
+public abstract class Subject {
     List<MyObserver> observers=new ArrayList<>();
 
     /**

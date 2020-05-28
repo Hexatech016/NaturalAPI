@@ -21,7 +21,6 @@ import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
 import com.hexaTech.interactor.repositoriesInterface.*;
 import com.hexaTech.repositories.*;
 import com.hexaTech.interactor.usecases.design.AddBDL;
-import com.hexaTech.interactor.usecases.design.AddBO;
 import com.hexaTech.interactor.usecases.design.AddGherkin;
 import com.hexaTech.interactor.usecases.design.CreateBO;
 import com.hexaTech.interactor.usecases.develop.AddBAL;
@@ -31,7 +30,6 @@ import com.hexaTech.interactor.usecases.design.CreateBAL;
 import com.hexaTech.interactor.usecases.discover.AddDocument;
 import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkin;
 import com.hexaTech.interactor.usecases.discover.CreateBDL;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;
@@ -68,7 +66,6 @@ public class Main{
             //DESIGN
         AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDL addBDL=new AddBDL(presenter,repoBDL);
-        AddBO addBO=new AddBO(presenter, repoBO);
         CreateBO createBO= new CreateBO(presenter, repoBO);
         CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBO, repoBDL);
             //DEVELOP
@@ -77,7 +74,7 @@ public class Main{
         CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI);
         //CONTROLLER
         Controller controller=new Controller(addDocument,createBDL,checkBetweenBDLAndGherkin,
-                addBDL,addGherkin,createBAL, addBO, createBO,
+                addBDL,addGherkin,createBAL, createBO,
                 addPLA,addBAL,createAPI);
         //CLIENT
         CLI client=new CLI(controller,presenter);

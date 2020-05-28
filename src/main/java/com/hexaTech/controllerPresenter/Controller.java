@@ -15,7 +15,6 @@ public class Controller {
     private final AddBDLInputPort addBDLInputPort;
     private final AddGherkinInputPort addGherkinInputPort;
     private final CreateBALInputPort createBALInputPort;
-    private final AddBOInputPort addBOInputPort;
     private final CreateBOInputPort createBOInputPort;
     /* ************************ DEVELOP ************************ */
     private final AddPLAInputPort addPLAInputPort;
@@ -25,16 +24,15 @@ public class Controller {
     public Controller(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
                       CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort,
                       AddBDLInputPort addBDLInputPort, AddGherkinInputPort addGherkinInputPort,
-                      CreateBALInputPort createBALInputPort, AddBOInputPort addBOInputPort,
-                      CreateBOInputPort createBOInputPort, AddPLAInputPort addPLAInputPort,
-                      AddBALInputPort addBALInputPort, CreateAPIInputPort createAPIInputPort) {
+                      CreateBALInputPort createBALInputPort, CreateBOInputPort createBOInputPort,
+                      AddPLAInputPort addPLAInputPort, AddBALInputPort addBALInputPort,
+                      CreateAPIInputPort createAPIInputPort) {
         this.addDocumentInputPort = addDocumentInputPort;
         this.createBDLInputPort = createBDLInputPort;
         this.checkBetweenBDLAndGherkinInputPort = checkBetweenBDLAndGherkinInputPort;
         this.addBDLInputPort = addBDLInputPort;
         this.addGherkinInputPort = addGherkinInputPort;
         this.createBALInputPort = createBALInputPort;
-        this.addBOInputPort = addBOInputPort;
         this.createBOInputPort = createBOInputPort;
         this.addPLAInputPort = addPLAInputPort;
         this.addBALInputPort = addBALInputPort;
