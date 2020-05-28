@@ -114,21 +114,21 @@ public class RepoGherkin implements RepoGherkinInterface {
         }//try_catch
     }//saveDoc
 
-    public BDL extractBDLFromGherkin(String text) throws IOException {
+    /*public BDL extractBDLFromGherkin(String text) throws IOException {
         BDL bdlToReturn =new BDL();
         List<DoubleStruct> result = extract(text);
         bdlToReturn.addSostFromDoubleStruct(result);
         bdlToReturn.addVerbFromDoubleStruct(result);
         bdlToReturn.addPredFromDoubleStruct(result);
         return bdlToReturn;
-    }
+    }*/
 
     /**
      * Fills a list with elements found while parsing the given text.
      * @param content string - document's content to analyze.
      * @return List<DoubleStruct> - list of found elements.
      */
-    private List<DoubleStruct> extract(String content) {
+    /*private List<DoubleStruct> extract(String content) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
@@ -150,7 +150,7 @@ public class RepoGherkin implements RepoGherkinInterface {
             }//for
         }//for
         return doubleStructs;
-    }//extract
+    }//extract*/
 
     /**
      * Verifies if the specified document exists.
