@@ -40,7 +40,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         for(Document doc: repoGherkinInterface.getGherkin()) {
             String path=doc.getPath();
             String document = repoGherkinInterface.getContentFromPath(path);
-            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extract(document);
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractFromText(document);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdlOfGherkin.mergeBDL(bdlToMerge);
         }//for

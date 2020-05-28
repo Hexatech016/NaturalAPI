@@ -62,7 +62,7 @@ public class CreateBDL implements CreateBDLInputPort {
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
             String document = repoDocumentInterface.getContentFromPath(path);
-            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extract(document);
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractFromText(document);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
         }//for

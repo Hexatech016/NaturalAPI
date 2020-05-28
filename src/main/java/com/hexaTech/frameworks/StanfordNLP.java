@@ -1,11 +1,13 @@
 package com.hexaTech.frameworks;
 
 import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.interactor.entities.Gherkin;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
@@ -23,7 +25,7 @@ public class StanfordNLP implements TextsParsingInterface {
      * @param content string - document's content to analyze.
      * @return List<DoubleStruct> - list of found elements.
      */
-    public List<DoubleStruct> extract(String content) {
+    public List<DoubleStruct> extractFromText(String content) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
@@ -58,4 +60,60 @@ public class StanfordNLP implements TextsParsingInterface {
         }
         return false;
     }
+
+    public Gherkin extractFromGherkin(String text) {
+        Properties props = new Properties();
+        props.put("annotators", "tokenize, ssplit, pos, lemma");
+        StanfordCoreNLP pipeline=new StanfordCoreNLP(props);
+        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
+        String delimiter = "[\n]+";
+        String[] arr= text.split(delimiter);
+        Gherkin toRit = new Gherkin();
+        String sentinel="";
+        for (String str : arr) {
+            CoreDocument documents = new CoreDocument(str);
+            pipeline.annotate(documents);
+            StringBuilder builder = new StringBuilder();
+            String firstToken = documents.sentences().get(0).tokensAsStrings().get(0);
+            if (firstToken.equalsIgnoreCase("AND")){
+                firstToken=sentinel;
+            }//if
+            Annotation document = new Annotation(str);
+            pipeline.annotate(document);
+            GrammaticalStructure gStruct = depparser.predict(document);
+            Collection<TypedDependency> dependencies = gStruct.typedDependencies();
+            switch (firstToken.toLowerCase()) {
+                case ("scenario"):
+                    for (int i = 2; i < documents.sentences().get(0).lemmas().size(); i++) {
+                        if(i>2)
+                            builder.append(documents.sentences().get(0).lemmas().get(i).substring(0, 1).toUpperCase()).append(documents.sentences().get(0).lemmas().get(i).substring(1));
+                        else
+                            builder.append(documents.sentences().get(0).lemmas().get(i));
+                    }//for
+                    toRit.setScenario(builder.toString());
+                    break;
+                case ("given"):
+                    toRit.setGiven("given");
+                    sentinel="given";
+                    break;
+                case ("when"):
+                    for (TypedDependency dep : dependencies) {
+                        if (dep.reln().getShortName().equalsIgnoreCase("obj"))
+                            builder.append(dep.dep().lemma()).append(" ");
+                    }//for
+                    toRit.getWhen().add(builder.toString());
+                    sentinel="when";
+                    break;
+                case ("then"):
+                    for (TypedDependency dep : dependencies) {
+                        if (dep.reln().getShortName().equalsIgnoreCase("obj"))
+                            builder.append(dep.dep().lemma()).append(" ");
+                    }//for
+                    toRit.setThen(builder.toString());
+                    sentinel="then";
+                    break;
+            }//switch
+        }//for
+        return toRit;
+    }//extractGherkin
 }
