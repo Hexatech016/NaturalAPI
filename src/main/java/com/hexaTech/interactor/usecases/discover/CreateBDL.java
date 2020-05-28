@@ -40,23 +40,6 @@ public class CreateBDL implements CreateBDLInputPort {
         this.textsParsingInterface = textsParsingInterface;
     }
 
-    /*/**
-     * Creates a new BDL object.
-     * @throws IOException if an error occurs while loading or parsing any file.
-     * @param BDLpath
-
-    public void createBDL() throws IOException {
-        BDL bdl=new BDL();
-        for(String path: repoDiscoverInterface.getLista()) {
-            String document = repoDiscoverInterface.returnContentFromTxt(path);
-            BDL bdlToMerge=modelDiscoverInterface.extractBDL(document);
-            bdl.mergeBDL(bdlToMerge);
-        }//for
-        repoDiscoverInterface.saveBDL(bdl);
-        repoDiscoverInterface.delete(".\\Discover\\temp.txt");
-        createBDLOutputPort.showCreateBdl("BDL created into folder: Discover");
-    }//createBDL*/
-
     public void createBDL(String BDLpath) throws IOException {
         BDL bdl=repoBDLInterface.getBDL();
         for(Document doc: repoDocumentInterface.getDocuments()) {

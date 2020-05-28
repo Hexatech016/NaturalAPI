@@ -13,8 +13,10 @@ package com.hexaTech;
 
 import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
+import com.hexaTech.frameworks.OpenAPI;
 import com.hexaTech.frameworks.StanfordNLP;
 import com.hexaTech.frameworks.WordNet;
+import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
 import com.hexaTech.interactor.portInterface.*;
@@ -46,6 +48,7 @@ public class Main{
         //FRAMEWORK
         WordParsingInterface wordNet =new WordNet();
         TextsParsingInterface stanfordNLP=new StanfordNLP();
+        JsonParsingInterface OpenAPI=new OpenAPI();
         //REPOS
             //DISCOVER
         RepoDocumentInterface repoDocument=new RepoDocument();
@@ -72,7 +75,7 @@ public class Main{
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);
-        CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI);
+        CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI,OpenAPI);
         //CONTROLLER
         Controller controller=new Controller(addDocument,createBDL,checkBetweenBDLAndGherkin,
                 addBDL,addGherkin,createBAL, createBO,

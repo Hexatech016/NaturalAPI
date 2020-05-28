@@ -11,6 +11,7 @@
 package com.hexaTech.interactor.usecases.develop;
 
 import com.hexaTech.interactor.entities.API;
+import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
 import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
 import com.hexaTech.interactor.portInterface.CreateAPIOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoAPIInterface;
@@ -27,6 +28,7 @@ public class CreateAPI implements CreateAPIInputPort {
     RepoPLAInterface repoPLAInterface;
     RepoBALDocumentInterface repoBALDocumentInterface;
     RepoAPIInterface repoAPIInterface;
+    JsonParsingInterface jsonParsingInterface;
 
     /**
      * CreateAPI class standard constructor.
@@ -34,13 +36,16 @@ public class CreateAPI implements CreateAPIInputPort {
      * @param repoPLAInterface RepoInterface - used to communicate with Repo.
      * @param repoBALDocumentInterface RepoInterface - used to communicate with Repo.
      * @param repoAPIInterface RepoAPI - used to communicate with Repo.
+     * @param jsonParsingInterface JsonParsingInterface - used to extract the API values.
      */
-    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface, RepoBALDocumentInterface repoBALDocumentInterface,
-                     RepoAPIInterface repoAPIInterface){
+    public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface,
+                     RepoBALDocumentInterface repoBALDocumentInterface, RepoAPIInterface repoAPIInterface,
+                     JsonParsingInterface jsonParsingInterface) {
         this.createAPIOutputPort=createAPIOutputPort;
         this.repoPLAInterface=repoPLAInterface;
         this.repoBALDocumentInterface=repoBALDocumentInterface;
         this.repoAPIInterface=repoAPIInterface;
+        this.jsonParsingInterface=jsonParsingInterface;
     }
 
     /**
@@ -57,9 +62,9 @@ public class CreateAPI implements CreateAPIInputPort {
             createAPIOutputPort.showErrorTextAPI("BAL file doesn't exist.");
             createAPIOutputPort.showErrorCodeAPI(2);
         }else{//if_else_1
-            API api;
-            String str=repoBALDocumentInterface.getBAL().getPath(), pla=repoPLAInterface.getPLA().getPath();
-            api=repoAPIInterface.setAPI(str);
+            String path=repoBALDocumentInterface.getBAL().getPath(), pla=repoPLAInterface.getPLA().getPath();
+            repoAPIInterface.setAPI(jsonParsingInterface.extractAPI(path));
+            API api=repoAPIInterface.getAPI();
             if(api==null){
                 repoBALDocumentInterface.deleteDoc(".\\Develop\\temp.txt");
                 createAPIOutputPort.showErrorCodeAPI(3);

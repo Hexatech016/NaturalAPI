@@ -19,9 +19,10 @@ public interface RepoAPIInterface{
 
     /**
      * Fills API object with Swagger found arguments into the specified PLA.
-     * @param path string - PLA's path.
-     * @return API - new API object.
+     * @param newAPI API - new API object.
      */
-    API setAPI(String path) throws IllegalArgumentException;
+    void setAPI(API newAPI);
+
+    API getAPI();
 
 }//RepoAPIInterface
