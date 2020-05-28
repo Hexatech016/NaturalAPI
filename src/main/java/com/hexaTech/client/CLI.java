@@ -19,22 +19,14 @@ import java.util.Scanner;
 /**
  * Class used to show output messages to user and receive input actions.
  */
+
 public class CLI implements MyObserver {
 
-    private final ControllerDiscover controllerDiscover;
-    private final ControllerDesign controllerDesign;
-    private final ControllerDevelop controllerDevelop;
+    private final Controller controller;
     private final Presenter presenter;
 
-    /**
-     * CLI class constructor.
-     * @param controllerDevelop Controller - controllerDevelop class parameter value.
-     * @param presenter Presenter - presenter class parameter value.
-     */
-    public CLI(ControllerDiscover controllerDiscover, ControllerDesign controllerDesign, ControllerDevelop controllerDevelop, Presenter presenter) {
-        this.controllerDiscover = controllerDiscover;
-        this.controllerDesign = controllerDesign;
-        this.controllerDevelop = controllerDevelop;
+    public CLI(Controller controller, Presenter presenter) {
+        this.controller = controller;
         this.presenter = presenter;
         this.presenter.addObserver(this);
     }
@@ -73,7 +65,7 @@ public class CLI implements MyObserver {
         String choice = scanner.nextLine();
         switch (choice) {
             case("0"):
-                controllerDiscover.existsDoc(".\\Discover\\BackupDocument.txt");
+                controller.existsDoc(".\\Discover\\BackupDocument.txt");
                 if(notifyMeDone()){
                     if(existsBackUpDocument())
                         useCaseBDL();
@@ -85,7 +77,7 @@ public class CLI implements MyObserver {
                 }
             case ("1"):
                 System.out.println("Add document path:");
-                controllerDiscover.addDocController("Discover");
+                controller.addTextDoc("Discover");
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
                     useCaseDiscover();
@@ -95,7 +87,7 @@ public class CLI implements MyObserver {
                 }//else
             case ("2"):
                 System.out.println("Add a BDL file");
-                controllerDiscover.checkBetweenBDLAndGherkin("Discover");
+                controller.checkBetweenBDLAndGherkin("Discover");
                 /*if(!notifyMeDone())    EDUARD BISOGNA GESTIRE QUESTO CONTROLLO
                     System.out.println("The file is not a valid BDL or it doesn't exist. Please retry.");*/
             case ("3"):
@@ -115,7 +107,7 @@ public class CLI implements MyObserver {
                 System.out.println("Choose a name for BDL.");
                 String pathBDL=scanner.nextLine();
                 if(!pathBDL.equals("")) {
-                    controllerDiscover.createBDL(pathBDL);
+                    controller.createBDL(pathBDL);
                     useCaseDiscover();
                 }else{
                     System.out.println("Please insert a valid name.");
@@ -123,7 +115,7 @@ public class CLI implements MyObserver {
                 }//if_else
             case ("2"):
                 System.out.println("Add document path:");
-                controllerDiscover.addDocController("Discover");
+                controller.addTextDoc("Discover");
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
                     useCaseBDL();
@@ -149,10 +141,10 @@ public class CLI implements MyObserver {
         Scanner scan = new Scanner(System.in);
         String answer = scan.nextLine();
         if(answer.equalsIgnoreCase("y")) {
-            controllerDiscover.restoreDocController("Discover");
+            controller.restoreTextDoc("Discover");
             return true;
         }else if (answer.equalsIgnoreCase("n")){
-            controllerDiscover.deleteDocController(".\\Discover\\BackupDocument.txt");
+            controller.deleteTextDoc(".\\Discover\\BackupDocument.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
@@ -173,7 +165,7 @@ public class CLI implements MyObserver {
         choice = scan.nextLine();
         switch (choice){
             case ("0"):
-                controllerDesign.existsDocController(".\\Design\\BackupGherkin.txt");
+                controller.existsGherkin(".\\Design\\BackupGherkin.txt");
                 if(notifyMeDone()) {
                     if(existsBackUpGherkin())
                         useCaseBDLDesign();
@@ -185,7 +177,7 @@ public class CLI implements MyObserver {
                 }//if_else
             case ("1"):
                 System.out.println("Add document path:");
-                controllerDesign.addGherkinController("Design");
+                controller.addGherkin("Design");
                 if(notifyMeDone()) {
                     System.out.println("Scenario added.");
                     useCaseBDLDesign();
@@ -209,7 +201,7 @@ public class CLI implements MyObserver {
         switch (choice){
             case ("1"):
                 System.out.println("Add document path:");
-                controllerDesign.addBDLController("Design");
+                controller.addBDL("Design");
                 if(notifyMeDone()) {
                     System.out.println("BDL added.");
                     useCaseBO();
@@ -233,19 +225,19 @@ public class CLI implements MyObserver {
         switch (choice){
             case ("1"):
                 System.out.println("Add document path:");
-                controllerDesign.createBOController("Design");
+                controller.createBO("Design");
                 if(notifyMeDone()){
                     System.out.println("BO added. Now a BAL document will be extracted.");
-                    controllerDesign.createBALController();
-                    controllerDesign.checkSuggestions();
+                    controller.createBAL();
+                    controller.checkSuggestions();
                     useCaseDesign();
                 }else{
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseBO();
                 }
             case ("2"):
-                controllerDesign.createBALController();
-                controllerDesign.checkSuggestions();
+                controller.createBAL();
+                controller.checkSuggestions();
                 useCaseDesign();
             case ("3"):
                 useCaseDesign();
@@ -260,10 +252,10 @@ public class CLI implements MyObserver {
         Scanner scan = new Scanner(System.in);
         String answer = scan.nextLine();
         if (answer.equalsIgnoreCase("y")) {
-            controllerDesign.restoreBackupController("Design");
+            controller.restoreBackup("Design");
             return true;
         }else if (answer.equalsIgnoreCase("n")){
-            controllerDesign.deleteDocController(".\\Design\\BackupGherkin.txt");
+            controller.deleteGherkin(".\\Design\\BackupGherkin.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
@@ -283,7 +275,7 @@ public class CLI implements MyObserver {
         String choice = scan.nextLine();
         switch(choice) {
             case ("0"):
-                controllerDevelop.existsDocController(".\\Develop\\BackupBAL.txt");
+                controller.existsBAL(".\\Develop\\BackupBAL.txt");
                 if(notifyMeDone()) {
                     if(existsBackUpBAL())
                         useCaseBAL();
@@ -295,7 +287,7 @@ public class CLI implements MyObserver {
                 }//if_else
             case ("1"):
                 System.out.println("Add document path:");
-                controllerDevelop.addBALController("Develop");
+                controller.addBAL("Develop");
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseDevelop();
@@ -335,18 +327,18 @@ public class CLI implements MyObserver {
         temp = scan.nextLine();
         switch(temp){
             case ("1"):
-                controllerDevelop.refreshPLAController(".\\src\\main\\resources\\java.pla");
-                controllerDevelop.createAPIController();
+                controller.refreshPLA(".\\src\\main\\resources\\java.pla");
+                controller.createAPI();
                 checkUseCase(notifyMeError());
             case ("2"):
-                controllerDevelop.refreshPLAController(".\\src\\main\\resources\\js.pla");
-                controllerDevelop.createAPIController();
+                controller.refreshPLA(".\\src\\main\\resources\\js.pla");
+                controller.createAPI();
                 checkUseCase(notifyMeError());
             case("3"):
                 System.out.println("Add document path:");
-                controllerDevelop.addPLAController("Develop");
+                controller.addPLA("Develop");
                 if(notifyMeDone()){
-                    controllerDevelop.createAPIController();
+                    controller.createAPI();
                     checkUseCase(notifyMeError());
                 }else {
                     System.out.println("Please select a .pla file.");
@@ -370,10 +362,10 @@ public class CLI implements MyObserver {
         Scanner scan = new Scanner(System.in);
         String answer = scan.nextLine();
         if (answer.equalsIgnoreCase("y")) {
-            controllerDevelop.restoreBackupController("Develop");
+            controller.restoreBAL("Develop");
             return true;
         }else if (answer.equalsIgnoreCase("n")){
-            controllerDevelop.deleteDocController(".\\Develop\\BackupBAL.txt");
+            controller.deleteBAL(".\\Develop\\BackupBAL.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");

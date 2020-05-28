@@ -42,7 +42,7 @@ import java.io.IOException;
 public class Main{
     public static void main(String[] args) throws IOException, JWNLException {
 
-        //PRESENTERS
+        //PRESENTER
         Presenter presenter=new Presenter();
         //FRAMEWORK
         WordNet wordNet =new WordNet();
@@ -75,12 +75,12 @@ public class Main{
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);
         CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI);
-        //CONTROLLERS
-        ControllerDiscover controllerDiscover=new ControllerDiscover(addDocument,createBDL,checkBetweenBDLAndGherkin);
-        ControllerDesign controllerDesign=new ControllerDesign(addBDL,addGherkin,createBAL, addBO, createBO);
-        ControllerDevelop controllerDevelop=new ControllerDevelop(addPLA,addBAL,createAPI);
+        //CONTROLLER
+        Controller controller=new Controller(addDocument,createBDL,checkBetweenBDLAndGherkin,
+                addBDL,addGherkin,createBAL, addBO, createBO,
+                addPLA,addBAL,createAPI);
         //CLIENT
-        CLI client=new CLI(controllerDiscover,controllerDesign,controllerDevelop,presenter);
+        CLI client=new CLI(controller,presenter);
         client.useCaseNaturalAPI();
     }//main
 }//MainDevelop
