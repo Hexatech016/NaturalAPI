@@ -38,7 +38,7 @@ public class WordNetFramework implements WordParsingInterface{
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.VERB, target);
         if(indexWord==null)
-            return found;
+            return false;
         final Synset[] senses = indexWord.getSenses();
         for (Synset synset: senses) {
             Word[] words = synset.getWords();
