@@ -11,14 +11,17 @@ import java.util.*;
 
 public class RepoBDL implements RepoBDLInterface {
 
-    BDL bdl= new BDL();
+    private BDL BDL;
+
+    public RepoBDL(){
+        BDL=new BDL();
+    }
 
     public BDL createBDL(List<DoubleStruct> tagsForBDLConstruction) throws IOException {
-        BDL bdlToReturn =new BDL();
-        bdlToReturn.addSostFromDoubleStruct(tagsForBDLConstruction);
-        bdlToReturn.addVerbFromDoubleStruct(tagsForBDLConstruction);
-        bdlToReturn.addPredFromDoubleStruct(tagsForBDLConstruction);
-        return bdlToReturn;
+        BDL.addSostFromDoubleStruct(tagsForBDLConstruction);
+        BDL.addVerbFromDoubleStruct(tagsForBDLConstruction);
+        BDL.addPredFromDoubleStruct(tagsForBDLConstruction);
+        return this.BDL;
     }
 
     public int getTotalFrequency(Map<String,Integer> list) {
@@ -31,15 +34,15 @@ public class RepoBDL implements RepoBDLInterface {
 
     @Override
     public void setBDL(BDL bdl) {
-        this.bdl=bdl;
+        this.BDL =bdl;
     }
     public BDL getBDL() {
-        return bdl;
+        return BDL;
     }
     public void saveBDL(BDL bdl, String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(bdl);
-        saveDocDiscover(jsonInString,".\\" + BDLpath + "Complete.bdl");
+        saveDocDiscover(jsonInString,".\\" + BDLpath + "Complete.BDL");
         saveDocDiscover(bdl.sostToCSV(),".\\" + BDLpath + "BDLsost.csv");
         saveDocDiscover(bdl.verbToCSV(),".\\" + BDLpath + "BDLverbs.csv");
         saveDocDiscover(bdl.predToCSV(),".\\" + BDLpath + "BDLpred.csv");
@@ -129,7 +132,7 @@ public class RepoBDL implements RepoBDLInterface {
         String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return "";
-        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
+        if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".BDL"))
             return "";
         return document;
     }//returnPath

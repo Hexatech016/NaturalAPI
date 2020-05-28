@@ -254,7 +254,7 @@ public class CLI implements MyObserver {
 
     private void useCaseBDLDesign() throws IOException, JWNLException {
         String choice;
-        System.out.println("Use case:\n 1: Add a BDL (.json) \n 2: Back ");
+        System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Back ");
         Scanner scan = new Scanner(System.in);
         choice = scan.nextLine();
         switch (choice){
@@ -265,7 +265,7 @@ public class CLI implements MyObserver {
                     System.out.println("BDL added.");
                     useCaseBO();
                 }else {
-                    System.out.println("The file is not a BDL or it doesn't exist. Please retry.");
+                    System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     useCaseBDLDesign();
                 }
             case ("2"):

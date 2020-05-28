@@ -58,7 +58,7 @@ public class CreateBDL implements CreateBDLInputPort {
     }//createBDL*/
 
     public void createBDL(String BDLpath) throws IOException {
-        BDL bdl=new BDL();
+        BDL bdl=repoBDLInterface.getBDL();
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
             String document = repoDocumentInterface.getContentFromPath(path);

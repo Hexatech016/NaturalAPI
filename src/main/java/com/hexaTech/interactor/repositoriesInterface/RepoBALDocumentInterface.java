@@ -12,6 +12,7 @@ package com.hexaTech.interactor.repositoriesInterface;
 
 import com.hexaTech.interactor.entities.BAL;
 import com.hexaTech.interactor.entities.Document;
+import com.hexaTech.interactor.entities.Gherkin;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.List;
  * RepoBALDocument class interface.
  */
 public interface RepoBALDocumentInterface {
+
+    BAL setBALFromGherkin(List<Gherkin> gherkins, List<String> BDLTags);
 
     /**
      * Loads a new document from file system.
@@ -70,8 +73,6 @@ public interface RepoBALDocumentInterface {
      * @return BAL - BAL object.
      */
     Document getBAL();
-
-    BAL setBALFromGherkin(String text, List<String> text2);
 
     void saveBAL(BAL bal) throws IOException;
 }//RepoBALDocumentInterface

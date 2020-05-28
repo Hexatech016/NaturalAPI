@@ -9,6 +9,10 @@ public class Document {
         this.path = path;
     }
 
+    public Document() {
+
+    }
+
 
     public String getTitle() {
         return title;

@@ -33,7 +33,7 @@ import java.util.Map;
  * RepoAPI class.
  */
 public class RepoAPI implements RepoAPIInterface {
-    API API;
+    private API API;
 
     /**
      * RepoAPI empty constructor.

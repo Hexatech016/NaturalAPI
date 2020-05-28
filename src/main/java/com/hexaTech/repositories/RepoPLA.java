@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class RepoPLA implements RepoPLAInterface {
-    PLA PLA;
+    private PLA PLA;
 
     /**
      * RepoPLA empty constructor.

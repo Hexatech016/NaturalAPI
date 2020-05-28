@@ -1,31 +1,21 @@
 package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
-import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.DoubleStruct;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.parser.nndep.DependencyParser;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.trees.GrammaticalStructure;
-import edu.stanford.nlp.trees.TypedDependency;
-import edu.stanford.nlp.util.CoreMap;
 
 import java.io.*;
 import java.util.*;
 
 public class RepoGherkin implements RepoGherkinInterface {
-    private final List<Document> gherkins;
+    private Document gherkin;
 
     public RepoGherkin() {
-        this.gherkins = new ArrayList<>();
+        this.gherkin = new Document();
     }
 
-    public List<Document> getGherkin() {
-        return gherkins;
+    public Document getGherkin() {
+        return gherkin;
     }
 
     @Override
@@ -58,7 +48,7 @@ public class RepoGherkin implements RepoGherkinInterface {
         System.out.println(document.substring(document.lastIndexOf(".")));
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
             return false;
-        gherkins.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
+        gherkin=new Document(document.substring(document.lastIndexOf("\\")+1),document);
         saveDoc(".\\BackupGherkin.txt", directory);
         return true;
     }//returnPath
@@ -93,9 +83,7 @@ public class RepoGherkin implements RepoGherkinInterface {
 
     @Override
     public void saveDoc(String title, String directory) {
-        StringBuilder temp= new StringBuilder();
-        for(Document document: gherkins)
-            temp.append(document.getPath()).append("\n");
+        String path=gherkin.getPath();
         try {
             // Open given file in append mode.
             File file= new File(directory);
@@ -103,11 +91,7 @@ public class RepoGherkin implements RepoGherkinInterface {
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(directory + "/" + title));
-            String[] rows=temp.toString().split("\n");
-            for(String row: rows){
-                out.write(row);
-                out.newLine();
-            }//for
+            out.write(path);
             out.close();
         }catch (IOException e) {
             System.out.println("exception occurred " + e);
@@ -170,13 +154,13 @@ public class RepoGherkin implements RepoGherkinInterface {
     @Override
     public void loadBackup(String directory) throws IOException {
         Scanner s = new Scanner(new File(".\\" + directory + "\\BackupGherkin.txt"));
-        String temp=s.nextLine();
-        while (temp!=null){
-            gherkins.add(new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp));
+        String path=s.nextLine();
+        while (path!=null){
+            gherkin=new Document((path.substring(path.lastIndexOf("\\")+1)), path);
             if(!s.hasNextLine())
-                temp=null;
+                path=null;
             else
-                temp=s.nextLine();
+                path=s.nextLine();
         }//while
         s.close();
     }//loadBackUp

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TextsParsingInterface {
     List<DoubleStruct> extractFromText(String content);
-    Gherkin extractFromGherkin(String content);
+    List<Gherkin> extractFromGherkin(String content);
 }

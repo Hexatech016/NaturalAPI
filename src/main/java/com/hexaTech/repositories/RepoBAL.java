@@ -4,13 +4,13 @@ import com.hexaTech.interactor.entities.BAL;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALInterface;
 
 public class RepoBAL implements RepoBALInterface {
-    BAL bal;
+    private BAL BAL;
 
     /**
      * Class empty constructor.
      */
     public RepoBAL(){
-        bal=new BAL();
+        BAL =new BAL();
     }
 
     /**
@@ -19,7 +19,7 @@ public class RepoBAL implements RepoBALInterface {
      */
     @Override
     public void setBAL(BAL bal) throws IllegalArgumentException {
-        this.bal=bal;
+        this.BAL =bal;
     }
 
     /**
@@ -28,7 +28,7 @@ public class RepoBAL implements RepoBALInterface {
      */
     @Override
     public BAL getBAL() {
-        return bal;
+        return BAL;
     }
 
 }//RepoBAL

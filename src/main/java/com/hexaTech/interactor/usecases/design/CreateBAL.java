@@ -12,6 +12,7 @@ package com.hexaTech.interactor.usecases.design;
 
 
 import com.hexaTech.interactor.entities.*;
+import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.portInterface.CreateBALInputPort;
 import com.hexaTech.interactor.portInterface.CreateBALOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.*;
@@ -32,6 +33,7 @@ public class CreateBAL implements CreateBALInputPort {
     RepoBALInterface repoBALInterface;
     RepoBOInterface repoBOInterface;
     RepoBDLInterface repoBDLInterface;
+    TextsParsingInterface textsParsingInterface;
 
 
     /**
@@ -40,13 +42,17 @@ public class CreateBAL implements CreateBALInputPort {
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
 
-    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface, RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface) {
+    public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
+                     RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface,
+                     RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface,
+                     TextsParsingInterface textsParsingInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
         this.repoBOInterface = repoBOInterface;
         this.repoBDLInterface = repoBDLInterface;
+        this.textsParsingInterface = textsParsingInterface;
     }
 
     /**
@@ -55,25 +61,24 @@ public class CreateBAL implements CreateBALInputPort {
      */
     @Override
     public void createBAL() throws IOException {
-        for (Document doc: repoGherkinInterface.getGherkin()) {
-            String path=doc.getPath();
-            String document = repoGherkinInterface.getContentFromPath(path);
-            List<String> document2= new ArrayList<>();
+        String path=repoGherkinInterface.getGherkin().getPath();
+        String document = repoGherkinInterface.getContentFromPath(path);
+        List<Gherkin> gherkins =textsParsingInterface.extractFromGherkin(document);
+        List<String> BDLTags = new ArrayList<>();
             if (this.repoBDLInterface.getBDL()!=null) {
                 BDL bdl = this.repoBDLInterface.getBDL();
-                document2.add(bdl.BDLtotag(bdl.getNouns()));
-                document2.add(bdl.BDLtotag(bdl.getVerbs()));
-                document2.add(bdl.BDLtotag(bdl.getPredicates()));
+                BDLTags.add(bdl.BDLtotag(bdl.getNouns()));
+                BDLTags.add(bdl.BDLtotag(bdl.getVerbs()));
+                BDLTags.add(bdl.BDLtotag(bdl.getPredicates()));
             }else{
-                document2.add("");
-                document2.add("");
-                document2.add("");
+                BDLTags.add("");
+                BDLTags.add("");
+                BDLTags.add("");
             }
-            BAL bal=repoBALDocumentInterface.setBALFromGherkin(document,document2);
+            BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
             bal.joinBO(repoBOInterface.getBoOpenAPI());
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
-        }//for
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
     }//createBAL
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface RepoGherkinInterface {
 
+    Document getGherkin();
     /**
      * Loads a new document from file system.
      * @param directory string - directory used to save the file.
@@ -51,7 +52,7 @@ public interface RepoGherkinInterface {
      * @throws IOException if the backup file doesn't exist.
      */
     void loadBackup(String directory) throws IOException;
-    List<Document> getGherkin();
+
 }
 
 

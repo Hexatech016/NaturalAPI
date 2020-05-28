@@ -25,8 +25,13 @@ import java.util.*;
  * implementata l'interfaccia
  */
 public class RepoBO implements RepoBOInterface{
-    Document BO;
-    BO boOpenAPI=new BO();
+    private Document BO;
+    private BO boOpenAPI;
+
+    public RepoBO() {
+        BO=new Document();
+        boOpenAPI=new BO();
+    }
 
     public void setBoOpenAPI(BO boOpenAPI) {
         this.boOpenAPI = boOpenAPI;
@@ -39,9 +44,7 @@ public class RepoBO implements RepoBOInterface{
     /**
      * RepoBO empty constructor.
      */
-    public RepoBO() {
-        super();
-    }
+
 
     /**
      * Returns BO object.
