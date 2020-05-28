@@ -38,8 +38,8 @@ public class AddPLA implements AddPLAInputPort {
      * Loads a new PLA.
      * @throws IOException if an error occurs during loading process.
      */
-    public void addPLA(String directory) throws IOException{
-        boolean loaded=repoPLAInterface.importDoc(directory);
+    public void addPLA(String directory,String document) throws IOException{
+        boolean loaded=repoPLAInterface.importDoc(directory,document);
         if(loaded) {
             addPLAOutputPort.showAddedPLA("PLA loaded");
             addPLAOutputPort.showDone(true);

@@ -18,15 +18,14 @@ public class CreateBO implements CreateBOInputPort {
     }
 
     @Override
-    public void createBO(String directory) throws IOException {
-        if(!repoBOInterface.importDoc(directory))
+    public void createBO(String directory,String document) throws IOException {
+        if(!repoBOInterface.importDoc(directory,document))
             createBOOutputPort.showDone(false);
         else {
             createBOOutputPort.showDone(true);
-            Document doc=repoBOInterface.getBO();
-            String path=doc.getPath();
-            String document=repoBOInterface.getContentFromPath(path);
-            BO bo=repoBOInterface.setBOFromJSON(document);
+            String path=repoBOInterface.getBO().getPath();
+            String content=repoBOInterface.getContentFromPath(path);
+            BO bo=repoBOInterface.setBOFromJSON(content);
             repoBOInterface.setBoOpenAPI(bo);
             createBOOutputPort.showCreatedBO("BO created into folder: Design.");
         }//else

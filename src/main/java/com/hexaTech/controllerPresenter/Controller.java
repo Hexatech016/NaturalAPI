@@ -45,8 +45,8 @@ public class Controller {
      * Invokes AddDocToParse method to add a new document.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addTextDoc(String directory) throws IOException {
-        addDocumentInputPort.addDocument(directory);
+    public void addTextDoc(String directory,String document) throws IOException {
+        addDocumentInputPort.addDocument(directory,document);
     }
 
     /**
@@ -59,8 +59,8 @@ public class Controller {
 
     /**
      * Invokes CreateBDL method to create a new BDL object;
+     * @param BDLpath String - path to the BDL.
      * @throws IOException if BDL can't be created from repo's stored document.
-     * @param BDLpath
      */
     public void createBDL(String BDLpath) throws IOException {
         createBDLInputPort.createBDL(BDLpath);
@@ -91,16 +91,16 @@ public class Controller {
      * Invokes AddBDL method to add a BDL.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addBDL(String directory) throws IOException {
-        addBDLInputPort.addBDL(directory);
+    public void addBDL(String document) throws IOException {
+        addBDLInputPort.addBDL(document);
     }
 
     /**
      * Invokes AddGherkin method to add a new scenario.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void addGherkin(String directory) throws IOException {
-        addGherkinInputPort.addGherkin(directory);
+    public void addGherkin(String directory,String document) throws IOException {
+        addGherkinInputPort.addGherkin(directory,document);
     }
 
     /**
@@ -128,8 +128,8 @@ public class Controller {
         //createBOInputPort.createBO();
     }
 
-    public void createBO(String directory) throws IOException {
-        createBOInputPort.createBO(directory);
+    public void createBO(String directory,String document) throws IOException {
+        createBOInputPort.createBO(directory,document);
     }
 
     public void checkSuggestions() throws IOException {
@@ -147,8 +147,8 @@ public class Controller {
 
     /* ************************ DEVELOP ************************ */
 
-    public void addBAL(String directory) throws IOException {
-        addBALInputPort.addBAL(directory);
+    public void addBAL(String directory,String document) throws IOException {
+        addBALInputPort.addBAL(directory,document);
     }
 
     /**
@@ -179,8 +179,8 @@ public class Controller {
      * Invokes AddPLA method to add a PLA file.
      * @throws IOException if the specified file doesn't exist.
      */
-    public void addPLA(String directory) throws IOException{
-        addPLAInputPort.addPLA(directory);
+    public void addPLA(String directory,String document) throws IOException{
+        addPLAInputPort.addPLA(directory,document);
     }
 
     /**

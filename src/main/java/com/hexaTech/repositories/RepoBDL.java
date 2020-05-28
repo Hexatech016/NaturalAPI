@@ -113,7 +113,7 @@ public class RepoBDL implements RepoBDLInterface {
     }//getContentFromPath
 
     @Override
-    public String importPathOfBDL(){
+    public String importPathOfBDL(String document){
         /*JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Json file", "json");
@@ -128,8 +128,6 @@ public class RepoBDL implements RepoBDLInterface {
         }else{
             return "";
         }//if_else*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return "";
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".BDL"))

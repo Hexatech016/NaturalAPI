@@ -22,7 +22,7 @@ public interface AddBALInputPort {
      * @throws IOException if an error occurs during loading process.
      * @param directory string - directory to use.
      */
-    void addBAL(String directory) throws IOException;
+    void addBAL(String directory,String document) throws IOException;
 
     /**
      * Load a backup file.

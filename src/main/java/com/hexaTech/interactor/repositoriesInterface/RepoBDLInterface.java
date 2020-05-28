@@ -48,10 +48,15 @@ public interface RepoBDLInterface {
      * @throws IOException if the backup file doesn't exist.
      */
     void loadBackup(String directory) throws IOException;
+
     void saveBDL(BDL bdl, String BDLpath) throws IOException;
 
-    String importPathOfBDL();
+    String importPathOfBDL(String document);
+
     int getTotalFrequency(Map<String,Integer> list);
+
     BDL getBDL();
+
     void setBDL(BDL bdl);
-}
+
+}//RepoBDLInterface

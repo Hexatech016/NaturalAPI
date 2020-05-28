@@ -38,8 +38,8 @@ public class AddBDL implements AddBDLInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     @Override
-    public void addBDL(String directory) throws IOException {
-        String path=repoBDLInterface.importPathOfBDL();
+    public void addBDL(String document) throws IOException {
+        String path=repoBDLInterface.importPathOfBDL(document);
         if(path.equals("")){
             addBDLOutputPort.showDone(false);
         }else{

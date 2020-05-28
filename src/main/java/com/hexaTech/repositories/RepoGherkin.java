@@ -19,7 +19,7 @@ public class RepoGherkin implements RepoGherkinInterface {
     }
 
     @Override
-    public boolean importDoc(String directory){
+    public boolean importDoc(String directory,String document){
         /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -41,8 +41,6 @@ public class RepoGherkin implements RepoGherkinInterface {
             return true;
         }else
             return false;*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
         System.out.println(document.substring(document.lastIndexOf(".")));

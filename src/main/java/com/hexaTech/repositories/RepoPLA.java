@@ -98,7 +98,7 @@ public class RepoPLA implements RepoPLAInterface {
      * @return boolean - false if something goes wrong, true if not.
      */
     @Override
-    public boolean importDoc(String directory) throws IOException {
+    public boolean importDoc(String directory,String document) throws IOException {
         /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -119,8 +119,6 @@ public class RepoPLA implements RepoPLAInterface {
             return true;
         }else
             return false;*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".pla"))

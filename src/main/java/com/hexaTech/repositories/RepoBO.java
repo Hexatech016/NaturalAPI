@@ -59,7 +59,7 @@ public class RepoBO implements RepoBOInterface{
      * @param directory string - directory used to save the file.
      * @return boolean - false if something goes wrong, true if not.
      */
-    public boolean importDoc(String directory){
+    public boolean importDoc(String directory,String document){
         /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -81,8 +81,6 @@ public class RepoBO implements RepoBOInterface{
             return true;
         }else
             return false;*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))

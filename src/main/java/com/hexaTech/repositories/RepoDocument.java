@@ -94,7 +94,7 @@ public class RepoDocument implements RepoDocumentInterface {
      * @return boolean - false if something goes wrong, true if not.
      */
     @Override
-    public boolean importDoc(String directory){
+    public boolean importDoc(String directory,String document){
         /*String temp;
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
@@ -116,8 +116,6 @@ public class RepoDocument implements RepoDocumentInterface {
             return true;
         }else
             return false;*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))

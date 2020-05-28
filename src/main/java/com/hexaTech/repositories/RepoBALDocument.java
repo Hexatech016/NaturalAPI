@@ -124,7 +124,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * @return boolean - false if something goes wrong, true if not.
      */
     @Override
-    public boolean importDoc(String directory){
+    public boolean importDoc(String directory,String document){
         //GUI INSERTION
         /*String temp;
         JFrame dialog = new JFrame();
@@ -147,8 +147,6 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             return true;
         }else
             return false;*/
-        Scanner scanner=new Scanner(System.in);
-        String document=scanner.nextLine();
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))

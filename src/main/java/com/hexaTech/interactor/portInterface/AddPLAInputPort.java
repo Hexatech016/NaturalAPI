@@ -20,7 +20,7 @@ public interface AddPLAInputPort {
      * Loads a new PLA.
      * @throws IOException if an error occurs during loading process.
      */
-    void addPLA(String directory) throws IOException;
+    void addPLA(String directory,String document) throws IOException;
 
     /**
      * Updates PLA's reference.

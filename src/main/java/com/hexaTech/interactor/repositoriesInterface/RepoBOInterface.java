@@ -34,7 +34,7 @@ public interface RepoBOInterface{
      * @throws IOException if an error occurs during file loading process.
      * @return boolean - false if something goes wrong, true if not.
      */
-    boolean importDoc(String directory) throws IOException;
+    boolean importDoc(String directory,String document) throws IOException;
 
     String getContentFromPath(String path) throws IOException;
 

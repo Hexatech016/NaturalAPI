@@ -15,10 +15,11 @@ import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
 import com.hexaTech.frameworks.StanfordNLP;
 import com.hexaTech.frameworks.WordNet;
-import com.hexaTech.interactor.portInterface.AddBALInputPort;
-import com.hexaTech.interactor.portInterface.AddPLAInputPort;
-import com.hexaTech.interactor.portInterface.CreateAPIInputPort;
+import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
+import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
+import com.hexaTech.interactor.portInterface.*;
 import com.hexaTech.interactor.repositoriesInterface.*;
+import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkinInputPort;
 import com.hexaTech.repositories.*;
 import com.hexaTech.interactor.usecases.design.AddBDL;
 import com.hexaTech.interactor.usecases.design.AddGherkin;
@@ -43,16 +44,16 @@ public class Main{
         //PRESENTER
         Presenter presenter=new Presenter();
         //FRAMEWORK
-        WordNet wordNet =new WordNet();
-        StanfordNLP stanfordNLP=new StanfordNLP();
+        WordParsingInterface wordNet =new WordNet();
+        TextsParsingInterface stanfordNLP=new StanfordNLP();
         //REPOS
             //DISCOVER
         RepoDocumentInterface repoDocument=new RepoDocument();
         RepoBDLInterface repoBDLInterface=new RepoBDL();
             //DESIGN
-        RepoBDL repoBDL=new RepoBDL();
-        RepoGherkin repoGherkin=new RepoGherkin();
-        RepoBO repoBO=new RepoBO();
+        RepoBDLInterface repoBDL=new RepoBDL();
+        RepoGherkinInterface repoGherkin=new RepoGherkin();
+        RepoBOInterface repoBO=new RepoBO();
             //DEVELOP
         RepoAPIInterface repoAPI=new RepoAPI();
         RepoBALInterface repoBAL=new RepoBAL();
@@ -60,14 +61,14 @@ public class Main{
         RepoPLAInterface repoPLA=new RepoPLA();
         //INTERACTORS
             //DISCOVER
-        AddDocument addDocument =new AddDocument(presenter,repoDocument);
-        CreateBDL createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument,stanfordNLP);
-        CheckBetweenBDLAndGherkin checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
+        AddDocumentInputPort addDocument =new AddDocument(presenter,repoDocument);
+        CreateBDLInputPort createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument,stanfordNLP);
+        CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
             //DESIGN
-        AddGherkin addGherkin=new AddGherkin(presenter,repoGherkin);
-        AddBDL addBDL=new AddBDL(presenter,repoBDL);
-        CreateBO createBO= new CreateBO(presenter, repoBO);
-        CreateBAL createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBO, repoBDL);
+        AddGherkinInputPort addGherkin=new AddGherkin(presenter,repoGherkin);
+        AddBDLInputPort addBDL=new AddBDL(presenter,repoBDL);
+        CreateBOInputPort createBO= new CreateBO(presenter, repoBO);
+        CreateBALInputPort createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBO, repoBDL,stanfordNLP);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);

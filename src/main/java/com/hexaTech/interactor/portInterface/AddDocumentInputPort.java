@@ -27,7 +27,7 @@ public interface AddDocumentInputPort {
      * Loads a new document.
      * @throws IOException if an error occurs during loading process.
      */
-    void addDocument(String directory) throws IOException;
+    void addDocument(String directory,String document) throws IOException;
 
     /**
      * Load a backup file.

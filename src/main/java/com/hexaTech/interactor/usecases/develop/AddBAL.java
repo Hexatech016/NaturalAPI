@@ -37,8 +37,8 @@ public class AddBAL implements AddBALInputPort {
      * Loads a new document.
      * @throws IOException if an error occurs during loading process.
      */
-    public void addBAL(String directory) throws IOException {
-        boolean loaded=repoBALDocumentInterface.importDoc(directory);
+    public void addBAL(String directory,String document) throws IOException {
+        boolean loaded=repoBALDocumentInterface.importDoc(directory,document);
         if(loaded) {
             addBALOutputPort.showAddedBAL("BAL loaded");
             addBALOutputPort.showDone(true);
