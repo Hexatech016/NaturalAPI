@@ -18,10 +18,11 @@ public class RepoBDL implements RepoBDLInterface {
     }
 
     public BDL createBDL(List<DoubleStruct> tagsForBDLConstruction) throws IOException {
-        BDL.addSostFromDoubleStruct(tagsForBDLConstruction);
-        BDL.addVerbFromDoubleStruct(tagsForBDLConstruction);
-        BDL.addPredFromDoubleStruct(tagsForBDLConstruction);
-        return this.BDL;
+        BDL toRet=new BDL();
+        toRet.addSostFromDoubleStruct(tagsForBDLConstruction);
+        toRet.addVerbFromDoubleStruct(tagsForBDLConstruction);
+        toRet.addPredFromDoubleStruct(tagsForBDLConstruction);
+        return toRet;
     }
 
     public int getTotalFrequency(Map<String,Integer> list) {
@@ -54,7 +55,7 @@ public class RepoBDL implements RepoBDLInterface {
         return mapper.readValue(jsonInString, BDL.class);
     }
 
-    private void saveDocDiscover(String doc, String path) throws IOException {
+    public void saveDocDiscover(String doc, String path) throws IOException {
         try {
             // Open given file in append mode.
             File directory = new File("Discover");

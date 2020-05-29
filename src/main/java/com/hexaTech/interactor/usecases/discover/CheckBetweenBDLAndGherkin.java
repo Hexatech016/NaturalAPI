@@ -4,6 +4,8 @@ import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.DoubleStruct;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
+import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;
@@ -14,15 +16,18 @@ import java.util.List;
 import java.util.Map;
 
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
+    CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort;
     RepoBDLInterface repoBDLInterface;
     RepoGherkinInterface repoGherkinInterface;
     WordParsingInterface wordParsingInterface;
     TextsParsingInterface textsParsingInterface;
 
-    public CheckBetweenBDLAndGherkin(RepoBDLInterface repoBDLInterface,
+    public CheckBetweenBDLAndGherkin(CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort,
+                                     RepoBDLInterface repoBDLInterface,
                                      RepoGherkinInterface repoGherkinInterface,
                                      WordParsingInterface wordParsingInterface,
                                      TextsParsingInterface textsParsingInterface) {
+        this.checkBetweenBDLAndGherkinOutputPort = checkBetweenBDLAndGherkinOutputPort;
         this.repoBDLInterface = repoBDLInterface;
         this.repoGherkinInterface = repoGherkinInterface;
         this.wordParsingInterface = wordParsingInterface;
@@ -32,7 +37,6 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     public void check(String directory) throws IOException, JWNLException {
         //carico il BDL della repo
         BDL bdlOfTexts=repoBDLInterface.getBDL();
-        System.out.println(repoBDLInterface.getBDL().toString()); //stampa di prova
         //creo un nuovo BDL per il Gherkin
         BDL bdlOfGherkin=new BDL();
         String path=repoGherkinInterface.getGherkin().getPath();
@@ -41,15 +45,18 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
         bdlOfGherkin.mergeBDL(bdlToMerge);
 
-        checkNounsOfBDL(bdlOfTexts,bdlOfGherkin);
-        checkNounsOfGherkin(bdlOfTexts,bdlOfGherkin);
-        checkVerbsOfBDL(bdlOfTexts,bdlOfGherkin);
-        checkVerbsOfGherkin(bdlOfTexts, bdlOfGherkin);
-        checkPredicatesOfBDL(bdlOfTexts,bdlOfGherkin);
-        checkPredicatesOfGherkin(bdlOfTexts,bdlOfGherkin);
+        StringBuilder log=new StringBuilder();
+        log.append(checkNounsOfBDL(bdlOfTexts,bdlOfGherkin));
+        log.append(checkNounsOfGherkin(bdlOfTexts,bdlOfGherkin));
+        log.append(checkVerbsOfBDL(bdlOfTexts,bdlOfGherkin));
+        log.append(checkVerbsOfGherkin(bdlOfTexts, bdlOfGherkin));
+        log.append(checkPredicatesOfBDL(bdlOfTexts,bdlOfGherkin));
+        log.append(checkPredicatesOfGherkin(bdlOfTexts,bdlOfGherkin));
+        repoBDLInterface.saveDocDiscover(log.toString(),"log.txt");
+        checkBetweenBDLAndGherkinOutputPort.showCheck("Check complete, you can find log file in Discover");
     }
 
-    private void checkNounsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
+    private String checkNounsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
         StringBuilder shouldUse=new StringBuilder();
         int totalFrequency=repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns());
@@ -66,14 +73,11 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     shouldUse.append(nounsOfTexts.getKey()).append("; ");
             }//if
         }//for
-        System.out.println("NOUNS: \n");
-        System.out.println("You are using well:");
-        System.out.println(usingWell.toString() + "\n");
-        System.out.println("You could use:");
-        System.out.println(shouldUse.toString() + "\n");;
+        return "NOUNS: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
+                "You could use: \n" + shouldUse.toString() + "\n\n";
     }
 
-    private void checkVerbsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
+    private String checkVerbsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
         StringBuilder shouldUse=new StringBuilder();
         int totalFrequency=repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs());
@@ -90,13 +94,10 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     shouldUse.append(verbOfTexts.getKey() + "; ");
             }//if
         }//for
-        System.out.println("VERBS: \n");
-        System.out.println("You are using well:");
-        System.out.println(usingWell.toString() + "\n");
-        System.out.println("You could use:");
-        System.out.println(shouldUse.toString() + "\n");;
+        return "VERBS: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
+                "You could use: \n" + shouldUse.toString() + "\n\n";
     }
-    private void checkPredicatesOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
+    private String checkPredicatesOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
         StringBuilder shouldUse=new StringBuilder();
         for (Map.Entry<String, Integer> predsOfTexts : bdlOfTexts.getPredicates().entrySet()) {
@@ -112,15 +113,13 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     shouldUse.append(predsOfTexts.getKey() + "; ");
             }//if
         }//for
-        System.out.println("PREDICATES: \n");
-        System.out.println("You are using well:");
-        System.out.println(usingWell.toString() + "\n");
-        System.out.println("You could use:");
-        System.out.println(shouldUse.toString() + "\n");;
+        return "PREDICATES: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
+                "You could use: \n" + shouldUse.toString() + "\n\n";
     }
 
-    private void checkNounsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
+    private String checkNounsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
         StringBuilder notCommon= new StringBuilder();
+        StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> nounsOfGherkin : bdlOfGherkin.getNouns().entrySet()) {
             boolean found = false;
                 for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
@@ -135,21 +134,27 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                                 repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
                                 thisNounIsASynonymOf(nounsOfGherkin.getKey(),
                                         nounsOfTexts.getKey())) {
-                            System.out.println("You could use: " + nounsOfTexts.getKey() +
-                                    " instead of: " + nounsOfGherkin.getKey());
+                            alternatives.append("You could use " + "\"")
+                                    .append(nounsOfTexts.getKey())
+                                    .append("\"")
+                                    .append(" instead of ")
+                                    .append("\"")
+                                    .append(nounsOfGherkin.getKey())
+                                    .append("\";\n");
                             found = true;
                         }
                     }
                 }
                 if(!found)
-                    notCommon.append(nounsOfGherkin.getKey() + "; ");
+                    notCommon.append(nounsOfGherkin.getKey()).append("; ");
         }//for
-        System.out.println("You are using the following nouns but they are not common:");
-        System.out.println(notCommon.toString() + "\n");
+        return alternatives.toString() + "\n" + "You are using the following nouns but they are not common: \n"
+                + notCommon.toString() + "\n\n";
     }
 
-    private void checkVerbsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
+    private String checkVerbsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
         StringBuilder notCommon= new StringBuilder();
+        StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> verbsOfGherkin : bdlOfGherkin.getVerbs().entrySet()) {
             boolean found = false;
             for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
@@ -164,20 +169,26 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                             repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
                             thisVerbIsASynonymOf(verbsOfGherkin.getKey(),
                                     verbsOfTexts.getKey())) {
-                        System.out.println("You could use: " + verbsOfTexts.getKey() +
-                                " instead of: " + verbsOfGherkin.getKey());
+                        alternatives.append("You could use " + "\"")
+                                .append(verbsOfTexts.getKey())
+                                .append("\"")
+                                .append(" instead of ")
+                                .append("\"")
+                                .append(verbsOfGherkin.getKey())
+                                .append("\";\n");
                         found = true;
                     }
                 }
             }
             if(!found)
-                notCommon.append(verbsOfGherkin.getKey() + "; ");
+                notCommon.append(verbsOfGherkin.getKey()).append("; ");
         }//for
-        System.out.println("You are using the following verbs but they are not common:");
-        System.out.println(notCommon.toString() + "\n");
+        return alternatives.toString() + "\n"
+                + "You are using the following verbs but they are not common: \n"
+                + notCommon.toString() + "\n\n";
     }
 
-    private void checkPredicatesOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin){
+    private String checkPredicatesOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder notCommon= new StringBuilder();
         for (Map.Entry<String, Integer> predsOfGherkin : bdlOfGherkin.getPredicates().entrySet()) {
             boolean found = false;
@@ -187,10 +198,9 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 }
             }
             if(!found)
-                notCommon.append(predsOfGherkin.getKey() + "; ");
+                notCommon.append(predsOfGherkin.getKey()).append("; ");
         }//for
-        System.out.println("You are using the following predicates but they are not common:");
-        System.out.println(notCommon.toString() + "\n");
+        return "You are using the following predicates but they are not common: \n" + notCommon.toString() + "\n\n";
     }
 
     private boolean thisNounIsRelevant(int value, int totalFrequency){

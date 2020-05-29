@@ -18,6 +18,8 @@ public interface RepoBDLInterface {
      */
     void saveDoc(String title, String directory);
 
+    void saveDocDiscover(String doc, String path) throws IOException;
+
     /**
      * Verifies if the documents exists.
      * @param path string - document's path.

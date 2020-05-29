@@ -11,12 +11,13 @@
 package com.hexaTech.controllerPresenter;
 
 import com.hexaTech.interactor.portInterface.*;
+import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinOutputPort;
 
 /**
  * Class used to manage different output messages from interactor's actions.
  */
 public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
-        AddBDLOutputPort, AddGherkinOutputPort, CreateBALOutputPort, CreateBOOutputPort,
+        AddBDLOutputPort, CheckBetweenBDLAndGherkinOutputPort, AddGherkinOutputPort, CreateBALOutputPort, CreateBOOutputPort,
         AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
     private String message;
     private boolean done;
@@ -223,4 +224,9 @@ public class Presenter extends Subject implements AddDocumentOutputPort, CreateB
         notifySubMeDone();
     }
 
+    @Override
+    public void showCheck(String result) {
+        message=result;
+        notifySubMe();
+    }
 }//Presenter

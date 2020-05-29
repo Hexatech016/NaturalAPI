@@ -21,7 +21,7 @@ import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
 import com.hexaTech.interactor.portInterface.*;
 import com.hexaTech.interactor.repositoriesInterface.*;
-import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
 import com.hexaTech.repositories.*;
 import com.hexaTech.interactor.usecases.design.AddBDL;
 import com.hexaTech.interactor.usecases.design.AddGherkin;
@@ -65,12 +65,14 @@ public class Main{
             //DISCOVER
         AddDocumentInputPort addDocument =new AddDocument(presenter,repoDocument);
         CreateBDLInputPort createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument,stanfordNLP);
-        CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
+        CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(presenter,
+                repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
             //DESIGN
         AddGherkinInputPort addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDLInputPort addBDL=new AddBDL(presenter,repoBDLInterface);
         CreateBOInputPort createBO= new CreateBO(presenter, repoBO);
-        CreateBALInputPort createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL, repoBO, repoBDLInterface,stanfordNLP);
+        CreateBALInputPort createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL,
+                repoBO, repoBDLInterface,stanfordNLP);
             //DEVELOP
         AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
         AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);

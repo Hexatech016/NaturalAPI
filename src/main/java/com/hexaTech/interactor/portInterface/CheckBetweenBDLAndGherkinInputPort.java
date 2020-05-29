@@ -1,4 +1,4 @@
-package com.hexaTech.interactor.usecases.discover;
+package com.hexaTech.interactor.portInterface;
 
 import net.didion.jwnl.JWNLException;
 

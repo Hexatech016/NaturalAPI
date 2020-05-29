@@ -1,7 +1,7 @@
 package com.hexaTech.controllerPresenter;
 
 import com.hexaTech.interactor.portInterface.*;
-import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
 import net.didion.jwnl.JWNLException;
 
 import java.io.IOException;
