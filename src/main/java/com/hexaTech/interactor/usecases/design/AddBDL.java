@@ -45,6 +45,7 @@ public class AddBDL implements AddBDLInputPort {
         }else{
             addBDLOutputPort.showDone(true);
             repoBDLInterface.setBDL(repoBDLInterface.loadBDLFromJsonFile(path));
+            System.out.println(repoBDLInterface.getBDL().toString());
         }//if_else
     }//addBDL
 

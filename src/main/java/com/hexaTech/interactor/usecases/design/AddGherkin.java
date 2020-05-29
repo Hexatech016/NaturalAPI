@@ -41,10 +41,8 @@ public class AddGherkin implements AddGherkinInputPort {
     @Override
     public void addGherkin(String directory,String document) throws IOException {
         if(repoGherkinInterface.importDoc(directory,document)) {
-            addGherkinOutputPort.showAddedGherkin("Scenario added");
             addGherkinOutputPort.showDone(true);
         }else {
-            addGherkinOutputPort.showAddedGherkin("Scenario not added!");
             addGherkinOutputPort.showDone(false);
         }//if_else
     }//addGherkin

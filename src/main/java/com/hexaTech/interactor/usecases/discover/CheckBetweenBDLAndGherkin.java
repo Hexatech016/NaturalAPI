@@ -33,6 +33,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         /*String pathOfBDL=repoBDLInterface.importPathOfBDL();
         bdlOfTexts=repoBDLInterface.loadBDLFromJsonFile(pathOfBDL);*/
         BDL bdlOfTexts=repoBDLInterface.getBDL();
+        System.out.println(repoBDLInterface.getBDL().toString());
         //repoGherkinInterface.importDoc(directory);
         BDL bdlOfGherkin=new BDL();
         String path=repoGherkinInterface.getGherkin().getPath();
