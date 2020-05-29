@@ -14,6 +14,7 @@ import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 
+import java.awt.*;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -198,6 +199,10 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
     @Override
     public void saveBAL(BAL bal) throws IOException {
         saveDocDesign(bal.toString(),".\\BAL.json");
+    }
+
+    public void openFile(String path) throws IOException{
+        Desktop.getDesktop().open(new File(path));
     }
 
     /**

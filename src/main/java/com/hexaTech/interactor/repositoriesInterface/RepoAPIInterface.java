@@ -12,6 +12,8 @@ package com.hexaTech.interactor.repositoriesInterface;
 
 import com.hexaTech.interactor.entities.API;
 
+import java.io.IOException;
+
 /**
  * RepoAPI class interface.
  */
@@ -24,5 +26,9 @@ public interface RepoAPIInterface{
     void setAPI(API newAPI);
 
     API getAPI();
+
+    void saveOutput(String content,String path);
+
+    void openFile(String path) throws IOException;
 
 }//RepoAPIInterface

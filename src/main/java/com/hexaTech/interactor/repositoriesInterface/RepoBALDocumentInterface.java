@@ -75,4 +75,7 @@ public interface RepoBALDocumentInterface {
     Document getBAL();
 
     void saveBAL(BAL bal) throws IOException;
+
+    void openFile(String path) throws IOException;
+
 }//RepoBALDocumentInterface

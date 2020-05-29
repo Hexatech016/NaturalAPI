@@ -268,7 +268,7 @@ public class CLI implements MyObserver {
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
                 controller.createBO("Design", scanner.nextLine());
                 if(notifyMeDone()){
-                    System.out.println("BO added. Now a BAL document will be extracted.");
+                    System.out.println("Now a BAL document will be extracted.");
                     controller.createBAL();
                     controller.checkSuggestions();
                     useCaseDesign();

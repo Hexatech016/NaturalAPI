@@ -24,6 +24,11 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
+import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +57,33 @@ public class RepoAPI implements RepoAPIInterface {
 
     public API getAPI(){
         return API;
+    }
+
+    /**
+     * Saves a new document.
+     * @param content string - document content.
+     * @param path string - document path.
+     */
+    public void saveOutput(String content,String path){
+        try{
+            File directory = new File("Develop");
+            if (!directory.exists())
+                directory.mkdir();
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter(directory + "/" + path));
+            String[] rows=content.split("\n");
+            for(String row: rows){
+                out.write(row);
+                out.newLine();
+            }//for
+            out.close();
+        }catch (IOException e) {
+            System.out.println("exception occurred" + e);
+        }//try_catch
+    }//saveOutput
+
+    public void openFile(String path) throws IOException{
+        Desktop.getDesktop().open(new File(path));
     }
 
 }//RepoAPI

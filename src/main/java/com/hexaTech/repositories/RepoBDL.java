@@ -6,8 +6,10 @@ import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.DoubleStruct;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 public class RepoBDL implements RepoBDLInterface {
 
@@ -37,9 +39,11 @@ public class RepoBDL implements RepoBDLInterface {
     public void setBDL(BDL bdl) {
         this.BDL =bdl;
     }
+
     public BDL getBDL() {
         return BDL;
     }
+
     public void saveBDL(BDL bdl, String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(bdl);
@@ -158,5 +162,9 @@ public class RepoBDL implements RepoBDLInterface {
     @Override
     public void loadBackup(String directory) throws IOException {
 
+    }
+
+    public void openFile(String path) throws IOException{
+        Desktop.getDesktop().open(new File(path));
     }
 }

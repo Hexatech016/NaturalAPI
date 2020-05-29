@@ -15,7 +15,7 @@ public class Controller {
     private final AddBDLInputPort addBDLInputPort;
     private final AddGherkinInputPort addGherkinInputPort;
     private final CreateBALInputPort createBALInputPort;
-    private final CreateBOInputPort createBOInputPort;
+    private final AddBOInputPort addBOInputPort;
     /* ************************ DEVELOP ************************ */
     private final AddPLAInputPort addPLAInputPort;
     private final AddBALInputPort addBALInputPort;
@@ -24,7 +24,7 @@ public class Controller {
     public Controller(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
                       CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort,
                       AddBDLInputPort addBDLInputPort, AddGherkinInputPort addGherkinInputPort,
-                      CreateBALInputPort createBALInputPort, CreateBOInputPort createBOInputPort,
+                      CreateBALInputPort createBALInputPort, AddBOInputPort addBOInputPort,
                       AddPLAInputPort addPLAInputPort, AddBALInputPort addBALInputPort,
                       CreateAPIInputPort createAPIInputPort) {
         this.addDocumentInputPort = addDocumentInputPort;
@@ -33,7 +33,7 @@ public class Controller {
         this.addBDLInputPort = addBDLInputPort;
         this.addGherkinInputPort = addGherkinInputPort;
         this.createBALInputPort = createBALInputPort;
-        this.createBOInputPort = createBOInputPort;
+        this.addBOInputPort=addBOInputPort;
         this.addPLAInputPort = addPLAInputPort;
         this.addBALInputPort = addBALInputPort;
         this.createAPIInputPort = createAPIInputPort;
@@ -125,11 +125,11 @@ public class Controller {
      */
     public void createBAL() throws IOException {
         createBALInputPort.createBAL();
-        //createBOInputPort.createBO();
+        //addBOInputPort.addBO();
     }
 
     public void createBO(String directory,String document) throws IOException {
-        createBOInputPort.createBO(directory,document);
+        addBOInputPort.addBO(directory,document);
     }
 
     public void checkSuggestions() throws IOException {

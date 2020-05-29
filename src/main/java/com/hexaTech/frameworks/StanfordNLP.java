@@ -70,7 +70,7 @@ public class StanfordNLP implements TextsParsingInterface {
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
         for (String scenario : gherkinSplit) {
-            String[] arr = text.split("[\n]+");
+            String[] arr = scenario.split("[\n]+");
             Gherkin toAdd = new Gherkin();
             String sentinel = "";
             for (String str : arr) {
@@ -116,9 +116,8 @@ public class StanfordNLP implements TextsParsingInterface {
                         sentinel = "then";
                         break;
                 }//switch
-                toRet.add(toAdd);
             }//for
-
+            toRet.add(toAdd);
         }//for
         return toRet;
     }//extractFromGherkin

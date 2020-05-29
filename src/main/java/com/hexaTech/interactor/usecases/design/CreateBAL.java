@@ -35,13 +35,11 @@ public class CreateBAL implements CreateBALInputPort {
     RepoBDLInterface repoBDLInterface;
     TextsParsingInterface textsParsingInterface;
 
-
     /**
      * CreateBAL class constructor.
      * @param createBALOutputPort CreateBALOutputPort - used to send output notifications.
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
-
     public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
                      RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface,
                      RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface,
@@ -143,6 +141,8 @@ public class CreateBAL implements CreateBALInputPort {
         }//for_methods
         repoBALDocumentInterface.saveBAL(bal);
         createBALOutputPort.showCreatedBAL("BAL updated into folder Design.\n");
+        repoGherkinInterface.deleteDoc(".\\Design\\BackupGherkin.txt");
+        repoBALDocumentInterface.openFile(".\\Design\\BAL.json");
     }//checkTypes
 
 

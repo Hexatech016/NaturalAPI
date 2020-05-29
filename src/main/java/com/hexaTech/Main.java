@@ -22,10 +22,10 @@ import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
 import com.hexaTech.interactor.portInterface.*;
 import com.hexaTech.interactor.repositoriesInterface.*;
 import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.usecases.design.AddBO;
 import com.hexaTech.repositories.*;
 import com.hexaTech.interactor.usecases.design.AddBDL;
 import com.hexaTech.interactor.usecases.design.AddGherkin;
-import com.hexaTech.interactor.usecases.design.CreateBO;
 import com.hexaTech.interactor.usecases.develop.AddBAL;
 import com.hexaTech.interactor.usecases.develop.AddPLA;
 import com.hexaTech.interactor.usecases.develop.CreateAPI;
@@ -70,7 +70,7 @@ public class Main{
             //DESIGN
         AddGherkinInputPort addGherkin=new AddGherkin(presenter,repoGherkin);
         AddBDLInputPort addBDL=new AddBDL(presenter,repoBDLInterface);
-        CreateBOInputPort createBO= new CreateBO(presenter, repoBO);
+        AddBOInputPort createBO= new AddBO(presenter, repoBO);
         CreateBALInputPort createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL,
                 repoBO, repoBDLInterface,stanfordNLP);
             //DEVELOP

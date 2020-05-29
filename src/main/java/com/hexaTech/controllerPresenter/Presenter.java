@@ -17,7 +17,7 @@ import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinOutputPort
  * Class used to manage different output messages from interactor's actions.
  */
 public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
-        AddBDLOutputPort, CheckBetweenBDLAndGherkinOutputPort, AddGherkinOutputPort, CreateBALOutputPort, CreateBOOutputPort,
+        AddBDLOutputPort, CheckBetweenBDLAndGherkinOutputPort, AddGherkinOutputPort, CreateBALOutputPort, AddBOOutputPort,
         AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
     private String message;
     private boolean done;

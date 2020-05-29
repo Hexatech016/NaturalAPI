@@ -77,13 +77,6 @@ public interface RepoPLAInterface {
     void setPLA(PLA PLA);
 
     /**
-     * Saves a new document.
-     * @param content string - document content.
-     * @param path string - document path.
-     */
-    void saveOutput(String content,String path);
-
-    /**
      * Verifies if the specified document exists into JAR archive.
      * @param path string - path to the document to be searched.
      * @return boolean - true if the document exists, false if not.

@@ -189,27 +189,4 @@ public class RepoPLA implements RepoPLAInterface {
         }//try_catch
     }//saveDoc
 
-    /**
-     * Saves a new document.
-     * @param content string - document content.
-     * @param path string - document path.
-     */
-    public void saveOutput(String content,String path){
-        try{
-            File directory = new File("Develop");
-            if (!directory.exists())
-                directory.mkdir();
-            BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + path));
-            String[] rows=content.split("\n");
-            for(String row: rows){
-                out.write(row);
-                out.newLine();
-            }//for
-            out.close();
-        }catch (IOException e) {
-            System.out.println("exception occurred" + e);
-        }//try_catch
-    }//saveOutput
-
 }//RepoPLA

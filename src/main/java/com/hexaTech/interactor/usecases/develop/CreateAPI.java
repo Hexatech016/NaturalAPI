@@ -76,10 +76,12 @@ public class CreateAPI implements CreateAPIInputPort {
                     createAPIOutputPort.showErrorTextAPI("Input PLA is not valid. Check file syntax or extension (.pla).");
                     createAPIOutputPort.showErrorCodeAPI(4);
                 }else{//if_else_3
-                    repoPLAInterface.saveOutput(api.createAPI(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLAInterface.getPLA().getExtension());
-                    repoPLAInterface.saveOutput(api.createTests(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"Test."+repoPLAInterface.getPLA().getExtension());
+                    repoAPIInterface.saveOutput(api.createAPI(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"."+repoPLAInterface.getPLA().getExtension());
+                    repoAPIInterface.saveOutput(api.createTests(repoPLAInterface.getContentFromPath(pla)),".\\"+api.getAPIName()+"Test."+repoPLAInterface.getPLA().getExtension());
                     repoBALDocumentInterface.deleteDoc(".\\Develop\\BackupBAL.txt");
                     createAPIOutputPort.showCreatedAPI("API ."+repoPLAInterface.getPLA().getExtension()+" generated into folder: Develop.");
+                    repoAPIInterface.openFile(".\\Develop\\"+api.getAPIName()+"."+repoPLAInterface.getPLA().getExtension());
+                    repoAPIInterface.openFile(".\\Develop\\"+api.getAPIName()+"Test."+repoPLAInterface.getPLA().getExtension());
                     createAPIOutputPort.showErrorCodeAPI(0);
                 }//if_else_3
             }//if_else_2

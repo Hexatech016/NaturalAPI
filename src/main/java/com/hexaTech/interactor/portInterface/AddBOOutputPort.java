@@ -1,9 +1,9 @@
 package com.hexaTech.interactor.portInterface;
 
-public interface CreateBOOutputPort {
+public interface AddBOOutputPort {
 
     void showCreatedBO(String result);
 
     void showDone(boolean done);
 
-}//CreateBOOutputPort
+}//AddBOOutputPort
