@@ -30,11 +30,10 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     }
 
     public void check(String directory) throws IOException, JWNLException {
-        /*String pathOfBDL=repoBDLInterface.importPathOfBDL();
-        bdlOfTexts=repoBDLInterface.loadBDLFromJsonFile(pathOfBDL);*/
+        //carico il BDL della repo
         BDL bdlOfTexts=repoBDLInterface.getBDL();
-        System.out.println(repoBDLInterface.getBDL().toString());
-        //repoGherkinInterface.importDoc(directory);
+        System.out.println(repoBDLInterface.getBDL().toString()); //stampa di prova
+        //creo un nuovo BDL per il Gherkin
         BDL bdlOfGherkin=new BDL();
         String path=repoGherkinInterface.getGherkin().getPath();
         String document = repoGherkinInterface.getContentFromPath(path);
