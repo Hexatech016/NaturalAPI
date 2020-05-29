@@ -90,6 +90,7 @@ public class CLI implements MyObserver {
                 System.out.println("Which BDL do you want to use for checking Gherkin?");
                 choiceOfBdl();
                 System.out.println("Add a gherkin scenario");
+                choiceOfGherkin();
                 controller.checkBetweenBDLAndGherkin("Discover");
                 /*if(!notifyMeDone())    EDUARD BISOGNA GESTIRE QUESTO CONTROLLO
                     System.out.println("The file is not a valid BDL or it doesn't exist. Please retry.");*/
@@ -101,6 +102,26 @@ public class CLI implements MyObserver {
         }//switch
     }//useCase
 
+    public void choiceOfGherkin() throws IOException, JWNLException {
+        System.out.println("Use Case: \n 0: Add a gherkin scenario" + "\n 1: Back");
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case ("0"):
+                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.scenario)");
+                controller.addGherkin("Design", scanner.nextLine());
+                if (notifyMeDone()) {
+                    System.out.println("Scenario added.");
+                    break;
+                } else {
+                    System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
+                    choiceOfGherkin();
+                }
+            case ("1"):
+              useCaseDiscover();
+        }
+    }
+
     public void choiceOfBdl() throws IOException, JWNLException {
         System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before" + "\n 3: Back");
         Scanner scanner = new Scanner(System.in);
@@ -111,16 +132,15 @@ public class CLI implements MyObserver {
                 controller.addBDL(scanner.nextLine());
                 if(notifyMeDone()) {
                     System.out.println("BDL added.");
-                    break;
                 }else {
                     System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     choiceOfBdl();
                 }//else
-            case ("2"):
+            /*case ("2"):
                 //controllo per vedere se c'è qualcosa
                 choiceOfBdl(); //se non c'è niente deve inserirlo
             case ("3"):
-                useCaseDiscover();
+                useCaseDiscover();*/
         }
     }
 

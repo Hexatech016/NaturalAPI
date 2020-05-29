@@ -1,7 +1,6 @@
 package com.hexaTech.interactor.usecases.discover;
 
 import com.hexaTech.interactor.entities.BDL;
-import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.entities.DoubleStruct;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
@@ -31,18 +30,17 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     }
 
     public void check(String directory) throws IOException, JWNLException {
-        BDL bdlOfTexts;
-        String pathOfBDL=repoBDLInterface.importPathOfBDL();
-        bdlOfTexts=repoBDLInterface.loadBDLFromJsonFile(pathOfBDL);
-        repoGherkinInterface.importDoc(directory);
+        /*String pathOfBDL=repoBDLInterface.importPathOfBDL();
+        bdlOfTexts=repoBDLInterface.loadBDLFromJsonFile(pathOfBDL);*/
+        BDL bdlOfTexts=repoBDLInterface.getBDL();
+        //repoGherkinInterface.importDoc(directory);
         BDL bdlOfGherkin=new BDL();
-        for(Document doc: repoGherkinInterface.getGherkin()) {
-            String path=doc.getPath();
-            String document = repoGherkinInterface.getContentFromPath(path);
-            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractFromText(document);
-            BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
-            bdlOfGherkin.mergeBDL(bdlToMerge);
-        }//for
+        String path=repoGherkinInterface.getGherkin().getPath();
+        String document = repoGherkinInterface.getContentFromPath(path);
+        List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractFromText(document);
+        BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
+        bdlOfGherkin.mergeBDL(bdlToMerge);
+
         checkNounsOfBDL(bdlOfTexts,bdlOfGherkin);
         checkNounsOfGherkin(bdlOfTexts,bdlOfGherkin);
         checkVerbsOfBDL(bdlOfTexts,bdlOfGherkin);
