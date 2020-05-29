@@ -60,12 +60,12 @@ public class CLI implements MyObserver {
     /* ************************ DISCOVER ************************ */
 
     public void useCaseDiscover() throws IOException, JWNLException {
-        System.out.println("Use Case: \n 0: Check if there are saved documents \n 1: Add a document (.txt)" +
-                "\n 2: Check between BDL and Gherkin" + "\n 3: Back");
+        System.out.println("Use Case: \n 1: Check if there are saved documents \n 2: Add a document (.txt)" +
+                "\n 3: Check between BDL and Gherkin" + "\n 4: Back");
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch (choice) {
-            case("0"):
+            case("1"):
                 controller.existsDoc(".\\Discover\\BackupDocument.txt");
                 if(notifyMeDone()){
                     if(existsBackUpDocument())
@@ -76,8 +76,8 @@ public class CLI implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDiscover();
                 }
-            case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.txt)");
+            case ("2"):
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
                 controller.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
@@ -86,15 +86,13 @@ public class CLI implements MyObserver {
                     System.out.println("Document added.");
                     useCaseBDL();
                 }//else
-            case ("2"):
+            case ("3"):
                 System.out.println("Which BDL do you want to use for checking Gherkin?");
                 choiceOfBdl();
                 System.out.println("Add a gherkin scenario");
                 choiceOfGherkin();
                 controller.checkBetweenBDLAndGherkin("Discover");
-                /*if(!notifyMeDone())    EDUARD BISOGNA GESTIRE QUESTO CONTROLLO
-                    System.out.println("The file is not a valid BDL or it doesn't exist. Please retry.");*/
-            case ("3"):
+            case ("4"):
                 useCaseNaturalAPI();
             default:
                 System.out.println("Invalid choice. Please retry.");
@@ -103,12 +101,12 @@ public class CLI implements MyObserver {
     }//useCase
 
     public void choiceOfGherkin() throws IOException, JWNLException {
-        System.out.println("Use Case: \n 0: Add a gherkin scenario" + "\n 1: Back");
+        System.out.println("Use Case: \n 1: Add a gherkin scenario" + "\n 2: Back");
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch (choice) {
-            case ("0"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.scenario)");
+            case ("1"):
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
                 controller.addGherkin("Design", scanner.nextLine());
                 if (notifyMeDone()) {
                     System.out.println("Scenario added.");
@@ -117,7 +115,7 @@ public class CLI implements MyObserver {
                     System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
                     choiceOfGherkin();
                 }
-            case ("1"):
+            case ("2"):
               useCaseDiscover();
         }
     }
@@ -128,7 +126,7 @@ public class CLI implements MyObserver {
         String choice = scanner.nextLine();
         switch (choice) {
             case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.BDL)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
                 controller.addBDL(scanner.nextLine());
                 if(notifyMeDone()) {
                     System.out.println("BDL added.");
@@ -136,46 +134,10 @@ public class CLI implements MyObserver {
                     System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     choiceOfBdl();
                 }//else
-            /*case ("2"):
-                //controllo per vedere se c'è qualcosa
-                choiceOfBdl(); //se non c'è niente deve inserirlo
-            case ("3"):
-                useCaseDiscover();*/
-        }
-    }
-
-    public void useCaseBDLInCheckWithGherkin() throws IOException, JWNLException {
-        System.out.println("Use Case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
-        Scanner scanner = new Scanner(System.in);
-        String choice=scanner.nextLine();
-        switch(choice){
-            case ("1"):
-                System.out.println("Choose a name for BDL.");
-                String pathBDL=scanner.nextLine();
-                if(!pathBDL.equals("")) {
-                    controller.createBDL(pathBDL);
-                    break;
-                }else{
-                    System.out.println("Please insert a valid name.");
-                    useCaseBDLInCheckWithGherkin();
-                }//if_else
-            case ("2"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.txt)");
-                controller.addTextDoc("Discover",scanner.nextLine());
-                if(!notifyMeDone()) {
-                    System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
-                    useCaseBDLInCheckWithGherkin();
-                }else{
-                    System.out.println("Document added.");
-                    useCaseBDLInCheckWithGherkin();
-                }//else
             case ("3"):
                 useCaseDiscover();
-            default:
-                System.out.println("Invalid choice. Please retry.");
-                useCaseBDL();
-        }//switch
-    }//useCaseBDL
+        }
+    }
 
     public void useCaseBDL() throws IOException, JWNLException {
         System.out.println("Use Case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
@@ -193,7 +155,7 @@ public class CLI implements MyObserver {
                     useCaseBDL();
                 }//if_else
             case ("2"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.txt)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
                 controller.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
@@ -239,11 +201,11 @@ public class CLI implements MyObserver {
      */
     public void useCaseDesign() throws IOException, JWNLException {
         String choice;
-        System.out.println("Use case:\n 0: Check if there are saved documents\n 1: Add a Gherkin file (.scenario) \n 2: Back");
+        System.out.println("Use case:\n 1: Check if there are saved documents\n 2: Add a Gherkin file (.scenario) \n 3: Back");
         Scanner scanner= new Scanner(System.in);
         choice = scanner.nextLine();
         switch (choice){
-            case ("0"):
+            case ("1"):
                 controller.existsGherkin(".\\Design\\BackupGherkin.txt");
                 if(notifyMeDone()) {
                     if(existsBackUpGherkin())
@@ -254,8 +216,8 @@ public class CLI implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDevelop();
                 }//if_else
-            case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.scenario)");
+            case ("2"):
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
                 controller.addGherkin("Design", scanner.nextLine());
                 if(notifyMeDone()) {
                     System.out.println("Scenario added.");
@@ -264,7 +226,7 @@ public class CLI implements MyObserver {
                     System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
                     useCaseDesign();
                 }
-            case ("2"):
+            case ("3"):
                 useCaseNaturalAPI();
             default:
                 System.out.println("Invalid choice. Please retry.");
@@ -279,7 +241,7 @@ public class CLI implements MyObserver {
         choice = scanner.nextLine();
         switch (choice){
             case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.BDL)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
                 controller.addBDL(scanner.nextLine());
                 if(notifyMeDone()) {
                     System.out.println("BDL added.");
@@ -303,7 +265,7 @@ public class CLI implements MyObserver {
         choice = scanner.nextLine();
         switch (choice){
             case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.json)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
                 controller.createBO("Design", scanner.nextLine());
                 if(notifyMeDone()){
                     System.out.println("BO added. Now a BAL document will be extracted.");
@@ -349,11 +311,11 @@ public class CLI implements MyObserver {
      * @throws IOException if the specified file path doesn't exist.
      */
     public void useCaseDevelop() throws IOException, JWNLException {
-        System.out.println("Use case: \n 0: Check if there are saved documents\n 1: Add a new BAL (.json) \n 2: Back");
+        System.out.println("Use case: \n 1: Check if there are saved documents\n 2: Add a new BAL (.json) \n 3: Back");
         Scanner scanner= new Scanner(System.in);
         String choice = scanner.nextLine();
         switch(choice) {
-            case ("0"):
+            case ("1"):
                 controller.existsBAL(".\\Develop\\BackupBAL.txt");
                 if(notifyMeDone()) {
                     if(existsBackUpBAL())
@@ -364,15 +326,15 @@ public class CLI implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDevelop();
                 }//if_else
-            case ("1"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.json)");
+            case ("2"):
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
                 controller.addBAL("Develop", scanner.nextLine());
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseDevelop();
                 }else
                     useCasePLA();
-            case ("2"):
+            case ("3"):
                 useCaseNaturalAPI();
             default:
                 System.out.println("Invalid choice. Please retry.");
@@ -414,7 +376,7 @@ public class CLI implements MyObserver {
                 controller.createAPI();
                 checkUseCase(notifyMeError());
             case("3"):
-                System.out.println("Insert document's path: (ex. A:\\x\\y\\z.pla)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.pla)");
                 controller.addPLA("Develop", scanner.nextLine());
                 if(notifyMeDone()){
                     controller.createAPI();
