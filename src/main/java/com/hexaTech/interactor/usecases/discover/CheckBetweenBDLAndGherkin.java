@@ -45,14 +45,13 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
         bdlOfGherkin.mergeBDL(bdlToMerge);
 
-        StringBuilder log=new StringBuilder();
-        log.append(checkNounsOfBDL(bdlOfTexts,bdlOfGherkin));
-        log.append(checkNounsOfGherkin(bdlOfTexts,bdlOfGherkin));
-        log.append(checkVerbsOfBDL(bdlOfTexts,bdlOfGherkin));
-        log.append(checkVerbsOfGherkin(bdlOfTexts, bdlOfGherkin));
-        log.append(checkPredicatesOfBDL(bdlOfTexts,bdlOfGherkin));
-        log.append(checkPredicatesOfGherkin(bdlOfTexts,bdlOfGherkin));
-        repoBDLInterface.saveDocDiscover(log.toString(),"log.txt");
+        String log = checkNounsOfBDL(bdlOfTexts, bdlOfGherkin) +
+                checkNounsOfGherkin(bdlOfTexts, bdlOfGherkin) +
+                checkVerbsOfBDL(bdlOfTexts, bdlOfGherkin) +
+                checkVerbsOfGherkin(bdlOfTexts, bdlOfGherkin) +
+                checkPredicatesOfBDL(bdlOfTexts, bdlOfGherkin) +
+                checkPredicatesOfGherkin(bdlOfTexts, bdlOfGherkin);
+        repoBDLInterface.saveDocDiscover(log,"log.txt");
         checkBetweenBDLAndGherkinOutputPort.showCheck("Check complete, you can find log file in Discover");
     }
 
