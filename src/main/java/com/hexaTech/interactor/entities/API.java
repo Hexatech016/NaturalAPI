@@ -12,6 +12,7 @@ package com.hexaTech.interactor.entities;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +28,12 @@ public class API{
     /**
      * API class empty constructor.
      */
-    public API(){}
+    public API(){
+        this.APIName="";
+        this.APIComment="";
+        this.APIMethods=new ArrayList<>();
+        this.APIStructures=new ArrayList<>();
+    }
 
     /**
      * API class constructor.
@@ -49,6 +55,18 @@ public class API{
      */
     public String getAPIName() {
         return APIName;
+    }
+
+    public String getAPIComment() {
+        return APIComment;
+    }
+
+    public List<Method> getAPIMethods() {
+        return APIMethods;
+    }
+
+    public List<Structure> getAPIStructures() {
+        return APIStructures;
     }
 
     /**

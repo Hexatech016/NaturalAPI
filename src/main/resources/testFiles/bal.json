@@ -1,0 +1,230 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API to withdraw money from ATM.\n",
+    "version": "0.0.1",
+    "title": "ATM"
+  },
+  "paths": {
+    "/withdrawMoney": {
+      "get": {
+        "operationId": "Withdraw Selected Money",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "money",
+            "description": "Money I want to withdraw",
+            "required": true,
+            "type" : "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Give cash and tell how much cash is left in the account",
+            "schema": {
+              "$ref": "returnType",
+              "items": {
+                "$ref": "#/definitions/returnType"
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/noParameter": {
+      "get": {
+        "operationId": "prova senza parametri",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+              "$ref": "returnType",
+              "items": {
+                "$ref": "#/definitions/returnType"
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/dueParametri": {
+      "get": {
+        "operationId": "Prova con due parametri",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "money",
+            "description": "Money I want to withdraw",
+            "required": true,
+            "type" : "integer"
+          },
+          {
+            "in": "query",
+            "name": "bankID",
+            "description": "my bank",
+            "required": true,
+            "type" : "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+              "$ref": "returnType",
+              "items": {
+                "$ref": "#/definitions/returnType"
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/noReturn": {
+      "get": {
+        "operationId": "prova senza ritorno",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/returnTipoSemplice": {
+      "get": {
+        "operationId": "return easy",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/returnArrayString": {
+      "get": {
+        "operationId": "return array string",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/returnArrayTipo": {
+      "get": {
+        "operationId": "return array tipo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/returnType"
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/parametroArrayInt": {
+      "get": {
+        "operationId": "parametro array int",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "array",
+            "description": "prova",
+            "required": true,
+            "type" : "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    },
+    "/parametroArrayTipo": {
+      "get": {
+        "operationId": "parametro array tipo",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "array",
+            "description": "prova",
+            "type" : "array",
+            "required": true,
+            "items": {
+              "$ref": "#/definitions/returnType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "prova",
+            "schema": {
+            }
+          }
+        },
+        "x-swagger-router-controller": "Default"
+      }
+    }
+  },
+  "definitions": {
+    "returnType": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Feedback message"
+        },
+        "result": {
+          "type": "integer",
+          "description": "Method result"
+        }
+      }
+    },
+    "ciaoneType": {
+      "type": "object",
+      "properties": {
+        "saluti": {
+          "type": "integer",
+          "description": "Tot saluti"
+        },
+        "chi": {
+          "type": "string",
+          "description": "chi saluto"
+        }
+      }
+    }
+  }
+}

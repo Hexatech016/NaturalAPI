@@ -24,7 +24,10 @@ public class Structure {
     /**
      * Structure class empty constructor.
      */
-    public Structure(){}
+    public Structure(){
+        this.structureName="";
+        this.structureParam=new HashMap<>();
+    }
 
     /**
      * Structure class standard constructor.
@@ -35,6 +38,14 @@ public class Structure {
     public Structure(String structureName, HashMap<String, String> structureParam) {
         this.structureName=structureName;
         this.structureParam=structureParam;
+    }
+
+    public String getStructureName() {
+        return structureName;
+    }
+
+    public HashMap<String, String> getStructureParam() {
+        return structureParam;
     }
 
     /**
@@ -91,7 +102,7 @@ public class Structure {
      * @param typed boolean - true if the output language is typed, false if it's not.
      * @return string - structure's parameters with user-defined nomenclature.
      */
-    public String getStringParam(String[] types,boolean typed){
+    private String getStringParam(String[] types,boolean typed){
         StringBuilder param=new StringBuilder();
         Iterator it=structureParam.entrySet().iterator();
         if(typed){

@@ -26,7 +26,12 @@ public class Method {
     /**
      * Method class empty constructor.
      */
-    public Method(){}
+    public Method() {
+        this.methodReturnType="";
+        this.methodName="";
+        this.methodComment="";
+        this.methodParam=new HashMap<>();
+    }
 
     /**
      * Method class standard constructor.
@@ -41,6 +46,22 @@ public class Method {
         this.methodName=methodName;
         this.methodComment=methodComment;
         this.methodParam=methodParam;
+    }
+
+    public String getMethodReturnType() {
+        return methodReturnType;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public String getMethodComment() {
+        return methodComment;
+    }
+
+    public HashMap<String, String> getMethodParam() {
+        return methodParam;
     }
 
     /**
@@ -144,7 +165,7 @@ public class Method {
      * @param typed boolean - true if the output language is typed, false if it's not.
      * @return string - method's return type with user-defined nomenclature.
      */
-    public String getStringReturnType(String[] types,boolean typed){
+    private String getStringReturnType(String[] types,boolean typed){
         boolean array=false;
         if(typed){
             if(methodReturnType.contains("[]"))
@@ -169,7 +190,7 @@ public class Method {
      * @param typed boolean - true if the output language is typed, false if it's not.
      * @return string - method's parameters with user-defined nomenclature.
      */
-    public String getStringParam(String[] types,boolean typed){
+    private String getStringParam(String[] types,boolean typed){
         StringBuilder param=new StringBuilder();
         Iterator it=methodParam.entrySet().iterator();
         if(typed){

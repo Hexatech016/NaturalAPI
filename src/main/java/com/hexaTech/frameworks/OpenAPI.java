@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.Map;
 public class OpenAPI implements JsonParsingInterface {
 
     public API extractAPI(String path){
+        File file=new File(path);
+        if(path.equals("") || !file.exists())
+            return null;
         API API=new API();
         if(extractAPIMethods(path)!=null && extractAPIStructures(path)!=null &&
                 extractAPIName(path)!=null && extractAPIDescription(path)!=null){
@@ -40,7 +44,7 @@ public class OpenAPI implements JsonParsingInterface {
      * @return List<Method> - a list of methods found; null if an error occurs.
      * @throws IllegalArgumentException if the content of the BAL file isn't valid.
      */
-    public List<Method> extractAPIMethods(String path) throws IllegalArgumentException{
+    private List<Method> extractAPIMethods(String path) throws IllegalArgumentException{
         try {
             List<Method> result=new ArrayList<>();
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
@@ -63,7 +67,7 @@ public class OpenAPI implements JsonParsingInterface {
      * @return List<Structures> - a list of methods found; null if an error occurs.
      * @throws IllegalArgumentException if the content of the BAL file isn't valid.
      */
-    public List<Structure> extractAPIStructures(String path) throws IllegalArgumentException{
+    private List<Structure> extractAPIStructures(String path) throws IllegalArgumentException{
         try {
             List<Structure> result=new ArrayList<>();
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
@@ -86,7 +90,7 @@ public class OpenAPI implements JsonParsingInterface {
      * @return string - name; null if an error occurs.
      * @throws IllegalArgumentException if the content of the BAL file isn't valid.
      */
-    public String extractAPIName(String path) throws IllegalArgumentException{
+    private String extractAPIName(String path) throws IllegalArgumentException{
         try{
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
@@ -106,7 +110,7 @@ public class OpenAPI implements JsonParsingInterface {
      * @return string - description; null if an error occurs.
      * @throws IllegalArgumentException if the content of the BAL file isn't valid.
      */
-    public String extractAPIDescription(String path) throws IllegalArgumentException{
+    private String extractAPIDescription(String path) throws IllegalArgumentException{
         try{
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
