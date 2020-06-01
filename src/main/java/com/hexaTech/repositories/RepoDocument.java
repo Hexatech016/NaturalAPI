@@ -120,8 +120,10 @@ public class RepoDocument implements RepoDocumentInterface {
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
             return false;
-        documents.add(new Document(document.substring(document.lastIndexOf("\\")+1),document));
-        saveDoc(".\\BackupDocument.txt", directory);
+        if(!alreadyLoaded(document)){
+            documents.add(new Document(document.substring(document.lastIndexOf("\\")+1), document));
+            saveDoc(".\\BackupDocument.txt", directory);
+        }
         return true;
     }//returnPath
 
@@ -172,5 +174,12 @@ public class RepoDocument implements RepoDocumentInterface {
         }//while
         s.close();
     }//loadBackUp
+
+    private boolean alreadyLoaded(String newDoc){
+        for(Document document:documents)
+            if(document.getPath().equalsIgnoreCase(newDoc))
+                return true;
+        return false;
+    }
 
 }//RepoDocument
