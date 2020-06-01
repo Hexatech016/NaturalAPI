@@ -37,6 +37,10 @@ public class BDL {
         this.predicates =sortMap((HashMap<String, Integer>) predicates);
     }
 
+    public boolean isEmpty(){
+        return nouns.isEmpty() && verbs.isEmpty() && predicates.isEmpty();
+    }
+
     /**
      * Shows BDL's nouns with their frequency.
      * @return Map<String, Integer> - map with BDL nouns and frequency.
@@ -248,16 +252,6 @@ public class BDL {
         }//for
         return toReturn.toString();
     }//predToCVS
-
-    public String BDLtoCSV(){
-        StringBuilder toReturn=new StringBuilder();
-
-        toReturn.append("%\n"+ "SOSTS\n"+ sostToCSV() + "\n");
-        toReturn.append("%\n"+ "VERBS\n" + verbToCSV() + "\n");
-        toReturn.append("%\n"+ "PREDS\n" + predToCSV());
-
-        return toReturn.toString();
-    }
 
     /**
      * Fills BDL's nouns list with found elements.

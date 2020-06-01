@@ -214,7 +214,7 @@ public class CLI implements MyObserver {
                         useCaseDesign();
                 }else{
                     System.out.println("There are no saved documents");
-                    useCaseDevelop();
+                    useCaseDesign();
                 }//if_else
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
