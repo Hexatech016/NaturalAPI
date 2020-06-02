@@ -7,7 +7,7 @@
  * @email hexatech016@gmail.com
  * @license MIT
  */
-package com.hexaTech.interactor.portInterface;
+package com.hexaTech.interactor.inputportInterface;
 
 import java.io.IOException;
 

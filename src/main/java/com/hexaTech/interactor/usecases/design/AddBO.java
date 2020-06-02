@@ -1,8 +1,8 @@
 package com.hexaTech.interactor.usecases.design;
 
 import com.hexaTech.interactor.entities.BO;
-import com.hexaTech.interactor.portInterface.AddBOInputPort;
-import com.hexaTech.interactor.portInterface.AddBOOutputPort;
+import com.hexaTech.interactor.inputportInterface.AddBOInputPort;
+import com.hexaTech.interactor.outputportInterface.AddBOOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

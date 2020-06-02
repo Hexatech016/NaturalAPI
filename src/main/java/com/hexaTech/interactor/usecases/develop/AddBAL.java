@@ -10,8 +10,8 @@
 
 package com.hexaTech.interactor.usecases.develop;
 
-import com.hexaTech.interactor.portInterface.AddBALInputPort;
-import com.hexaTech.interactor.portInterface.AddBALOutputPort;
+import com.hexaTech.interactor.inputportInterface.AddBALInputPort;
+import com.hexaTech.interactor.outputportInterface.AddBALOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

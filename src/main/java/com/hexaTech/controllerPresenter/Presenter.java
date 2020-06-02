@@ -10,8 +10,8 @@
 
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.interactor.portInterface.*;
-import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinOutputPort;
+import com.hexaTech.interactor.outputportInterface.CheckBetweenBDLAndGherkinOutputPort;
+import com.hexaTech.interactor.outputportInterface.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Presenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
         AddBDLOutputPort, CheckBetweenBDLAndGherkinOutputPort, AddGherkinOutputPort, CreateBALOutputPort, AddBOOutputPort,
-        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort{
+        AddPLAOutputPort, CreateAPIOutputPort, AddBALOutputPort {
 
     private String message;
     private boolean done;

@@ -1,7 +1,7 @@
 package com.hexaTech.controllerPresenter;
 
-import com.hexaTech.interactor.portInterface.*;
-import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.inputportInterface.*;
+import com.hexaTech.interactor.inputportInterface.CheckBetweenBDLAndGherkinInputPort;
 import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

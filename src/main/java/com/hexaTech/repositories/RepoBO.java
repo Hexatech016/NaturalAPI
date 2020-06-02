@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -171,8 +170,6 @@ public class RepoBO implements RepoBOInterface{
         BO=new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp);
         s.close();
     }
-
-
 
     public BO setBOFromJSON(String text) throws JsonProcessingException{
         ObjectMapper objectMapper=new ObjectMapper();

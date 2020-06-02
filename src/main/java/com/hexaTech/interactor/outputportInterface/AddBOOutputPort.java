@@ -1,4 +1,4 @@
-package com.hexaTech.interactor.portInterface;
+package com.hexaTech.interactor.outputportInterface;
 
 public interface AddBOOutputPort {
 

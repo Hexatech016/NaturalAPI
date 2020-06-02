@@ -10,8 +10,8 @@
 
 package com.hexaTech.interactor.usecases.design;
 
-import com.hexaTech.interactor.portInterface.AddGherkinInputPort;
-import com.hexaTech.interactor.portInterface.AddGherkinOutputPort;
+import com.hexaTech.interactor.inputportInterface.AddGherkinInputPort;
+import com.hexaTech.interactor.outputportInterface.AddGherkinOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

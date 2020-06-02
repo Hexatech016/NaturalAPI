@@ -1,7 +1,7 @@
 package com.hexaTech.usecases.develop;
 
 import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.portInterface.AddBALOutputPort;
+import com.hexaTech.interactor.outputportInterface.AddBALOutputPort;
 import com.hexaTech.interactor.usecases.develop.AddBAL;
 import com.hexaTech.repositories.RepoBALDocument;
 import org.junit.Before;

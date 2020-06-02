@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.interactor.portInterface;
+package com.hexaTech.interactor.outputportInterface;
 
 /**
  * CreateAPI output interface.

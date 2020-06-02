@@ -10,8 +10,8 @@
 
 package com.hexaTech.interactor.usecases.design;
 
-import com.hexaTech.interactor.portInterface.AddBDLInputPort;
-import com.hexaTech.interactor.portInterface.AddBDLOutputPort;
+import com.hexaTech.interactor.inputportInterface.AddBDLInputPort;
+import com.hexaTech.interactor.outputportInterface.AddBDLOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
