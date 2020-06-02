@@ -2,6 +2,7 @@ package com.hexaTech.usecases.develop;
 
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.outputportInterface.AddBALOutputPort;
+import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 import com.hexaTech.interactor.usecases.develop.AddBAL;
 import com.hexaTech.repositories.RepoBALDocument;
 import org.junit.Before;
@@ -12,8 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import java.io.IOException;
+
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,7 +25,7 @@ public class AddBALTest{
     AddBALOutputPort addBALOutputPort;
 
     @Mock
-    RepoBALDocument repoBALDocumentInterface;
+    RepoBALDocumentInterface repoBALDocumentInterface;
 
     @InjectMocks
     AddBAL addBAL;
@@ -31,7 +33,7 @@ public class AddBALTest{
     @Before
     public void before(){
         repoBALDocumentInterface=Mockito.spy(new RepoBALDocument());
-        addBAL=new AddBAL(addBALOutputPort,repoBALDocumentInterface);
+        addBAL=new AddBAL(addBALOutputPort, repoBALDocumentInterface);
     }
 
     @Test
@@ -44,7 +46,13 @@ public class AddBALTest{
         Document bal=new Document("balOA.json",".\\src\\main\\resources\\testFiles\\balOA.json");
         addBAL.addBAL("Develop",".\\src\\main\\resources\\testFiles\\balOA.json");
         assertEquals(repoBALDocumentInterface.getBAL().getPath(), bal.getPath());
-        verify(repoBALDocumentInterface).saveDoc(any(String.class),any(String.class));
+        verify(repoBALDocumentInterface).saveDoc(anyString(),anyString());
+    }
+
+    @Test
+    public void addBALNullTest() throws IOException {
+        addBAL.addBAL("Develop","");
+        verify(addBALOutputPort).showDone(false);
     }
 
     @Test
@@ -60,10 +68,10 @@ public class AddBALTest{
     }
 
     @Test
-    public void deleteDocTrueTest(){
+    public void deleteDocTest(){
         addBAL.deleteDoc("path");
         verify(repoBALDocumentInterface).deleteDoc("path");
-        verify(addBALOutputPort).showRemovedBAL(any(String.class));
+        verify(addBALOutputPort).showRemovedBAL(anyString());
     }
 
     @Test(expected=IOException.class)
@@ -76,7 +84,7 @@ public class AddBALTest{
         addBAL.addBAL("Develop",".\\src\\main\\resources\\testFiles\\balOA.json");
         addBAL.loadBackUp("Develop");
         verify(repoBALDocumentInterface).loadBackup("Develop");
-        verify(addBALOutputPort).showRestoredBackUp(any(String.class));
+        verify(addBALOutputPort).showRestoredBackUp(anyString());
     }
 
 }//AddBALTest

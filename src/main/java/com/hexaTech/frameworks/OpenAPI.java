@@ -51,16 +51,16 @@ public class OpenAPI implements JsonParsingInterface {
             List<Method> result=new ArrayList<>();
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
-                throw new IllegalArgumentException();
+                return null;
             if(openAPI.getPaths()==null)
                 return result;
             for(Map.Entry<String, PathItem> method : openAPI.getPaths().entrySet())
                 result.add(getMethod(method));
             return result;
-        }catch(IllegalArgumentException e){
-            System.out.println("BAL's body can't be empty.");
+        }catch(NullPointerException e){
+            System.out.println("BAL's body has bad syntax.");
+            return null;
         }//try_catch
-        return null;
     }//extractAPIMethods
 
     /**
@@ -74,14 +74,14 @@ public class OpenAPI implements JsonParsingInterface {
             List<Structure> result=new ArrayList<>();
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
-                throw new IllegalArgumentException();
+                return null;
             if(openAPI.getComponents()==null || openAPI.getComponents().getSchemas()==null)
                 return result;
             for(Map.Entry<String, Schema> struct : openAPI.getComponents().getSchemas().entrySet())
                 result.add(getStructure(struct));
             return result;
-        }catch(IllegalArgumentException e){
-            System.out.println("BAL's body can't be empty.");
+        }catch(NullPointerException e){
+            System.out.println("BAL's body has bad syntax.");
         }//try_catch
         return null;
     }//extractAPIStructures
@@ -96,12 +96,12 @@ public class OpenAPI implements JsonParsingInterface {
         try{
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
-                throw new IllegalArgumentException();
+                return null;
             if(openAPI.getInfo()==null || openAPI.getInfo().getTitle()==null)
                 return "";
             return openAPI.getInfo().getTitle();
-        }catch(IllegalArgumentException e){
-            System.out.println("BAL's body can't be empty.");
+        }catch(NullPointerException e){
+            System.out.println("BAL's body has bad syntax.");
         }//try_catch
         return null;
     }//extractAPIName
@@ -116,12 +116,12 @@ public class OpenAPI implements JsonParsingInterface {
         try{
             io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
             if(openAPI==null)
-                throw new IllegalArgumentException();
+                return null;
             if(openAPI.getInfo()==null || openAPI.getInfo().getDescription()==null)
                 return "";
             return openAPI.getInfo().getDescription();
-        }catch(IllegalArgumentException e){
-            System.out.println("BAL's body can't be empty.");
+        }catch(NullPointerException e){
+            System.out.println("BAL's body has bad syntax.");
         }//try_catch
         return null;
     }//extractAPIDescription

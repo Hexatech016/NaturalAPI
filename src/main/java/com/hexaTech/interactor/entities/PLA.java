@@ -19,7 +19,10 @@ public class PLA {
     /**
      * PLA class empty constructor.
      */
-    public PLA(){}
+    public PLA(){
+        this.extension="";
+        this.path="";
+    }
 
     public String getPath() {
         return path;

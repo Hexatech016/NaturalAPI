@@ -74,6 +74,10 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         return BAL;
     }
 
+    public void setBAL(Document newBAL){
+        this.BAL=newBAL;
+    }
+
     /**
      * Verifies if the specified document exists.
      * @param path string - path to the document to be searched.
