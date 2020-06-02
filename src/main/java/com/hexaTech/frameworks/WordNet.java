@@ -5,10 +5,12 @@ import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.*;
 import net.didion.jwnl.dictionary.Dictionary;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+@Component
 public class WordNet implements WordParsingInterface {
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {

@@ -14,14 +14,19 @@ import com.hexaTech.interactor.entities.PLA;
 import com.hexaTech.interactor.portInterface.AddPLAInputPort;
 import com.hexaTech.interactor.portInterface.AddPLAOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage a document insertion.
  */
+@Component
 public class AddPLA implements AddPLAInputPort {
+    @Autowired
     AddPLAOutputPort addPLAOutputPort;
+    @Autowired
     RepoPLAInterface repoPLAInterface;
 
     /**

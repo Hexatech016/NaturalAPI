@@ -10,11 +10,14 @@
 
 package com.hexaTech.interactor.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * Class used to represent a BAL's method object.
  */
+@Component
 public class MethodBAL {
     String name;
     String description;

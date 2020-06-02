@@ -10,12 +10,15 @@
 
 package com.hexaTech.interactor.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class used to represent a BAL object.
  */
+@Component
 public class BAL{
     List<MethodBAL> methods;
     List<StructureBAL> structures;

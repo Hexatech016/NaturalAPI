@@ -13,6 +13,8 @@ package com.hexaTech.repositories;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,7 +24,9 @@ import java.util.Scanner;
 /**
  * RepoDocument class.
  */
+@Component
 public class RepoDocument implements RepoDocumentInterface {
+    @Autowired
     private List<Document> documents;
 
     /**
@@ -176,6 +180,8 @@ public class RepoDocument implements RepoDocumentInterface {
     }//loadBackUp
 
     private boolean alreadyLoaded(String newDoc){
+        if(!existsDoc(".\\BackupDocument.txt"))
+            return false;
         for(Document document:documents)
             if(document.getPath().equalsIgnoreCase(newDoc))
                 return true;

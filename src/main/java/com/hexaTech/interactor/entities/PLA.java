@@ -1,5 +1,8 @@
 package com.hexaTech.interactor.entities;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PLA {
     private String path;
     private String extension;

@@ -17,17 +17,25 @@ import com.hexaTech.interactor.portInterface.CreateAPIOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoAPIInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage an API's creation.
  */
+@Component
 public class CreateAPI implements CreateAPIInputPort {
+    @Autowired
     CreateAPIOutputPort createAPIOutputPort;
+    @Autowired
     RepoPLAInterface repoPLAInterface;
+    @Autowired
     RepoBALDocumentInterface repoBALDocumentInterface;
+    @Autowired
     RepoAPIInterface repoAPIInterface;
+    @Autowired
     JsonParsingInterface jsonParsingInterface;
 
     /**

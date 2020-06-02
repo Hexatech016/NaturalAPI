@@ -10,6 +10,8 @@
 
 package com.hexaTech.interactor.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,6 +19,7 @@ import java.util.Map;
 /**
  * Class used to represent a Structure content.
  */
+@Component
 public class Structure {
     String structureName;
     HashMap<String,String> structureParam;

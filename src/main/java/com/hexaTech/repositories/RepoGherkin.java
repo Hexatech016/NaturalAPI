@@ -3,11 +3,15 @@ package com.hexaTech.repositories;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.Document;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.*;
 
+@Component
 public class RepoGherkin implements RepoGherkinInterface {
+    @Autowired
     private Document gherkin;
 
     public RepoGherkin() {

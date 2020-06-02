@@ -11,6 +11,7 @@
 package com.hexaTech.controllerPresenter;
 
 import com.hexaTech.client.MyObserver;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,9 @@ import java.util.List;
 /**
  * Class used to synchronize actions and output messages.
  */
+@Component
 public abstract class Subject {
+
     List<MyObserver> observers=new ArrayList<>();
 
     /**

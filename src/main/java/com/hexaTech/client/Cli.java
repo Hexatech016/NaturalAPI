@@ -12,6 +12,8 @@ package com.hexaTech.client;
 
 import com.hexaTech.controllerPresenter.*;
 import net.didion.jwnl.JWNLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -20,12 +22,15 @@ import java.util.Scanner;
  * Class used to show output messages to user and receive input actions.
  */
 
-public class CLI implements MyObserver {
+@Component
+public class Cli implements MyObserver {
 
+    @Autowired
     private final Controller controller;
+    @Autowired
     private final Presenter presenter;
 
-    public CLI(Controller controller, Presenter presenter) {
+    public Cli(Controller controller, Presenter presenter) {
         this.controller = controller;
         this.presenter = presenter;
         this.presenter.addObserver(this);
@@ -120,8 +125,8 @@ public class CLI implements MyObserver {
         }
     }
 
-    public void choiceOfBdl() throws IOException, JWNLException {
-        System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before" + "\n 3: Back");
+    public void choiceOfBdl() throws IOException{
+        System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before");
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         switch (choice) {
@@ -130,12 +135,20 @@ public class CLI implements MyObserver {
                 controller.addBDL(scanner.nextLine());
                 if(notifyMeDone()) {
                     System.out.println("BDL added.");
+                    break;
                 }else {
                     System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     choiceOfBdl();
                 }//else
-            case ("3"):
-                useCaseDiscover();
+            case ("2"):
+                controller.checkIfRepoBDLIsEmpty();
+                if(notifyMeDone()) {
+                    System.out.println("There is no BDL in memory. Please import an external one or extract one from document texts.");
+                    choiceOfBdl();
+                }else{
+                    System.out.println("BDL is ready to be processed");
+                    break;
+                }//else
         }
     }
 
@@ -159,11 +172,10 @@ public class CLI implements MyObserver {
                 controller.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDone()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
-                    useCaseBDL();
                 }else{
                     System.out.println("Document added.");
-                    useCaseBDL();
                 }//else
+                useCaseBDL();
             case ("3"):
                 useCaseDiscover();
             default:

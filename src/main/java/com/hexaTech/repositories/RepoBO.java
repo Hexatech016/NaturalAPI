@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.*;
@@ -24,8 +26,11 @@ import java.util.*;
  * RepoBAL class.
  * implementata l'interfaccia
  */
+@Component
 public class RepoBO implements RepoBOInterface{
+    @Autowired
     private Document BO;
+    @Autowired
     private BO boOpenAPI;
 
     public RepoBO() {

@@ -61,6 +61,8 @@ public interface RepoBDLInterface {
 
     void setBDL(BDL bdl);
 
+    boolean isRepoBDLEmpty();
+
     void openFile(String path) throws IOException;
 
 }//RepoBDLInterface

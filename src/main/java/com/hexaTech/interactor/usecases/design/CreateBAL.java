@@ -18,6 +18,9 @@ import com.hexaTech.interactor.portInterface.CreateBALOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +29,21 @@ import java.util.Scanner;
 /**
  * Class used to manage a BAL creation.
  */
+@Component
 public class CreateBAL implements CreateBALInputPort {
+    @Autowired
     CreateBALOutputPort createBALOutputPort;
+    @Autowired
     RepoGherkinInterface repoGherkinInterface;
+    @Autowired
     RepoBALDocumentInterface repoBALDocumentInterface;
+    @Autowired
     RepoBALInterface repoBALInterface;
+    @Autowired
     RepoBOInterface repoBOInterface;
+    @Autowired
     RepoBDLInterface repoBDLInterface;
+    @Autowired
     TextsParsingInterface textsParsingInterface;
 
     /**

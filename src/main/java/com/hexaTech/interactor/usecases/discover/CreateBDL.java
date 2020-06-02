@@ -19,6 +19,8 @@ import com.hexaTech.interactor.portInterface.CreateBDLInputPort;
 import com.hexaTech.interactor.portInterface.CreateBDLOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,10 +28,15 @@ import java.util.List;
 /**
  * Class used to manage a BDL object's creation.
  */
+@Component
 public class CreateBDL implements CreateBDLInputPort {
+    @Autowired
     CreateBDLOutputPort createBDLOutputPort;
+    @Autowired
     RepoBDLInterface repoBDLInterface;
+    @Autowired
     RepoDocumentInterface repoDocumentInterface;
+    @Autowired
     TextsParsingInterface textsParsingInterface;
 
     public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface,

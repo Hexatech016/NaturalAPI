@@ -13,16 +13,19 @@ package com.hexaTech.interactor.usecases.design;
 import com.hexaTech.interactor.portInterface.AddBDLInputPort;
 import com.hexaTech.interactor.portInterface.AddBDLOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage a BDL insertion.
  */
+@Component
 public class AddBDL implements AddBDLInputPort {
-
-
+    @Autowired
     AddBDLOutputPort addBDLOutputPort;
+    @Autowired
     RepoBDLInterface repoBDLInterface;
     /**
      * AddBDL class constructor.
@@ -47,5 +50,9 @@ public class AddBDL implements AddBDLInputPort {
             repoBDLInterface.setBDL(repoBDLInterface.loadBDLFromJsonFile(path));
         }//if_else
     }//addBDL
+
+    public void checkIfRepoBDLIsEmpty(){
+        addBDLOutputPort.showDone(repoBDLInterface.isRepoBDLEmpty());
+    }
 
 }//AddBDL

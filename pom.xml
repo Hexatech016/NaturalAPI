@@ -16,8 +16,15 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <stanford.corenlp.version>4.0.0</stanford.corenlp.version>
   </properties>
-  
+
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.2.5.RELEASE</version>
+    </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>

@@ -13,14 +13,19 @@ package com.hexaTech.interactor.usecases.develop;
 import com.hexaTech.interactor.portInterface.AddBALInputPort;
 import com.hexaTech.interactor.portInterface.AddBALOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage a BAL insertion.
  */
+@Component
 public class AddBAL implements AddBALInputPort {
+    @Autowired
     AddBALOutputPort addBALOutputPort;
+    @Autowired
     RepoBALDocumentInterface repoBALDocumentInterface;
 
     /**

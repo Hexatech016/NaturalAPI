@@ -24,4 +24,6 @@ public interface AddBDLInputPort {
      */
     void addBDL(String document) throws IOException;
 
+    void checkIfRepoBDLIsEmpty();
+
 }//AddBDLInputPort

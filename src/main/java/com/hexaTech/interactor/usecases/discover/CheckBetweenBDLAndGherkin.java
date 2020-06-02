@@ -9,17 +9,25 @@ import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinOutputPort
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
+    @Autowired
     CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort;
+    @Autowired
     RepoBDLInterface repoBDLInterface;
+    @Autowired
     RepoGherkinInterface repoGherkinInterface;
+    @Autowired
     WordParsingInterface wordParsingInterface;
+    @Autowired
     TextsParsingInterface textsParsingInterface;
 
     public CheckBetweenBDLAndGherkin(CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort,

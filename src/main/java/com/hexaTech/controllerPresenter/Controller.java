@@ -3,22 +3,35 @@ package com.hexaTech.controllerPresenter;
 import com.hexaTech.interactor.portInterface.*;
 import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
 import net.didion.jwnl.JWNLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class Controller {
     /* ************************ DISCOVER ************************ */
+    @Autowired
     private final AddDocumentInputPort addDocumentInputPort;
+    @Autowired
     private final CreateBDLInputPort createBDLInputPort;
+    @Autowired
     private final CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort;
     /* ************************ DESIGN ************************ */
+    @Autowired
     private final AddBDLInputPort addBDLInputPort;
+    @Autowired
     private final AddGherkinInputPort addGherkinInputPort;
+    @Autowired
     private final CreateBALInputPort createBALInputPort;
+    @Autowired
     private final AddBOInputPort addBOInputPort;
     /* ************************ DEVELOP ************************ */
+    @Autowired
     private final AddPLAInputPort addPLAInputPort;
+    @Autowired
     private final AddBALInputPort addBALInputPort;
+    @Autowired
     private final CreateAPIInputPort createAPIInputPort;
 
     public Controller(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
@@ -79,6 +92,10 @@ public class Controller {
      */
     public void existsDoc(String path) {
         addDocumentInputPort.checkThereAreDoc(path);
+    }
+
+    public void checkIfRepoBDLIsEmpty(){
+        addBDLInputPort.checkIfRepoBDLIsEmpty();
     }
 
     public void checkBetweenBDLAndGherkin(String directory) throws IOException, JWNLException {

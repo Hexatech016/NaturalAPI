@@ -13,15 +13,19 @@ package com.hexaTech.interactor.usecases.design;
 import com.hexaTech.interactor.portInterface.AddGherkinInputPort;
 import com.hexaTech.interactor.portInterface.AddGherkinOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage a Gherkin insertion.
  */
+@Component
 public class AddGherkin implements AddGherkinInputPort {
-
+    @Autowired
     AddGherkinOutputPort addGherkinOutputPort;
+    @Autowired
     RepoGherkinInterface repoGherkinInterface;
 
     /**

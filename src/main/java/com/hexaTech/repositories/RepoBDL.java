@@ -5,14 +5,17 @@ import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.BDL;
 import com.hexaTech.interactor.entities.DoubleStruct;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
 
+@Component
 public class RepoBDL implements RepoBDLInterface {
-
+    @Autowired
     private BDL BDL;
 
     public RepoBDL(){
@@ -162,6 +165,10 @@ public class RepoBDL implements RepoBDLInterface {
     @Override
     public void loadBackup(String directory) throws IOException {
 
+    }
+
+    public boolean isRepoBDLEmpty(){
+        return BDL.isEmpty();
     }
 
     public void openFile(String path) throws IOException{

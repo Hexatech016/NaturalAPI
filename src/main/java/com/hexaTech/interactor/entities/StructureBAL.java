@@ -1,8 +1,11 @@
 package com.hexaTech.interactor.entities;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class StructureBAL {
     String name;
     List<Parameter> parameters=new ArrayList<Parameter>();

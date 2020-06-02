@@ -4,11 +4,16 @@ import com.hexaTech.interactor.entities.BO;
 import com.hexaTech.interactor.portInterface.AddBOInputPort;
 import com.hexaTech.interactor.portInterface.AddBOOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class AddBO implements AddBOInputPort {
+    @Autowired
     RepoBOInterface repoBOInterface;
+    @Autowired
     AddBOOutputPort addBOOutputPort;
 
     public AddBO(AddBOOutputPort addBOOutputPort, RepoBOInterface repoBOInterface) {

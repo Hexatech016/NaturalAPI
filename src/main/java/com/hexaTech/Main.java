@@ -11,7 +11,7 @@
 
 package com.hexaTech;
 
-import com.hexaTech.client.CLI;
+/*import com.hexaTech.client.CLI;
 import com.hexaTech.controllerPresenter.*;
 import com.hexaTech.frameworks.OpenAPI;
 import com.hexaTech.frameworks.StanfordNLP;
@@ -32,17 +32,24 @@ import com.hexaTech.interactor.usecases.develop.CreateAPI;
 import com.hexaTech.interactor.usecases.design.CreateBAL;
 import com.hexaTech.interactor.usecases.discover.AddDocument;
 import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkin;
-import com.hexaTech.interactor.usecases.discover.CreateBDL;
+import com.hexaTech.interactor.usecases.discover.CreateBDL;*/
+import com.hexaTech.client.Cli;
 import net.didion.jwnl.JWNLException;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
 /**
  * Class used to manage the flow of program execution.
  */
+
 public class Main{
     public static void main(String[] args) throws IOException, JWNLException {
-
+        AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
+        Cli client=context.getBean("cli",Cli.class);
+        client.useCaseNaturalAPI();
+        context.close();
+        /*
         //PRESENTER
         Presenter presenter=new Presenter();
         //FRAMEWORK
@@ -83,6 +90,6 @@ public class Main{
                 addPLA,addBAL,createAPI);
         //CLIENT
         CLI client=new CLI(controller,presenter);
-        client.useCaseNaturalAPI();
+        client.useCaseNaturalAPI();*/
     }//main
 }//MainDevelop

@@ -23,6 +23,8 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.io.BufferedWriter;
@@ -37,7 +39,9 @@ import java.util.Map;
 /**
  * RepoAPI class.
  */
+@Component
 public class RepoAPI implements RepoAPIInterface {
+    @Autowired
     private API API;
 
     /**

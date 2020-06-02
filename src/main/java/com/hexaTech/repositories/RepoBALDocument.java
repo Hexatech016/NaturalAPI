@@ -13,6 +13,8 @@ package com.hexaTech.repositories;
 import com.hexaTech.Main;
 import com.hexaTech.interactor.entities.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.io.*;
@@ -23,7 +25,9 @@ import java.util.Scanner;
 /**
  * RepoBALDocument class.
  */
+@Component
 public class RepoBALDocument implements RepoBALDocumentInterface {
+    @Autowired
     private Document BAL;
 
     /**

@@ -13,14 +13,19 @@ package com.hexaTech.interactor.usecases.discover;
 import com.hexaTech.interactor.portInterface.AddDocumentInputPort;
 import com.hexaTech.interactor.portInterface.AddDocumentOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Class used to manage a document insertion.
  */
+@Component
 public class AddDocument implements AddDocumentInputPort {
+    @Autowired
     AddDocumentOutputPort addDocumentOutputPort;
+    @Autowired
     RepoDocumentInterface repoDocumentInterface;
 
     /**
