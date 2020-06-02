@@ -57,7 +57,9 @@ public class CreateBDL implements CreateBDLInputPort {
             bdl.mergeBDL(bdlToMerge);
         }//for
         repoBDLInterface.saveBDL(bdl, BDLpath);
-        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + "Complete.BDL");
+        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + "BDLsost.csv");
+        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + "BDLverbs.csv");
+        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + "BDLpred.csv");
         repoDocumentInterface.deleteDoc((".\\Discover\\BackupDocument.txt"));
         createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover");
     }//createBDL
