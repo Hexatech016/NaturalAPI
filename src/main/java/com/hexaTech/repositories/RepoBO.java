@@ -28,9 +28,7 @@ import java.util.*;
  */
 @Component
 public class RepoBO implements RepoBOInterface{
-    @Autowired
     private Document BO;
-    @Autowired
     private BO boOpenAPI;
 
     public RepoBO() {

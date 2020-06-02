@@ -11,7 +11,6 @@ import java.util.*;
 
 @Component
 public class RepoGherkin implements RepoGherkinInterface {
-    @Autowired
     private Document gherkin;
 
     public RepoGherkin() {

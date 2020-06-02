@@ -41,7 +41,6 @@ import java.util.Map;
  */
 @Component
 public class RepoAPI implements RepoAPIInterface {
-    @Autowired
     private API API;
 
     /**

@@ -21,7 +21,6 @@ import java.util.Scanner;
 
 @Component
 public class RepoPLA implements RepoPLAInterface {
-    @Autowired
     private PLA PLA;
 
     /**

@@ -27,7 +27,6 @@ import java.util.Scanner;
  */
 @Component
 public class RepoBALDocument implements RepoBALDocumentInterface {
-    @Autowired
     private Document BAL;
 
     /**

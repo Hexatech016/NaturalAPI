@@ -15,7 +15,6 @@ import java.util.List;
 
 @Component
 public class RepoBDL implements RepoBDLInterface {
-    @Autowired
     private BDL BDL;
 
     public RepoBDL(){

@@ -26,7 +26,6 @@ import java.util.Scanner;
  */
 @Component
 public class RepoDocument implements RepoDocumentInterface {
-    @Autowired
     private List<Document> documents;
 
     /**
