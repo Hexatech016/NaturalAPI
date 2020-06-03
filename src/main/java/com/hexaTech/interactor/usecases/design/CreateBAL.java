@@ -83,7 +83,7 @@ public class CreateBAL implements CreateBALInputPort {
                 BDLTags.add("");
             }
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
-            bal.joinBO(repoBOInterface.getBoOpenAPI());
+            bal.joinBO(repoBOInterface.getBoOpenAPI().getBOObjects());
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal);
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
@@ -103,13 +103,15 @@ public class CreateBAL implements CreateBALInputPort {
             while(b){
                 if(line.equalsIgnoreCase("y")){
                     b=false;
-                    createBALOutputPort.showMessage("Please choose the correct type: \nS: string\nI: integer\nF: float\nB: boolean\nC: complex object");
+                    createBALOutputPort.showMessage("Please choose the correct type: \nV: void \nS: string\nI: integer\nF: float\nB: boolean\nC: complex object");
                     line=scan.nextLine();
-                    while(!checkAnswer(line)){
+                    while(!checkAnswer(line) && !line.equalsIgnoreCase("v")){
                         createBALOutputPort.showErrorBAL("Wrong character. Please retry.");
                         line=scan.nextLine();
                     }
-                    if(getType(line.toUpperCase()).equalsIgnoreCase(""))
+                    if(line.equalsIgnoreCase("v"))
+                        methodBAL.setToRet("void");
+                    else if(getType(line.toUpperCase()).equalsIgnoreCase(""))
                         methodBAL.setToRet(getObj(bal));
                     else
                         methodBAL.setToRet(isAnArray(getType(line.toUpperCase())));
@@ -177,15 +179,15 @@ public class CreateBAL implements CreateBALInputPort {
 
     private String getObj(BAL bal){
         Scanner scan=new Scanner(System.in);
-        String message="Please select your choice: \n0: create a new object";
+        StringBuilder message=new StringBuilder("Please select your choice: \n0: create a new object");
         int count=1;
         for(StructureBAL structure:bal.getStructures()){
-            message+="\n"+count+": "+structure.getName();
+            message.append("\n").append(count).append(": ").append(structure.getName());
             for(Parameter parameter:structure.getParameters())
-                message+="\n\t"+parameter.getType()+" "+parameter.getName();
+                message.append("\n\t").append(parameter.getType()).append(" ").append(parameter.getName());
             count++;
         }//for
-        createBALOutputPort.showMessage(message);
+        createBALOutputPort.showMessage(message.toString());
         String line=scan.nextLine();
         while(!StringUtils.isNumeric(line) || !(0<=Integer.parseInt(line) && Integer.parseInt(line)<=count-1)){
             createBALOutputPort.showErrorBAL("Wrong character. Please retry.");

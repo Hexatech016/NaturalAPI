@@ -2,6 +2,8 @@ package com.hexaTech.frameworks;
 
 import com.hexaTech.entities.DoubleStruct;
 import com.hexaTech.entities.Gherkin;
+import com.hexaTech.entities.Parameter;
+import com.hexaTech.entities.StructureBAL;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -9,15 +11,16 @@ import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphFactory;
+import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Component
 public class StanfordNLP implements TextsParsingInterface {
@@ -28,12 +31,14 @@ public class StanfordNLP implements TextsParsingInterface {
      * @param content string - document's content to analyze.
      * @return List<DoubleStruct> - list of found elements.
      */
-    public List<DoubleStruct> extractFromText(String content) {
+    public HashMap<List<DoubleStruct>,List<StructureBAL>> extractFromText(String content) {
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
+        HashMap<List<DoubleStruct>,List<StructureBAL>> toReturn=new HashMap<>();
         List<DoubleStruct> doubleStructs = new ArrayList<>();
+        List<StructureBAL> structureBALList=new ArrayList<>();
         Annotation document = new Annotation(content);
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
@@ -41,8 +46,11 @@ public class StanfordNLP implements TextsParsingInterface {
             GrammaticalStructure gStruct = depparser.predict(sentence);
             Collection<TypedDependency> dependencies = gStruct.typedDependencies();
             for (TypedDependency dep : dependencies) {
-                if (dep.reln().getShortName().equalsIgnoreCase("obj"))
-                    doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma() + " " + dep.dep().lemma()));
+                if (dep.reln().getShortName().equalsIgnoreCase("obj")) {
+                    doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
+                    if(dep.gov().lemma().equalsIgnoreCase("have"))
+                        structureBALList.add(extractBO(props,depparser,sentence));
+                }
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 if (token.tag().contains("VB") || token.tag().contains("NN"))
@@ -50,8 +58,24 @@ public class StanfordNLP implements TextsParsingInterface {
                         doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
         }//for
-        return doubleStructs;
+        toReturn.put(doubleStructs,structureBALList);
+        return toReturn;
     }//extract
+
+    private StructureBAL extractBO(Properties properties,DependencyParser depparser, CoreMap sentence){
+        //GrammaticalStructure gStruct = depparser.predict(sentence);
+        Sentence sentence1=new Sentence(sentence);
+        SemanticGraph semanticGraph=sentence1.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
+        Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
+        StructureBAL bo=new StructureBAL();
+        for (TypedDependency dep : dependencies) {
+            if(dep.reln().getShortName().equalsIgnoreCase("nsubj"))
+                bo.setName(dep.dep().lemma());
+            if(dep.reln().getShortName().equalsIgnoreCase("obj"))
+                bo.setParameters(new Parameter("", dep.dep().lemma(), "string"));
+        }//for
+        return bo;
+    }//extractBO
 
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();

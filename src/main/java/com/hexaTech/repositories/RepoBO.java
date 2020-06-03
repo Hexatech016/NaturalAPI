@@ -42,8 +42,8 @@ public class RepoBO implements RepoBOInterface{
         this.boOpenAPI = boOpenAPI;
     }
 
-    public List<StructureBAL> getBoOpenAPI() {
-        return boOpenAPI.getBOObjects();
+    public BO getBoOpenAPI() {
+        return boOpenAPI;
     }
 
     /**
@@ -222,8 +222,29 @@ public class RepoBO implements RepoBOInterface{
     }
 
     @Override
-    public void saveBo(com.hexaTech.entities.BO bo) {
-
+    public void saveBO(String BOpath) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(boOpenAPI);
+        saveDocDiscover(jsonInString,".\\" + BOpath + " BO.json");
     }
+
+    public void saveDocDiscover(String doc, String path) throws IOException {
+        try {
+            // Open given file in append mode.
+            File directory = new File("Discover");
+            if (! directory.exists())
+                directory.mkdir();
+            BufferedWriter out = new BufferedWriter(
+                    new FileWriter(directory + "/" +path));
+            String[] rows=doc.split("\n");
+            for(String row: rows){
+                out.write(row);
+                out.newLine();
+            }//for
+            out.close();
+        }catch (IOException e) {
+            System.out.println("exception occurred " + e);
+        }//try_catch
+    }//saveDocDiscover
 
 }//RepoBO

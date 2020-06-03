@@ -32,6 +32,14 @@ public class StructureBAL {
     public void setParameters(List<Parameter> parameters) {
         this.parameters=parameters;
     }
+
+    public void addParameters(List<Parameter> parameters){
+        for(Parameter parameterExt:parameters){
+            if(!this.parameters.contains(parameterExt))
+                this.parameters.add(parameterExt);
+        }//for
+    }//addParameters
+
     public void setParameters(Parameter parameter) {
         this.parameters.add(parameter);
     }

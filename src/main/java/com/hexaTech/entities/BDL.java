@@ -152,10 +152,9 @@ public class BDL {
         sortedByValues.putAll(map);
         return sortedByValues;
     }
-    // Funzione per la stampa dei campi dati sul campo tag
 
-    public String BDLtotag(Map<String,Integer> text)
-    {
+    // Funzione per la stampa dei campi dati sul campo tag
+    public String BDLtotag(Map<String,Integer> text) {
         StringBuilder toReturn =new StringBuilder();
         int count=0;
         int valore=0;

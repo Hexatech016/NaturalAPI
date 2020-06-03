@@ -45,13 +45,13 @@ public class RepoBDL implements RepoBDLInterface {
         return BDL;
     }
 
-    public void saveBDL(BDL bdl, String BDLpath) throws IOException {
+    public void saveBDL(String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = mapper.writeValueAsString(bdl);
+        String jsonInString = mapper.writeValueAsString(BDL);
         saveDocDiscover(jsonInString,".\\" + BDLpath + " BDL.BDL");
-        saveDocDiscover(bdl.sostToCSV(),".\\" + BDLpath + " BDL_nouns.csv");
-        saveDocDiscover(bdl.verbToCSV(),".\\" + BDLpath + " BDL_verbs.csv");
-        saveDocDiscover(bdl.predToCSV(),".\\" + BDLpath + " BDL_preds.csv");
+        saveDocDiscover(BDL.sostToCSV(),".\\" + BDLpath + " BDL_nouns.csv");
+        saveDocDiscover(BDL.verbToCSV(),".\\" + BDLpath + " BDL_verbs.csv");
+        saveDocDiscover(BDL.predToCSV(),".\\" + BDLpath + " BDL_preds.csv");
     }
 
     public BDL loadBDLFromJsonFile(String path) throws IOException {
@@ -78,23 +78,6 @@ public class RepoBDL implements RepoBDLInterface {
             System.out.println("exception occurred " + e);
         }//try_catch
     }//saveDocDiscover
-
-    /**
-     * Loads BDL content from different files and store a new BDL object.
-     * @throws IOException if an error occurs while loading one or more file.
-     */
-    /* DA IMPLEMENTARE
-    public void getBDLFromContentPath() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        String noun=fileSystem.getContentFromPath(".\\Discover\\BDL_nouns.txt");
-        String verb=fileSystem.getContentFromPath(".\\Discover\\BDL_verbs.txt");
-        String pred=fileSystem.getContentFromPath(".\\Discover\\BDL_predicates.txt");
-        Map<String,Integer> nouns=mapper.readValue(noun, HashMap.class);
-        Map<String,Integer> verbs=mapper.readValue(verb, HashMap.class);
-        Map<String,Integer> predicates=mapper.readValue(pred, HashMap.class);
-        BDL BDLtoGet=new BDL(nouns,verbs,predicates);
-        System.out.println(BDLtoGet.toString());
-    }//getBDLFromContentPath*/
 
     public String getContentFromPath(String path) throws IOException {
         String jarName="/"+path.substring(path.lastIndexOf("\\")+1);

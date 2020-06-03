@@ -69,8 +69,16 @@ public class BO {
         this.BOObjects = BOObjects;
     }
 
-    public void setBOObjects(StructureBAL BOObjecto) {
-        this.BOObjects.add(BOObjecto);
+    public void setBOObjects(StructureBAL BOObject) {
+        boolean found=false;
+        for(StructureBAL structureBAL:BOObjects)
+            if(structureBAL.getName().equalsIgnoreCase(BOObject.getName())){
+                structureBAL.addParameters(BOObject.getParameters());
+                found=true;
+                break;
+            }
+        if(!found)
+            this.BOObjects.add(BOObject);
     }
 
     @Override
@@ -81,15 +89,9 @@ public class BO {
                 '}';
     }
 
-    public String toOpenAPI(){
-        String toRet="";
-        int last=BOObjects.size()-1;
-        int count=0;
-        for(StructureBAL tmp: BOObjects){
-            toRet+=tmp.toString();
-            if(count<last) toRet+=",";
-            count++;
-        }
-        return toRet;
+    public void mergeBO(BO newBO){
+        for(StructureBAL structureBAL: newBO.getBOObjects())
+            this.setBOObjects(structureBAL);
     }
-}
+
+}//BO

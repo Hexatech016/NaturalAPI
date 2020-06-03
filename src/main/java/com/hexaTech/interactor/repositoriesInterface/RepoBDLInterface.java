@@ -51,7 +51,7 @@ public interface RepoBDLInterface {
      */
     void loadBackup(String directory) throws IOException;
 
-    void saveBDL(BDL bdl, String BDLpath) throws IOException;
+    void saveBDL(String BDLpath) throws IOException;
 
     String importPathOfBDL(String document);
 

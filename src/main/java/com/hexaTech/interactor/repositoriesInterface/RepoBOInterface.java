@@ -42,9 +42,9 @@ public interface RepoBOInterface{
 
     void setBO(BO bo);
 
-    void saveBo(BO bo);
+    void saveBO(String BOpath) throws IOException;
 
     void setBoOpenAPI(BO boOpenAPI);
 
-    List<StructureBAL> getBoOpenAPI();
+    BO getBoOpenAPI();
 }
