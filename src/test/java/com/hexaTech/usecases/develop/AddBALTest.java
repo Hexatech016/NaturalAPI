@@ -1,22 +1,31 @@
 package com.hexaTech.usecases.develop;
 
 import com.hexaTech.entities.Document;
-import com.hexaTech.interactor.usecases.develop.AddBALOutputPort;
+import com.hexaTech.interactor.usecases.design.AddBDLInputPort;
+import com.hexaTech.interactor.usecases.design.AddBOInputPort;
+import com.hexaTech.interactor.usecases.design.AddGherkinInputPort;
+import com.hexaTech.interactor.usecases.design.CreateBALInputPort;
+import com.hexaTech.interactor.usecases.develop.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
-import com.hexaTech.interactor.usecases.develop.AddBAL;
+import com.hexaTech.interactor.usecases.discover.AddDocumentInputPort;
+import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkinInputPort;
+import com.hexaTech.interactor.usecases.discover.CreateBDLInputPort;
+import com.hexaTech.interfaceadapters.Controller;
 import com.hexaTech.repositories.RepoBALDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 import java.io.IOException;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+
+import com.hexaTech.usecases.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddBALTest{
@@ -27,13 +36,19 @@ public class AddBALTest{
     @Mock
     RepoBALDocumentInterface repoBALDocumentInterface;
 
-    @InjectMocks
+    @Mock
+    Controller controller;
+
+    @Mock
     AddBAL addBAL;
 
     @Before
     public void before(){
         repoBALDocumentInterface=Mockito.spy(new RepoBALDocument());
-        addBAL=new AddBAL(addBALOutputPort, repoBALDocumentInterface);
+        addBAL=Mockito.spy(new AddBAL(addBALOutputPort, repoBALDocumentInterface));
+        controller=new Controller(Mockito.mock(AddDocumentInputPort.class),Mockito.mock(CreateBDLInputPort.class),Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class),
+                Mockito.mock(AddBDLInputPort.class),Mockito.mock(AddGherkinInputPort.class),Mockito.mock(CreateBALInputPort.class),Mockito.mock(AddBOInputPort.class),
+                Mockito.mock(AddPLAInputPort.class),addBAL,Mockito.mock(CreateAPIInputPort.class));
     }
 
     @Test
@@ -85,6 +100,12 @@ public class AddBALTest{
         addBAL.loadBackUp("Develop");
         verify(repoBALDocumentInterface).loadBackup("Develop");
         verify(addBALOutputPort).showRestoredBackUp(anyString());
+    }
+
+    @Test
+    public void controllerAddBALTest() throws IOException {
+        controller.addBAL(anyString(),anyString());
+        verify(addBAL).addBAL(anyString(),anyString());
     }
 
 }//AddBALTest

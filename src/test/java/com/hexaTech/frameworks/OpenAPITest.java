@@ -14,9 +14,6 @@ import static org.junit.Assert.assertNull;
 @RunWith(MockitoJUnitRunner.class)
 public class OpenAPITest {
 
-    @Mock
-    JsonParsingInterface jsonParsingInterface;
-
     @InjectMocks
     OpenAPI openAPI;
 
