@@ -44,10 +44,9 @@ public class Cli implements MyObserver {
     /* ************************ MAIN ************************ */
 
     public void useCaseNaturalAPI() throws IOException, JWNLException {
-        String temp;
         System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Exit");
-        temp = scanner.nextLine();
-        switch (temp) {
+        choice = scanner.nextLine();
+        switch (choice) {
             case ("1"):
                 useCaseDiscover();
                 break;
@@ -191,11 +190,11 @@ public class Cli implements MyObserver {
      */
     public boolean existsBackUpDocument() throws IOException {
         System.out.println("Some documents are already stored. Do you want to load them? (Y/N)");
-        String answer = scanner.nextLine();
-        if(answer.equalsIgnoreCase("y")) {
+        choice = scanner.nextLine();
+        if(choice.equalsIgnoreCase("y")) {
             controller.restoreTextDoc("Discover");
             return true;
-        }else if (answer.equalsIgnoreCase("n")){
+        }else if (choice.equalsIgnoreCase("n")){
             controller.deleteTextDoc(".\\Discover\\BackupDocument.txt");
             return false;
         }else{
@@ -211,7 +210,6 @@ public class Cli implements MyObserver {
      * @throws IOException if the specified file path doesn't exist.
      */
     public void useCaseDesign() throws IOException, JWNLException {
-        String choice;
         System.out.println("Use case:\n 1: Check if there are saved documents\n 2: Add a Gherkin file (.scenario) \n 3: Back");
         choice = scanner.nextLine();
         switch (choice){
@@ -245,7 +243,6 @@ public class Cli implements MyObserver {
     }//useCase
 
     private void useCaseBDLDesign() throws IOException, JWNLException {
-        String choice;
         System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Back ");
         choice = scanner.nextLine();
         switch (choice){
@@ -268,7 +265,6 @@ public class Cli implements MyObserver {
     }//useCaseBDLDesign
 
     private void useCaseBO() throws IOException, JWNLException {
-        String choice;
         System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Back ");
         choice = scanner.nextLine();
         switch (choice){
@@ -298,11 +294,11 @@ public class Cli implements MyObserver {
 
     public boolean existsBackUpGherkin() throws IOException {
         System.out.println("A Gherkin Scenario is already stored. Do you want to load it? (Y/N)");
-        String answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("y")) {
+        choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("y")) {
             controller.restoreBackup("Design");
             return true;
-        }else if (answer.equalsIgnoreCase("n")){
+        }else if (choice.equalsIgnoreCase("n")){
             controller.deleteGherkin(".\\Design\\BackupGherkin.txt");
             return false;
         }else{
@@ -350,7 +346,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBAL() throws IOException, JWNLException {
         System.out.println("Use case: \n 1: Generate API \n 2: Back");
-        String choice = scanner.nextLine();
+        choice = scanner.nextLine();
         switch (choice) {
             case ("1"):
                 useCasePLA();
@@ -403,11 +399,11 @@ public class Cli implements MyObserver {
      */
     public boolean existsBackUpBAL() throws IOException {
         System.out.println("A BAL is already stored. Do you want to load it? (Y/N)");
-        String answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("y")) {
+        choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("y")) {
             controller.restoreBAL("Develop");
             return true;
-        }else if (answer.equalsIgnoreCase("n")){
+        }else if (choice.equalsIgnoreCase("n")){
             controller.deleteBAL(".\\Develop\\BackupBAL.txt");
             return false;
         }else{
