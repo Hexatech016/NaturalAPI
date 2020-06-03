@@ -123,6 +123,9 @@ public class Cli implements MyObserver {
                 }
             case ("2"):
               useCaseDiscover();
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                choiceOfGherkin();
         }
     }
 
@@ -149,6 +152,9 @@ public class Cli implements MyObserver {
                     System.out.println("BDL is ready to be processed");
                     break;
                 }//else
+            default:
+                System.out.println("Invalid choice. Please retry.");
+                choiceOfBdl();
         }
     }
 
