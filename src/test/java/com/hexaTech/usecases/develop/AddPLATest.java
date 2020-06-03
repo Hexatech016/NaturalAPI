@@ -5,6 +5,7 @@ import com.hexaTech.entities.PLA;
 import com.hexaTech.interactor.usecases.develop.AddPLAOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
 import com.hexaTech.interactor.usecases.develop.AddPLA;
+import com.hexaTech.interfaceadapters.Presenter;
 import com.hexaTech.repositories.RepoPLA;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +36,7 @@ public class AddPLATest{
 
     @Before
     public void before(){
+        addPLAOutputPort=Mockito.spy(new Presenter());
         repoPLAInterface=Mockito.spy(new RepoPLA());
         addPLA=new AddPLA(addPLAOutputPort,repoPLAInterface);
     }
@@ -87,7 +88,7 @@ public class AddPLATest{
     public void deleteDocTest(){
         addPLA.deleteDoc("path");
         verify(repoPLAInterface).deleteDoc("path");
-        verify(addPLAOutputPort).showRemovedPLA(anyString());
+        verify(addPLAOutputPort).showRemovedPLA("Error. Please retry.");
     }
 
 }//AddPLATest

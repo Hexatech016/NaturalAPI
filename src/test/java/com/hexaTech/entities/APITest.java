@@ -28,6 +28,15 @@ public class APITest {
     }
 
     @Test
+    public void defaultConstructorTest(){
+        api=new API("name","comment",null,null);
+        assertEquals("Name",api.getAPIName());
+        assertEquals("comment",api.getAPIComment());
+        assertNull(api.getAPIMethods());
+        assertNull(api.getAPIStructures());
+    }
+
+    @Test
     public void getAPINameTest(){
         assertEquals("",api.getAPIName());
     }

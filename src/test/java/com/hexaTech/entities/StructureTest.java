@@ -27,6 +27,13 @@ public class StructureTest{
     }
 
     @Test
+    public void defaultConstructorTest(){
+        structure=new Structure("name",null);
+        assertEquals("name",structure.getStructureName());
+        assertNull(structure.getStructureParam());
+    }
+
+    @Test
     public void getStructureNameTest(){
         assertEquals("",structure.getStructureName());
     }
@@ -71,6 +78,17 @@ public class StructureTest{
         String[] pla={"<--structParamName-->-<--structName-->"};
         String[] types={"int"};
         assertEquals("int param;-Name\n",structure.createAPI(pla,0,1,types,true));
+    }
+
+    @Test
+    public void createAPIUntypedTest(){
+        structure.setStructureName("name");
+        HashMap<String,String> param=new HashMap<>();
+        param.put("param","integer");
+        structure.setStructureParam(param);
+        String[] pla={"<--structParamName--> <--structName-->"};
+        String[] types={"/"};
+        assertEquals("param Name\n",structure.createAPI(pla,0,1,types,false));
     }
 
 }//StructureTest

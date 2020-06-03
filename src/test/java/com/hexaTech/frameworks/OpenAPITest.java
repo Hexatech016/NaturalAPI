@@ -1,10 +1,8 @@
 package com.hexaTech.frameworks;
 
-import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.io.File;
 
@@ -32,6 +30,12 @@ public class OpenAPITest {
     @Test
     public void extractAPINullTest(){
         assertNull(openAPI.extractAPI(""));
+    }
+
+    @Test
+    public void extractAPIBadSyntaxTest(){
+        File test=new File(".\\src\\main\\resources\\testFiles\\pla.pla");
+        assertNull(openAPI.extractAPI(test.getPath()));
     }
 
 }//OpenAPITest

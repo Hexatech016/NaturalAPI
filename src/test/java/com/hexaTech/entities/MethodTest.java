@@ -26,6 +26,15 @@ public class MethodTest{
     }
 
     @Test
+    public void defaultConstructorTest(){
+        method=new Method("return","name","comment",null);
+        assertEquals("return",method.getMethodReturnType());
+        assertEquals("comment",method.getMethodComment());
+        assertEquals("name",method.getMethodName());
+        assertNull(method.getMethodParam());
+    }
+
+    @Test
     public void getMethodNameTest(){
         assertEquals("",method.getMethodName());
     }
@@ -119,12 +128,36 @@ public class MethodTest{
     }
 
     @Test
+    public void createAPIUntypedTest(){
+        method.setMethodReturnType("integer");
+        method.setMethodName("name");
+        HashMap<String,String> param=new HashMap<>();
+        param.put("param","integer");
+        method.setMethodParam(param);
+        String[] pla={"<--methodReturn-->-<--methodName-->-<--methodParamName-->"};
+        String[] types={"int"};
+        assertEquals("integer-name-param\n",method.createAPI(pla,0,1,types,false));
+    }
+
+    @Test
     public void createTestsTest(){
         method.setMethodReturnType("integer");
         method.setMethodName("name");
         String[] pla={"<--methodReturn-->-<--methodName-->"};
         String[] types={"int"};
         assertEquals("int-nameTest\n",method.createTests(pla,0,1,types,true,""));
+    }
+
+    @Test
+    public void createTestsUntypedTest(){
+        method.setMethodReturnType("integer");
+        method.setMethodName("name");
+        HashMap<String,String> param=new HashMap<>();
+        param.put("param","integer");
+        method.setMethodParam(param);
+        String[] pla={"<--methodReturn-->-<--methodName-->"};
+        String[] types={"int"};
+        assertEquals("integer-nameTest\n",method.createTests(pla,0,1,types,false,""));
     }
 
 }//MethodTest
