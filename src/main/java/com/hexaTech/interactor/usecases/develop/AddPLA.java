@@ -23,9 +23,9 @@ import java.io.IOException;
 @Component
 public class AddPLA implements AddPLAInputPort {
     @Autowired
-    AddPLAOutputPort addPLAOutputPort;
+    private final AddPLAOutputPort addPLAOutputPort;
     @Autowired
-    RepoPLAInterface repoPLAInterface;
+    private final RepoPLAInterface repoPLAInterface;
 
     /**
      * Add document standard constructor.

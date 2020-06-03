@@ -29,13 +29,13 @@ import java.util.List;
 @Component
 public class CreateBDL implements CreateBDLInputPort {
     @Autowired
-    CreateBDLOutputPort createBDLOutputPort;
+    private final CreateBDLOutputPort createBDLOutputPort;
     @Autowired
-    RepoBDLInterface repoBDLInterface;
+    private final RepoBDLInterface repoBDLInterface;
     @Autowired
-    RepoDocumentInterface repoDocumentInterface;
+    private final RepoDocumentInterface repoDocumentInterface;
     @Autowired
-    TextsParsingInterface textsParsingInterface;
+    private final TextsParsingInterface textsParsingInterface;
 
     public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface,
                      RepoDocumentInterface repoDocumentInterface, TextsParsingInterface textsParsingInterface) {

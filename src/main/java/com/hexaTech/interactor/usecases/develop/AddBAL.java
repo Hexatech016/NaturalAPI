@@ -22,9 +22,9 @@ import java.io.IOException;
 @Component
 public class AddBAL implements AddBALInputPort {
     @Autowired
-    AddBALOutputPort addBALOutputPort;
+    private final AddBALOutputPort addBALOutputPort;
     @Autowired
-    RepoBALDocumentInterface repoBALDocumentInterface;
+    private final RepoBALDocumentInterface repoBALDocumentInterface;
 
     /**
      * Add document standard constructor.

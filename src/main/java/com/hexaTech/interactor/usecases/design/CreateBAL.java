@@ -30,19 +30,19 @@ import java.util.Scanner;
 @Component
 public class CreateBAL implements CreateBALInputPort {
     @Autowired
-    CreateBALOutputPort createBALOutputPort;
+    private final CreateBALOutputPort createBALOutputPort;
     @Autowired
-    RepoGherkinInterface repoGherkinInterface;
+    private final RepoGherkinInterface repoGherkinInterface;
     @Autowired
-    RepoBALDocumentInterface repoBALDocumentInterface;
+    private final RepoBALDocumentInterface repoBALDocumentInterface;
     @Autowired
-    RepoBALInterface repoBALInterface;
+    private final RepoBALInterface repoBALInterface;
     @Autowired
-    RepoBOInterface repoBOInterface;
+    private final RepoBOInterface repoBOInterface;
     @Autowired
-    RepoBDLInterface repoBDLInterface;
+    private final RepoBDLInterface repoBDLInterface;
     @Autowired
-    TextsParsingInterface textsParsingInterface;
+    private final TextsParsingInterface textsParsingInterface;
 
     /**
      * CreateBAL class constructor.

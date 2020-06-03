@@ -26,15 +26,15 @@ import java.io.IOException;
 @Component
 public class CreateAPI implements CreateAPIInputPort {
     @Autowired
-    CreateAPIOutputPort createAPIOutputPort;
+    private final CreateAPIOutputPort createAPIOutputPort;
     @Autowired
-    RepoPLAInterface repoPLAInterface;
+    private final RepoPLAInterface repoPLAInterface;
     @Autowired
-    RepoBALDocumentInterface repoBALDocumentInterface;
+    private final RepoBALDocumentInterface repoBALDocumentInterface;
     @Autowired
-    RepoAPIInterface repoAPIInterface;
+    private final RepoAPIInterface repoAPIInterface;
     @Autowired
-    JsonParsingInterface jsonParsingInterface;
+    private final JsonParsingInterface jsonParsingInterface;
 
     /**
      * CreateAPI class standard constructor.

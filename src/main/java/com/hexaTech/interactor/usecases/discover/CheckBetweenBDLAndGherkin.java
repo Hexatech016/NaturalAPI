@@ -18,15 +18,18 @@ import java.util.Map;
 @Component
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
     @Autowired
-    CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort;
+    private final CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort;
     @Autowired
-    RepoBDLInterface repoBDLInterface;
+    private final RepoBDLInterface repoBDLInterface;
     @Autowired
-    RepoGherkinInterface repoGherkinInterface;
+    private final RepoGherkinInterface repoGherkinInterface;
     @Autowired
-    WordParsingInterface wordParsingInterface;
+    private final WordParsingInterface wordParsingInterface;
     @Autowired
-    TextsParsingInterface textsParsingInterface;
+    private final TextsParsingInterface textsParsingInterface;
+
+    private Integer matches=0;
+    private Integer toCheck=0;
 
     public CheckBetweenBDLAndGherkin(CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort,
                                      RepoBDLInterface repoBDLInterface,
@@ -41,13 +44,11 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     }
 
     public void check(String directory) throws IOException, JWNLException {
-        //carico il BDL della repo
         BDL bdlOfTexts=repoBDLInterface.getBDL();
-        //creo un nuovo BDL per il Gherkin
         BDL bdlOfGherkin=new BDL();
         String path=repoGherkinInterface.getGherkin().getPath();
         String document = repoGherkinInterface.getContentFromPath(path);
-        List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractFromText(document);
+        List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractBDLFromGherkin(document);
         BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
         bdlOfGherkin.mergeBDL(bdlToMerge);
 
@@ -58,7 +59,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 checkPredicatesOfBDL(bdlOfTexts, bdlOfGherkin) +
                 checkPredicatesOfGherkin(bdlOfTexts, bdlOfGherkin);
         repoBDLInterface.saveDocDiscover(log,"log.txt");
-        checkBetweenBDLAndGherkinOutputPort.showCheck("Check complete, you can find log file in Discover");
+        checkBetweenBDLAndGherkinOutputPort.showCheck(ratingMatch());
     }
 
     private String checkNounsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
@@ -78,8 +79,8 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     shouldUse.append(nounsOfTexts.getKey()).append("; ");
             }//if
         }//for
-        return "NOUNS: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
-                "You could use: \n" + shouldUse.toString() + "\n\n";
+        return "NOUNS: \n\n" + "The following nouns you use in your Gherkin correspond to the Business Domain Language: \n" + usingWell.toString() + "\n\n" +
+                "You may need to use the following nouns in your Gherkin: \n" + shouldUse.toString() + "\n\n";
     }
 
     private String checkVerbsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
@@ -92,15 +93,15 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 for (Map.Entry<String, Integer> verbOfGherkin : bdlOfGherkin.getVerbs().entrySet()) {
                     if(verbOfTexts.getKey().equalsIgnoreCase(verbOfGherkin.getKey())){
                         found = true;
-                        usingWell.append(verbOfGherkin.getKey() + "; ");
+                        usingWell.append(verbOfGherkin.getKey()).append("; ");
                     }
                 }
                 if(!found)
-                    shouldUse.append(verbOfTexts.getKey() + "; ");
+                    shouldUse.append(verbOfTexts.getKey()).append("; ");
             }//if
         }//for
-        return "VERBS: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
-                "You could use: \n" + shouldUse.toString() + "\n\n";
+        return "VERBS: \n\n" + "The following verbs you use in your Gherkin correspond to the Business Domain Language: \n" + usingWell.toString() + "\n\n" +
+                "You may need to use the following verbs in your Gherkin: \n" + shouldUse.toString() + "\n\n";
     }
     private String checkPredicatesOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){
         StringBuilder usingWell= new StringBuilder();
@@ -111,15 +112,17 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 for (Map.Entry<String, Integer> predsOfGherkin : bdlOfGherkin.getPredicates().entrySet()) {
                     if(predsOfTexts.getKey().equalsIgnoreCase(predsOfGherkin.getKey())){
                         found = true;
-                        usingWell.append(predsOfGherkin.getKey() + "; ");
+                        usingWell.append(predsOfGherkin.getKey()).append("; ");
                     }
                 }
                 if(!found)
-                    shouldUse.append(predsOfTexts.getKey() + "; ");
+                    shouldUse.append(predsOfTexts.getKey()).append("; ");
             }//if
         }//for
-        return "PREDICATES: \n\n" + "You are using well: \n" + usingWell.toString() + "\n\n" +
-                "You could use: \n" + shouldUse.toString() + "\n\n";
+        return "PREDICATES: \n\n" +
+                "The following predicates you use in your Gherkin correspond to the Business Domain Language: \n" +
+                usingWell.toString() + "\n\n" +
+                "You may need to use the following predicates in your Gherkin: \n" + shouldUse.toString() + "\n\n";
     }
 
     private String checkNounsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
@@ -127,33 +130,37 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> nounsOfGherkin : bdlOfGherkin.getNouns().entrySet()) {
             boolean found = false;
+            toCheck++;
                 for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
                     if (nounsOfTexts.getKey().equalsIgnoreCase(nounsOfGherkin.getKey())) {
                         found = true;
+                        matches++;
                         break;
                     }
                 }
-                if (!found) {
-                    for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
-                        if (thisNounIsRelevant(nounsOfTexts.getValue(),
-                                repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
-                                thisNounIsASynonymOf(nounsOfGherkin.getKey(),
-                                        nounsOfTexts.getKey())) {
-                            alternatives.append("You could use " + "\"")
-                                    .append(nounsOfTexts.getKey())
-                                    .append("\"")
-                                    .append(" instead of ")
-                                    .append("\"")
-                                    .append(nounsOfGherkin.getKey())
-                                    .append("\";\n");
-                            found = true;
+                    if (!found) {
+                        for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
+                            if (thisNounIsRelevant(nounsOfTexts.getValue(),
+                                    repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
+                                    thisNounIsASynonymOf(nounsOfGherkin.getKey(),
+                                            nounsOfTexts.getKey())) {
+                                alternatives.append("You could use " + "\"")
+                                        .append(nounsOfTexts.getKey())
+                                        .append("\"")
+                                        .append(" instead of ")
+                                        .append("\"")
+                                        .append(nounsOfGherkin.getKey())
+                                        .append("\";\n");
+                                found = true;
+                                matches++;
+                            }
                         }
                     }
-                }
-                if(!found)
-                    notCommon.append(nounsOfGherkin.getKey()).append("; ");
+                    if (!found && nounsOfGherkin.getValue()>1)
+                        notCommon.append(nounsOfGherkin.getKey()).append("; ");
         }//for
-        return alternatives.toString() + "\n" + "You are using the following nouns but they are not common: \n"
+        return alternatives.toString() + "\n" + "You are using more than one time the following nouns but they don't correspond to " +
+                "the Business Domain Language: \n"
                 + notCommon.toString() + "\n\n";
     }
 
@@ -162,9 +169,11 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> verbsOfGherkin : bdlOfGherkin.getVerbs().entrySet()) {
             boolean found = false;
+            toCheck++;
             for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
                 if(verbsOfTexts.getKey().equalsIgnoreCase(verbsOfGherkin.getKey())){
                     found = true;
+                    matches++;
                     break;
                 }
             }
@@ -182,14 +191,16 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                                 .append(verbsOfGherkin.getKey())
                                 .append("\";\n");
                         found = true;
+                        matches++;
                     }
                 }
             }
-            if(!found)
+            if(!found && verbsOfGherkin.getValue()>1)
                 notCommon.append(verbsOfGherkin.getKey()).append("; ");
         }//for
-        return alternatives.toString() + "\n"
-                + "You are using the following verbs but they are not common: \n"
+        return alternatives.toString() + "\n" +
+                "You are using more than one time the following verbs but they don't correspond to " +
+                "the Business Domain Language: \n"
                 + notCommon.toString() + "\n\n";
     }
 
@@ -197,26 +208,35 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         StringBuilder notCommon= new StringBuilder();
         for (Map.Entry<String, Integer> predsOfGherkin : bdlOfGherkin.getPredicates().entrySet()) {
             boolean found = false;
+            toCheck++;
             for (Map.Entry<String, Integer> predsOfTexts : bdlOfTexts.getPredicates().entrySet()) {
                 if(predsOfTexts.getKey().equalsIgnoreCase(predsOfGherkin.getKey())){
                     found = true;
+                    matches++;
                 }
             }
-            if(!found)
+            if(!found && predsOfGherkin.getValue()>1)
                 notCommon.append(predsOfGherkin.getKey()).append("; ");
         }//for
-        return "You are using the following predicates but they are not common: \n" + notCommon.toString() + "\n\n";
+        return "You are using more than one time the following predicates but they don't correspond to " +
+                "the Business Domain Language: \n" + notCommon.toString() + "\n\n";
     }
 
     private boolean thisNounIsRelevant(int value, int totalFrequency){
-        if(value*1.0/totalFrequency*100>1)
-            return true;
-        return false;
+        return value * 1.0 / totalFrequency * 100 > 1;
     }
     private boolean thisVerbIsRelevant(int value, int totalFrequency){
-        if(value*1.0/totalFrequency*100>0.5)
-            return true;
-        return false;
+        return value * 1.0 / totalFrequency * 100 > 0.5;
+    }
+
+    private String ratingMatch(){
+        return "The match percentage between your Gherkin scenario and Business Domain Language is: " +
+                matches * 100 /  toCheck+ "%\n" +
+                "0% - 25%: be careful, there is no match!\n" +
+                "25% - 50%: you have to work a little more on your Gherkin\n" +
+                "50% - 75%: acceptable match but you could make some adjustments\n" +
+                "75% - 100%: well done\n\n" +
+                "You can find the complete analysis in log file inside Discover directory";
     }
 
 }

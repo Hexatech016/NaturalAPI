@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 public abstract class Subject {
 
-    List<MyObserver> observers=new ArrayList<>();
+    private List<MyObserver> observers=new ArrayList<>();
 
     /**
      * Adds an observer to subject's observers list.

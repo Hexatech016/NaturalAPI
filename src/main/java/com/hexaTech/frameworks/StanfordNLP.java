@@ -53,17 +53,6 @@ public class StanfordNLP implements TextsParsingInterface {
         return doubleStructs;
     }//extract
 
-    private boolean isACommonVerb(String verb) {
-        String[] commonVerbs = {"be", "have", "do", "say", "go", "get", "make", "know", "think",
-                "take", "see", "come", "want", "look", "use", "find", "give", "tell",
-                "work"};
-        for (String commonV : commonVerbs) {
-            if (commonV.equalsIgnoreCase(verb))
-                return true;
-        }
-        return false;
-    }
-
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();
         String[] gherkinSplit = text.split("[\n]+[\n]");
@@ -123,4 +112,45 @@ public class StanfordNLP implements TextsParsingInterface {
         }//for
         return toRet;
     }//extractFromGherkin
+
+    public List<DoubleStruct> extractBDLFromGherkin(String content){
+        Properties props = new Properties();
+        props.put("annotators", "tokenize, ssplit, pos, lemma");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
+        List<DoubleStruct> doubleStructs = new ArrayList<>();
+        Annotation document = new Annotation(content);
+        pipeline.annotate(document);
+        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+        for (CoreMap sentence : sentences) {
+            GrammaticalStructure gStruct = depparser.predict(sentence);
+            Collection<TypedDependency> dependencies = gStruct.typedDependencies();
+            for (TypedDependency dep : dependencies) {
+                if (dep.reln().getShortName().equalsIgnoreCase("obj") &&
+                        !dep.dep().lemma().equalsIgnoreCase("feature") &&
+                        !dep.dep().lemma().equalsIgnoreCase("scenario"))
+                    doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma() + " " + dep.dep().lemma()));
+            }//for
+            for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                if (token.tag().contains("VB") || token.tag().contains("NN") &&
+                        !token.lemma().equalsIgnoreCase("feature")&&
+                        !token.lemma().equalsIgnoreCase("scenario"))
+                    if (!isACommonVerb(token.lemma()))
+                        doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
+            }//for
+        }//for
+        return doubleStructs;
+
+    }
+
+    private boolean isACommonVerb(String verb) {
+        String[] commonVerbs = {"be", "have", "do", "say", "go", "get", "make", "know", "think",
+                "take", "see", "come", "want", "look", "use", "find", "give", "tell",
+                "work"};
+        for (String commonV : commonVerbs) {
+            if (commonV.equalsIgnoreCase(verb))
+                return true;
+        }
+        return false;
+    }
 }//StanfordNLP

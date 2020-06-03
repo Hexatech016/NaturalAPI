@@ -22,9 +22,9 @@ import java.io.IOException;
 @Component
 public class AddDocument implements AddDocumentInputPort {
     @Autowired
-    AddDocumentOutputPort addDocumentOutputPort;
+    private final AddDocumentOutputPort addDocumentOutputPort;
     @Autowired
-    RepoDocumentInterface repoDocumentInterface;
+    private final RepoDocumentInterface repoDocumentInterface;
 
     /**
      * AddDocuToParse standard constructor.

@@ -22,9 +22,9 @@ import java.io.IOException;
 @Component
 public class AddGherkin implements AddGherkinInputPort {
     @Autowired
-    AddGherkinOutputPort addGherkinOutputPort;
+    private final AddGherkinOutputPort addGherkinOutputPort;
     @Autowired
-    RepoGherkinInterface repoGherkinInterface;
+    private final RepoGherkinInterface repoGherkinInterface;
 
     /**
      * AddGherkin class constructor.
