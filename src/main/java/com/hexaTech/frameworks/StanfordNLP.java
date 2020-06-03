@@ -17,7 +17,6 @@ import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -49,7 +48,7 @@ public class StanfordNLP implements TextsParsingInterface {
                 if (dep.reln().getShortName().equalsIgnoreCase("obj")) {
                     doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
                     if(dep.gov().lemma().equalsIgnoreCase("have"))
-                        structureBALList.add(extractBO(props,depparser,sentence));
+                        structureBALList.add(extractBO(props,sentence));
                 }
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -62,20 +61,24 @@ public class StanfordNLP implements TextsParsingInterface {
         return toReturn;
     }//extract
 
-    private StructureBAL extractBO(Properties properties,DependencyParser depparser, CoreMap sentence){
+    private StructureBAL extractBO(Properties properties, CoreMap sentence){
         //GrammaticalStructure gStruct = depparser.predict(sentence);
-        Sentence sentence1=new Sentence(sentence);
-        SemanticGraph semanticGraph=sentence1.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
+        Sentence phrase=new Sentence(sentence.toString());
+        SemanticGraph semanticGraph=phrase.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
         Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
         StructureBAL bo=new StructureBAL();
         for (TypedDependency dep : dependencies) {
             if(dep.reln().getShortName().equalsIgnoreCase("nsubj"))
-                bo.setName(dep.dep().lemma());
+                bo.setName(getLemma(dep.dep().toString()));
             if(dep.reln().getShortName().equalsIgnoreCase("obj"))
-                bo.setParameters(new Parameter("", dep.dep().lemma(), "string"));
+                bo.setParameters(new Parameter("", getLemma(dep.dep().toString()), "string"));
         }//for
         return bo;
     }//extractBO
+
+    private String getLemma(String word){
+        return word.substring(0,word.indexOf("/"));
+    }
 
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();

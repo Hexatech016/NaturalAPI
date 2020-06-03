@@ -69,9 +69,8 @@ public class CreateBDL implements CreateBDLInputPort {
         repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_nouns.csv");
         repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_verbs.csv");
         repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_preds.csv");
-        //repoBOInterface.openFile(".\\Discover\\" + BDLpath + " BO.json");
         repoDocumentInterface.deleteDoc((".\\Discover\\BackupDocument.txt"));
-        createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover");
+        createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover.\nA business ontology has also been created into the same folder.");
     }//createBDL
 
 }//CreateBDL
