@@ -11,9 +11,9 @@
 package com.hexaTech.interactor.repositoriesInterface;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hexaTech.interactor.entities.BO;
-import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.StructureBAL;
+import com.hexaTech.entities.BO;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.StructureBAL;
 
 import java.io.IOException;
 import java.util.List;

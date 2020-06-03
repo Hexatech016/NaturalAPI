@@ -14,7 +14,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
-import com.hexaTech.interactor.entities.*;
+import com.hexaTech.entities.BO;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.Parameter;
+import com.hexaTech.entities.StructureBAL;
 import com.hexaTech.interactor.repositoriesInterface.RepoBOInterface;
 import org.springframework.stereotype.Component;
 
@@ -219,7 +222,7 @@ public class RepoBO implements RepoBOInterface{
     }
 
     @Override
-    public void saveBo(com.hexaTech.interactor.entities.BO bo) {
+    public void saveBo(com.hexaTech.entities.BO bo) {
 
     }
 

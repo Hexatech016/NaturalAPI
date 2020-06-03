@@ -1,10 +1,10 @@
 package com.hexaTech.usecases.develop;
 
 import com.hexaTech.frameworks.OpenAPI;
-import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.PLA;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.PLA;
 import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
-import com.hexaTech.interactor.outputportInterface.CreateAPIOutputPort;
+import com.hexaTech.interactor.usecases.develop.CreateAPIOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoAPIInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;

@@ -1,11 +1,9 @@
 package com.hexaTech.interactor.usecases.discover;
 
-import com.hexaTech.interactor.entities.BDL;
-import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.entities.BDL;
+import com.hexaTech.entities.DoubleStruct;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
-import com.hexaTech.interactor.inputportInterface.CheckBetweenBDLAndGherkinInputPort;
-import com.hexaTech.interactor.outputportInterface.CheckBetweenBDLAndGherkinOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;

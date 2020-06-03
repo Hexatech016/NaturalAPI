@@ -10,7 +10,7 @@
 
 package com.hexaTech.interactor.repositoriesInterface;
 
-import com.hexaTech.interactor.entities.BAL;
+import com.hexaTech.entities.BAL;
 
 /**
  * RepoBAL class interface.

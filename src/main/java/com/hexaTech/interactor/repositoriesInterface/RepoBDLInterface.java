@@ -1,7 +1,7 @@
 package com.hexaTech.interactor.repositoriesInterface;
 
-import com.hexaTech.interactor.entities.BDL;
-import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.entities.BDL;
+import com.hexaTech.entities.DoubleStruct;
 
 import java.io.IOException;
 import java.util.List;

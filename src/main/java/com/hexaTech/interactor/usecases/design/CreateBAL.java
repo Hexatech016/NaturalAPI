@@ -11,10 +11,8 @@
 package com.hexaTech.interactor.usecases.design;
 
 
-import com.hexaTech.interactor.entities.*;
+import com.hexaTech.entities.*;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
-import com.hexaTech.interactor.inputportInterface.CreateBALInputPort;
-import com.hexaTech.interactor.outputportInterface.CreateBALOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;

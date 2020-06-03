@@ -11,9 +11,8 @@
 package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
-import com.hexaTech.interactor.entities.*;
+import com.hexaTech.entities.*;
 import com.hexaTech.interactor.repositoriesInterface.RepoBALDocumentInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -40,7 +39,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * Fills a BAL object with the given text parsed elements.
      * @return BAL - filled BAL object.
      */
-    public BAL setBALFromGherkin(List<Gherkin> gherkins, List<String> BDLTags){
+    public com.hexaTech.entities.BAL setBALFromGherkin(List<Gherkin> gherkins, List<String> BDLTags){
         BAL BAL = new BAL();
         ArrayList<MethodBAL> methods = new ArrayList<MethodBAL>();
         for (Gherkin gherkin: gherkins) {

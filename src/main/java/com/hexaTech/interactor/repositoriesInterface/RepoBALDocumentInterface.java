@@ -10,9 +10,9 @@
 
 package com.hexaTech.interactor.repositoriesInterface;
 
-import com.hexaTech.interactor.entities.BAL;
-import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.Gherkin;
+import com.hexaTech.entities.BAL;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.Gherkin;
 
 import java.io.IOException;
 import java.util.List;

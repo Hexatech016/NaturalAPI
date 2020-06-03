@@ -1,8 +1,8 @@
 package com.hexaTech.frameworks;
 
-import com.hexaTech.interactor.entities.API;
-import com.hexaTech.interactor.entities.Method;
-import com.hexaTech.interactor.entities.Structure;
+import com.hexaTech.entities.API;
+import com.hexaTech.entities.Method;
+import com.hexaTech.entities.Structure;
 import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
