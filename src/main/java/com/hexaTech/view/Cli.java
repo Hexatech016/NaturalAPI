@@ -8,7 +8,7 @@
  * @license MIT
 */
 
-package com.hexaTech.wiew;
+package com.hexaTech.view;
 
 import com.hexaTech.interfaceadapters.*;
 import net.didion.jwnl.JWNLException;

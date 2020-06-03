@@ -10,7 +10,7 @@
 
 package com.hexaTech.interfaceadapters;
 
-import com.hexaTech.wiew.MyObserver;
+import com.hexaTech.view.MyObserver;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
