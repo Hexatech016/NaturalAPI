@@ -40,10 +40,6 @@ public class BDL {
         this.predicates =sortMap((HashMap<String, Integer>) predicates);
     }
 
-    public boolean isEmpty(){
-        return nouns.isEmpty() && verbs.isEmpty() && predicates.isEmpty();
-    }
-
     /**
      * Shows BDL's nouns with their frequency.
      * @return Map<String, Integer> - map with BDL nouns and frequency.
