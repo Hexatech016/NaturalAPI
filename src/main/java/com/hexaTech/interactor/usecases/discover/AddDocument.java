@@ -10,8 +10,6 @@
 
 package com.hexaTech.interactor.usecases.discover;
 
-import com.hexaTech.interactor.inputportInterface.AddDocumentInputPort;
-import com.hexaTech.interactor.outputportInterface.AddDocumentOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

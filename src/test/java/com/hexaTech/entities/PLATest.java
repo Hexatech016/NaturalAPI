@@ -1,6 +1,5 @@
 package com.hexaTech.entities;
 
-import com.hexaTech.interactor.entities.PLA;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

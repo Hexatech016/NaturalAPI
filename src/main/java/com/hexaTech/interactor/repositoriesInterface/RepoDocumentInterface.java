@@ -10,7 +10,7 @@
 
 package com.hexaTech.interactor.repositoriesInterface;
 
-import com.hexaTech.interactor.entities.Document;
+import com.hexaTech.entities.Document;
 
 import java.io.IOException;
 import java.util.List;

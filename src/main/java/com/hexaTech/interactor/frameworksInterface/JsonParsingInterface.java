@@ -1,6 +1,6 @@
 package com.hexaTech.interactor.frameworksInterface;
 
-import com.hexaTech.interactor.entities.API;
+import com.hexaTech.entities.API;
 
 public interface JsonParsingInterface {
 

@@ -1,7 +1,7 @@
 package com.hexaTech.frameworks;
 
-import com.hexaTech.interactor.entities.DoubleStruct;
-import com.hexaTech.interactor.entities.Gherkin;
+import com.hexaTech.entities.DoubleStruct;
+import com.hexaTech.entities.Gherkin;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;

@@ -11,12 +11,10 @@
 package com.hexaTech.interactor.usecases.discover;
 
 
-import com.hexaTech.interactor.entities.BDL;
-import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.entities.BDL;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.DoubleStruct;
 import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
-import com.hexaTech.interactor.inputportInterface.CreateBDLInputPort;
-import com.hexaTech.interactor.outputportInterface.CreateBDLOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
 import com.hexaTech.interactor.repositoriesInterface.RepoDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;

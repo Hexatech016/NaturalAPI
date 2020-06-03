@@ -1,8 +1,8 @@
 package com.hexaTech.usecases.develop;
 
-import com.hexaTech.interactor.entities.Document;
-import com.hexaTech.interactor.entities.PLA;
-import com.hexaTech.interactor.outputportInterface.AddPLAOutputPort;
+import com.hexaTech.entities.Document;
+import com.hexaTech.entities.PLA;
+import com.hexaTech.interactor.usecases.develop.AddPLAOutputPort;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
 import com.hexaTech.interactor.usecases.develop.AddPLA;
 import com.hexaTech.repositories.RepoPLA;

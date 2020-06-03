@@ -10,7 +10,7 @@
 
 package com.hexaTech.interactor.repositoriesInterface;
 
-import com.hexaTech.interactor.entities.PLA;
+import com.hexaTech.entities.PLA;
 
 import java.io.IOException;
 

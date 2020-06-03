@@ -11,29 +11,7 @@
 
 package com.hexaTech;
 
-/*import com.hexaTech.client.CLI;
-import com.hexaTech.controllerPresenter.*;
-import com.hexaTech.frameworks.OpenAPI;
-import com.hexaTech.frameworks.StanfordNLP;
-import com.hexaTech.frameworks.WordNet;
-import com.hexaTech.interactor.frameworksInterface.JsonParsingInterface;
-import com.hexaTech.interactor.frameworksInterface.TextsParsingInterface;
-import com.hexaTech.interactor.frameworksInterface.WordParsingInterface;
-import com.hexaTech.interactor.portInterface.*;
-import com.hexaTech.interactor.repositoriesInterface.*;
-import com.hexaTech.interactor.portInterface.CheckBetweenBDLAndGherkinInputPort;
-import com.hexaTech.interactor.usecases.design.AddBO;
-import com.hexaTech.repositories.*;
-import com.hexaTech.interactor.usecases.design.AddBDL;
-import com.hexaTech.interactor.usecases.design.AddGherkin;
-import com.hexaTech.interactor.usecases.develop.AddBAL;
-import com.hexaTech.interactor.usecases.develop.AddPLA;
-import com.hexaTech.interactor.usecases.develop.CreateAPI;
-import com.hexaTech.interactor.usecases.design.CreateBAL;
-import com.hexaTech.interactor.usecases.discover.AddDocument;
-import com.hexaTech.interactor.usecases.discover.CheckBetweenBDLAndGherkin;
-import com.hexaTech.interactor.usecases.discover.CreateBDL;*/
-import com.hexaTech.client.Cli;
+import com.hexaTech.wiew.Cli;
 import net.didion.jwnl.JWNLException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -49,47 +27,5 @@ public class Main{
         Cli client=context.getBean("cli",Cli.class);
         client.useCaseNaturalAPI();
         context.close();
-        /*
-        //PRESENTER
-        Presenter presenter=new Presenter();
-        //FRAMEWORK
-        WordParsingInterface wordNet =new WordNet();
-        TextsParsingInterface stanfordNLP=new StanfordNLP();
-        JsonParsingInterface OpenAPI=new OpenAPI();
-        //REPOS
-            //DISCOVER
-        RepoDocumentInterface repoDocument=new RepoDocument();
-        RepoBDLInterface repoBDLInterface=new RepoBDL();
-            //DESIGN
-        RepoGherkinInterface repoGherkin=new RepoGherkin();
-        RepoBOInterface repoBO=new RepoBO();
-            //DEVELOP
-        RepoAPIInterface repoAPI=new RepoAPI();
-        RepoBALInterface repoBAL=new RepoBAL();
-        RepoBALDocumentInterface repoBALDocument=new RepoBALDocument();
-        RepoPLAInterface repoPLA=new RepoPLA();
-        //INTERACTORS
-            //DISCOVER
-        AddDocumentInputPort addDocument =new AddDocument(presenter,repoDocument);
-        CreateBDLInputPort createBDL=new CreateBDL(presenter,repoBDLInterface,repoDocument,stanfordNLP);
-        CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkin=new CheckBetweenBDLAndGherkin(presenter,
-                repoBDLInterface,repoGherkin, wordNet,stanfordNLP);
-            //DESIGN
-        AddGherkinInputPort addGherkin=new AddGherkin(presenter,repoGherkin);
-        AddBDLInputPort addBDL=new AddBDL(presenter,repoBDLInterface);
-        AddBOInputPort createBO= new AddBO(presenter, repoBO);
-        CreateBALInputPort createBAL=new CreateBAL(presenter,repoGherkin, repoBALDocument, repoBAL,
-                repoBO, repoBDLInterface,stanfordNLP);
-            //DEVELOP
-        AddPLAInputPort addPLA=new AddPLA(presenter,repoPLA);
-        AddBALInputPort addBAL=new AddBAL(presenter, repoBALDocument);
-        CreateAPIInputPort createAPI=new CreateAPI(presenter,repoPLA, repoBALDocument,repoAPI,OpenAPI);
-        //CONTROLLER
-        Controller controller=new Controller(addDocument,createBDL,checkBetweenBDLAndGherkin,
-                addBDL,addGherkin,createBAL, createBO,
-                addPLA,addBAL,createAPI);
-        //CLIENT
-        CLI client=new CLI(controller,presenter);
-        client.useCaseNaturalAPI();*/
     }//main
 }//MainDevelop

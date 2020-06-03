@@ -1,8 +1,5 @@
 package com.hexaTech.entities;
 
-import com.hexaTech.interactor.entities.API;
-import com.hexaTech.interactor.entities.Method;
-import com.hexaTech.interactor.entities.Structure;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

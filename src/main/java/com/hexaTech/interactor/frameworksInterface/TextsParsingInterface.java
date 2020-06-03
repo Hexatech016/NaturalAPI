@@ -1,7 +1,7 @@
 package com.hexaTech.interactor.frameworksInterface;
 
-import com.hexaTech.interactor.entities.DoubleStruct;
-import com.hexaTech.interactor.entities.Gherkin;
+import com.hexaTech.entities.DoubleStruct;
+import com.hexaTech.entities.Gherkin;
 
 import java.util.List;
 

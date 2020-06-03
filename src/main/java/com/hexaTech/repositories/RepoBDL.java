@@ -2,10 +2,9 @@ package com.hexaTech.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
-import com.hexaTech.interactor.entities.BDL;
-import com.hexaTech.interactor.entities.DoubleStruct;
+import com.hexaTech.entities.BDL;
+import com.hexaTech.entities.DoubleStruct;
 import com.hexaTech.interactor.repositoriesInterface.RepoBDLInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;

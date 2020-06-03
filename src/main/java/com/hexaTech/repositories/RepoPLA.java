@@ -11,9 +11,8 @@
 package com.hexaTech.repositories;
 
 import com.hexaTech.Main;
-import com.hexaTech.interactor.entities.PLA;
+import com.hexaTech.entities.PLA;
 import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
