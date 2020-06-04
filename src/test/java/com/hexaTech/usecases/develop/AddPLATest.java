@@ -1,12 +1,12 @@
 package com.hexaTech.usecases.develop;
 
-import com.hexaTech.entities.Document;
-import com.hexaTech.entities.PLA;
-import com.hexaTech.interactor.usecases.develop.AddPLAOutputPort;
-import com.hexaTech.interactor.repositoriesInterface.RepoPLAInterface;
-import com.hexaTech.interactor.usecases.develop.AddPLA;
-import com.hexaTech.interfaceadapters.Presenter;
-import com.hexaTech.repositories.RepoPLA;
+import com.hexaTech.domain.entity.Document;
+import com.hexaTech.domain.entity.PLA;
+import com.hexaTech.domain.port.out.usecase.AddPLAOutputPort;
+import com.hexaTech.domain.port.out.repository.RepoPLAInterface;
+import com.hexaTech.domain.usecase.develop.AddPLA;
+import com.hexaTech.adapter.interfaceadapter.Presenter;
+import com.hexaTech.adapter.repository.RepoPLA;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
