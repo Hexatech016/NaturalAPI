@@ -178,9 +178,9 @@ public class RepoBO implements RepoBOInterface{
         ObjectMapper objectMapper=new ObjectMapper();
         JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
         BO bo= new BO();
-        bo.setOntologyName(node.get("nomeOntologia").asText());
+        bo.setOntologyName(node.get("ontologyName").asText());
 
-        JsonNode objlist=node.get("Oggetti");
+        JsonNode objlist=node.get("ontologyObjects");
         List<JsonNode> objects=new ArrayList<JsonNode>();
         if(objlist.isArray()){
             for(JsonNode tmp: objlist){
@@ -192,25 +192,29 @@ public class RepoBO implements RepoBOInterface{
             StructureBAL bobj = new StructureBAL();
             List<String> params = new ArrayList<String>();
             List<String> types = new ArrayList<String>();
+            List<Parameter> parameterList=new ArrayList<>();
 
-            if (tmp.get("parametri").isArray()) {
-                for (JsonNode iter : tmp.get("parametri")) {
-                    params.add(iter.toString().replace("\"",""));
+            if (tmp.get("parameters").isArray()) {
+                for (JsonNode iter : tmp.get("parameters")) {
+                    //params.add(iter.toString().replace("\"",""));
+                    parameterList.add(new Parameter(iter.get("description").toString().replace("\"",""),
+                            iter.get("name").toString().replace("\"",""),iter.get("type").toString().replace("\"","")));
                 }
             }
-            if (tmp.get("TipoValori").isArray()) {
+            /*if (tmp.get("TipoValori").isArray()) {
                 for (JsonNode iter : tmp.get("TipoValori")) {
                     types.add(iter.toString().replace("\"",""));
                 }
-            }
+            }*/
             bobj.setName(tmp.get("name").asText());
+            bobj.setParameters(parameterList);
             /*ciclo for che ciclando sulle due liste crea un oggetto parameter con la coppia nome-tipovalore*/
-            for(int i=0; i<params.size(); i++){
+            /*for(int i=0; i<params.size(); i++){
                 Parameter par= new Parameter();
                 par.setName(params.get(i));
                 par.setType(types.get(i));
                 bobj.setParameters(par);
-            }
+            }*/
             bo.setBOObjects(bobj);
         }
     return bo;

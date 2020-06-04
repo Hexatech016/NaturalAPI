@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class BO {
     String ontologyName;
-    List<StructureBAL> BOObjects= new ArrayList<StructureBAL>();
+    List<StructureBAL> ontologyObjects= new ArrayList<StructureBAL>();
 
     /**
      * BO class empty constructor.
@@ -30,10 +30,10 @@ public class BO {
     /**
      * BO class constructor.
      * @param ontologyName string - name to give at the BO.
-     * @param BOObjects List<BOObject> - list of objects in the BO.
+     * @param ontologyObjects List<BOObject> - list of objects in the BO.
      */
-    public BO(String ontologyName, List<StructureBAL> BOObjects){
-        this.BOObjects=BOObjects;
+    public BO(String ontologyName, List<StructureBAL> ontologyObjects){
+        this.ontologyObjects=ontologyObjects;
         this.ontologyName=ontologyName;
     }//BO
 
@@ -49,8 +49,8 @@ public class BO {
      * Returns BO's objects.
      * @return string - BO objects.
      */
-    public List<StructureBAL> getBOObjects() {
-        return BOObjects;
+    public List<StructureBAL> getOntologyObjects() {
+        return ontologyObjects;
     }
 
     /**
@@ -63,34 +63,34 @@ public class BO {
 
     /**
      * Changes BO's list of objects.
-     * @param BOObjects List<BOObject> - list of objects in the BO.
+     * @param ontologyObjects List<BOObject> - list of objects in the BO.
      */
-    public void setBOObjects(List<StructureBAL> BOObjects) {
-        this.BOObjects = BOObjects;
+    public void setOntologyObjects(List<StructureBAL> ontologyObjects) {
+        this.ontologyObjects=ontologyObjects;
     }
 
     public void setBOObjects(StructureBAL BOObject) {
         boolean found=false;
-        for(StructureBAL structureBAL:BOObjects)
+        for(StructureBAL structureBAL: ontologyObjects)
             if(structureBAL.getName().equalsIgnoreCase(BOObject.getName())){
                 structureBAL.addParameters(BOObject.getParameters());
                 found=true;
                 break;
             }
         if(!found)
-            this.BOObjects.add(BOObject);
+            this.ontologyObjects.add(BOObject);
     }
 
     @Override
     public String toString() {
         return "BO{" +
                 "ontologyName='" + ontologyName + '\'' +
-                ", BOObjects=" + BOObjects.toString() +
+                ", ontologyObjects=" + ontologyObjects.toString() +
                 '}';
     }
 
     public void mergeBO(BO newBO){
-        for(StructureBAL structureBAL: newBO.getBOObjects())
+        for(StructureBAL structureBAL: newBO.getOntologyObjects())
             this.setBOObjects(structureBAL);
     }
 

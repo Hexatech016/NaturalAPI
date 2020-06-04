@@ -58,7 +58,7 @@ public class CreateBDL implements CreateBDLInputPort {
             List<DoubleStruct> usedForBDLConstruction=result.entrySet().iterator().next().getKey();
             List<StructureBAL> extractedBO=result.entrySet().iterator().next().getValue();
             BO boToMerge=new BO();
-            boToMerge.setBOObjects(extractedBO);
+            boToMerge.setOntologyObjects(extractedBO);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
             bo.mergeBO(boToMerge);

@@ -62,14 +62,13 @@ public class StanfordNLP implements TextsParsingInterface {
     }//extract
 
     private StructureBAL extractBO(Properties properties, CoreMap sentence){
-        //GrammaticalStructure gStruct = depparser.predict(sentence);
         Sentence phrase=new Sentence(sentence.toString());
         SemanticGraph semanticGraph=phrase.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
         Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
         StructureBAL bo=new StructureBAL();
         for (TypedDependency dep : dependencies) {
             if(dep.reln().getShortName().equalsIgnoreCase("nsubj"))
-                bo.setName(getLemma(dep.dep().toString()));
+                bo.setName(getLemma(dep.dep().toString()).substring(0,1).toUpperCase()+getLemma(dep.dep().toString()).substring(1));
             if(dep.reln().getShortName().equalsIgnoreCase("obj"))
                 bo.setParameters(new Parameter("", getLemma(dep.dep().toString()), "string"));
         }//for
