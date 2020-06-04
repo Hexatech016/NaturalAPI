@@ -47,15 +47,18 @@ public class Cli implements MyObserver {
         this.discoverController = discoverController;
         this.designController = designController;
         this.developController = developController;
+
         this.discoverPresenter = discoverPresenter;
         this.designPresenter = designPresenter;
         this.developPresenter = developPresenter;
+
         this.discoverPresenter.addObserver(this);
         this.designPresenter.addObserver(this);
         this.developPresenter.addObserver(this);
         this.scanner=new Scanner(System.in);
         this.choice="";
     }
+
 
     /* ************************ MAIN ************************ */
 
@@ -84,6 +87,7 @@ public class Cli implements MyObserver {
     /* ************************ DISCOVER ************************ */
 
     public void useCaseDiscover() throws IOException, JWNLException {
+        this.discoverPresenter.addObserver(this);
         System.out.println("Use Case: \n 1: Check if there are saved documents \n 2: Add a document (.txt)" +
                 "\n 3: Check between BDL and Gherkin" + "\n 4: Back");
         choice = scanner.nextLine();

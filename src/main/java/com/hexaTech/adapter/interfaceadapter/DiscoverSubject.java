@@ -1,5 +1,5 @@
 /**
- * @file Subject
+ * @file DiscoverSubject
  * @version 1.0.0
  * @type java
  * @data 2020-04-30
@@ -20,7 +20,7 @@ import java.util.List;
  * Class used to synchronize actions and output messages.
  */
 @Component
-public abstract class Subject {
+public abstract class DiscoverSubject {
 
     private List<MyObserver> observers=new ArrayList<>();
 
@@ -59,4 +59,4 @@ public abstract class Subject {
         }
     }//notifySubMeDone
 
-}//Subject
+}//DiscoverSubject

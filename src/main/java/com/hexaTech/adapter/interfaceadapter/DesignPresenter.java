@@ -7,7 +7,7 @@ import com.hexaTech.domain.port.out.usecase.CreateBALOutputPort;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DesignPresenter extends Subject implements AddBDLOutputPort, AddBOOutputPort,
+public class DesignPresenter extends DesignSubject implements AddBDLOutputPort, AddBOOutputPort,
         AddGherkinOutputPort, CreateBALOutputPort {
     private String message;
 
