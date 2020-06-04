@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * Class used to manage different output messages from interactor's actions.
  */
 @Component
-public class DiscoverPresenter extends Subject implements AddDocumentOutputPort, CreateBDLOutputPort,
+public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOutputPort, CreateBDLOutputPort,
         CheckBetweenBDLAndGherkinOutputPort {
 
     private String message;
