@@ -17,18 +17,41 @@ public interface MyObserver {
     /**
      * Shows presenter message.
      */
-    void notifyMe();
-
-    /**
-     * Notifies presenter error code.
-     * @return integer - error code.
-     */
-    int notifyMeError();
+    void notifyMeDiscover();
 
     /**
      * Notifies presenter status.
      * @return boolean - status.
      */
-    boolean notifyMeDone();
+    boolean notifyMeDoneDiscover();
+
+    /**
+     * Shows presenter message.
+     */
+    void notifyMeDesign();
+
+
+    /**
+     * Notifies presenter status.
+     * @return boolean - status.
+     */
+    boolean notifyMeDoneDesign();
+
+    /**
+     * Shows presenter message.
+     */
+    void notifyMeDevelop();
+
+    /**
+     * Notifies presenter error code.
+     * @return integer - error code.
+     */
+    int notifyMeErrorDevelop();
+
+    /**
+     * Notifies presenter status.
+     * @return boolean - status.
+     */
+    boolean notifyMeDoneDevelop();
 
 }//MyObserver

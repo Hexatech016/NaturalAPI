@@ -37,25 +37,17 @@ public abstract class DesignSubject {
      */
     public void notifySubMe(){
         for(MyObserver observer: observers) {
-            observer.notifyMe();
+            observer.notifyMeDesign();
         }
     }//notifySubMe
 
-    /**
-     * Notifies all observers' errors code.
-     */
-    public void notifySubMeError(){
-        for(MyObserver observer: observers) {
-            observer.notifyMeError();
-        }
-    }//notifySubMeError
 
     /**
      * Notifies all observers' status.
      */
     public void notifySubMeDone(){
         for(MyObserver observer: observers) {
-            observer.notifyMeDone();
+            observer.notifyMeDoneDesign();
         }
     }//notifySubMeDone
 

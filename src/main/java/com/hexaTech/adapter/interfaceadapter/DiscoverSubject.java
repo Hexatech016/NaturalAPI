@@ -37,25 +37,16 @@ public abstract class DiscoverSubject {
      */
     public void notifySubMe(){
         for(MyObserver observer: observers) {
-            observer.notifyMe();
+            observer.notifyMeDiscover();
         }
     }//notifySubMe
-
-    /**
-     * Notifies all observers' errors code.
-     */
-    public void notifySubMeError(){
-        for(MyObserver observer: observers) {
-            observer.notifyMeError();
-        }
-    }//notifySubMeError
 
     /**
      * Notifies all observers' status.
      */
     public void notifySubMeDone(){
         for(MyObserver observer: observers) {
-            observer.notifyMeDone();
+            observer.notifyMeDoneDiscover();
         }
     }//notifySubMeDone
 

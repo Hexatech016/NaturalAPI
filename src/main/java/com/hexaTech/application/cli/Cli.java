@@ -94,7 +94,7 @@ public class Cli implements MyObserver {
         switch (choice) {
             case("1"):
                 discoverController.existsDoc(".\\Discover\\BackupDocument.txt");
-                if(notifyMeDone()){
+                if(notifyMeDoneDiscover()){
                     if(existsBackUpDocument())
                         useCaseBDL();
                     else
@@ -106,7 +106,7 @@ public class Cli implements MyObserver {
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
-                if(!notifyMeDone()) {
+                if(!notifyMeDoneDiscover()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
                     useCaseDiscover();
                 }else{
@@ -134,7 +134,7 @@ public class Cli implements MyObserver {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
                 designController.addGherkin("Design", scanner.nextLine());
-                if (notifyMeDone()) {
+                if (notifyMeDoneDiscover()) {
                     System.out.println("Scenario added.");
                     break;
                 } else {
@@ -156,7 +156,7 @@ public class Cli implements MyObserver {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
                 designController.addBDL(scanner.nextLine());
-                if(notifyMeDone()) {
+                if(notifyMeDoneDiscover()) {
                     System.out.println("BDL added.");
                     break;
                 }else {
@@ -165,7 +165,7 @@ public class Cli implements MyObserver {
                 }//else
             case ("2"):
                 designController.checkIfRepoBDLIsEmpty();
-                if(notifyMeDone()) {
+                if(notifyMeDoneDiscover()) {
                     System.out.println("There is no BDL in memory. Please import an external one or extract one from document texts.");
                     choiceOfBdl();
                 }else{
@@ -195,7 +195,7 @@ public class Cli implements MyObserver {
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
-                if(!notifyMeDone()) {
+                if(!notifyMeDoneDiscover()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
                 }else{
                     System.out.println("Document added.");
@@ -241,7 +241,7 @@ public class Cli implements MyObserver {
         switch (choice){
             case ("1"):
                 designController.existsGherkin(".\\Design\\BackupGherkin.txt");
-                if(notifyMeDone()) {
+                if(notifyMeDoneDesign()) {
                     if(existsBackUpGherkin())
                         useCaseBDLDesign();
                     else
@@ -253,7 +253,7 @@ public class Cli implements MyObserver {
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
                 designController.addGherkin("Design", scanner.nextLine());
-                if(notifyMeDone()) {
+                if(notifyMeDoneDesign()) {
                     System.out.println("Scenario added.");
                     useCaseBDLDesign();
                 }else {
@@ -275,7 +275,7 @@ public class Cli implements MyObserver {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
                 designController.addBDL(scanner.nextLine());
-                if(notifyMeDone()) {
+                if(notifyMeDoneDesign()) {
                     System.out.println("BDL added.");
                     useCaseBO();
                 }else {
@@ -297,7 +297,7 @@ public class Cli implements MyObserver {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
                 designController.createBO("Design", scanner.nextLine());
-                if(notifyMeDone()){
+                if(notifyMeDoneDesign()){
                     System.out.println("Now a BAL document will be extracted.");
                     designController.createBAL();
                     designController.checkSuggestions();
@@ -345,7 +345,7 @@ public class Cli implements MyObserver {
         switch(choice) {
             case ("1"):
                 developController.existsBAL(".\\Develop\\BackupBAL.txt");
-                if(notifyMeDone()) {
+                if(notifyMeDoneDevelop()) {
                     if(existsBackUpBAL())
                         useCaseBAL();
                     else
@@ -357,7 +357,7 @@ public class Cli implements MyObserver {
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
                 developController.addBAL("Develop", scanner.nextLine());
-                if(!notifyMeDone()) {
+                if(!notifyMeDoneDevelop()) {
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseDevelop();
                 }else
@@ -395,17 +395,17 @@ public class Cli implements MyObserver {
             case ("1"):
                 developController.refreshPLA(".\\src\\main\\resources\\java.pla");
                 developController.createAPI();
-                checkUseCase(notifyMeError());
+                checkUseCase(notifyMeErrorDevelop());
             case ("2"):
                 developController.refreshPLA(".\\src\\main\\resources\\js.pla");
                 developController.createAPI();
-                checkUseCase(notifyMeError());
+                checkUseCase(notifyMeErrorDevelop());
             case("3"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.pla)");
                 developController.addPLA("Develop", scanner.nextLine());
-                if(notifyMeDone()){
+                if(notifyMeDoneDevelop()){
                     developController.createAPI();
-                    checkUseCase(notifyMeError());
+                    checkUseCase(notifyMeErrorDevelop());
                 }else {
                     System.out.println("Please select a .pla file.");
                     useCasePLA();
@@ -463,27 +463,56 @@ public class Cli implements MyObserver {
     }//checkUseCase
 
     /**
+     * Receives presenterDiscover's message status and show it to user.
+     */
+    public void notifyMeDiscover(){
+        System.out.println(discoverPresenter.getMessage());
+    }
+
+    /**
+     * Receives presenterDiscover's boolean status.
+     * @return boolean - presenterDevelop status.
+     */
+    public boolean notifyMeDoneDiscover(){
+        return discoverPresenter.isDone();
+    }
+
+    /**
+     * Receives presenterDesign's message status and show it to user.
+     */
+    public void notifyMeDesign(){
+        System.out.println(designPresenter.getMessage());
+    }
+
+    /**
+     * Receives presenterDesign's boolean status.
+     * @return boolean - presenterDevelop status.
+     */
+    public boolean notifyMeDoneDesign(){
+        return designPresenter.isDone();
+    }
+
+    /**
      * Receives presenterDevelop's message status and show it to user.
      */
-    @Override
-    public void notifyMe(){
-        System.out.println(discoverPresenter.getMessage());
+    public void notifyMeDevelop(){
+        System.out.println(developPresenter.getMessage());
     }
 
     /**
      * Receives presenterDevelop's error code status.
      * @return integer - error code.
      */
-    public int notifyMeError(){
-        return discoverPresenter.getCode();
+    public int notifyMeErrorDevelop(){
+        return developPresenter.getCode();
     }
 
     /**
      * Receives presenterDevelop's boolean status.
      * @return boolean - presenterDevelop status.
      */
-    public boolean notifyMeDone(){
-        return discoverPresenter.isDone();
+    public boolean notifyMeDoneDevelop(){
+        return developPresenter.isDone();
     }
 
 }//CLI

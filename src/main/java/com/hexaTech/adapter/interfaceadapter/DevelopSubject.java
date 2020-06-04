@@ -37,7 +37,7 @@ public abstract class DevelopSubject {
      */
     public void notifySubMe(){
         for(MyObserver observer: observers) {
-            observer.notifyMe();
+            observer.notifyMeDevelop();
         }
     }//notifySubMe
 
@@ -46,7 +46,7 @@ public abstract class DevelopSubject {
      */
     public void notifySubMeError(){
         for(MyObserver observer: observers) {
-            observer.notifyMeError();
+            observer.notifyMeErrorDevelop();
         }
     }//notifySubMeError
 
@@ -55,7 +55,7 @@ public abstract class DevelopSubject {
      */
     public void notifySubMeDone(){
         for(MyObserver observer: observers) {
-            observer.notifyMeDone();
+            observer.notifyMeDoneDevelop();
         }
     }//notifySubMeDone
 

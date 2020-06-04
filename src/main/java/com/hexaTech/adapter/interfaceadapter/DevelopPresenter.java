@@ -6,7 +6,7 @@ import com.hexaTech.domain.port.out.usecase.CreateAPIOutputPort;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DevelopPresenter extends DesignSubject implements AddPLAOutputPort,
+public class DevelopPresenter extends DevelopSubject implements AddPLAOutputPort,
         CreateAPIOutputPort, AddBALOutputPort {
     private String message;
 
