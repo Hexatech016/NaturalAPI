@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.adapter.interfaceadapter;
+package com.hexaTech.adapter.interfaceadapter.discover;
 
 import com.hexaTech.application.cli.MyObserver;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.List;
  * Class used to synchronize actions and output messages.
  */
 @Component
-public abstract class DesignSubject {
+public abstract class DiscoverSubject {
 
     private List<MyObserver> observers=new ArrayList<>();
 
@@ -37,18 +37,17 @@ public abstract class DesignSubject {
      */
     public void notifySubMe(){
         for(MyObserver observer: observers) {
-            observer.notifyMeDesign();
+            observer.notifyMeDiscover();
         }
     }//notifySubMe
-
 
     /**
      * Notifies all observers' status.
      */
     public void notifySubMeDone(){
         for(MyObserver observer: observers) {
-            observer.notifyMeDoneDesign();
+            observer.notifyMeDoneDiscover();
         }
     }//notifySubMeDone
 
-}//DesignSubject
+}//DiscoverSubject

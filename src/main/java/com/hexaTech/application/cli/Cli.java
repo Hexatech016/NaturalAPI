@@ -10,7 +10,12 @@
 
 package com.hexaTech.application.cli;
 
-import com.hexaTech.adapter.interfaceadapter.*;
+import com.hexaTech.adapter.interfaceadapter.design.DesignController;
+import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
+import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
+import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
+import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
+import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -87,7 +92,6 @@ public class Cli implements MyObserver {
     /* ************************ DISCOVER ************************ */
 
     public void useCaseDiscover() throws IOException, JWNLException {
-        this.discoverPresenter.addObserver(this);
         System.out.println("Use Case: \n 1: Check if there are saved documents \n 2: Add a document (.txt)" +
                 "\n 3: Check between BDL and Gherkin" + "\n 4: Back");
         choice = scanner.nextLine();

@@ -1,12 +1,11 @@
 package com.hexaTech.usecases.develop;
 
-import com.hexaTech.adapter.interfaceadapter.DevelopPresenter;
+import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
 import com.hexaTech.domain.entity.Document;
 import com.hexaTech.domain.entity.PLA;
 import com.hexaTech.domain.port.out.usecase.AddPLAOutputPort;
 import com.hexaTech.domain.port.out.repository.RepoPLAInterface;
 import com.hexaTech.domain.usecase.develop.AddPLA;
-import com.hexaTech.adapter.interfaceadapter.DiscoverPresenter;
 import com.hexaTech.adapter.repository.RepoPLA;
 import org.junit.Before;
 import org.junit.Test;

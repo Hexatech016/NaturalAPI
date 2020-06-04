@@ -1,8 +1,8 @@
 package com.hexaTech.usecases.develop;
 
-import com.hexaTech.adapter.interfaceadapter.DesignController;
-import com.hexaTech.adapter.interfaceadapter.DevelopController;
-import com.hexaTech.adapter.interfaceadapter.DiscoverController;
+import com.hexaTech.adapter.interfaceadapter.design.DesignController;
+import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
+import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.domain.entity.Document;
 import com.hexaTech.domain.port.in.AddBDLInputPort;
 import com.hexaTech.domain.port.in.AddBOInputPort;

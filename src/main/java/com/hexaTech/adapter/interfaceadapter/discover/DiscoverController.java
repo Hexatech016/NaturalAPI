@@ -1,4 +1,4 @@
-package com.hexaTech.adapter.interfaceadapter;
+package com.hexaTech.adapter.interfaceadapter.discover;
 
 import com.hexaTech.domain.port.in.*;
 import net.didion.jwnl.JWNLException;

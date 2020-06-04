@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.adapter.interfaceadapter;
+package com.hexaTech.adapter.interfaceadapter.develop;
 
 import com.hexaTech.application.cli.MyObserver;
 import org.springframework.stereotype.Component;

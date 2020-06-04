@@ -1,4 +1,4 @@
-package com.hexaTech.adapter.interfaceadapter;
+package com.hexaTech.adapter.interfaceadapter.design;
 
 import com.hexaTech.domain.port.in.AddBDLInputPort;
 import com.hexaTech.domain.port.in.AddBOInputPort;

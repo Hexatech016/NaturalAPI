@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.adapter.interfaceadapter;
+package com.hexaTech.adapter.interfaceadapter.discover;
 
 import com.hexaTech.domain.port.out.usecase.*;
 import org.springframework.stereotype.Component;
@@ -57,7 +57,7 @@ public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOut
     @Override
     public void showAddDocument(boolean result) {
         this.done=result;
-        notifySubMe();
+        notifySubMeDone();
     }
 
     /**
