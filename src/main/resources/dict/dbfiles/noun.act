@@ -2957,7 +2957,7 @@
 { [ commandership, noun.person:commander3,+ noun.person:commander2,+ noun.person:commander1,+ noun.person:commander,+ ] commandery, position1,@ (the position or office of commander) }
 { [ comptrollership, noun.person:comptroller,+ ] position1,@ (the position of comptroller) }
 { [ consulship, noun.person:consul,+ ] position1,@ (the post of consul) }
-{ [ controllership, noun.person:controller,+ ] position1,@ (the position of controller) }
+{ [ controllership, noun.person:discoverController,+ ] position1,@ (the position of discoverController) }
 { [ councillorship, noun.person:councillor,+ ] councilorship, position1,@ (the position of council member) }
 { [ counselorship, noun.person:counselor2,+ noun.person:counselor1,+ noun.person:counselor,+ ] [ counsellorship, noun.person:counsellor2,+ noun.person:counsellor1,+ noun.person:counsellor,+ ] position1,@ (the position of counselor) }
 { curacy, position1,@ (the position of a curate) }

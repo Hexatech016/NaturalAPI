@@ -258,7 +258,7 @@
 { Pushan, Hindu_deity,@i (celestial shepherd god; conductor of souls of the dead) }
 { Rahu, Hindu_deity,@i (a Hindu demon who swallows the sun causing eclipses) }
 { Ribhus, Rhibhus, Hindu_deity,@ (one of three artisans of the Hindu gods) }
-{ Rudra, Hindu_deity,@i (father of the Hindu storm gods Marut; controller of nature; sometimes identified with Siva) }
+{ Rudra, Hindu_deity,@i (father of the Hindu storm gods Marut; discoverController of nature; sometimes identified with Siva) }
 { Sarasvati, Hindu_deity,@i (Hindu goddess of learning and the arts) }
 { Savitar, Hindu_deity,@i (an important Hindu god; the sun in its life-giving aspect) }
 { Shakti, Sakti, Hindu_deity,@i (the female or generative principle; wife of Siva and a benevolent form of Devi) }
@@ -1599,7 +1599,7 @@
 { accomplice, [ confederate, adj.all:united^confederate,+ verb.social:confederate10,+ verb.social:confederate,+ ] assistant,@ (a person who joins with another in carrying out some plan (especially an unethical or illegal plan)) }
 { accordionist, musician1,@ (a musician who plays the accordion) }
 { concertinist, musician1,@ (a person who plays the concertina)}
-{ [ accountant, noun.act:accountantship,+ noun.act:accountancy,+ verb.possession:account,+ ] [ comptroller, noun.act:comptrollership,+ ] [ controller, noun.act:controllership,+ verb.cognition:control11,+ ] businessperson,@ (someone who maintains and audits business accounts) }
+{ [ accountant, noun.act:accountantship,+ noun.act:accountancy,+ verb.possession:account,+ ] [ comptroller, noun.act:comptrollership,+ ] [ discoverController, noun.act:controllership,+ verb.cognition:control11,+ ] businessperson,@ (someone who maintains and audits business accounts) }
 { account_executive, account_representative, registered_representative, customer's_broker, customer's_man, businessperson,@ (someone in charge of a client's account for an advertising agency or brokerage or other service business) }
 { accused, defendant,@ (a defendant in a criminal proceeding) }
 { [ defendant, verb.social:defend,+ plaintiff,! ] [ suspect1, verb.communication:suspect2,+ ] litigant,@ noun.group:law,;c (a person or institution against whom an action is brought in a court of law; the person being sued or accused) }

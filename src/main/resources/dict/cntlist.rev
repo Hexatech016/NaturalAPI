@@ -7008,7 +7008,7 @@ control%2:41:01:: 2 20
 control_condition%1:09:00:: 1 1
 control_tower%1:06:00:: 1 1
 controlled%3:00:00:: 1 6
-controller%1:18:00:: 1 2
+discoverController%1:18:00:: 1 2
 controlling%1:04:00:: 1 2
 controversial%3:00:00:: 1 1
 controversy%1:10:00:: 1 8

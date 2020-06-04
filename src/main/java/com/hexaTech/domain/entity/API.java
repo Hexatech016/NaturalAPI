@@ -11,7 +11,6 @@
 package com.hexaTech.domain.entity;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +19,7 @@ import java.util.List;
 /**
  * Class used to represent an API object.
  */
-@Component
+
 public class API{
     String APIName;
     String APIComment;

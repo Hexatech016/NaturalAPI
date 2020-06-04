@@ -36,19 +36,18 @@ import java.util.Scanner;
  */
 @Component
 public class CreateBAL implements CreateBALInputPort {
-    @Autowired
     private final CreateBALOutputPort createBALOutputPort;
-    @Autowired
+
     private final RepoGherkinInterface repoGherkinInterface;
-    @Autowired
+
     private final RepoBALDocumentInterface repoBALDocumentInterface;
-    @Autowired
+
     private final RepoBALInterface repoBALInterface;
-    @Autowired
+
     private final RepoBOInterface repoBOInterface;
-    @Autowired
+
     private final RepoBDLInterface repoBDLInterface;
-    @Autowired
+
     private final TextsParsingInterface textsParsingInterface;
 
     /**
@@ -56,6 +55,7 @@ public class CreateBAL implements CreateBALInputPort {
      * @param createBALOutputPort CreateBALOutputPort - used to send output notifications.
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
+    @Autowired
     public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
                      RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface,
                      RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface,

@@ -10,12 +10,10 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Class to represent return object.
  */
-@Component
+
 public class ToReturn {
     String response="200";
     String description="toRet.des";

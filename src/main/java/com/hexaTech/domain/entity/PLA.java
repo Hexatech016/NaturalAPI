@@ -1,8 +1,5 @@
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class PLA {
     private String path;
     private String extension;

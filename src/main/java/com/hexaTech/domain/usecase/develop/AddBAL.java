@@ -23,9 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class AddBAL implements AddBALInputPort {
-    @Autowired
     private final AddBALOutputPort addBALOutputPort;
-    @Autowired
+
     private final RepoBALDocumentInterface repoBALDocumentInterface;
 
     /**
@@ -33,6 +32,7 @@ public class AddBAL implements AddBALInputPort {
      * @param addBALOutputPort AddBALOutputPort - used to send output notifications.
      * @param repoBALDocumentInterface RepoBALDocumentInterface - used to communicate with Repo.
      */
+    @Autowired
     public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface) {
         this.addBALOutputPort=addBALOutputPort;
         this.repoBALDocumentInterface=repoBALDocumentInterface;

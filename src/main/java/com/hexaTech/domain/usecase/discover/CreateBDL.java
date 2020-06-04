@@ -34,17 +34,17 @@ import java.util.List;
  */
 @Component
 public class CreateBDL implements CreateBDLInputPort {
-    @Autowired
     private final CreateBDLOutputPort createBDLOutputPort;
-    @Autowired
+
     private final RepoBDLInterface repoBDLInterface;
-    @Autowired
+
     private final RepoBOInterface repoBOInterface;
-    @Autowired
+
     private final RepoDocumentInterface repoDocumentInterface;
-    @Autowired
+
     private final TextsParsingInterface textsParsingInterface;
 
+    @Autowired
     public CreateBDL(CreateBDLOutputPort createBDLOutputPort, RepoBDLInterface repoBDLInterface, RepoBOInterface repoBOInterface,
                      RepoDocumentInterface repoDocumentInterface, TextsParsingInterface textsParsingInterface) {
         this.createBDLOutputPort = createBDLOutputPort;

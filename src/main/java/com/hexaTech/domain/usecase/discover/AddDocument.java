@@ -23,9 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class AddDocument implements AddDocumentInputPort {
-    @Autowired
     private final AddDocumentOutputPort addDocumentOutputPort;
-    @Autowired
+
     private final RepoDocumentInterface repoDocumentInterface;
 
     /**
@@ -33,6 +32,8 @@ public class AddDocument implements AddDocumentInputPort {
      * @param addDocumentOutputPort AddDocToParseOutputPort - used to send output notifications.
      * @param repoDocumentInterface RepoInterface - used to communicate with Repo.
      */
+
+    @Autowired
     public AddDocument(AddDocumentOutputPort addDocumentOutputPort, RepoDocumentInterface repoDocumentInterface) {
         this.addDocumentOutputPort = addDocumentOutputPort;
         this.repoDocumentInterface = repoDocumentInterface;

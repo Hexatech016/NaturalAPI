@@ -11,11 +11,11 @@ import java.io.IOException;
 
 @Component
 public class AddBO implements AddBOInputPort {
-    @Autowired
     private final RepoBOInterface repoBOInterface;
-    @Autowired
+
     private final AddBOOutputPort addBOOutputPort;
 
+    @Autowired
     public AddBO(AddBOOutputPort addBOOutputPort, RepoBOInterface repoBOInterface) {
         this.repoBOInterface = repoBOInterface;
         this.addBOOutputPort=addBOOutputPort;

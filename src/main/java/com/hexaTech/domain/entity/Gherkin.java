@@ -10,14 +10,12 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 
 /**
  * Class used to represent a Gherkin structure.
  */
-@Component
+
 public class Gherkin {
     String scenario;
     String description;
