@@ -49,7 +49,7 @@ public class StanfordNLP implements TextsParsingInterface {
                     doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
                     if(dep.gov().lemma().equalsIgnoreCase("have"))
                         structureBALList.add(extractBO(props,sentence));
-                }
+                }//if
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 if (token.tag().contains("VB") || token.tag().contains("NN"))
