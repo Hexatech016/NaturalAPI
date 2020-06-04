@@ -10,10 +10,7 @@
 
 package com.hexaTech.application.cli;
 
-import com.hexaTech.adapter.interfaceadapter.DesignController;
-import com.hexaTech.adapter.interfaceadapter.DevelopController;
-import com.hexaTech.adapter.interfaceadapter.DiscoverController;
-import com.hexaTech.adapter.interfaceadapter.Presenter;
+import com.hexaTech.adapter.interfaceadapter.*;
 import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,19 +30,29 @@ public class Cli implements MyObserver {
 
     private final DevelopController developController;
 
-    private final Presenter presenter;
+    private final DiscoverPresenter discoverPresenter;
+
+    private final DesignPresenter designPresenter;
+
+    private final DevelopPresenter developPresenter;
 
     private final Scanner scanner;
 
     private String choice;
 
     @Autowired
-    public Cli(DiscoverController discoverController, DesignController designController, DevelopController developController, Presenter presenter) {
+    public Cli(DiscoverController discoverController, DesignController designController,
+               DevelopController developController, DiscoverPresenter discoverPresenter,
+               DesignPresenter designPresenter, DevelopPresenter developPresenter) {
         this.discoverController = discoverController;
         this.designController = designController;
         this.developController = developController;
-        this.presenter = presenter;
-        this.presenter.addObserver(this);
+        this.discoverPresenter = discoverPresenter;
+        this.designPresenter = designPresenter;
+        this.developPresenter = developPresenter;
+        this.discoverPresenter.addObserver(this);
+        this.designPresenter.addObserver(this);
+        this.developPresenter.addObserver(this);
         this.scanner=new Scanner(System.in);
         this.choice="";
     }
@@ -456,7 +463,7 @@ public class Cli implements MyObserver {
      */
     @Override
     public void notifyMe(){
-        System.out.println(presenter.getMessage());
+        System.out.println(discoverPresenter.getMessage());
     }
 
     /**
@@ -464,7 +471,7 @@ public class Cli implements MyObserver {
      * @return integer - error code.
      */
     public int notifyMeError(){
-        return presenter.getCode();
+        return discoverPresenter.getCode();
     }
 
     /**
@@ -472,7 +479,7 @@ public class Cli implements MyObserver {
      * @return boolean - presenterDevelop status.
      */
     public boolean notifyMeDone(){
-        return presenter.isDone();
+        return discoverPresenter.isDone();
     }
 
 }//CLI

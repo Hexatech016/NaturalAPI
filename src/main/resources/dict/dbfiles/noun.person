@@ -3136,7 +3136,7 @@
 { [ Donatist, noun.cognition:donatism,+ ] adherent,@ (an adherent of Donatism) }
 { Don_Juan1, womanizer,@ noun.location:Spain,;r (any successful womanizer (after the legendary profligate Spanish nobleman)) }
 { donna, woman,@ noun.communication:Italian,;c (an Italian woman of rank) }
-{ donor, [ giver, verb.possession:give1,+ verb.possession:give,+ ] [ presenter, verb.possession:present,+ ] bestower, conferrer, benefactor,@ (person who makes a gift of property) }
+{ donor, [ giver, verb.possession:give1,+ verb.possession:give,+ ] [ discoverPresenter, verb.possession:present,+ ] bestower, conferrer, benefactor,@ (person who makes a gift of property) }
 { donor1, benefactor,@ noun.cognition:medicine,;c ((medicine) someone who gives blood or tissue or an organ to be used in another person (the host)) }
 { Don_Quixote, idealist,@ (any impractical idealist (after Cervantes' hero)) }
 { don't-know, interviewee,@ noun.communication:colloquialism,;u (a person who responds `I don't know' in a public opinion poll; "70% in favor, 13% opposed and 17% don't-knows") }

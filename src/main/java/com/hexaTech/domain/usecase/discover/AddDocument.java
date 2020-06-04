@@ -45,7 +45,7 @@ public class AddDocument implements AddDocumentInputPort {
      */
     @Override
     public void checkThereAreDoc(String path) {
-        addDocumentOutputPort.showDone(repoDocumentInterface.existsDoc(path));
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.existsDoc(path));
     }
 
     /**
@@ -53,7 +53,7 @@ public class AddDocument implements AddDocumentInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     public void addDocument(String directory,String document) throws IOException {
-        addDocumentOutputPort.showDone(repoDocumentInterface.importDoc(directory,document));
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.importDoc(directory,document));
     }
 
     /**
