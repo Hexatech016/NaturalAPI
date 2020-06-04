@@ -2556,7 +2556,7 @@
 { [ contraband, adj.all:illegal^contraband,+ noun.person:contrabandist,+ ] merchandise,@ (goods whose importation or exportation or possession is prohibited by law) }
 { contrabassoon, contrafagotto, double_bassoon, bassoon,@ (the bassoon that is the largest instrument in the oboe family) }
 { contraceptive, [ preventive2, adj.all:preventive,+ ] preventative2, contraceptive_device, prophylactic_device, birth_control_device, device,@ (an agent or device intended to prevent conception) }
-{ [ control, verb.contact:control,+ ] controller, mechanism,@ (a mechanism that controls the operation of a machine; "the speed controller on his turntable was not working properly"; "I turned the controls over to her") }
+{ [ control, verb.contact:control,+ ] discoverController, mechanism,@ (a mechanism that controls the operation of a machine; "the speed discoverController on his turntable was not working properly"; "I turned the controls over to her") }
 { control_center, center,@ (the operational center for a group of related activities; "the general in command never left the control center") }
 { control_circuit, negative_feedback_circuit, feedback_circuit,@ (a feedback circuit that subtracts from the input) }
 { control_key, command_key, key1,@ noun.cognition:computer_science,;c ((computer science) the key on a computer keyboard that is used (in combination with some other key) to type control characters) }

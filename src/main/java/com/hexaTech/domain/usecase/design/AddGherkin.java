@@ -23,9 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class AddGherkin implements AddGherkinInputPort {
-    @Autowired
     private final AddGherkinOutputPort addGherkinOutputPort;
-    @Autowired
+
     private final RepoGherkinInterface repoGherkinInterface;
 
     /**
@@ -33,6 +32,7 @@ public class AddGherkin implements AddGherkinInputPort {
      * @param addGherkinOutputPort AddGherkinOutputPort - used to send output notifications.
      * @param repoGherkinInterface RepoInterface - used to communicate with repo.
      */
+    @Autowired
     public AddGherkin(AddGherkinOutputPort addGherkinOutputPort, RepoGherkinInterface repoGherkinInterface) {
         this.addGherkinOutputPort = addGherkinOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;

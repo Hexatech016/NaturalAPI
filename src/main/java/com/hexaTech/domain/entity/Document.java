@@ -1,8 +1,6 @@
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class Document {
     private String title;
     private String path;

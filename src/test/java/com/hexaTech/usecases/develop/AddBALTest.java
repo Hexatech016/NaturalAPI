@@ -1,5 +1,8 @@
 package com.hexaTech.usecases.develop;
 
+import com.hexaTech.adapter.interfaceadapter.DesignController;
+import com.hexaTech.adapter.interfaceadapter.DevelopController;
+import com.hexaTech.adapter.interfaceadapter.DiscoverController;
 import com.hexaTech.domain.entity.Document;
 import com.hexaTech.domain.port.in.AddBDLInputPort;
 import com.hexaTech.domain.port.in.AddBOInputPort;
@@ -13,7 +16,6 @@ import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
 import com.hexaTech.domain.port.in.AddDocumentInputPort;
 import com.hexaTech.domain.port.in.CheckBetweenBDLAndGherkinInputPort;
 import com.hexaTech.domain.port.in.CreateBDLInputPort;
-import com.hexaTech.adapter.interfaceadapter.Controller;
 import com.hexaTech.adapter.repository.RepoBALDocument;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +40,13 @@ public class AddBALTest{
     RepoBALDocumentInterface repoBALDocumentInterface;
 
     @Mock
-    Controller controller;
+    DiscoverController discoverController;
+
+    @Mock
+    DesignController designController;
+
+    @Mock
+    DevelopController developController;
 
     @Mock
     AddBAL addBAL;
@@ -47,9 +55,16 @@ public class AddBALTest{
     public void before(){
         repoBALDocumentInterface=Mockito.spy(new RepoBALDocument());
         addBAL=Mockito.spy(new AddBAL(addBALOutputPort, repoBALDocumentInterface));
-        controller=new Controller(Mockito.mock(AddDocumentInputPort.class),Mockito.mock(CreateBDLInputPort.class),Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class),
-                Mockito.mock(AddBDLInputPort.class),Mockito.mock(AddGherkinInputPort.class),Mockito.mock(CreateBALInputPort.class),Mockito.mock(AddBOInputPort.class),
-                Mockito.mock(AddPLAInputPort.class),addBAL,Mockito.mock(CreateAPIInputPort.class));
+        discoverController =new DiscoverController(
+                Mockito.mock(AddDocumentInputPort.class),
+                Mockito.mock(CreateBDLInputPort.class),
+                Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class));
+        designController= new DesignController(Mockito.mock(AddBDLInputPort.class),
+                Mockito.mock(AddGherkinInputPort.class),
+                Mockito.mock(CreateBALInputPort.class),
+                Mockito.mock(AddBOInputPort.class));
+        developController= new DevelopController(Mockito.mock(AddPLAInputPort.class),addBAL,
+                Mockito.mock(CreateAPIInputPort.class));
     }
 
     @Test
@@ -105,7 +120,7 @@ public class AddBALTest{
 
     @Test
     public void controllerAddBALTest() throws IOException {
-        controller.addBAL(anyString(),anyString());
+        developController.addBAL(anyString(),anyString());
         verify(addBAL).addBAL(anyString(),anyString());
     }
 

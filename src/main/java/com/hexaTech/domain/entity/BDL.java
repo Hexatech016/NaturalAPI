@@ -10,14 +10,12 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 /**
  * Class used to represent a BDL object.
  */
-@Component
+
 public class BDL {
     private Map<String, Integer> nouns= new HashMap<>();
     private Map<String, Integer> verbs = new HashMap<>();

@@ -23,8 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class AddBAL implements AddBALInputPort {
-
     private final AddBALOutputPort addBALOutputPort;
+
     private final RepoBALDocumentInterface repoBALDocumentInterface;
 
     /**

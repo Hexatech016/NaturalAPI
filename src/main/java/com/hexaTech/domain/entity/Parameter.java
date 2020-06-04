@@ -10,12 +10,10 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Class used to represent parameter object.
  */
-@Component
+
 public class Parameter {
     String description="";
     String name;

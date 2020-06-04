@@ -23,14 +23,14 @@ import java.io.IOException;
  */
 @Component
 public class AddBDL implements AddBDLInputPort {
-    @Autowired
     private final AddBDLOutputPort addBDLOutputPort;
-    @Autowired
+
     private final RepoBDLInterface repoBDLInterface;
     /**
      * AddBDL class constructor.
      * @param addBDLOutputPort AddBDLOutputPort - used to send output notifications.
      */
+    @Autowired
     public AddBDL(AddBDLOutputPort addBDLOutputPort, RepoBDLInterface repoBDLInterface) {
         this.addBDLOutputPort = addBDLOutputPort;
         this.repoBDLInterface = repoBDLInterface;

@@ -16,12 +16,6 @@ package com.hexaTech.domain.port.out.usecase;
 public interface AddDocumentOutputPort {
 
     /**
-     * Notifies the flag from document search action.
-     * @param flag boolean - true if backup was found, false if not.
-     */
-    void showDone(boolean flag);
-
-    /**
      * Notifies the message from adding document action.
      * @param result string - message text.
      */

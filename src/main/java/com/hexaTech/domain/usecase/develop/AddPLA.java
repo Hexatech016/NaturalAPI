@@ -24,9 +24,8 @@ import java.io.IOException;
  */
 @Component
 public class AddPLA implements AddPLAInputPort {
-    @Autowired
     private final AddPLAOutputPort addPLAOutputPort;
-    @Autowired
+
     private final RepoPLAInterface repoPLAInterface;
 
     /**
@@ -34,6 +33,7 @@ public class AddPLA implements AddPLAInputPort {
      * @param addPLAOutputPort AddDocumentOutputPort - used to send output notifications.
      * @param repoPLAInterface RepoInterface - used to communicate with Repo.
      */
+    @Autowired
     public AddPLA(AddPLAOutputPort addPLAOutputPort, RepoPLAInterface repoPLAInterface) {
         this.addPLAOutputPort=addPLAOutputPort;
         this.repoPLAInterface=repoPLAInterface;

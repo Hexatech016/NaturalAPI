@@ -10,14 +10,12 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 /**
  * Class used to represent a BO.
  */
-@Component
+
 public class BO {
     String ontologyName;
     List<StructureBAL> ontologyObjects= new ArrayList<StructureBAL>();

@@ -27,15 +27,14 @@ import java.io.IOException;
  */
 @Component
 public class CreateAPI implements CreateAPIInputPort {
-    @Autowired
     private final CreateAPIOutputPort createAPIOutputPort;
-    @Autowired
+
     private final RepoPLAInterface repoPLAInterface;
-    @Autowired
+
     private final RepoBALDocumentInterface repoBALDocumentInterface;
-    @Autowired
+
     private final RepoAPIInterface repoAPIInterface;
-    @Autowired
+
     private final JsonParsingInterface jsonParsingInterface;
 
     /**
@@ -46,6 +45,7 @@ public class CreateAPI implements CreateAPIInputPort {
      * @param repoAPIInterface RepoAPI - used to communicate with Repo.
      * @param jsonParsingInterface JsonParsingInterface - used to extract the API values.
      */
+    @Autowired
     public CreateAPI(CreateAPIOutputPort createAPIOutputPort, RepoPLAInterface repoPLAInterface,
                      RepoBALDocumentInterface repoBALDocumentInterface, RepoAPIInterface repoAPIInterface,
                      JsonParsingInterface jsonParsingInterface) {

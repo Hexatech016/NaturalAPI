@@ -6,7 +6,7 @@
 { [ give, noun.person:giver,+ noun.act:giving1,+ noun.act:giving,+ take,! give_back,^ ] have,> transfer,@ frames: 14,15 (transfer possession of something concrete or abstract to somebody; "I gave her my money"; "can you give me lessons?"; "She gave the children lots of love and tender loving care") }
 { cough_up, pony_up, spit_up, give,@ frames: 8 (give reluctantly; "He coughed up some money for his children's tuition") }
 { give2, turn_over,@ frames: 14 (leave with; give temporarily; "Can I give you my keys while I go in the pool?"; "Can I give you the children for the weekend?")}
-{ [ give1, noun.person:giver,+ noun.act:giving1,+ ] [ gift, noun.act:gift,+ noun.possession:gift,+ ] [ present, noun.person:presenter,+ ] frames: 15,14 (give as a present; make a gift of; "What will you give her for her birthday?") }
+{ [ give1, noun.person:giver,+ noun.act:giving1,+ ] [ gift, noun.act:gift,+ noun.possession:gift,+ ] [ present, noun.person:discoverPresenter,+ ] frames: 15,14 (give as a present; make a gift of; "What will you give her for her birthday?") }
 { regift, gift,@ frames: 2,8 (give a present that one has received to someone else; "she regifted that ugly scarf she received from her aunt"; "when I regift I hope the person likes the gift better than I do")}
 { take8, frames: 8 (to get into a position of having, e.g., safety, comfort; "take shelter from the storm") }
 { [ endow, noun.possession:endowment,+ noun.act:endowment,+ frames: 17] [ dower, noun.possession:dower,+ noun.possession:dower1,+ noun.possession:dowery,+ ] give1,@ frames: 9 (furnish with an endowment; "When she got married, she got dowered")}

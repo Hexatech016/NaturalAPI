@@ -23,9 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class AddDocument implements AddDocumentInputPort {
-    @Autowired
     private final AddDocumentOutputPort addDocumentOutputPort;
-    @Autowired
+
     private final RepoDocumentInterface repoDocumentInterface;
 
     /**
@@ -33,6 +32,8 @@ public class AddDocument implements AddDocumentInputPort {
      * @param addDocumentOutputPort AddDocToParseOutputPort - used to send output notifications.
      * @param repoDocumentInterface RepoInterface - used to communicate with Repo.
      */
+
+    @Autowired
     public AddDocument(AddDocumentOutputPort addDocumentOutputPort, RepoDocumentInterface repoDocumentInterface) {
         this.addDocumentOutputPort = addDocumentOutputPort;
         this.repoDocumentInterface = repoDocumentInterface;
@@ -44,7 +45,7 @@ public class AddDocument implements AddDocumentInputPort {
      */
     @Override
     public void checkThereAreDoc(String path) {
-        addDocumentOutputPort.showDone(repoDocumentInterface.existsDoc(path));
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.existsDoc(path));
     }
 
     /**
@@ -52,7 +53,7 @@ public class AddDocument implements AddDocumentInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     public void addDocument(String directory,String document) throws IOException {
-        addDocumentOutputPort.showDone(repoDocumentInterface.importDoc(directory,document));
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.importDoc(directory,document));
     }
 
     /**

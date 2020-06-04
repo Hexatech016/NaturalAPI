@@ -338,7 +338,7 @@
 { [ check1, noun.communication:check1,+ ] check_off, mark8, mark_off, tick_off, tick, check,$ check2,$ verify1,@ frames: 8 (put a check mark on or near or next to; "Please check each name on the list"; "tick off the items"; "mark off the units") }
 { [ receipt, noun.communication:receipt,+ ] mark8,@ frames: 8 (mark or stamp as paid) }
 { [see3, frames: 28] [ check2, noun.cognition:check1,+ noun.act:check5,+ ] insure, see_to_it, ensure, control1, ascertain, assure, verb.communication:see,$ verify1,@ frames: 26 (be careful or certain to do something; make certain of something; "He verified that the valves were closed"; "See that the curtains are closed"; "control the quality of the product") }
-{ [ control11, noun.person:controller,+ noun.cognition:control2,+ ] noun.communication:archaism,;u check2,@ frames: 8 (verify by using a duplicate register for comparison; "control an account") }
+{ [ control11, noun.person:discoverController,+ noun.cognition:control2,+ ] noun.communication:archaism,;u check2,@ frames: 8 (verify by using a duplicate register for comparison; "control an account") }
 { [ check12, noun.act:check5,+ ] check2,$ verify1,@ frames: 8 (verify by consulting a source or authority; "check the spelling of this word"; "check your facts") }
 { [double-check, noun.cognition:double_check,+] check2,@ frames: 2,8 (check once more to be absolutely sure) }
 { cross-check, check2,@ frames: 8,26 (check out conflicting sources; crosscheck facts, for example) }

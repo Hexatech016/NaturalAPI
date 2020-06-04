@@ -19,20 +19,21 @@ import java.util.Map;
 
 @Component
 public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInputPort {
-    @Autowired
     private final CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort;
-    @Autowired
+
     private final RepoBDLInterface repoBDLInterface;
-    @Autowired
+
     private final RepoGherkinInterface repoGherkinInterface;
-    @Autowired
+
     private final WordParsingInterface wordParsingInterface;
-    @Autowired
+
     private final TextsParsingInterface textsParsingInterface;
 
     private Integer matches=0;
+
     private Integer toCheck=0;
 
+    @Autowired
     public CheckBetweenBDLAndGherkin(CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort,
                                      RepoBDLInterface repoBDLInterface,
                                      RepoGherkinInterface repoGherkinInterface,

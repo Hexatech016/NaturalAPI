@@ -10,12 +10,10 @@
 
 package com.hexaTech.domain.entity;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Class used to represent an object with two string parameters.
  */
-//@Component
+
 public class DoubleStruct {
     String token;
     String lemma;
