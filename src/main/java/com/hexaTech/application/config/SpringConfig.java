@@ -1,4 +1,4 @@
-package com.hexaTech.application.cli.config;
+package com.hexaTech.application.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

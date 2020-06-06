@@ -11,8 +11,8 @@
 
 package com.hexaTech;
 
-import com.hexaTech.application.cli.config.SpringConfig;
-import com.hexaTech.application.cli.Cli;
+import com.hexaTech.application.config.SpringConfig;
+import com.hexaTech.application.Cli;
 import net.didion.jwnl.JWNLException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
