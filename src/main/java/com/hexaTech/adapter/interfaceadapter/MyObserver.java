@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-package com.hexaTech.application.cli;
+package com.hexaTech.adapter.interfaceadapter;
 
 /**
  * Client interface

@@ -1,6 +1,6 @@
 package com.hexaTech.domain.entity;
 
-import com.hexaTech.application.cli.config.SpringConfig;
+import com.hexaTech.application.config.SpringConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

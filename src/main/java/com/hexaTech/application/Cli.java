@@ -8,8 +8,9 @@
  * @license MIT
 */
 
-package com.hexaTech.application.cli;
+package com.hexaTech.application;
 
+import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
