@@ -154,8 +154,8 @@ public class Cli implements MyObserver {
         }
     }
 
-    public void choiceOfBdl() throws IOException{
-        System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before");
+    public void choiceOfBdl() throws IOException, JWNLException{
+        System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before \n 3: Back");
         choice = scanner.nextLine();
         switch (choice) {
             case ("1"):
@@ -177,6 +177,8 @@ public class Cli implements MyObserver {
                     System.out.println("BDL is ready to be processed");
                     break;
                 }//else
+            case ("3"):
+                useCaseDiscover();
             default:
                 System.out.println("Invalid choice. Please retry.");
                 choiceOfBdl();
