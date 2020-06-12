@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertNotNull;
@@ -57,8 +58,8 @@ public class CreateAPITest{
 
     @Test
     public void createAPITest() throws IOException {
-        repoPLAInterface.setPLA(new PLA(".\\src\\main\\resources\\testFiles\\pla.pla","plaTest"));
-        repoBALDocumentInterface.setBAL(new Document("bal",".\\src\\main\\resources\\testFiles\\balOA.json"));
+        repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla","plaTest"));
+        repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
         verify(createAPIOutputPort).showErrorCodeAPI(0);
     }
@@ -72,7 +73,7 @@ public class CreateAPITest{
 
     @Test
     public void createAPINotExistsBALTest() throws IOException {
-        repoPLAInterface.setPLA(new PLA(".\\src\\main\\resources\\testFiles\\pla.pla","plaTest"));
+        repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla","plaTest"));
         repoBALDocumentInterface.setBAL(new Document("balFake","balFake.bal"));
         createAPI.createAPI();
         verify(createAPIOutputPort).showErrorCodeAPI(2);
@@ -80,24 +81,24 @@ public class CreateAPITest{
 
     @Test
     public void createAPIBadSyntaxBALTest() throws IOException {
-        repoPLAInterface.setPLA(new PLA(".\\src\\main\\resources\\testFiles\\pla.pla","plaTest"));
-        repoBALDocumentInterface.setBAL(new Document("its_PLA",".\\src\\main\\resources\\testFiles\\pla.pla"));
+        repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla","plaTest"));
+        repoBALDocumentInterface.setBAL(new Document("its_PLA","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla"));
         createAPI.createAPI();
         verify(createAPIOutputPort).showErrorCodeAPI(3);
     }
 
     @Test
     public void createAPIEmptyPLATest() throws IOException {
-        repoPLAInterface.setPLA(new PLA(".\\src\\main\\resources\\testFiles\\emptyFile.txt","empty"));
-        repoBALDocumentInterface.setBAL(new Document("bal",".\\src\\main\\resources\\testFiles\\balOA.json"));
+        repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "emptyFile.txt","empty"));
+        repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
         verify(createAPIOutputPort).showErrorCodeAPI(4);
     }
 
     @Test
     public void createAPIBadSyntaxPLATest() throws IOException {
-        repoPLAInterface.setPLA(new PLA(".\\src\\main\\resources\\testFiles\\balOA.json","its_BAL"));
-        repoBALDocumentInterface.setBAL(new Document("bal",".\\src\\main\\resources\\testFiles\\balOA.json"));
+        repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json","its_BAL"));
+        repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
         verify(createAPIOutputPort).showErrorCodeAPI(4);
     }

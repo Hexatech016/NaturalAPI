@@ -26,6 +26,7 @@ import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,8 +160,8 @@ public class CreateBAL implements CreateBALInputPort {
         }//for_methods
         repoBALDocumentInterface.saveBAL(bal);
         createBALOutputPort.showCreatedBAL("BAL updated into folder Design.\n");
-        repoGherkinInterface.deleteDoc(".\\Design\\BackupGherkin.txt");
-        repoBALDocumentInterface.openFile(".\\Design\\BAL.json");
+        repoGherkinInterface.deleteDoc("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+        repoBALDocumentInterface.openFile("." + File.separator + "Design" + File.separator + "BAL.json");
     }//checkTypes
 
 

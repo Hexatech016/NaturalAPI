@@ -69,7 +69,7 @@ public class RepoDocument implements RepoDocumentInterface {
      * @throws IOException if the specified document doesn't exist.
      */
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoDocument.class.getResourceAsStream(jarName)!=null)
@@ -113,8 +113,8 @@ public class RepoDocument implements RepoDocumentInterface {
             temp= "";
         }//if_else
         if(!temp.equalsIgnoreCase("")) {
-            documents.add(new Document(temp.substring(temp.lastIndexOf("\\")+1),temp));
-            saveDoc(".\\BackupDocument.txt", directory);
+            documents.add(new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp));
+            saveDoc("." + File.separator + "BackupDocument.txt", directory);
             return true;
         }else
             return false;*/
@@ -123,8 +123,8 @@ public class RepoDocument implements RepoDocumentInterface {
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
             return false;
         if(!alreadyLoaded(document)){
-            documents.add(new Document(document.substring(document.lastIndexOf("\\")+1), document));
-            saveDoc(".\\BackupDocument.txt", directory);
+            documents.add(new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1), document));
+            saveDoc("." + File.separator + "BackupDocument.txt", directory);
         }
         return true;
     }//returnPath
@@ -165,10 +165,10 @@ public class RepoDocument implements RepoDocumentInterface {
 
     @Override
     public void loadBackup(String directory) throws IOException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupDocument.txt"));
+        Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupDocument.txt"));
         String temp=s.nextLine();
         while (temp!=null){
-            documents.add(new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp));
+            documents.add(new Document((temp.substring(temp.lastIndexOf("" + File.separator + "")+1)), temp));
             if(!s.hasNextLine())
                 temp=null;
             else
@@ -178,7 +178,7 @@ public class RepoDocument implements RepoDocumentInterface {
     }//loadBackUp
 
     private boolean alreadyLoaded(String newDoc){
-        if(!existsDoc(".\\BackupDocument.txt"))
+        if(!existsDoc("." + File.separator + "BackupDocument.txt"))
             return false;
         for(Document document:documents)
             if(document.getPath().equalsIgnoreCase(newDoc))

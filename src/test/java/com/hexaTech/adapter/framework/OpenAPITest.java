@@ -17,13 +17,13 @@ public class OpenAPITest {
 
     @Test
     public void extractAPIOpenAPITest(){
-        File test=new File(".\\src\\main\\resources\\testFiles\\balOA.json");
+        File test=new File("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
         assertNotNull(openAPI.extractAPI(test.getPath()));
     }
 
     @Test
     public void extractAPISwaggerTest(){
-        File test=new File(".\\src\\main\\resources\\testFiles\\bal.json");
+        File test=new File("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "bal.json");
         assertNotNull(openAPI.extractAPI(test.getPath()));
     }
 
@@ -34,7 +34,7 @@ public class OpenAPITest {
 
     @Test
     public void extractAPIBadSyntaxTest(){
-        File test=new File(".\\src\\main\\resources\\testFiles\\pla.pla");
+        File test=new File("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla");
         assertNull(openAPI.extractAPI(test.getPath()));
     }
 

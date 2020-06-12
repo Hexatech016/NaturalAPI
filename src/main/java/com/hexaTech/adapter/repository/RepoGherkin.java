@@ -38,8 +38,8 @@ public class RepoGherkin implements RepoGherkinInterface {
             temp= "";
         }//if_else
         if(!temp.equalsIgnoreCase("")) {
-            gherkins.add(new Document(temp.substring(temp.lastIndexOf("\\")+1),temp));
-            saveDoc(".\\BackupGherkin.txt", directory);
+            gherkins.add(new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp));
+            saveDoc("." + File.separator + "BackupGherkin.txt", directory);
             return true;
         }else
             return false;*/
@@ -47,8 +47,8 @@ public class RepoGherkin implements RepoGherkinInterface {
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
             return false;
-        gherkin=new Document(document.substring(document.lastIndexOf("\\")+1),document);
-        saveDoc(".\\BackupGherkin.txt", directory);
+        gherkin=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
+        saveDoc("." + File.separator + "BackupGherkin.txt", directory);
         return true;
     }//returnPath
 
@@ -59,7 +59,7 @@ public class RepoGherkin implements RepoGherkinInterface {
      * @throws IOException if the specified document doesn't exist.
      */
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoGherkin.class.getResourceAsStream(jarName)!=null)
@@ -114,10 +114,10 @@ public class RepoGherkin implements RepoGherkinInterface {
 
     @Override
     public void loadBackup(String directory) throws IOException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupGherkin.txt"));
+        Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupGherkin.txt"));
         String path=s.nextLine();
         while (path!=null){
-            gherkin=new Document((path.substring(path.lastIndexOf("\\")+1)), path);
+            gherkin=new Document((path.substring(path.lastIndexOf("" + File.separator + "")+1)), path);
             if(!s.hasNextLine())
                 path=null;
             else

@@ -81,8 +81,8 @@ public class RepoBO implements RepoBOInterface{
             temp="";
         }//if_else
         if(!temp.equalsIgnoreCase("")) {
-            BO=new Document(temp.substring(temp.lastIndexOf("\\")+1),temp);
-            saveDoc(".\\BackupBO.txt", directory);
+            BO=new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp);
+            saveDoc("." + File.separator + "BackupBO.txt", directory);
             return true;
         }else
             return false;*/
@@ -90,8 +90,8 @@ public class RepoBO implements RepoBOInterface{
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
-        BO=new Document(document.substring(document.lastIndexOf("\\")+1),document);
-        saveDoc(".\\BackupBO.txt", directory);
+        BO=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
+        saveDoc("." + File.separator + "BackupBO.txt", directory);
         return true;
     }//importDoc
 
@@ -142,7 +142,7 @@ public class RepoBO implements RepoBOInterface{
      * @throws IOException if the specified document doesn't exist.
      */
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoBAL.class.getResourceAsStream(jarName)!=null)
@@ -168,9 +168,9 @@ public class RepoBO implements RepoBOInterface{
      * @throws FileNotFoundException if the backup file doesn't exist.
      */
     public void loadBackup(String directory) throws FileNotFoundException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupBO.txt"));
+        Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupBO.txt"));
         String temp=s.nextLine();
-        BO=new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp);
+        BO=new Document((temp.substring(temp.lastIndexOf("" + File.separator + "")+1)), temp);
         s.close();
     }
 
@@ -229,7 +229,7 @@ public class RepoBO implements RepoBOInterface{
     public void saveBO(String BOpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(boOpenAPI);
-        saveDocDiscover(jsonInString,".\\" + BOpath + " BO.json");
+        saveDocDiscover(jsonInString,"." + File.separator + "" + BOpath + " BO.json");
     }
 
     public void saveDocDiscover(String doc, String path) throws IOException {
