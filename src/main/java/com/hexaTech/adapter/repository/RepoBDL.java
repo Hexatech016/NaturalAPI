@@ -48,10 +48,10 @@ public class RepoBDL implements RepoBDLInterface {
     public void saveBDL(String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(BDL);
-        saveDocDiscover(jsonInString,".\\" + BDLpath + " BDL.BDL");
-        saveDocDiscover(BDL.sostToCSV(),".\\" + BDLpath + " BDL_nouns.csv");
-        saveDocDiscover(BDL.verbToCSV(),".\\" + BDLpath + " BDL_verbs.csv");
-        saveDocDiscover(BDL.predToCSV(),".\\" + BDLpath + " BDL_preds.csv");
+        saveDocDiscover(jsonInString,"." + File.separator + BDLpath + " BDL.BDL");
+        saveDocDiscover(BDL.sostToCSV(),"." + File.separator + BDLpath + " BDL_nouns.csv");
+        saveDocDiscover(BDL.verbToCSV(),"." + File.separator + BDLpath + " BDL_verbs.csv");
+        saveDocDiscover(BDL.predToCSV(),"." + File.separator + BDLpath + " BDL_preds.csv");
     }
 
     public BDL loadBDLFromJsonFile(String path) throws IOException {
@@ -80,7 +80,7 @@ public class RepoBDL implements RepoBDLInterface {
     }//saveDocDiscover
 
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf(File.separator)+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoBDL.class.getResourceAsStream(jarName)!=null)
