@@ -159,7 +159,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BAL=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
-        saveDoc("." + File.separator + "BackupBAL.txt", directory);
+        saveDoc("BackupBAL.txt", directory);
         return true;
     }//importDoc
 
@@ -189,7 +189,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             if (!file.exists())
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + title));
+                    new FileWriter("."+File.separator+directory + File.separator + title));
             out.write(BAL.getPath());
             out.close();
         }catch (IOException e) {

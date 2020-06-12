@@ -91,7 +91,7 @@ public class RepoBO implements RepoBOInterface{
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BO=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
-        saveDoc("." + File.separator + "BackupBO.txt", directory);
+        saveDoc("BackupBO.txt", directory);
         return true;
     }//importDoc
 
@@ -107,7 +107,7 @@ public class RepoBO implements RepoBOInterface{
             if (!file.exists())
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + title));
+                    new FileWriter("."+File.separator+directory + File.separator + title));
             out.write(BO.getPath());
             out.close();
         }catch (IOException e) {

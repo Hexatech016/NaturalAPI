@@ -124,7 +124,7 @@ public class RepoDocument implements RepoDocumentInterface {
             return false;
         if(!alreadyLoaded(document)){
             documents.add(new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1), document));
-            saveDoc("." + File.separator + "BackupDocument.txt", directory);
+            saveDoc("BackupDocument.txt", directory);
         }
         return true;
     }//returnPath
@@ -145,7 +145,7 @@ public class RepoDocument implements RepoDocumentInterface {
             if (!file.exists())
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + title));
+                    new FileWriter("."+File.separator+directory + File.separator + title));
             String[] rows=temp.toString().split("\n");
             for(String row: rows){
                 out.write(row);

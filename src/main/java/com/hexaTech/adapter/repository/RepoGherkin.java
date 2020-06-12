@@ -48,7 +48,7 @@ public class RepoGherkin implements RepoGherkinInterface {
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))
             return false;
         gherkin=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
-        saveDoc("." + File.separator + "BackupGherkin.txt", directory);
+        saveDoc("BackupGherkin.txt", directory);
         return true;
     }//returnPath
 
@@ -89,7 +89,7 @@ public class RepoGherkin implements RepoGherkinInterface {
             if (!file.exists())
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + title));
+                    new FileWriter("."+File.separator+directory + File.separator + title));
             out.write(path);
             out.close();
         }catch (IOException e) {
