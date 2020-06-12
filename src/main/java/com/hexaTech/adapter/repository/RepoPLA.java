@@ -64,7 +64,7 @@ public class RepoPLA implements RepoPLAInterface {
      * @throws IOException if the specified document doesn't exist.
      */
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoPLA.class.getResourceAsStream(jarName)!=null)
@@ -117,7 +117,7 @@ public class RepoPLA implements RepoPLAInterface {
             temp="";
         if(!temp.equalsIgnoreCase("")) {
             PLA=new PLA(chooser.getSelectedFile().getAbsolutePath(),getExtensionFromPLA(chooser.getSelectedFile().getAbsolutePath()));
-            saveDoc(".\\BackupPLA.txt", directory);
+            saveDoc("." + File.separator + "BackupPLA.txt", directory);
             return true;
         }else
             return false;*/
@@ -153,7 +153,7 @@ public class RepoPLA implements RepoPLAInterface {
      * @return boolean - true if the document exists, false if not.
      */
     public boolean existsDocJar(String path){
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         return RepoPLA.class.getResourceAsStream(jarName)!=null;
     }
 
@@ -164,7 +164,7 @@ public class RepoPLA implements RepoPLAInterface {
      */
     @Override
     public void loadBackup(String directory) throws IOException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupPLA.txt"));
+        Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupPLA.txt"));
         String temp=s.nextLine();
         PLA=new PLA(temp,getExtensionFromPLA(temp));
         s.close();

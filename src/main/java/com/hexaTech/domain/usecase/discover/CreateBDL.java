@@ -25,6 +25,7 @@ import com.hexaTech.domain.port.out.repository.RepoDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -72,10 +73,10 @@ public class CreateBDL implements CreateBDLInputPort {
         bo.setOntologyName(BDLpath+"BO");
         repoBDLInterface.saveBDL(BDLpath);
         repoBOInterface.saveBO(BDLpath);
-        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_nouns.csv");
-        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_verbs.csv");
-        repoBDLInterface.openFile(".\\Discover\\" + BDLpath + " BDL_preds.csv");
-        repoDocumentInterface.deleteDoc((".\\Discover\\BackupDocument.txt"));
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_nouns.csv");
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_verbs.csv");
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_preds.csv");
+        repoDocumentInterface.deleteDoc(("." + File.separator + "Discover" + File.separator + "BackupDocument.txt"));
         createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover.\nA business ontology has also been created into the same folder.");
     }//createBDL
 

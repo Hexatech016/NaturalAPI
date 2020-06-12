@@ -24,6 +24,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -74,8 +76,8 @@ public class AddBALTest{
 
     @Test
     public void addBALTest() throws IOException {
-        Document bal=new Document("balOA.json",".\\src\\main\\resources\\testFiles\\balOA.json");
-        addBAL.addBAL("Develop",".\\src\\main\\resources\\testFiles\\balOA.json");
+        Document bal=new Document("balOA.json","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
+        addBAL.addBAL("Develop","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
         assertEquals(repoBALDocumentInterface.getBAL().getPath(), bal.getPath());
         verify(repoBALDocumentInterface).saveDoc(anyString(),anyString());
     }
@@ -88,7 +90,7 @@ public class AddBALTest{
 
     @Test
     public void existsDocTrueTest(){
-        addBAL.existsDoc(".\\src\\main\\resources\\testFiles\\balOA.json");
+        addBAL.existsDoc("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
         verify(addBALOutputPort).showDone(true);
     }
 
@@ -112,7 +114,7 @@ public class AddBALTest{
 
     @Test
     public void loadBackupTest() throws IOException {
-        addBAL.addBAL("Develop",".\\src\\main\\resources\\testFiles\\balOA.json");
+        addBAL.addBAL("Develop","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
         addBAL.loadBackUp("Develop");
         verify(repoBALDocumentInterface).loadBackup("Develop");
         verify(addBALOutputPort).showRestoredBackUp(anyString());

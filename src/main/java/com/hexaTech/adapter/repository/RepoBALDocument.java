@@ -104,7 +104,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * @throws IOException if the specified document doesn't exist.
      */
     public String getContentFromPath(String path) throws IOException {
-        String jarName="/"+path.substring(path.lastIndexOf("\\")+1);
+        String jarName="/"+path.substring(path.lastIndexOf("" + File.separator + "")+1);
         InputStream input=null;
         BufferedReader br;
         if(RepoBALDocument.class.getResourceAsStream(jarName)!=null)
@@ -149,8 +149,8 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             temp="";
         }//if_else
         if(!temp.equalsIgnoreCase("")) {
-            BAL=new Document(temp.substring(temp.lastIndexOf("\\")+1),temp);
-            saveDoc(".\\BackupBAL.txt", directory);
+            BAL=new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp);
+            saveDoc("." + File.separator + "BackupBAL.txt", directory);
             return true;
         }else
             return false;*/
@@ -158,8 +158,8 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
-        BAL=new Document(document.substring(document.lastIndexOf("\\")+1),document);
-        saveDoc(".\\BackupBAL.txt", directory);
+        BAL=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
+        saveDoc("BackupBAL.txt", directory);
         return true;
     }//importDoc
 
@@ -170,9 +170,9 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      */
     @Override
     public void loadBackup(String directory) throws FileNotFoundException {
-        Scanner s = new Scanner(new File(".\\" + directory + "\\BackupBAL.txt"));
+        Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupBAL.txt"));
         String temp=s.nextLine();
-        BAL=new Document((temp.substring(temp.lastIndexOf("\\")+1)), temp);
+        BAL=new Document((temp.substring(temp.lastIndexOf("" + File.separator + "")+1)), temp);
         s.close();
     }
 
@@ -189,7 +189,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             if (!file.exists())
                 file.mkdir();
             BufferedWriter out = new BufferedWriter(
-                    new FileWriter(directory + "/" + title));
+                    new FileWriter("."+File.separator+directory + File.separator + title));
             out.write(BAL.getPath());
             out.close();
         }catch (IOException e) {
@@ -204,7 +204,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      */
     @Override
     public void saveBAL(BAL bal) throws IOException {
-        saveDocDesign(bal.toString(),".\\BAL.json");
+        saveDocDesign(bal.toString(),"." + File.separator + "BAL.json");
     }
 
     public void openFile(String path) throws IOException{

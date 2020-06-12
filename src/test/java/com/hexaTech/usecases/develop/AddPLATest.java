@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -48,8 +49,8 @@ public class AddPLATest{
 
     @Test
     public void addPLATest() throws IOException {
-        Document pla=new Document("pla.pla",".\\src\\main\\resources\\testFiles\\pla.pla");
-        addPLA.addPLA("Develop",".\\src\\main\\resources\\testFiles\\pla.pla");
+        Document pla=new Document("pla.pla","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla");
+        addPLA.addPLA("Develop","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla");
         assertEquals(repoPLAInterface.getPLA().getPath(), pla.getPath());
     }
 
@@ -66,15 +67,15 @@ public class AddPLATest{
 
     @Test
     public void updatePLATest() throws IOException {
-        PLA test=new PLA(".\\src\\main\\resources\\testFiles\\pla.pla","plaTest");
+        PLA test=new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla","plaTest");
         addPLA.updatePLA(test.getPath());
-        assertEquals(".\\src\\main\\resources\\testFiles\\pla.pla",repoPLAInterface.getPLA().getPath());
+        assertEquals("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla",repoPLAInterface.getPLA().getPath());
         assertEquals("plaTest",repoPLAInterface.getPLA().getExtension());
     }
 
     @Test
     public void existsDocTrueTest(){
-        addPLA.existsDoc(".\\src\\main\\resources\\testFiles\\pla.pla");
+        addPLA.existsDoc("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla");
         verify(addPLAOutputPort).showDone(true);
     }
 

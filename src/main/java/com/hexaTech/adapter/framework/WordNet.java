@@ -7,6 +7,7 @@ import net.didion.jwnl.data.*;
 import net.didion.jwnl.dictionary.Dictionary;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -15,7 +16,7 @@ public class WordNet implements WordParsingInterface {
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;
-        JWNL.initialize(new FileInputStream(".\\src\\main\\resources\\properties.xml"));
+        JWNL.initialize(new FileInputStream("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.NOUN, target);
         if(indexWord==null)
@@ -35,7 +36,7 @@ public class WordNet implements WordParsingInterface {
 
     public boolean thisVerbIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
         boolean found=false;
-        JWNL.initialize(new FileInputStream(".\\src\\main\\resources\\properties.xml"));
+        JWNL.initialize(new FileInputStream("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.VERB, target);
         if(indexWord==null)

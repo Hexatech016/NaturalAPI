@@ -21,6 +21,7 @@ import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -98,7 +99,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice) {
             case("1"):
-                discoverController.existsDoc(".\\Discover\\BackupDocument.txt");
+                discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
                 if(notifyMeDoneDiscover()){
                     if(existsBackUpDocument())
                         useCaseBDL();
@@ -109,7 +110,7 @@ public class Cli implements MyObserver {
                     useCaseDiscover();
                 }
             case ("2"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
+                System.out.println("Insert document's path: (ex. C:Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDoneDiscover()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
@@ -137,7 +138,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice) {
             case ("1"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario or /home/User/example.scenario)");
                 designController.addGherkin("Design", scanner.nextLine());
                 if (notifyMeDoneDiscover()) {
                     System.out.println("Scenario added.");
@@ -159,7 +160,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice) {
             case ("1"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
                 designController.addBDL(scanner.nextLine());
                 if(notifyMeDoneDiscover()) {
                     System.out.println("BDL added.");
@@ -200,7 +201,7 @@ public class Cli implements MyObserver {
                     useCaseBDL();
                 }//if_else
             case ("2"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDoneDiscover()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
@@ -228,7 +229,7 @@ public class Cli implements MyObserver {
             discoverController.restoreTextDoc("Discover");
             return true;
         }else if (choice.equalsIgnoreCase("n")){
-            discoverController.deleteTextDoc(".\\Discover\\BackupDocument.txt");
+            discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
@@ -247,7 +248,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice){
             case ("1"):
-                designController.existsGherkin(".\\Design\\BackupGherkin.txt");
+                designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
                 if(notifyMeDoneDesign()) {
                     if(existsBackUpGherkin())
                         useCaseBDLDesign();
@@ -258,7 +259,7 @@ public class Cli implements MyObserver {
                     useCaseDesign();
                 }//if_else
             case ("2"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario or /home/User/example.scenario)");
                 designController.addGherkin("Design", scanner.nextLine());
                 if(notifyMeDoneDesign()) {
                     System.out.println("Scenario added.");
@@ -280,7 +281,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice){
             case ("1"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
                 designController.addBDL(scanner.nextLine());
                 if(notifyMeDoneDesign()) {
                     System.out.println("BDL added.");
@@ -302,7 +303,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch (choice){
             case ("1"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
                 designController.createBO("Design", scanner.nextLine());
                 if(notifyMeDoneDesign()){
                     System.out.println("Now a BAL document will be extracted.");
@@ -332,7 +333,7 @@ public class Cli implements MyObserver {
             designController.restoreBackup("Design");
             return true;
         }else if (choice.equalsIgnoreCase("n")){
-            designController.deleteGherkin(".\\Design\\BackupGherkin.txt");
+            designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
@@ -351,7 +352,7 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch(choice) {
             case ("1"):
-                developController.existsBAL(".\\Develop\\BackupBAL.txt");
+                developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
                 if(notifyMeDoneDevelop()) {
                     if(existsBackUpBAL())
                         useCaseBAL();
@@ -362,7 +363,7 @@ public class Cli implements MyObserver {
                     useCaseDevelop();
                 }//if_else
             case ("2"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
                 developController.addBAL("Develop", scanner.nextLine());
                 if(!notifyMeDoneDevelop()) {
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
@@ -400,15 +401,15 @@ public class Cli implements MyObserver {
         choice = scanner.nextLine();
         switch(choice){
             case ("1"):
-                developController.refreshPLA(".\\src\\main\\resources\\java.pla");
+                developController.refreshPLA("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"java.pla");
                 developController.createAPI();
                 checkUseCase(notifyMeErrorDevelop());
             case ("2"):
-                developController.refreshPLA(".\\src\\main\\resources\\js.pla");
+                developController.refreshPLA("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"js.pla");
                 developController.createAPI();
                 checkUseCase(notifyMeErrorDevelop());
             case("3"):
-                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.pla)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.pla or /home/User/example.pla)");
                 developController.addPLA("Develop", scanner.nextLine());
                 if(notifyMeDoneDevelop()){
                     developController.createAPI();
@@ -437,7 +438,7 @@ public class Cli implements MyObserver {
             developController.restoreBAL("Develop");
             return true;
         }else if (choice.equalsIgnoreCase("n")){
-            developController.deleteBAL(".\\Develop\\BackupBAL.txt");
+            developController.deleteBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
             return false;
         }else{
             System.out.println("Please insert Y or N.");
