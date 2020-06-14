@@ -68,14 +68,15 @@ public class CreateBDL implements CreateBDLInputPort {
             boToMerge.setOntologyObjects(extractedBO);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
+            boToMerge.checkElements(bdl);
             bo.mergeBO(boToMerge);
         }//for
         bo.setOntologyName(BDLpath+"BO");
         repoBDLInterface.saveBDL(BDLpath);
         repoBOInterface.saveBO(BDLpath);
-        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_nouns.csv");
-        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_verbs.csv");
-        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + " BDL_preds.csv");
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + "BDL_nouns.csv");
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + "BDL_verbs.csv");
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + BDLpath + "BDL_preds.csv");
         repoDocumentInterface.deleteDoc(("." + File.separator + "Discover" + File.separator + "BackupDocument.txt"));
         createBDLOutputPort.showCreateBdl(BDLpath + " has been created into folder Discover.\nA business ontology has also been created into the same folder.");
     }//createBDL

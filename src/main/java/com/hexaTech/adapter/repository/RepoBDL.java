@@ -48,10 +48,10 @@ public class RepoBDL implements RepoBDLInterface {
     public void saveBDL(String BDLpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(BDL);
-        saveDocDiscover(jsonInString,"." + File.separator + BDLpath + " BDL.BDL");
-        saveDocDiscover(BDL.sostToCSV(),"." + File.separator + BDLpath + " BDL_nouns.csv");
-        saveDocDiscover(BDL.verbToCSV(),"." + File.separator + BDLpath + " BDL_verbs.csv");
-        saveDocDiscover(BDL.predToCSV(),"." + File.separator + BDLpath + " BDL_preds.csv");
+        saveDocDiscover(jsonInString,"." + File.separator + BDLpath + "BDL.BDL");
+        saveDocDiscover(BDL.sostToCSV(),"." + File.separator + BDLpath + "BDL_nouns.csv");
+        saveDocDiscover(BDL.verbToCSV(),"." + File.separator + BDLpath + "BDL_verbs.csv");
+        saveDocDiscover(BDL.predToCSV(),"." + File.separator + BDLpath + "BDL_preds.csv");
     }
 
     public BDL loadBDLFromJsonFile(String path) throws IOException {

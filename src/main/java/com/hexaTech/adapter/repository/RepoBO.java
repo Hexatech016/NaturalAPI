@@ -14,10 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hexaTech.Main;
-import com.hexaTech.domain.entity.BO;
-import com.hexaTech.domain.entity.Document;
-import com.hexaTech.domain.entity.Parameter;
-import com.hexaTech.domain.entity.StructureBAL;
+import com.hexaTech.domain.entity.*;
 import com.hexaTech.domain.port.out.repository.RepoBOInterface;
 import org.springframework.stereotype.Component;
 
@@ -229,7 +226,7 @@ public class RepoBO implements RepoBOInterface{
     public void saveBO(String BOpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(boOpenAPI);
-        saveDocDiscover(jsonInString,"." + File.separator + "" + BOpath + " BO.json");
+        saveDocDiscover(jsonInString,"." + File.separator + BOpath + "BO.json");
     }
 
     public void saveDocDiscover(String doc, String path) throws IOException {

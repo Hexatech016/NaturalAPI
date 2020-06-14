@@ -69,15 +69,16 @@ public class BO {
 
     public void setBOObjects(StructureBAL BOObject) {
         boolean found=false;
-        for(StructureBAL structureBAL: ontologyObjects)
-            if(structureBAL.getName().equalsIgnoreCase(BOObject.getName())){
+        for(StructureBAL structureBAL: this.ontologyObjects) {
+            if (structureBAL.getName().equalsIgnoreCase(BOObject.getName())) {
                 structureBAL.addParameters(BOObject.getParameters());
-                found=true;
+                found = true;
                 break;
-            }
+            }//if
+        }
         if(!found)
             this.ontologyObjects.add(BOObject);
-    }
+    }//setBOObjects
 
     @Override
     public String toString() {
@@ -91,5 +92,15 @@ public class BO {
         for(StructureBAL structureBAL: newBO.getOntologyObjects())
             this.setBOObjects(structureBAL);
     }
+
+    public void checkElements(BDL bdl){
+        ontologyObjects.removeIf(
+                word -> !bdl.getNouns().containsKey(word.getName())
+                && !bdl.getNouns().containsKey(word.getName().substring(0,1).toUpperCase() + word.getName().substring(1))
+                && !bdl.getNouns().containsKey(word.getName().substring(0,1).toLowerCase() + word.getName().substring(1))
+                && !bdl.getNouns().containsKey(word.getName().toLowerCase())
+                && !bdl.getNouns().containsKey(word.getName().toUpperCase())
+        );
+    }//checkElements
 
 }//BO

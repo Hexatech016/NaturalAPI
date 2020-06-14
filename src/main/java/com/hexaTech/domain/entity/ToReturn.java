@@ -17,7 +17,7 @@ package com.hexaTech.domain.entity;
 public class ToReturn {
     String response="200";
     String description="toRet.des";
-    String type="string";;
+    String type="string";
 
     public ToReturn(){}
 
