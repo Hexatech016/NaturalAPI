@@ -75,7 +75,7 @@ public class CreateBAL implements CreateBALInputPort {
      * @throws IOException if an error occurs during loading process.
      */
     @Override
-    public void createBAL() throws IOException {
+    public void createBAL(String nameBAL) throws IOException {
         String path=repoGherkinInterface.getGherkin().getPath();
         String document = repoGherkinInterface.getContentFromPath(path);
         List<Gherkin> gherkins =textsParsingInterface.extractFromGherkin(document);
@@ -93,11 +93,11 @@ public class CreateBAL implements CreateBALInputPort {
             BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
             bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
             repoBALInterface.setBAL(bal);
-            repoBALDocumentInterface.saveBAL(bal);
+            repoBALDocumentInterface.saveBAL(bal,nameBAL);
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
     }//createBAL
 
-    public void checkTypes() throws IOException {
+    public void checkTypes(String nameBAL) throws IOException {
         BAL bal=repoBALInterface.getBAL();
         String suggestion,line;
         Scanner scan=new Scanner(System.in);
@@ -158,10 +158,10 @@ public class CreateBAL implements CreateBALInputPort {
                 }//while
             }//for_parameters
         }//for_methods
-        repoBALDocumentInterface.saveBAL(bal);
+        repoBALDocumentInterface.saveBAL(bal,nameBAL);
         createBALOutputPort.showCreatedBAL("BAL updated into folder Design.\n");
         repoGherkinInterface.deleteDoc("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-        repoBALDocumentInterface.openFile("." + File.separator + "Design" + File.separator + "BAL.json");
+        repoBALDocumentInterface.openFile("." + File.separator + "Design" + File.separator + nameBAL + "BAL.json");
     }//checkTypes
 
 

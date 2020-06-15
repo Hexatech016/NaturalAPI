@@ -203,8 +203,8 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * @throws IOException if an error occurs during saving process.
      */
     @Override
-    public void saveBAL(BAL bal) throws IOException {
-        saveDocDesign(bal.toString(),"." + File.separator + "BAL.json");
+    public void saveBAL(BAL bal, String name) throws IOException {
+        saveDocDesign(bal.toString(),"." + File.separator + name +"BAL.json");
     }
 
     public void openFile(String path) throws IOException{
