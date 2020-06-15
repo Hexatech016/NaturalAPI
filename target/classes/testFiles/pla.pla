@@ -1,0 +1,30 @@
+/*
+    <--classExtension: plaTest
+    <--integer: int
+    <--float: float
+    <--string: String
+    <--boolean: boolean
+*/
+
+<--struct.start-->
+->
+nomeS: <--structName-->
+ParamS: <--structParamName--><--structParamType-->
+->
+<--struct.end-->
+
+<--method.start-->
+<-
+nomeM: <--methodName--> ->
+ParamM: <--methodParamType--><--methodParamName-->
+commentom: <--methodComment-->
+<-
+<--method.end-->
+
+public class <--className-->{
+    <--classComment-->
+}
+
+<--method.here-->
+
+<--struct.here-->

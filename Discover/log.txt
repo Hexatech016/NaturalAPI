@@ -1,0 +1,37 @@
+NOUNS: 
+
+The following nouns you use in your Gherkin correspond to the Business Domain Language: 
+ATM; cash; machine; fund; card; 
+
+You may need to use the following nouns in your Gherkin: 
+deposit; envelope; bank; slip; time; check; name; slot; amount; number; institution; customer; line; 
+
+
+You are using more than one time the following nouns but they don't correspond to the Business Domain Language: 
+holder; request; 
+
+VERBS: 
+
+The following verbs you use in your Gherkin correspond to the Business Domain Language: 
+withdraw; 
+
+You may need to use the following verbs in your Gherkin: 
+deposit; enter; insert; indicate; accept; provide; add; need; include; sign; prepare; account; 
+
+You could use "enter" instead of "introduce";
+You could use "insert" instead of "introduce";
+You could use "check" instead of "contain";
+
+You are using more than one time the following verbs but they don't correspond to the Business Domain Language: 
+return; retain; 
+
+PREDICATES: 
+
+The following predicates you use in your Gherkin correspond to the Business Domain Language: 
+withdraw cash; 
+
+You may need to use the following predicates in your Gherkin: 
+enter amount; accept deposit; use slip; account number; prepare slip; insert envelope; make deposit; 
+
+You are using more than one time the following predicates but they don't correspond to the Business Domain Language: 
+introduce card; have fund; contain money; 

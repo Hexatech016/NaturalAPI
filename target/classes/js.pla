@@ -1,0 +1,31 @@
+/*
+    <--classComment-->
+    <--classExtension: js
+    <--integer: /
+    <--float: /
+    <--string: /
+    <--boolean: /
+*/
+
+<--struct.start-->
+    function <--structName-->(<--structParamName-->){
+    }
+<--struct.end-->
+
+<--method.start-->
+    <--methodName-->(<--methodParamName-->){
+        //<--methodComment-->
+        //RETURN: <--methodReturn-->
+    }
+<--method.end-->
+
+<--struct.here-->
+
+class <--className-->{
+
+    constructor(){
+    }
+
+    <--method.here-->
+
+}
