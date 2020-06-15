@@ -146,15 +146,15 @@ public class Method {
                 content[temp] = content[temp].replace("<--methodParamName-->", "");
             }//if_else_if
             if(content[temp].contains("<--method.start-->"))
-                content[temp]=content[temp].replace("<--method.start-->","");
+                content[temp]=content[temp].replace("<--method.start-->","@Given(\"" + methodName + "\")");
             if(content[temp].contains("<--method.end-->"))
                 content[temp]=content[temp].replace("<--method.end-->","");
             if(content[temp].contains("<--methodReturn-->"))
-                content[temp]=content[temp].replace("<--methodReturn-->",getStringReturnType(types,typed));
+                content[temp]=content[temp].replace("<--methodReturn-->","void");
             if(content[temp].contains("<--methodName-->"))
                 content[temp]=content[temp].replace("<--methodName-->",methodName+"Test");
             if(content[temp].contains("<--methodComment-->"))
-                content[temp]=content[temp].replace("<--methodComment-->",methodComment+"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");");
+                content[temp]=content[temp].replace("<--methodComment-->","Insert a test implementation"/*"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");"*/);
             result.append(content[temp]).append("\n");
         }//for
         return result.toString();

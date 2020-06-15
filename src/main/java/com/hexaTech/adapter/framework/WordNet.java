@@ -15,42 +15,35 @@ import java.io.FileNotFoundException;
 public class WordNet implements WordParsingInterface {
 
     public boolean thisNounIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
-        boolean found=false;
         JWNL.initialize(new FileInputStream("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.NOUN, target);
         if(indexWord==null)
-            return found;
+            return false;
         final Synset[] senses = indexWord.getSenses();
-        for (Synset synset: senses) {
-            Word[] words = synset.getWords();
-            for (Word w: words) {
-                if (word.equalsIgnoreCase(w.getLemma())) {
-                    found = true;
-                    break;
-                }
-            }
-        }
-        return found;
+        return check(senses,word);
+
     }
 
     public boolean thisVerbIsASynonymOf(String word, String target) throws FileNotFoundException, JWNLException {
-        boolean found=false;
         JWNL.initialize(new FileInputStream("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"properties.xml"));
         final Dictionary dictionary = Dictionary.getInstance();
         final IndexWord indexWord = dictionary.lookupIndexWord(POS.VERB, target);
         if(indexWord==null)
             return false;
         final Synset[] senses = indexWord.getSenses();
-        for (Synset synset: senses) {
+        return check(senses,word);
+    }
+
+    private boolean check(Synset[] senses, String word) {
+        for (Synset synset : senses) {
             Word[] words = synset.getWords();
-            for (Word w: words) {
+            for (Word w : words) {
                 if (word.equalsIgnoreCase(w.getLemma())) {
-                    found = true;
-                    break;
+                    return true;
                 }
             }
         }
-        return found;
+        return false;
     }
 }

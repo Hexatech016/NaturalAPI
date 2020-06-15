@@ -4,18 +4,10 @@ import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.domain.entity.Document;
-import com.hexaTech.domain.port.in.AddBDLInputPort;
-import com.hexaTech.domain.port.in.AddBOInputPort;
-import com.hexaTech.domain.port.in.AddGherkinInputPort;
-import com.hexaTech.domain.port.in.CreateBALInputPort;
+import com.hexaTech.domain.port.in.*;
 import com.hexaTech.domain.usecase.develop.AddBAL;
 import com.hexaTech.domain.port.out.usecase.AddBALOutputPort;
-import com.hexaTech.domain.port.in.AddPLAInputPort;
-import com.hexaTech.domain.port.in.CreateAPIInputPort;
 import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
-import com.hexaTech.domain.port.in.AddDocumentInputPort;
-import com.hexaTech.domain.port.in.CheckBetweenBDLAndGherkinInputPort;
-import com.hexaTech.domain.port.in.CreateBDLInputPort;
 import com.hexaTech.adapter.repository.RepoBALDocument;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +52,9 @@ public class AddBALTest{
         discoverController =new DiscoverController(
                 Mockito.mock(AddDocumentInputPort.class),
                 Mockito.mock(CreateBDLInputPort.class),
-                Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class));
+                Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class),
+                Mockito.mock(AddBDLToDiscoverInputPort.class),
+                Mockito.mock(AddGherkinToDiscoverInputPort.class));
         designController= new DesignController(Mockito.mock(AddBDLInputPort.class),
                 Mockito.mock(AddGherkinInputPort.class),
                 Mockito.mock(CreateBALInputPort.class),
