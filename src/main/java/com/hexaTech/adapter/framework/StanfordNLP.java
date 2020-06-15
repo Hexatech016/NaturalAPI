@@ -17,12 +17,33 @@ import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class StanfordNLP implements TextsParsingInterface {
+
+    /*Properties props = new Properties();
+    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+    DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");*/
+    //private static final String DP_MODEL = "edu/stanford/nlp/models/parser/nndep/english_UD.gz";
+
+    private final StanfordCoreNLP pipeline;
+
+    private final DependencyParser depparser;
+
+    private final Properties props;
+
+    @Autowired
+    public StanfordNLP() {
+        this.props = new Properties();
+        this.props.put("annotators", "tokenize, ssplit, pos, lemma");
+        this.pipeline = new StanfordCoreNLP(this.props);
+        this.depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");
+        //props.put("annotators", "tokenize, ssplit, pos, lemma");
+    }
 
     /**
      * Fills a list with elements found while parsing the given text.
@@ -31,10 +52,10 @@ public class StanfordNLP implements TextsParsingInterface {
      * @return List<DoubleStruct> - list of found elements.
      */
     public HashMap<List<DoubleStruct>,List<StructureBAL>> extractFromText(String content) {
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");
+        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");*/
         HashMap<List<DoubleStruct>,List<StructureBAL>> toReturn=new HashMap<>();
         List<DoubleStruct> doubleStructs = new ArrayList<>();
         List<StructureBAL> structureBALList=new ArrayList<>();
@@ -82,10 +103,10 @@ public class StanfordNLP implements TextsParsingInterface {
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();
         String[] gherkinSplit = text.split("[\n]+[\n]");
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");
+        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");*/
         for (String scenario : gherkinSplit) {
             String[] arr = scenario.split("[\n]+");
             Gherkin toAdd = new Gherkin();
@@ -140,10 +161,10 @@ public class StanfordNLP implements TextsParsingInterface {
     }//extractFromGherkin
 
     public List<DoubleStruct> extractBDLFromGherkin(String content){
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");
+        DependencyParser depparser = DependencyParser.loadFromModelFile("./src/main/resources/output.txt");*/
         List<DoubleStruct> doubleStructs = new ArrayList<>();
         Annotation document = new Annotation(content);
         pipeline.annotate(document);
