@@ -44,13 +44,28 @@ public class StanfordNLP implements TextsParsingInterface {
      * @param content string - document's content to analyze.
      * @return List<DoubleStruct> - list of found elements.
      */
-    public HashMap<List<DoubleStruct>,List<StructureBAL>> extractFromText(String content) {
-        /*Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma");
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");*/
-        HashMap<List<DoubleStruct>,List<StructureBAL>> toReturn=new HashMap<>();
+    public List<DoubleStruct> extractBDLFromText(String content) {
         List<DoubleStruct> doubleStructs = new ArrayList<>();
+        Annotation document = new Annotation(content);
+        pipeline.annotate(document);
+        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+        for (CoreMap sentence : sentences) {
+            GrammaticalStructure gStruct = depparser.predict(sentence);
+            Collection<TypedDependency> dependencies = gStruct.typedDependencies();
+            for (TypedDependency dep : dependencies) {
+                if (dep.reln().getShortName().equalsIgnoreCase("obj"))
+                    doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
+            }//for
+            for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                if (token.tag().contains("VB") || token.tag().contains("NN"))
+                    if (!isACommonVerb(token.lemma()))
+                        doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
+            }//for
+        }//for
+        return doubleStructs;
+    }//extractBDLFromText
+
+    public List<StructureBAL> extractBOFromText(String content) {
         List<StructureBAL> structureBALList=new ArrayList<>();
         Annotation document = new Annotation(content);
         pipeline.annotate(document);
@@ -60,20 +75,13 @@ public class StanfordNLP implements TextsParsingInterface {
             Collection<TypedDependency> dependencies = gStruct.typedDependencies();
             for (TypedDependency dep : dependencies) {
                 if (dep.reln().getShortName().equalsIgnoreCase("obj")) {
-                    doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
                     if(dep.gov().lemma().equalsIgnoreCase("have"))
-                       structureBALList.add(extractBO(props,sentence));
+                        structureBALList.add(extractBO(props,sentence));
                 }//if
             }//for
-            for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                if (token.tag().contains("VB") || token.tag().contains("NN"))
-                    if (!isACommonVerb(token.lemma()))
-                        doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
-            }//for
         }//for
-        toReturn.put(doubleStructs,structureBALList);
-        return toReturn;
-    }//extract
+        return structureBALList;
+    }//extractBOFromText
 
     private StructureBAL extractBO(Properties properties, CoreMap sentence){
         Sentence phrase=new Sentence(sentence.toString());
@@ -96,10 +104,6 @@ public class StanfordNLP implements TextsParsingInterface {
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();
         String[] gherkinSplit = text.split("[\n]+[\n]");
-        /*Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma");
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");*/
         for (String scenario : gherkinSplit) {
             String[] arr = scenario.split("[\n]+");
             Gherkin toAdd = new Gherkin();
@@ -154,10 +158,6 @@ public class StanfordNLP implements TextsParsingInterface {
     }//extractFromGherkin
 
     public List<DoubleStruct> extractBDLFromGherkin(String content){
-        /*Properties props = new Properties();
-        props.put("annotators", "tokenize, ssplit, pos, lemma");
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        DependencyParser depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");*/
         List<DoubleStruct> doubleStructs = new ArrayList<>();
         Annotation document = new Annotation(content);
         pipeline.annotate(document);

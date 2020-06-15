@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface TextsParsingInterface {
-    HashMap<List<DoubleStruct>,List<StructureBAL>> extractFromText(String content);
+    List<DoubleStruct> extractBDLFromText(String content);
+    List<StructureBAL> extractBOFromText(String content);
     List<Gherkin> extractFromGherkin(String content);
     List<DoubleStruct> extractBDLFromGherkin(String content);
 }
