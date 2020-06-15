@@ -15,12 +15,18 @@ public class DiscoverController {
 
     private final CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort;
 
+    private final AddBDLToDiscoverInputPort addBDLToDiscoverInputPort;
+
+    private final AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort;
+
     @Autowired
     public DiscoverController(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
-                              CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort) {
+                              CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort, AddBDLToDiscoverInputPort addBDLToDiscoverInputPort, AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort) {
         this.addDocumentInputPort = addDocumentInputPort;
         this.createBDLInputPort = createBDLInputPort;
         this.checkBetweenBDLAndGherkinInputPort = checkBetweenBDLAndGherkinInputPort;
+        this.addBDLToDiscoverInputPort = addBDLToDiscoverInputPort;
+        this.addGherkinToDiscoverInputPort = addGherkinToDiscoverInputPort;
     }
 
     /**
@@ -67,6 +73,20 @@ public class DiscoverController {
         checkBetweenBDLAndGherkinInputPort.check(directory);
     }
 
+    public void checkIfRepoBDLIsEmpty(){
+        addBDLToDiscoverInputPort.checkIfRepoBDLIsEmpty();
+    }
+
+    public void addBDL(String document) throws IOException {
+        addBDLToDiscoverInputPort.addBDL(document);
+    }
+    /**
+     * Invokes AddGherkin method to add a new scenario.
+     * @throws IOException if the document to add doesn't exist.
+     */
+    public void addGherkin(String directory,String document) throws IOException {
+        addGherkinToDiscoverInputPort.addGherkin(directory,document);
+    }
 
 
 

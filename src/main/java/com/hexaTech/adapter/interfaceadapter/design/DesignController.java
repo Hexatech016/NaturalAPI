@@ -81,13 +81,5 @@ public class DesignController {
         addGherkinInputPort.existsDoc(path);
     }
 
-    /**
-     * Invokes AddPLA method to add a new document.
-     * @throws IOException if the document to add doesn't exist.
-     */
-
-    public void checkIfRepoBDLIsEmpty(){
-        addBDLInputPort.checkIfRepoBDLIsEmpty();
-    }
 
 }

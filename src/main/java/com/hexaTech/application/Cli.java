@@ -139,7 +139,7 @@ public class Cli implements MyObserver {
         switch (choice) {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario or /home/User/example.scenario)");
-                designController.addGherkin("Design", scanner.nextLine());
+                discoverController.addGherkin("Design", scanner.nextLine());
                 if (notifyMeDoneDiscover()) {
                     System.out.println("Scenario added.");
                     break;
@@ -161,7 +161,7 @@ public class Cli implements MyObserver {
         switch (choice) {
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
-                designController.addBDL(scanner.nextLine());
+                discoverController.addBDL(scanner.nextLine());
                 if(notifyMeDoneDiscover()) {
                     System.out.println("BDL added.");
                     break;
@@ -170,7 +170,7 @@ public class Cli implements MyObserver {
                     choiceOfBdl();
                 }//else
             case ("2"):
-                designController.checkIfRepoBDLIsEmpty();
+                discoverController.checkIfRepoBDLIsEmpty();
                 if(notifyMeDoneDiscover()) {
                     System.out.println("There is no BDL in memory. Please import an external one or extract one from document texts.");
                     choiceOfBdl();

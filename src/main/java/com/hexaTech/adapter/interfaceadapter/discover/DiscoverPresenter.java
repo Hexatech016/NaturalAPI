@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOutputPort, CreateBDLOutputPort,
-        CheckBetweenBDLAndGherkinOutputPort {
+        CheckBetweenBDLAndGherkinOutputPort, AddBDLToDiscoverOutputPort, AddGherkinToDiscoverOutputPort {
 
     private String message;
     private boolean done;
@@ -94,5 +94,20 @@ public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOut
     public void showCheck(String result) {
         message=result;
         notifySubMe();
+    }
+
+    @Override
+    public void showAddedBDL(String result) {
+        message=result;
+        notifySubMe();
+    }
+
+    /**
+     * Sets operation status.
+     * @param b boolean - true if the operation has been completed without errors, false if not.
+     */
+    public void showDone(boolean b){
+        done=b;
+        notifySubMeDone();
     }
 }//Presenter
