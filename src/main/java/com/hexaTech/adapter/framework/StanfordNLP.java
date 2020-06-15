@@ -48,7 +48,7 @@ public class StanfordNLP implements TextsParsingInterface {
                 if (dep.reln().getShortName().equalsIgnoreCase("obj")) {
                     doubleStructs.add(new DoubleStruct("obj", dep.gov().lemma()+" "+dep.dep().lemma()));
                     if(dep.gov().lemma().equalsIgnoreCase("have"))
-                        structureBALList.add(extractBO(props,sentence));
+                       structureBALList.add(extractBO(props,sentence));
                 }//if
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
