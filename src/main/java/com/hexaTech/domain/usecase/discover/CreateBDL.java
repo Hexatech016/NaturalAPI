@@ -61,9 +61,8 @@ public class CreateBDL implements CreateBDLInputPort {
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
             String document = repoDocumentInterface.getContentFromPath(path);
-            HashMap<List<DoubleStruct>,List<StructureBAL>> result=textsParsingInterface.extractFromText(document);
-            List<DoubleStruct> usedForBDLConstruction=result.entrySet().iterator().next().getKey();
-            List<StructureBAL> extractedBO=result.entrySet().iterator().next().getValue();
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractBDLFromText(document);
+            List<StructureBAL> extractedBO=textsParsingInterface.extractBOFromText(document);
             BO boToMerge=new BO();
             boToMerge.setOntologyObjects(extractedBO);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
