@@ -1,20 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?><jwnl_properties language="en">
 
-<jwnl_properties language="en">
-
-    <version publisher="Princeton" number="3.0" language="en"/>
+    <version language="en" number="3.0" publisher="Princeton"/>
 
     <dictionary class="net.didion.jwnl.dictionary.FileBackedDictionary">
 
-        <param name="dictionary_element_factory"
-
-               value="net.didion.jwnl.princeton.data.PrincetonWN17FileDictionaryElementFactory"/>
+        <param name="dictionary_element_factory" value="net.didion.jwnl.princeton.data.PrincetonWN17FileDictionaryElementFactory"/>
 
         <param name="file_manager" value="net.didion.jwnl.dictionary.file_manager.FileManagerImpl">
 
             <param name="file_type" value="net.didion.jwnl.princeton.file.PrincetonRandomAccessDictionaryFile"/>
 
-            <param name="dictionary_path" value="./src/main/resources/dictio"/>
+            <param name="dictionary_path" value="/dictio"/>
 
         </param>
 
