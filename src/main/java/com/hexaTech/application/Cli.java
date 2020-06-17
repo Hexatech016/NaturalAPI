@@ -109,6 +109,7 @@ public class Cli implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDiscover();
                 }
+                break;
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
@@ -119,14 +120,17 @@ public class Cli implements MyObserver {
                     System.out.println("Document added.");
                     useCaseBDL();
                 }//else
+                break;
             case ("3"):
                 System.out.println("Which BDL do you want to use for checking Gherkin?");
                 choiceOfBdl();
                 System.out.println("Add a gherkin scenario");
                 choiceOfGherkin();
                 discoverController.checkBetweenBDLAndGherkin("Discover");
+                break;
             case ("4"):
                 useCaseNaturalAPI();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseDiscover();
@@ -142,13 +146,14 @@ public class Cli implements MyObserver {
                 discoverController.addGherkin("Design", scanner.nextLine());
                 if (notifyMeDoneDiscover()) {
                     System.out.println("Scenario added.");
-                    break;
                 } else {
                     System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
                     choiceOfGherkin();
                 }
+                break;
             case ("2"):
               useCaseDiscover();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 choiceOfGherkin();
@@ -164,11 +169,11 @@ public class Cli implements MyObserver {
                 discoverController.addBDL(scanner.nextLine());
                 if(notifyMeDoneDiscover()) {
                     System.out.println("BDL added.");
-                    break;
                 }else {
                     System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     choiceOfBdl();
                 }//else
+                break;
             case ("2"):
                 discoverController.checkIfRepoBDLIsEmpty();
                 if(notifyMeDoneDiscover()) {
@@ -176,10 +181,11 @@ public class Cli implements MyObserver {
                     choiceOfBdl();
                 }else{
                     System.out.println("BDL is ready to be processed");
-                    break;
                 }//else
+                break;
             case ("3"):
                 useCaseDiscover();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 choiceOfBdl();
@@ -200,6 +206,7 @@ public class Cli implements MyObserver {
                     System.out.println("Please insert a valid name.");
                     useCaseBDL();
                 }//if_else
+                break;
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
@@ -209,8 +216,10 @@ public class Cli implements MyObserver {
                     System.out.println("Document added.");
                 }//else
                 useCaseBDL();
+                break;
             case ("3"):
                 useCaseDiscover();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseBDL();
@@ -258,6 +267,7 @@ public class Cli implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDesign();
                 }//if_else
+                break;
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.scenario or /home/User/example.scenario)");
                 designController.addGherkin("Design", scanner.nextLine());
@@ -268,8 +278,10 @@ public class Cli implements MyObserver {
                     System.out.println("The file is not a .scenario or it doesn't exist. Please retry.");
                     useCaseDesign();
                 }
+                break;
             case ("3"):
                 useCaseNaturalAPI();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseDesign();
@@ -290,8 +302,10 @@ public class Cli implements MyObserver {
                     System.out.println("The file is not a .BDL or it doesn't exist. Please retry.");
                     useCaseBDLDesign();
                 }
+                break;
             case ("2"):
                 useCaseDesign();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseBDLDesign();
@@ -321,6 +335,7 @@ public class Cli implements MyObserver {
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseBO();
                 }
+                break;
             case ("2"):
                 System.out.println("Choose a name for BAL.");
                 choice=scanner.nextLine();
@@ -332,8 +347,10 @@ public class Cli implements MyObserver {
                     System.out.println("Please insert a valid name.");
                     useCaseBO();
                 }//if_else
+                break;
             case ("3"):
                 useCaseDesign();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseBO();
@@ -376,6 +393,7 @@ public class Cli implements MyObserver {
                     System.out.println("There are no saved documents");
                     useCaseDevelop();
                 }//if_else
+                break;
             case ("2"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
                 developController.addBAL("Develop", scanner.nextLine());
@@ -384,8 +402,10 @@ public class Cli implements MyObserver {
                     useCaseDevelop();
                 }else
                     useCasePLA();
+                break;
             case ("3"):
                 useCaseNaturalAPI();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseDevelop();
@@ -398,8 +418,10 @@ public class Cli implements MyObserver {
         switch (choice) {
             case ("1"):
                 useCasePLA();
+                break;
             case ("2"):
                 useCaseDevelop();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCaseBAL();
@@ -418,10 +440,12 @@ public class Cli implements MyObserver {
                 developController.refreshPLA("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"java.pla");
                 developController.createAPI();
                 checkUseCase(notifyMeErrorDevelop());
+                break;
             case ("2"):
                 developController.refreshPLA("."+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"js.pla");
                 developController.createAPI();
                 checkUseCase(notifyMeErrorDevelop());
+                break;
             case("3"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.pla or /home/User/example.pla)");
                 developController.addPLA("Develop", scanner.nextLine());
@@ -432,8 +456,10 @@ public class Cli implements MyObserver {
                     System.out.println("Please select a .pla file.");
                     useCasePLA();
                 }
+                break;
             case ("4"):
                 useCaseDevelop();
+                break;
             default:
                 System.out.println("Invalid choice. Please retry.");
                 useCasePLA();
