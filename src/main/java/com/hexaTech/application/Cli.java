@@ -127,6 +127,7 @@ public class Cli implements MyObserver {
                 System.out.println("Add a gherkin scenario");
                 choiceOfGherkin();
                 discoverController.checkBetweenBDLAndGherkin("Discover");
+                useCaseDiscover();
                 break;
             case ("4"):
                 useCaseNaturalAPI();
@@ -164,6 +165,10 @@ public class Cli implements MyObserver {
         System.out.println("Use Case: \n 1: Import an external BDL \n 2: Use a BDL extracted just before \n 3: Back");
         choice = scanner.nextLine();
         switch (choice) {
+            case ("4"):
+                System.out.println("ciao");
+            case ("5"):
+                System.out.println("ciao");
             case ("1"):
                 System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
                 discoverController.addBDL(scanner.nextLine());
