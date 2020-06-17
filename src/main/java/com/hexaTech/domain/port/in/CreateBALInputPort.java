@@ -21,8 +21,8 @@ public interface CreateBALInputPort {
      * Create a new BAL object.
      * @throws IOException if an error occurs during loading process.
      */
-    void createBAL() throws IOException;
+    void createBAL(String name) throws IOException;
 
-    void checkTypes() throws IOException;
+    void checkTypes(String name) throws IOException;
 
 }//CreateBALInputPort

@@ -12,6 +12,7 @@ import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -63,6 +64,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 checkPredicatesOfGherkin(bdlOfTexts, bdlOfGherkin);
         repoBDLInterface.saveDocDiscover(log,"log.txt");
         checkBetweenBDLAndGherkinOutputPort.showCheck(ratingMatch());
+        repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + "log.txt");
     }
 
     private String checkNounsOfBDL(BDL bdlOfTexts,BDL bdlOfGherkin){

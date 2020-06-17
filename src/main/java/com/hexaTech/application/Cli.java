@@ -307,17 +307,31 @@ public class Cli implements MyObserver {
                 designController.createBO("Design", scanner.nextLine());
                 if(notifyMeDoneDesign()){
                     System.out.println("Now a BAL document will be extracted.");
-                    designController.createBAL();
-                    designController.checkSuggestions();
-                    useCaseDesign();
+                    System.out.println("Choose a name for BAL.");
+                    choice=scanner.nextLine();
+                    if(!choice.equals("")) {
+                        designController.createBAL(choice);
+                        designController.checkSuggestions(choice);
+                        useCaseDesign();
+                    }else{
+                        System.out.println("Please insert a valid name.");
+                        useCaseBO();
+                    }
                 }else{
                     System.out.println("The file is not a .json or it doesn't exist. Please retry.");
                     useCaseBO();
                 }
             case ("2"):
-                designController.createBAL();
-                designController.checkSuggestions();
-                useCaseDesign();
+                System.out.println("Choose a name for BAL.");
+                choice=scanner.nextLine();
+                if(!choice.equals("")) {
+                    designController.createBAL(choice);
+                    designController.checkSuggestions(choice);
+                    useCaseDesign();
+                }else{
+                    System.out.println("Please insert a valid name.");
+                    useCaseBO();
+                }//if_else
             case ("3"):
                 useCaseDesign();
             default:

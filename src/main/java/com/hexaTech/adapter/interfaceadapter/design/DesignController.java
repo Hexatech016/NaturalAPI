@@ -64,8 +64,8 @@ public class DesignController {
      * Invokes CreateBAL method to create a new BAL object.
      * @throws IOException if the document to add doesn't exist.
      */
-    public void createBAL() throws IOException {
-        createBALInputPort.createBAL();
+    public void createBAL(String name) throws IOException {
+        createBALInputPort.createBAL(name);
         //addBOInputPort.addBO();
     }
 
@@ -73,8 +73,8 @@ public class DesignController {
         addBOInputPort.addBO(directory,document);
     }
 
-    public void checkSuggestions() throws IOException {
-        createBALInputPort.checkTypes();
+    public void checkSuggestions(String nameBAL) throws IOException {
+        createBALInputPort.checkTypes(nameBAL);
     }
 
     public void existsGherkin(String path){
