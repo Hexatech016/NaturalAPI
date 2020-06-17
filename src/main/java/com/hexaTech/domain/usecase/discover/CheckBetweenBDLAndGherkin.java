@@ -143,7 +143,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                         break;
                     }
                 }
-                    if (!found) {
+                    /*if (!found) {
                         for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
                             if (thisNounIsRelevant(nounsOfTexts.getValue(),
                                     repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
@@ -160,7 +160,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                                 matches++;
                             }
                         }
-                    }
+                    }*/
                     if (!found && nounsOfGherkin.getValue()>1)
                         notCommon.append(nounsOfGherkin.getKey()).append("; ");
         }//for
@@ -182,7 +182,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     break;
                 }
             }
-            if (!found) {
+            /*if (!found) {
                 for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
                     if (thisNounIsRelevant(verbsOfTexts.getValue(),
                             repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
@@ -199,7 +199,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                         matches++;
                     }
                 }
-            }
+            }*/
             if(!found && verbsOfGherkin.getValue()>1)
                 notCommon.append(verbsOfGherkin.getKey()).append("; ");
         }//for
