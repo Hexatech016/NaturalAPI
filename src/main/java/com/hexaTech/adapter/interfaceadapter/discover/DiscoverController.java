@@ -5,6 +5,7 @@ import net.didion.jwnl.JWNLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Component
@@ -19,14 +20,18 @@ public class DiscoverController {
 
     private final AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort;
 
+    //private final ViewManualInputPort viewManualInputPort;
+
     @Autowired
     public DiscoverController(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
-                              CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort, AddBDLToDiscoverInputPort addBDLToDiscoverInputPort, AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort) {
+                              CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort, AddBDLToDiscoverInputPort addBDLToDiscoverInputPort,
+                              AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort) {
         this.addDocumentInputPort = addDocumentInputPort;
         this.createBDLInputPort = createBDLInputPort;
         this.checkBetweenBDLAndGherkinInputPort = checkBetweenBDLAndGherkinInputPort;
         this.addBDLToDiscoverInputPort = addBDLToDiscoverInputPort;
         this.addGherkinToDiscoverInputPort = addGherkinToDiscoverInputPort;
+        //this.viewManualInputPort = viewManualInputPort;
     }
 
     /**
@@ -88,6 +93,12 @@ public class DiscoverController {
         addGherkinToDiscoverInputPort.addGherkin(directory,document);
     }
 
+    public void showBackup(String path) throws FileNotFoundException {
+        addDocumentInputPort.showBackup(path);
+    }
 
+    /*public void openManual(String path) throws IOException {
+        viewManualInputPort.openManual(path);
+    }*/
 
 }

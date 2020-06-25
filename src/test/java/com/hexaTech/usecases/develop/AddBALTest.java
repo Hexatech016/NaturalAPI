@@ -5,6 +5,7 @@ import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.domain.entity.Document;
 import com.hexaTech.domain.port.in.*;
+import com.hexaTech.domain.port.out.usecase.ViewManualOutputPort;
 import com.hexaTech.domain.usecase.develop.AddBAL;
 import com.hexaTech.domain.port.out.usecase.AddBALOutputPort;
 import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
@@ -55,6 +56,7 @@ public class AddBALTest{
                 Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class),
                 Mockito.mock(AddBDLToDiscoverInputPort.class),
                 Mockito.mock(AddGherkinToDiscoverInputPort.class));
+                //Mockito.mock(ViewManualInputPort.class));
         designController= new DesignController(Mockito.mock(AddBDLInputPort.class),
                 Mockito.mock(AddGherkinInputPort.class),
                 Mockito.mock(CreateBALInputPort.class),

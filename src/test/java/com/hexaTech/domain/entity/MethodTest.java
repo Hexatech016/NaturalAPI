@@ -100,13 +100,6 @@ public class MethodTest{
         method.createTests(null,0,2,types,true,"");
     }
 
-    @Test(expected=NullPointerException.class)
-    public void createTestsNullTypesTest(){
-        method.setMethodReturnType("integer");
-        String[] pla={"pla","java","hello","world","<--methodReturn-->"};
-        method.createTests(pla,0,5,null,true,"");
-    }
-
     @Test(expected=ArrayIndexOutOfBoundsException.class)
     public void createAPIArrayOutTest(){
         String[] pla={"hello","world"};
@@ -146,7 +139,7 @@ public class MethodTest{
         method.setMethodName("name");
         String[] pla={"<--methodReturn-->-<--methodName-->"};
         String[] types={"int"};
-        assertEquals("int-nameTest\n",method.createTests(pla,0,1,types,true,""));
+        assertEquals("void-nameTest\n",method.createTests(pla,0,1,types,true,""));
     }
 
     @Test
@@ -158,7 +151,7 @@ public class MethodTest{
         method.setMethodParam(param);
         String[] pla={"<--methodReturn-->-<--methodName-->"};
         String[] types={"int"};
-        assertEquals("integer-nameTest\n",method.createTests(pla,0,1,types,false,""));
+        assertEquals("void-nameTest\n",method.createTests(pla,0,1,types,false,""));
     }
 
 }//MethodTest

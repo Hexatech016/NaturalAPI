@@ -16,6 +16,7 @@ import com.hexaTech.domain.port.out.repository.RepoDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -72,6 +73,10 @@ public class AddDocument implements AddDocumentInputPort {
     public void deleteDocs(String path){
         if(repoDocumentInterface.deleteDoc(path));
             addDocumentOutputPort.showDeletedDoc("Document deleted");
+    }
+
+    public void showBackup(String path) throws FileNotFoundException {
+        addDocumentOutputPort.showBackUpRestored(repoDocumentInterface.getBackup(path));
     }
 
 }//AddDocToParse

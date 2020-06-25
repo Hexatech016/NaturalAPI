@@ -177,13 +177,30 @@ public class RepoDocument implements RepoDocumentInterface {
         s.close();
     }//loadBackUp
 
-    private boolean alreadyLoaded(String newDoc){
-        if(!existsDoc("." + File.separator + "BackupDocument.txt"))
+    public String getBackup(String path) throws FileNotFoundException {
+        StringBuilder toReturn= new StringBuilder();
+        int i=1;
+        Scanner s = new Scanner(new File("." + File.separator + "" + path + "" + File.separator + "BackupDocument.txt"));
+        String temp=s.nextLine();
+        while (temp!=null){
+            toReturn.append(i).append(". ").append(temp).append("\n");
+            i++;
+            if(!s.hasNextLine())
+                temp=null;
+            else
+                temp=s.nextLine();
+        }//while
+        s.close();
+        return toReturn.toString();
+    }//showBackup
+
+    private boolean alreadyLoaded(String newDoc) {
+        if (!existsDoc("." + File.separator + "BackupDocument.txt"))
             return false;
-        for(Document document:documents)
-            if(document.getPath().equalsIgnoreCase(newDoc))
+        for (Document document : documents)
+            if (document.getPath().equalsIgnoreCase(newDoc))
                 return true;
         return false;
-    }
+    }//alreadyLoaded
 
 }//RepoDocument

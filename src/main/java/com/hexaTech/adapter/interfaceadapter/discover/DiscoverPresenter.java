@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOutputPort, CreateBDLOutputPort,
-        CheckBetweenBDLAndGherkinOutputPort, AddBDLToDiscoverOutputPort, AddGherkinToDiscoverOutputPort {
+        CheckBetweenBDLAndGherkinOutputPort, AddBDLToDiscoverOutputPort, AddGherkinToDiscoverOutputPort{
 
     private String message;
     private boolean done;
@@ -110,4 +110,10 @@ public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOut
         done=b;
         notifySubMeDone();
     }
+
+    /*@Override
+    public void showViewedManual(String result) {
+        message=result;
+        notifySubMe();
+    }*/
 }//Presenter

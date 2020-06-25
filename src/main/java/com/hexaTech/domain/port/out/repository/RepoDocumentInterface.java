@@ -12,6 +12,7 @@ package com.hexaTech.domain.port.out.repository;
 
 import com.hexaTech.domain.entity.Document;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -64,6 +65,9 @@ public interface RepoDocumentInterface {
      * @throws IOException if the backup file doesn't exist.
      */
     void loadBackup(String directory) throws IOException;
+
     List<Document> getDocuments();
+
+    String getBackup(String path) throws FileNotFoundException;
 
 }//RepoDocumentInterface

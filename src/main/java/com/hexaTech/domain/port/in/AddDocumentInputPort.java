@@ -10,6 +10,7 @@
 
 package com.hexaTech.domain.port.in;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -40,5 +41,7 @@ public interface AddDocumentInputPort {
      * @param path string - document to be deleted.
      */
     void deleteDocs(String path);
+
+    void showBackup(String path) throws FileNotFoundException;
 
 }//AddDocToParseInputPort

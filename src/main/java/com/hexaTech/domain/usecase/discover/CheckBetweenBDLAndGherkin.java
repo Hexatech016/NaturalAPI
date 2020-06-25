@@ -235,13 +235,13 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     }
 
     private String ratingMatch(){
-        return "The match percentage between your Gherkin scenario and Business Domain Language is: " +
+        return "\n\tThe match percentage between your Gherkin scenario and Business Domain Language is: " +
                 matches * 100 /  toCheck+ "%\n" +
-                "0% - 25%: be careful, there is no match!\n" +
-                "25% - 50%: you have to work a little more on your Gherkin\n" +
-                "50% - 75%: acceptable match but you could make some adjustments\n" +
-                "75% - 100%: well done\n\n" +
-                "You can find the complete analysis in log file inside Discover directory";
+                "\t0% - 25%: be careful, there is no match!\n" +
+                "\t25% - 50%: you have to work a little more on your Gherkin\n" +
+                "\t50% - 75%: acceptable match but you could make some adjustments\n" +
+                "\t75% - 100%: well done\n\n" +
+                "\tYou can find the complete analysis in log file inside Discover directory\n";
     }
 
 }
