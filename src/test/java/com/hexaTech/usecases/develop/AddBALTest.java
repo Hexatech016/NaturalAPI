@@ -5,7 +5,7 @@ import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.domain.entity.Document;
 import com.hexaTech.domain.port.in.*;
-import com.hexaTech.domain.port.out.usecase.ViewManualOutputPort;
+//import com.hexaTech.domain.port.out.usecase.ViewManualOutputPort;
 import com.hexaTech.domain.usecase.develop.AddBAL;
 import com.hexaTech.domain.port.out.usecase.AddBALOutputPort;
 import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
