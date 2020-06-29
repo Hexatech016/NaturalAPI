@@ -67,6 +67,7 @@ public class CreateBDL implements CreateBDLInputPort {
             boToMerge.setOntologyObjects(extractedBO);
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
+            bdl.removeLowFrequencies();
             boToMerge.checkElements(bdl);
             bo.mergeBO(boToMerge);
         }//for
