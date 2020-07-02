@@ -62,7 +62,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 checkVerbsOfGherkin(bdlOfTexts, bdlOfGherkin) +
                 checkPredicatesOfBDL(bdlOfTexts, bdlOfGherkin) +
                 checkPredicatesOfGherkin(bdlOfTexts, bdlOfGherkin);
-        repoBDLInterface.saveDocDiscover(log,"log.txt");
+        repoBDLInterface.saveDocDiscover(log,"report.txt");
         checkBetweenBDLAndGherkinOutputPort.showCheck(ratingMatch());
         repoBDLInterface.openFile("." + File.separator + "Discover" + File.separator + "log.txt");
     }
