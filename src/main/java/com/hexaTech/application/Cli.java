@@ -293,7 +293,7 @@ public class Cli implements MyObserver {
                     System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                     discoverController.addTextDoc("Discover", scanner.nextLine());
                     if (!notifyMeDoneDiscover()) {
-                        System.out.println("\tThe file is not a .txt or it doesn't exist. Please retry.\n");
+                        System.out.println("\tThe file is not a .txt, it doesn't exist or it's already loaded. Please retry.\n");
                     } else
                         System.out.println("\tDocument added.\n");
                     break;

@@ -125,8 +125,9 @@ public class RepoDocument implements RepoDocumentInterface {
         if(!alreadyLoaded(document)){
             documents.add(new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1), document));
             saveDoc("BackupDocument.txt", directory);
-        }
-        return true;
+            return true;
+        }else
+            return false;
     }//returnPath
 
     /**
@@ -195,8 +196,6 @@ public class RepoDocument implements RepoDocumentInterface {
     }//showBackup
 
     private boolean alreadyLoaded(String newDoc) {
-        if (!existsDoc("." + File.separator + "BackupDocument.txt"))
-            return false;
         for (Document document : documents)
             if (document.getPath().equalsIgnoreCase(newDoc))
                 return true;

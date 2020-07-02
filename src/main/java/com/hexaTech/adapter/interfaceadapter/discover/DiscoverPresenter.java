@@ -111,9 +111,4 @@ public class DiscoverPresenter extends DiscoverSubject implements AddDocumentOut
         notifySubMeDone();
     }
 
-    /*@Override
-    public void showViewedManual(String result) {
-        message=result;
-        notifySubMe();
-    }*/
 }//Presenter
