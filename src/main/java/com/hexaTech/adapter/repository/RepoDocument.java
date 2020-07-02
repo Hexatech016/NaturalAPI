@@ -195,11 +195,40 @@ public class RepoDocument implements RepoDocumentInterface {
         return toReturn.toString();
     }//showBackup
 
+    @Override
+    public boolean removeDoc(int position) {
+        if(position>=0 && position < documents.size()) {
+            documents.remove(position);
+            saveDoc("BackupDocument.txt", "Discover");
+        }else
+            return false;
+        return true;
+    }//removeDoc
+
     private boolean alreadyLoaded(String newDoc) {
         for (Document document : documents)
             if (document.getPath().equalsIgnoreCase(newDoc))
                 return true;
         return false;
     }//alreadyLoaded
+
+    @Override
+    public String toString(){
+        StringBuilder toReturn=new StringBuilder();
+        int i=1;
+        for(Document document:documents) {
+            toReturn.append(i).append(". ").append(document.getPath()).append("\n");
+            i++;
+        }
+        return toReturn.toString();
+    }
+
+    public void makeEmpty(){
+        documents.clear();
+    }
+
+    public boolean isEmpty(){
+        return documents.isEmpty();
+    }
 
 }//RepoDocument

@@ -20,6 +20,7 @@ import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 import net.didion.jwnl.JWNLException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -160,7 +161,7 @@ public class Cli implements MyObserver {
         System.out.println("\t\t--DISCOVER--");
         while(true){
             System.out.println("Use case: \n 1: Check for saved documents \n 2: Add a document (.txt)" +
-                    "\n 3: Check between BDL and Gherkin \n 4: Guide \n 5: Back");
+                    "\n 3: Check between BDL and Gherkin \n 4: Remove a document \n 5: Guide \n 6: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case("1"):
@@ -189,11 +190,18 @@ public class Cli implements MyObserver {
                         discoverController.checkBetweenBDLAndGherkin("Discover");
                     break;
                 case ("4"):
+                    discoverController.isRepoEmpty();
+                    if(notifyMeDoneDiscover())
+                        System.out.println("\tThere are no saved documents\n");
+                    else
+                        deleteDocument();
+                    break;
+                case ("5"):
                     viewManualController.openManualSection("DISCOVER:");
                     viewManualController.openManualSection("BDL:");
                     viewManualController.openManualSection("GHERKIN:");
                     break;
-                case ("5"):
+                case ("6"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -215,12 +223,34 @@ public class Cli implements MyObserver {
                 return true;
             } else if (choice.equalsIgnoreCase("n")) {
                 discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+                discoverController.clearRepo();
                 return false;
             } else {
                 System.out.println("\tPlease insert Y or N.\n");
             }//if_else
         }
     }//existsBackupDocument
+
+    private void deleteDocument(){
+        System.out.println("The following document(s) are already stored: ");
+        discoverController.showDocumentsList();
+        System.out.println("Which document you want to delete?\nInsert 'n' to cancel.");
+        while(true){
+            choice=scanner.nextLine();
+            if(choice.equalsIgnoreCase("n")){
+                return;
+            }else if(!StringUtils.isNumeric(choice)){
+                System.out.println("\tPlease insert a valid number or N to cancel.\n");
+            }else{
+                discoverController.deleteDoc(Integer.parseInt(choice)-1);
+                if(notifyMeDoneDiscover()) {
+                    System.out.println("\tDocument deleted.\n");
+                    return;
+                }else
+                    System.out.println("\tPlease insert a valid number or N to cancel.\n");
+            }//if
+        }//while
+    }//deleteDocument
 
     private boolean choiceOfBDL() throws IOException{
         while(true) {
@@ -277,7 +307,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBDL() throws IOException{
         while(true) {
-            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Guide \n 4: Back");
+            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Remove a document \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -298,9 +328,20 @@ public class Cli implements MyObserver {
                         System.out.println("\tDocument added.\n");
                     break;
                 case ("3"):
-                    viewManualController.openManualSection("BDL:");
+                    discoverController.isRepoEmpty();
+                    if(notifyMeDoneDiscover())
+                        System.out.println("\tThere are no saved documents\n");
+                    else {
+                        deleteDocument();
+                        discoverController.isRepoEmpty();
+                        if(notifyMeDoneDiscover())
+                            return;
+                    }
                     break;
                 case ("4"):
+                    viewManualController.openManualSection("BDL:");
+                    break;
+                case ("5"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");

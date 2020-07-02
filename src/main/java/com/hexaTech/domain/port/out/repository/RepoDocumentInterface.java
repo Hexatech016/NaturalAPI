@@ -68,6 +68,14 @@ public interface RepoDocumentInterface {
 
     List<Document> getDocuments();
 
+    String toString();
+
     String getBackup(String path) throws FileNotFoundException;
+
+    boolean removeDoc(int position);
+
+    void makeEmpty();
+
+    boolean isEmpty();
 
 }//RepoDocumentInterface

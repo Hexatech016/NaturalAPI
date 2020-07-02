@@ -94,4 +94,20 @@ public class DiscoverController {
         addDocumentInputPort.showBackup(path);
     }
 
+    public void showDocumentsList(){
+        addDocumentInputPort.showDocumentsList();
+    }
+
+    public void isRepoEmpty(){
+        addDocumentInputPort.isRepoEmpty();
+    }
+
+    public void deleteDoc(int position){
+        addDocumentInputPort.deleteDoc(position);
+    }
+
+    public void clearRepo(){
+        addDocumentInputPort.clearRepo();
+    }
+
 }
