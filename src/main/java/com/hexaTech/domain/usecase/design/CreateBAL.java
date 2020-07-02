@@ -80,20 +80,20 @@ public class CreateBAL implements CreateBALInputPort {
         String document = repoGherkinInterface.getContentFromPath(path);
         List<Gherkin> gherkins =textsParsingInterface.extractFromGherkin(document);
         List<String> BDLTags = new ArrayList<>();
-            if (this.repoBDLInterface.getBDL()!=null) {
-                BDL bdl = this.repoBDLInterface.getBDL();
-                BDLTags.add(bdl.BDLtotag(bdl.getNouns()));
-                BDLTags.add(bdl.BDLtotag(bdl.getVerbs()));
-                BDLTags.add(bdl.BDLtotag(bdl.getPredicates()));
-            }else{
-                BDLTags.add("");
-                BDLTags.add("");
-                BDLTags.add("");
-            }
-            BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
-            bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
-            repoBALInterface.setBAL(bal);
-            repoBALDocumentInterface.saveBAL(bal,nameBAL);
+        if (this.repoBDLInterface.getBDL()!=null) {
+            BDL bdl = this.repoBDLInterface.getBDL();
+            BDLTags.add(bdl.BDLtotag(bdl.getNouns()));
+            BDLTags.add(bdl.BDLtotag(bdl.getVerbs()));
+            BDLTags.add(bdl.BDLtotag(bdl.getPredicates()));
+        }else{
+            BDLTags.add("");
+            BDLTags.add("");
+            BDLTags.add("");
+        }
+        BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
+        bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
+        repoBALInterface.setBAL(bal);
+        repoBALDocumentInterface.saveBAL(bal,nameBAL);
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
     }//createBAL
 

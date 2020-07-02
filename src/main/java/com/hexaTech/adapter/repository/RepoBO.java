@@ -88,7 +88,7 @@ public class RepoBO implements RepoBOInterface{
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BO=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
-        saveDoc("BackupBO.txt", directory);
+        //saveDoc("BackupBO.txt", directory);
         return true;
     }//importDoc
 
