@@ -1,0 +1,34 @@
+MAIN:
+Scegli il modulo che preferisci.
+
+DISCOVER:
+Con discover puoi fare un sacco di cose.
+E sono tutte bellissime.
+
+DESIGN:
+Con design puoi fare un sacco di cose.
+E sono tutte bellissime.
+
+DEVELOP:
+Con develop puoi fare un sacco di cose.
+E sono tutte bellissime.
+
+BDL:
+Il BDL è un documento bellissimo.
+E serve ad un sacco di cose.
+
+GHERKIN:
+Lo scenario è un documento bellissimo.
+E serve ad un sacco di cose.
+
+BO:
+La Business Ontology è un documento bellissimo.
+E serve ad un sacco di cose.
+
+BAL:
+Il BAL è un documento bellissimo.
+E serve ad un sacco di cose.
+
+PLA:
+Il PLA è un documento bellissimo.
+E serve ad un sacco di cose.

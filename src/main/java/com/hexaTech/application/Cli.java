@@ -11,6 +11,8 @@
 package com.hexaTech.application;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -31,37 +33,39 @@ import java.util.Scanner;
 
 @Component
 public class Cli implements MyObserver {
+
     private final DiscoverController discoverController;
-
     private final DesignController designController;
-
     private final DevelopController developController;
-
     private final DiscoverPresenter discoverPresenter;
-
     private final DesignPresenter designPresenter;
-
     private final DevelopPresenter developPresenter;
-
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
     private final Scanner scanner;
 
     private String choice;
 
     @Autowired
     public Cli(DiscoverController discoverController, DesignController designController,
-               DevelopController developController, DiscoverPresenter discoverPresenter,
-               DesignPresenter designPresenter, DevelopPresenter developPresenter) {
+               DevelopController developController, ViewManualController viewManualController,
+               DiscoverPresenter discoverPresenter, DesignPresenter designPresenter,
+               DevelopPresenter developPresenter, ViewManualPresenter viewManualPresenter) {
         this.discoverController = discoverController;
         this.designController = designController;
         this.developController = developController;
+        this.viewManualController = viewManualController;
 
         this.discoverPresenter = discoverPresenter;
         this.designPresenter = designPresenter;
         this.developPresenter = developPresenter;
+        this.viewManualPresenter = viewManualPresenter;
 
         this.discoverPresenter.addObserver(this);
         this.designPresenter.addObserver(this);
         this.developPresenter.addObserver(this);
+        this.viewManualPresenter.addObserver(this);
+
         this.scanner=new Scanner(System.in);
         this.choice="";
     }
@@ -119,12 +123,14 @@ public class Cli implements MyObserver {
         return developPresenter.isDone();
     }
 
+    public void notifyMeManual(){System.out.println(viewManualPresenter.getMessage());}
+
     /* ************************ MAIN ************************ */
 
     public void useCaseNaturalAPI() throws IOException, JWNLException {
         System.out.println("\t\t--NATURAL API--");
         while(true){
-            System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Exit");
+            System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Guide \n 5: Exit");
             choice = scanner.nextLine();
             switch(choice){
                 case("1"):
@@ -136,7 +142,10 @@ public class Cli implements MyObserver {
                 case("3"):
                     useCaseDevelop();
                     break;
-                case ("4"):
+                case("4"):
+                    viewManualController.openManualSection("MAIN:");
+                    break;
+                case ("5"):
                     System.out.println("\t\t--BYE!--");
                     System.exit(0);
                 default:
@@ -151,7 +160,7 @@ public class Cli implements MyObserver {
         System.out.println("\t\t--DISCOVER--");
         while(true){
             System.out.println("Use case: \n 1: Check for saved documents \n 2: Add a document (.txt)" +
-                    "\n 3: Check between BDL and Gherkin" + "\n 4: Back");
+                    "\n 3: Check between BDL and Gherkin \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case("1"):
@@ -180,6 +189,11 @@ public class Cli implements MyObserver {
                         discoverController.checkBetweenBDLAndGherkin("Discover");
                     break;
                 case ("4"):
+                    viewManualController.openManualSection("DISCOVER:");
+                    viewManualController.openManualSection("BDL:");
+                    viewManualController.openManualSection("GHERKIN:");
+                    break;
+                case ("5"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -241,7 +255,7 @@ public class Cli implements MyObserver {
 
     private boolean choiceOfGherkin() throws IOException{
         while(true) {
-            System.out.println("Use case: \n 1: Add a gherkin scenario" + "\n 2: Back");
+            System.out.println("Use case: \n 1: Add a gherkin scenario \n 2: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -263,7 +277,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBDL() throws IOException{
         while(true) {
-            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
+            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -284,6 +298,9 @@ public class Cli implements MyObserver {
                         System.out.println("\tDocument added.\n");
                     break;
                 case ("3"):
+                    viewManualController.openManualSection("BDL:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -296,7 +313,7 @@ public class Cli implements MyObserver {
     private void useCaseDesign() throws IOException{
         System.out.println("\t\t--DESIGN--");
         while(true) {
-            System.out.println("Use case:\n 1: Check for saved documents \n 2: Add a Gherkin file (.scenario) \n 3: Back");
+            System.out.println("Use case:\n 1: Check for saved documents \n 2: Add a Gherkin file (.scenario) \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -317,6 +334,10 @@ public class Cli implements MyObserver {
                         System.out.println("\tThe file is not a .scenario or it doesn't exist. Please retry.\n");
                     break;
                 case ("3"):
+                    viewManualController.openManualSection("DESIGN:");
+                    viewManualController.openManualSection("GHERKIN:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -341,7 +362,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBDLDesign() throws IOException {
         while(true) {
-            System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Back ");
+            System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Guide \n 3: Back ");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -355,6 +376,9 @@ public class Cli implements MyObserver {
                         System.out.println("\tThe file is not a .BDL or it doesn't exist. Please retry.\n");
                     break;
                 case ("2"):
+                    viewManualController.openManualSection("BDL:");
+                    break;
+                case ("3"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -364,7 +388,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBO() throws IOException {
         while(true) {
-            System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Back ");
+            System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Guide \n 4: Back ");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -380,6 +404,10 @@ public class Cli implements MyObserver {
                     useCaseBAL();
                     return;
                 case ("3"):
+                    viewManualController.openManualSection("BO:");
+                    viewManualController.openManualSection("BAL:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -409,7 +437,7 @@ public class Cli implements MyObserver {
     private void useCaseDevelop() throws IOException{
         System.out.println("\t\t--DEVELOP--");
         while(true) {
-            System.out.println("Use case: \n 1: Check for saved documents\n 2: Add a new BAL (.json) \n 3: Back");
+            System.out.println("Use case: \n 1: Check for saved documents\n 2: Add a new BAL (.json) \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -429,6 +457,10 @@ public class Cli implements MyObserver {
                         useCasePLA();
                     break;
                 case ("3"):
+                    viewManualController.openManualSection("DEVELOP:");
+                    viewManualController.openManualSection("BAL:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -462,7 +494,8 @@ public class Cli implements MyObserver {
      */
     private void useCasePLA() throws IOException{
         while(true) {
-            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n 3: Generate from an external PLA (.pla) \n 4: Back");
+            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n" +
+                                "3: Generate from an external PLA (.pla) \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -488,6 +521,9 @@ public class Cli implements MyObserver {
                         System.out.println("\tPlease select a .pla file.\n");
                     break;
                 case ("4"):
+                    viewManualController.openManualSection("PLA:");
+                    break;
+                case ("5"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");

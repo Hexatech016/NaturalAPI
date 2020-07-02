@@ -9,8 +9,8 @@ public interface ViewManualInputPort {
 
     /**
      * Opens the user manual.
-     * @param path String - path to the user manual.
+     * @param title String - path to the user manual.
      */
-    void openManual(String path) throws IOException;
+    void openManual(String title) throws IOException;
 
 }//ViewManualInputPort
