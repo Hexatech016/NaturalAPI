@@ -151,30 +151,7 @@ public class BDL {
         return sortedByValues;
     }
 
-    // Funzione per la stampa dei campi dati sul campo tag
-    public String BDLtotag(Map<String,Integer> text) {
-        StringBuilder toReturn =new StringBuilder();
-        int count=0;
-        int valore=0;
-        Map <String, Integer> stringtag=order(text);
-        for (Map.Entry<String, Integer> s : stringtag.entrySet()) {
-            if(count==0)
-            {    toReturn.append(s.getKey());
-            valore=s.getValue();
-            count=count+1; }
-
-            if (count<5 && s.getValue()!=valore){
-                toReturn.append(",").append(s.getKey());
-                valore=s.getValue();
-                count=count+1;
-            }
-
-        }//for
-        return toReturn.toString();
-
-    }
-
-    /**
+      /**
      * Sorts BDL's content alphabetically.
      * @param hm HashMap<String, Integer> - map to be sorted.
      * @return HashMap<String, Integer> - map's sorted clone.
