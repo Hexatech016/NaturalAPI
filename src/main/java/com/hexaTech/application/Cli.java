@@ -361,7 +361,8 @@ public class Cli implements MyObserver {
                     designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
                     if (notifyMeDoneDesign()) {
                         if (existsBackUpGherkin())
-                            useCaseBDLDesign();
+                            //useCaseBDLDesign();
+                            useCaseBO();
                     } else
                         System.out.println("\tThere are no saved documents\n");
                     break;
@@ -370,7 +371,8 @@ public class Cli implements MyObserver {
                     designController.addGherkin("Design", scanner.nextLine());
                     if (notifyMeDoneDesign()) {
                         System.out.println("\tScenario added.\n");
-                        useCaseBDLDesign();
+                        //useCaseBDLDesign();
+                        useCaseBO();
                     } else
                         System.out.println("\tThe file is not a .scenario or it doesn't exist. Please retry.\n");
                     break;
@@ -401,7 +403,7 @@ public class Cli implements MyObserver {
         }
     }//existsBackupGherkin
 
-    private void useCaseBDLDesign() throws IOException {
+   /* private void useCaseBDLDesign() throws IOException {
         while(true) {
             System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Guide \n 3: Back ");
             choice = scanner.nextLine();
@@ -426,7 +428,7 @@ public class Cli implements MyObserver {
             }//switch
         }//while
     }//useCaseBDLDesign
-
+*/
     private void useCaseBO() throws IOException {
         while(true) {
             System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Guide \n 4: Back ");

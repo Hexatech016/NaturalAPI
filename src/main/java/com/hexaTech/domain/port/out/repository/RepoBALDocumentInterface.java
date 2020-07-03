@@ -22,7 +22,7 @@ import java.util.List;
  */
 public interface RepoBALDocumentInterface {
 
-    BAL setBALFromGherkin(List<Gherkin> gherkins, List<String> BDLTags);
+    BAL setBALFromGherkin(List<Gherkin> gherkins);
 
     /**
      * Loads a new document from file system.
