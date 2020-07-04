@@ -19,10 +19,18 @@ import java.util.List;
  */
 
 public class BAL{
+    String name;
     List<MethodBAL> methods;
     List<StructureBAL> structures;
 
     public BAL(){
+        name = "BAL";
+        methods=new ArrayList<>();
+        structures=new ArrayList<>();
+    }
+
+    public BAL(String name){
+        this.name = name;
         methods=new ArrayList<>();
         structures=new ArrayList<>();
     }
@@ -59,7 +67,7 @@ public class BAL{
                         "	\"openapi\": \"3.0.0\",\n"+
                         "	\"info\": {\n"+
                         "		\"version\": \"1.0.0\",\n"+
-                        "		\"title\": \"Test\",\n"+
+                        "		\"title\": \"" + name +"\",\n"+
                         "		\"license\": {\n"+
                         "			\"name\": \"MIT\"\n	"+
                         "		}\n	"+

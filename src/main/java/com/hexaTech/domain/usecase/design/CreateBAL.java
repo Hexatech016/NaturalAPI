@@ -90,7 +90,7 @@ public class CreateBAL implements CreateBALInputPort {
                 BDLTags.add("");
                 BDLTags.add("");
             }
-            BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags);
+            BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, BDLTags, nameBAL);
             bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
             repoBALInterface.setBAL(bal);
             repoBALDocumentInterface.saveBAL(bal,nameBAL);
