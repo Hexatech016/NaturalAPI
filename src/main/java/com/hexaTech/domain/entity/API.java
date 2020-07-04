@@ -24,6 +24,7 @@ public class API{
     String APIName;
     String APIComment;
     List<Method> APIMethods;
+    List<Method> APITests;
     List<Structure> APIStructures;
 
     /**
@@ -33,6 +34,7 @@ public class API{
         this.APIName="";
         this.APIComment="";
         this.APIMethods=new ArrayList<>();
+        this.APITests=new ArrayList<>();
         this.APIStructures=new ArrayList<>();
     }
 
@@ -43,10 +45,11 @@ public class API{
      * @param APIMethods List<Method> - API's methods list.
      * @param APIStructures List<Structures> - API's structures list.
      */
-    public API(String APIName, String APIComment, List<Method> APIMethods, List<Structure> APIStructures) {
+    public API(String APIName, String APIComment, List<Method> APIMethods, List<Method> APITests, List<Structure> APIStructures) {
         this.APIName=APIName.substring(0,1).toUpperCase() + APIName.substring(1);
         this.APIComment=APIComment;
         this.APIMethods=APIMethods;
+        this.APITests=APITests;
         this.APIStructures=APIStructures;
     }//API
 
@@ -64,6 +67,10 @@ public class API{
 
     public List<Method> getAPIMethods() {
         return APIMethods;
+    }
+
+    public List<Method> getAPITests() {
+        return APITests;
     }
 
     public List<Structure> getAPIStructures() {
@@ -92,6 +99,10 @@ public class API{
      */
     public void setAPIMethods(List<Method> APIMethods) {
         this.APIMethods=APIMethods;
+    }
+
+    public void setAPITests(List<Method> APITests) {
+        this.APITests=APITests;
     }
 
     /**
@@ -150,10 +161,10 @@ public class API{
         content[findSubString(content,"<--classComment-->")]=
                 content[findSubString(content,"<--classComment-->")].replace("<--classComment-->",APIComment);
 
-        StringBuilder methods=new StringBuilder();
-        for(Method method:APIMethods)
-            methods.append("\t").append(method.createTests(content.clone(), startMethod, endMethod, types, typed, getAPIName()));
-        content[methodHere]=methods.toString();
+        StringBuilder tests=new StringBuilder();
+        for(Method test:APITests)
+            tests.append(test.createTests(content.clone(), startMethod, endMethod, types, typed, getAPIName())).append("\n");
+        content[methodHere]=tests.toString();
         return String.join("\n", Arrays.copyOfRange(content,endMethod+1,content.length));
     }//createTests
 

@@ -108,7 +108,7 @@ public class StanfordNLP implements TextsParsingInterface {
             String[] arr = scenario.split("[\n]+");
             Gherkin toAdd = new Gherkin();
             String sentinel = "";
-            toAdd.setDescription(scenario);
+            toAdd.setDescription(scenario.replace("\n", "---"));
             for (String str : arr) {
                 CoreDocument documents = new CoreDocument(str);
                 pipeline.annotate(documents);
