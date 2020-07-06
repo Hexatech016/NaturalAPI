@@ -17,7 +17,8 @@ import java.util.ArrayList;
  */
 
 public class Gherkin {
-    String scenario;String description;
+    String scenario;
+    String description;
     String given;
     ArrayList<String> when= new ArrayList<String>();
     String then;

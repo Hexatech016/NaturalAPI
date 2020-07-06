@@ -39,13 +39,14 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * Fills a BAL object with the given text parsed elements.
      * @return BAL - filled BAL object.
      */
-    public BAL setBALFromGherkin(List<Gherkin> gherkins){
-        BAL BAL = new BAL();
+    public BAL setBALFromGherkin(List<Gherkin> gherkins, String nameBal){
+        BAL BAL = new BAL(nameBal);
         ArrayList<MethodBAL> methods = new ArrayList<MethodBAL>();
         for (Gherkin gherkin: gherkins) {
             MethodBAL meth = new MethodBAL();
             meth.setName(gherkin.getScenario());
             meth.setDescription(gherkin.getDescription());
+            meth.setTags(BDLTags);
             ToReturn toRet=new ToReturn();
             toRet.setDescription(gherkin.getThen());
             meth.setToRet(toRet);
