@@ -537,8 +537,8 @@ public class Cli implements MyObserver {
      */
     private void useCasePLA() throws IOException{
         while(true) {
-            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n" +
-                                "3: Generate from an external PLA (.pla) \n 4: Guide \n 5: Back");
+            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n " +
+                    "3: Generate from an external PLA (.pla) \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):

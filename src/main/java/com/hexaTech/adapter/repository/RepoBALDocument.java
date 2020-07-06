@@ -46,7 +46,6 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             MethodBAL meth = new MethodBAL();
             meth.setName(gherkin.getScenario());
             meth.setDescription(gherkin.getDescription());
-            meth.setTags(BDLTags);
             ToReturn toRet=new ToReturn();
             toRet.setDescription(gherkin.getThen());
             meth.setToRet(toRet);
