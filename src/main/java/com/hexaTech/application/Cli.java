@@ -403,32 +403,6 @@ public class Cli implements MyObserver {
         }
     }//existsBackupGherkin
 
-   /* private void useCaseBDLDesign() throws IOException {
-        while(true) {
-            System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Guide \n 3: Back ");
-            choice = scanner.nextLine();
-            switch (choice) {
-                case ("1"):
-                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
-                    designController.addBDL(scanner.nextLine());
-                    if (notifyMeDoneDesign()) {
-                        System.out.println("\tBDL added.\n");
-                        useCaseBO();
-                        return;
-                    } else
-                        System.out.println("\tThe file is not a .BDL or it doesn't exist. Please retry.\n");
-                    break;
-                case ("2"):
-                    viewManualController.openManualSection("BDL:");
-                    break;
-                case ("3"):
-                    return;
-                default:
-                    System.out.println("\tInvalid choice. Please retry.\n");
-            }//switch
-        }//while
-    }//useCaseBDLDesign
-*/
     private void useCaseBO() throws IOException {
         while(true) {
             System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Guide \n 4: Back ");

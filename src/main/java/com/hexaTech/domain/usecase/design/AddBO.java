@@ -30,8 +30,13 @@ public class AddBO implements AddBOInputPort {
             String path=repoBOInterface.getBO().getPath();
             String content=repoBOInterface.getContentFromPath(path);
             BO bo=repoBOInterface.setBOFromJSON(content);
-            repoBOInterface.setBoOpenAPI(bo);
-            addBOOutputPort.showCreatedBO("BO added.");
+            if(bo==null) {
+                addBOOutputPort.showCreatedBO("BO format is invalid. Please retry.");
+                addBOOutputPort.showDone(false);
+            }else {
+                repoBOInterface.setBoOpenAPI(bo);
+                addBOOutputPort.showCreatedBO("BO added.");
+            }
         }//else
     }//addBO
 
