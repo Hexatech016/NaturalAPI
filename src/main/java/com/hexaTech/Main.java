@@ -11,8 +11,8 @@
 
 package com.hexaTech;
 
+import com.hexaTech.application.GuiStarter;
 import com.hexaTech.application.config.SpringConfig;
-import com.hexaTech.application.Cli;
 import net.didion.jwnl.JWNLException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -24,9 +24,11 @@ import java.io.IOException;
 
 public class Main{
     public static void main(String[] args) throws IOException, JWNLException {
-        AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
-        Cli client=context.getBean("cli",Cli.class);
-        client.useCaseNaturalAPI();
-        context.close();
+//        AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
+//        Cli client=context.getBean("cli",Cli.class);
+//        client.useCaseNaturalAPI();
+        GuiStarter test = new GuiStarter();
+
+//        context.close();
     }//main
 }//MainDevelop
