@@ -361,7 +361,6 @@ public class Cli implements MyObserver {
                     designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
                     if (notifyMeDoneDesign()) {
                         if (existsBackUpGherkin())
-                            //useCaseBDLDesign();
                             useCaseBO();
                     } else
                         System.out.println("\tThere are no saved documents\n");
@@ -371,7 +370,6 @@ public class Cli implements MyObserver {
                     designController.addGherkin("Design", scanner.nextLine());
                     if (notifyMeDoneDesign()) {
                         System.out.println("\tScenario added.\n");
-                        //useCaseBDLDesign();
                         useCaseBO();
                     } else
                         System.out.println("\tThe file is not a .scenario or it doesn't exist. Please retry.\n");
@@ -454,7 +452,7 @@ public class Cli implements MyObserver {
     private void useCaseDevelop() throws IOException{
         System.out.println("\t\t--DEVELOP--");
         while(true) {
-            System.out.println("Use case: \n 1: Check for saved documents\n 2: Add a new BAL (.json) \n 3: Guide \n 4: Back");
+            System.out.println("Use case: \n 1: Check for saved documents\n 2: Select a BAL \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -466,11 +464,8 @@ public class Cli implements MyObserver {
                         System.out.println("\tThere are no saved documents\n");
                     break;
                 case ("2"):
-                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
-                    developController.addBAL("Develop", scanner.nextLine());
-                    if (!notifyMeDoneDevelop())
-                        System.out.println("\tThe file is not a .json or it doesn't exist. Please retry.\n");
-                    else
+                    System.out.println("Which BAL do you want to use?");
+                    if(choiceOfBAL())
                         useCasePLA();
                     break;
                 case ("3"):
@@ -484,6 +479,36 @@ public class Cli implements MyObserver {
             }//switch
         }//while
     }//useCaseDevelop
+
+    private boolean choiceOfBAL() throws IOException {
+        while(true) {
+            System.out.println("Use case: \n 1: Import an external BAL \n 2: Use a BAL extracted just before \n 3: Back");
+            choice = scanner.nextLine();
+            switch (choice) {
+                case ("1"):
+                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
+                    developController.addBAL("Develop", scanner.nextLine());
+                    if (!notifyMeDoneDevelop())
+                        System.out.println("\tThe file is not a .json or it doesn't exist. Please retry.\n");
+                    else
+                        return true;
+                    break;
+                case ("2"):
+                    developController.checkIfRepoBALIsEmpty();
+                    if (notifyMeDoneDevelop())
+                        System.out.println("\tThere is no BAL in memory. Please import an external one or extract one using Design.\n");
+                    else{
+                        System.out.println("\tBAL is ready to be processed\n");
+                        return true;
+                    }//else
+                    break;
+                case ("3"):
+                    return false;
+                default:
+                    System.out.println("\tInvalid choice. Please retry.\n");
+            }//switch
+        }//while
+    }//choiceOfBAL
 
     /**
      * Asks to user if he wants to reload an existing backup file.

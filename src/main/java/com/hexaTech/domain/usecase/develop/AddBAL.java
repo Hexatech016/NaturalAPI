@@ -10,7 +10,9 @@
 
 package com.hexaTech.domain.usecase.develop;
 
+import com.hexaTech.adapter.repository.RepoBAL;
 import com.hexaTech.domain.port.in.AddBALInputPort;
+import com.hexaTech.domain.port.out.repository.RepoBALInterface;
 import com.hexaTech.domain.port.out.usecase.AddBALOutputPort;
 import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +26,20 @@ import java.io.IOException;
 @Component
 public class AddBAL implements AddBALInputPort {
     private final AddBALOutputPort addBALOutputPort;
-
     private final RepoBALDocumentInterface repoBALDocumentInterface;
+    private final RepoBALInterface repoBALInterface;
 
     /**
      * Add document standard constructor.
      * @param addBALOutputPort AddBALOutputPort - used to send output notifications.
      * @param repoBALDocumentInterface RepoBALDocumentInterface - used to communicate with Repo.
+     * @param repoBALInterface RepoBALInterface - used to communicate with Repo.
      */
     @Autowired
-    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface) {
+    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface) {
         this.addBALOutputPort=addBALOutputPort;
         this.repoBALDocumentInterface=repoBALDocumentInterface;
+        this.repoBALInterface=repoBALInterface;
     }
 
     /**
@@ -69,6 +73,10 @@ public class AddBAL implements AddBALInputPort {
             addBALOutputPort.showRemovedBAL("Document deleted.");
         else
             addBALOutputPort.showRemovedBAL("Error. Please retry.");
+    }//deleteDoc
+
+    public void checkIfRepoBALIsEmpty(){
+        addBALOutputPort.showDone(repoBALInterface.isEmpty());
     }
 
 }//AddBAL

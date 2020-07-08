@@ -42,4 +42,6 @@ public interface AddBALInputPort {
      */
     void deleteDoc(String path);
 
+    void checkIfRepoBALIsEmpty();
+
 }//AddBALInputInterface

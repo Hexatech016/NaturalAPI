@@ -38,17 +38,10 @@ import java.util.Scanner;
 @Component
 public class CreateBAL implements CreateBALInputPort {
     private final CreateBALOutputPort createBALOutputPort;
-
     private final RepoGherkinInterface repoGherkinInterface;
-
     private final RepoBALDocumentInterface repoBALDocumentInterface;
-
     private final RepoBALInterface repoBALInterface;
-
     private final RepoBOInterface repoBOInterface;
-
-    private final RepoBDLInterface repoBDLInterface;
-
     private final TextsParsingInterface textsParsingInterface;
 
     /**
@@ -59,14 +52,12 @@ public class CreateBAL implements CreateBALInputPort {
     @Autowired
     public CreateBAL(CreateBALOutputPort createBALOutputPort, RepoGherkinInterface repoGherkinInterface,
                      RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface,
-                     RepoBOInterface repoBOInterface, RepoBDLInterface repoBDLInterface,
-                     TextsParsingInterface textsParsingInterface) {
+                     RepoBOInterface repoBOInterface, TextsParsingInterface textsParsingInterface) {
         this.createBALOutputPort = createBALOutputPort;
         this.repoGherkinInterface = repoGherkinInterface;
         this.repoBALDocumentInterface = repoBALDocumentInterface;
         this.repoBALInterface = repoBALInterface;
         this.repoBOInterface = repoBOInterface;
-        this.repoBDLInterface = repoBDLInterface;
         this.textsParsingInterface = textsParsingInterface;
     }
 
@@ -147,6 +138,7 @@ public class CreateBAL implements CreateBALInputPort {
                 }//while
             }//for_parameters
         }//for_methods
+        repoBALInterface.setBAL(bal);
         repoBALDocumentInterface.saveBAL(bal,nameBAL);
         createBALOutputPort.showCreatedBAL("BAL updated into folder Design.\n");
         repoGherkinInterface.deleteDoc("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
