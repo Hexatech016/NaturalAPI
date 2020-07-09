@@ -23,6 +23,10 @@ public class Gherkin {
     ArrayList<String> when= new ArrayList<String>();
     String then;
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
      * Returns Gherkin's scenario value.
      * @return string - scenario.

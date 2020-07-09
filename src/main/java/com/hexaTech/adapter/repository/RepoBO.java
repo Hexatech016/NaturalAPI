@@ -88,7 +88,7 @@ public class RepoBO implements RepoBOInterface{
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))
             return false;
         BO=new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1),document);
-        saveDoc("BackupBO.txt", directory);
+        //saveDoc("BackupBO.txt", directory);
         return true;
     }//importDoc
 
@@ -172,50 +172,36 @@ public class RepoBO implements RepoBOInterface{
     }
 
     public BO setBOFromJSON(String text) throws JsonProcessingException{
-        ObjectMapper objectMapper=new ObjectMapper();
-        JsonNode node = objectMapper.readTree(text); /*json visto come json e non come text*/
-        BO bo= new BO();
-        bo.setOntologyName(node.get("ontologyName").asText());
-
-        JsonNode objlist=node.get("ontologyObjects");
-        List<JsonNode> objects=new ArrayList<JsonNode>();
-        if(objlist.isArray()){
-            for(JsonNode tmp: objlist){
-                objects.add(tmp);
-            }
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode node = objectMapper.readTree(text);
+            BO bo = new BO();
+            bo.setOntologyName(node.get("ontologyName").asText());
+            JsonNode objlist = node.get("ontologyObjects");
+            List<JsonNode> objects = new ArrayList<JsonNode>();
+            if (objlist.isArray()) {
+                for (JsonNode tmp : objlist) {
+                    objects.add(tmp);
+                }//for
+            }//if
+            for (JsonNode tmp : objects) {
+                StructureBAL bobj = new StructureBAL();
+                List<Parameter> parameterList = new ArrayList<>();
+                if (tmp.get("parameters").isArray()) {
+                    for (JsonNode iter : tmp.get("parameters")) {
+                        parameterList.add(new Parameter(iter.get("description").toString().replace("\"", ""),
+                                iter.get("name").toString().replace("\"", ""), iter.get("type").toString().replace("\"", "")));
+                    }//for
+                }//if
+                bobj.setName(tmp.get("name").asText());
+                bobj.setParameters(parameterList);
+                bo.setBOObjects(bobj);
+            }//for
+            return bo;
+        }catch(JsonProcessingException | NullPointerException e){
+            return null;
         }
-
-        for(JsonNode tmp: objects) {
-            StructureBAL bobj = new StructureBAL();
-            List<String> params = new ArrayList<String>();
-            List<String> types = new ArrayList<String>();
-            List<Parameter> parameterList=new ArrayList<>();
-
-            if (tmp.get("parameters").isArray()) {
-                for (JsonNode iter : tmp.get("parameters")) {
-                    //params.add(iter.toString().replace("\"",""));
-                    parameterList.add(new Parameter(iter.get("description").toString().replace("\"",""),
-                            iter.get("name").toString().replace("\"",""),iter.get("type").toString().replace("\"","")));
-                }
-            }
-            /*if (tmp.get("TipoValori").isArray()) {
-                for (JsonNode iter : tmp.get("TipoValori")) {
-                    types.add(iter.toString().replace("\"",""));
-                }
-            }*/
-            bobj.setName(tmp.get("name").asText());
-            bobj.setParameters(parameterList);
-            /*ciclo for che ciclando sulle due liste crea un oggetto parameter con la coppia nome-tipovalore*/
-            /*for(int i=0; i<params.size(); i++){
-                Parameter par= new Parameter();
-                par.setName(params.get(i));
-                par.setType(types.get(i));
-                bobj.setParameters(par);
-            }*/
-            bo.setBOObjects(bobj);
-        }
-    return bo;
-    }
+    }//setBOFromJSON
 
     @Override
     public void setBO(BO bo){
@@ -229,9 +215,8 @@ public class RepoBO implements RepoBOInterface{
         saveDocDiscover(jsonInString,"." + File.separator + BOpath + "BO.json");
     }
 
-    public void saveDocDiscover(String doc, String path) throws IOException {
+    public void saveDocDiscover(String doc, String path){
         try {
-            // Open given file in append mode.
             File directory = new File("Discover");
             if (! directory.exists())
                 directory.mkdir();

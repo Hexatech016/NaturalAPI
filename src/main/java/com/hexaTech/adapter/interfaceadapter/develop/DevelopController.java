@@ -73,4 +73,8 @@ public class DevelopController {
     public void existsBAL(String path){
         addBALInputPort.existsDoc(path);
     }
+
+    public void checkIfRepoBALIsEmpty(){
+        addBALInputPort.checkIfRepoBALIsEmpty();
+    }
 }

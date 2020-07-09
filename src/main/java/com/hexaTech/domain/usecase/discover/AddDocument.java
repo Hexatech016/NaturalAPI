@@ -71,12 +71,27 @@ public class AddDocument implements AddDocumentInputPort {
      * @param path string - document to be deleted.
      */
     public void deleteDocs(String path){
-        if(repoDocumentInterface.deleteDoc(path));
-            addDocumentOutputPort.showDeletedDoc("Document deleted");
+        if(repoDocumentInterface.deleteDoc(path))
+            addDocumentOutputPort.showDeletedDoc("Document(s) deleted");
     }
 
     public void showBackup(String path) throws FileNotFoundException {
         addDocumentOutputPort.showBackUpRestored(repoDocumentInterface.getBackup(path));
     }
 
+    public void showDocumentsList(){
+        addDocumentOutputPort.showBackUpRestored(repoDocumentInterface.toString());
+    }
+
+    public void isRepoEmpty() {
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.isEmpty());
+    }
+
+    public void deleteDoc(int position){
+        addDocumentOutputPort.showAddDocument(repoDocumentInterface.removeDoc(position));
+    }
+
+    public void clearRepo() {
+        repoDocumentInterface.makeEmpty();
+    }
 }//AddDocToParse

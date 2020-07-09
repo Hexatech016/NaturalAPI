@@ -30,10 +30,11 @@ public class APITest {
 
     @Test
     public void defaultConstructorTest(){
-        api=new API("name","comment",null,null);
+        api=new API("name","comment",null,null,null);
         assertEquals("Name",api.getAPIName());
         assertEquals("comment",api.getAPIComment());
         assertNull(api.getAPIMethods());
+        assertNull(api.getAPITests());
         assertNull(api.getAPIStructures());
     }
 

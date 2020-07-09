@@ -28,12 +28,17 @@ public class OpenAPI implements JsonParsingInterface {
         if(path.equals("") || !file.exists())
             return null;
         API API=new API();
-        if(extractAPIMethods(path)!=null && extractAPIStructures(path)!=null &&
-                extractAPIName(path)!=null && extractAPIDescription(path)!=null){
-            API.setAPIMethods(extractAPIMethods(path));
-            API.setAPIStructures(extractAPIStructures(path));
-            API.setAPIName(extractAPIName(path));
-            API.setAPIComment(extractAPIDescription(path));
+        List<Method> methods = extractAPIMethods(path);
+        List<Method> tests = extractAPITests(path);
+        List<Structure> structures = extractAPIStructures(path);
+        String name = extractAPIName(path);
+        String comment = extractAPIDescription(path);
+        if(methods!=null && tests != null && structures!=null && name!=null && comment!=null){
+            API.setAPIMethods(methods);
+            API.setAPIStructures(structures);
+            API.setAPIName(name);
+            API.setAPIComment(comment);
+            API.setAPITests(tests);
             return API;
         }else
             return null;
@@ -56,6 +61,27 @@ public class OpenAPI implements JsonParsingInterface {
                 return result;
             for(Map.Entry<String, PathItem> method : openAPI.getPaths().entrySet())
                 result.add(getMethod(method));
+            return result;
+        }catch(NullPointerException e){
+            System.out.println("BAL's body has bad syntax.");
+            return null;
+        }//try_catch
+    }//extractAPIMethods
+
+    private List<Method> extractAPITests(String path) throws IllegalArgumentException{
+        try {
+            List<Method> result=new ArrayList<>();
+            String[] temp;
+            io.swagger.v3.oas.models.OpenAPI openAPI=new OpenAPIV3Parser().read(path);
+            if(openAPI==null)
+                return null;
+            if(openAPI.getPaths()==null)
+                return result;
+            for(Map.Entry<String, PathItem> test : openAPI.getPaths().entrySet()) {
+                temp = test.getValue().getGet().getDescription().replaceFirst("^(.*?)---", "").split("---");
+                for (String step : temp)
+                    result.add(getTest(step));
+            }
             return result;
         }catch(NullPointerException e){
             System.out.println("BAL's body has bad syntax.");
@@ -138,6 +164,14 @@ public class OpenAPI implements JsonParsingInterface {
         method.setMethodReturnType(getMethodReturn(meth.getValue().getGet().getResponses()));//METHOD_RETURN_TYPE
         method.setMethodParam(getMethodParameters(meth.getValue().getGet()));//METHOD_PARAMETERS
         return method;
+    }//getMethod
+
+    private Method getTest(String step){
+        Method test=new Method();
+        test.setMethodName(step.toLowerCase().replace(" ",""));//TEST_NAME
+        test.setMethodComment("@("+step+")");//TEST_DESCRIPTION
+        test.setMethodReturnType("void");//TEST_RETURN_TYPE
+        return test;
     }//getMethod
 
     /**

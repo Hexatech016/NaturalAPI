@@ -11,6 +11,8 @@
 package com.hexaTech.application;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -18,6 +20,7 @@ import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 import net.didion.jwnl.JWNLException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,37 +34,39 @@ import java.util.Scanner;
 
 @Component
 public class Cli implements MyObserver {
+
     private final DiscoverController discoverController;
-
     private final DesignController designController;
-
     private final DevelopController developController;
-
     private final DiscoverPresenter discoverPresenter;
-
     private final DesignPresenter designPresenter;
-
     private final DevelopPresenter developPresenter;
-
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
     private final Scanner scanner;
 
     private String choice;
 
     @Autowired
     public Cli(DiscoverController discoverController, DesignController designController,
-               DevelopController developController, DiscoverPresenter discoverPresenter,
-               DesignPresenter designPresenter, DevelopPresenter developPresenter) {
+               DevelopController developController, ViewManualController viewManualController,
+               DiscoverPresenter discoverPresenter, DesignPresenter designPresenter,
+               DevelopPresenter developPresenter, ViewManualPresenter viewManualPresenter) {
         this.discoverController = discoverController;
         this.designController = designController;
         this.developController = developController;
+        this.viewManualController = viewManualController;
 
         this.discoverPresenter = discoverPresenter;
         this.designPresenter = designPresenter;
         this.developPresenter = developPresenter;
+        this.viewManualPresenter = viewManualPresenter;
 
         this.discoverPresenter.addObserver(this);
         this.designPresenter.addObserver(this);
         this.developPresenter.addObserver(this);
+        this.viewManualPresenter.addObserver(this);
+
         this.scanner=new Scanner(System.in);
         this.choice="";
     }
@@ -119,12 +124,14 @@ public class Cli implements MyObserver {
         return developPresenter.isDone();
     }
 
+    public void notifyMeManual(){System.out.println(viewManualPresenter.getMessage());}
+
     /* ************************ MAIN ************************ */
 
     public void useCaseNaturalAPI() throws IOException, JWNLException {
         System.out.println("\t\t--NATURAL API--");
         while(true){
-            System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Exit");
+            System.out.println("Use case: \n 1: Discover \n 2: Design \n 3: Develop \n 4: Guide \n 5: Exit");
             choice = scanner.nextLine();
             switch(choice){
                 case("1"):
@@ -136,7 +143,10 @@ public class Cli implements MyObserver {
                 case("3"):
                     useCaseDevelop();
                     break;
-                case ("4"):
+                case("4"):
+                    viewManualController.openManualSection("MAIN:");
+                    break;
+                case ("5"):
                     System.out.println("\t\t--BYE!--");
                     System.exit(0);
                 default:
@@ -151,7 +161,7 @@ public class Cli implements MyObserver {
         System.out.println("\t\t--DISCOVER--");
         while(true){
             System.out.println("Use case: \n 1: Check for saved documents \n 2: Add a document (.txt)" +
-                    "\n 3: Check between BDL and Gherkin" + "\n 4: Back");
+                    "\n 3: Check between BDL and Gherkin \n 4: Remove a document \n 5: Guide \n 6: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case("1"):
@@ -180,6 +190,18 @@ public class Cli implements MyObserver {
                         discoverController.checkBetweenBDLAndGherkin("Discover");
                     break;
                 case ("4"):
+                    discoverController.isRepoEmpty();
+                    if(notifyMeDoneDiscover())
+                        System.out.println("\tThere are no saved documents\n");
+                    else
+                        deleteDocument();
+                    break;
+                case ("5"):
+                    viewManualController.openManualSection("DISCOVER:");
+                    viewManualController.openManualSection("BDL:");
+                    viewManualController.openManualSection("GHERKIN:");
+                    break;
+                case ("6"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -201,12 +223,34 @@ public class Cli implements MyObserver {
                 return true;
             } else if (choice.equalsIgnoreCase("n")) {
                 discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+                discoverController.clearRepo();
                 return false;
             } else {
                 System.out.println("\tPlease insert Y or N.\n");
             }//if_else
         }
     }//existsBackupDocument
+
+    private void deleteDocument(){
+        System.out.println("The following document(s) are already stored: ");
+        discoverController.showDocumentsList();
+        System.out.println("Which document you want to delete?\nInsert 'n' to cancel.");
+        while(true){
+            choice=scanner.nextLine();
+            if(choice.equalsIgnoreCase("n")){
+                return;
+            }else if(!StringUtils.isNumeric(choice)){
+                System.out.println("\tPlease insert a valid number or N to cancel.\n");
+            }else{
+                discoverController.deleteDoc(Integer.parseInt(choice)-1);
+                if(notifyMeDoneDiscover()) {
+                    System.out.println("\tDocument deleted.\n");
+                    return;
+                }else
+                    System.out.println("\tPlease insert a valid number or N to cancel.\n");
+            }//if
+        }//while
+    }//deleteDocument
 
     private boolean choiceOfBDL() throws IOException{
         while(true) {
@@ -241,7 +285,7 @@ public class Cli implements MyObserver {
 
     private boolean choiceOfGherkin() throws IOException{
         while(true) {
-            System.out.println("Use case: \n 1: Add a gherkin scenario" + "\n 2: Back");
+            System.out.println("Use case: \n 1: Add a gherkin scenario \n 2: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -263,7 +307,7 @@ public class Cli implements MyObserver {
 
     private void useCaseBDL() throws IOException{
         while(true) {
-            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Back");
+            System.out.println("Use case: \n 1: Extract BDL \n 2: Add another document (.txt) \n 3: Remove a document \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -279,11 +323,25 @@ public class Cli implements MyObserver {
                     System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                     discoverController.addTextDoc("Discover", scanner.nextLine());
                     if (!notifyMeDoneDiscover()) {
-                        System.out.println("\tThe file is not a .txt or it doesn't exist. Please retry.\n");
+                        System.out.println("\tThe file is not a .txt, it doesn't exist or it's already loaded. Please retry.\n");
                     } else
                         System.out.println("\tDocument added.\n");
                     break;
                 case ("3"):
+                    discoverController.isRepoEmpty();
+                    if(notifyMeDoneDiscover())
+                        System.out.println("\tThere are no saved documents\n");
+                    else {
+                        deleteDocument();
+                        discoverController.isRepoEmpty();
+                        if(notifyMeDoneDiscover())
+                            return;
+                    }
+                    break;
+                case ("4"):
+                    viewManualController.openManualSection("BDL:");
+                    break;
+                case ("5"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -296,14 +354,14 @@ public class Cli implements MyObserver {
     private void useCaseDesign() throws IOException{
         System.out.println("\t\t--DESIGN--");
         while(true) {
-            System.out.println("Use case:\n 1: Check for saved documents \n 2: Add a Gherkin file (.scenario) \n 3: Back");
+            System.out.println("Use case:\n 1: Check for saved documents \n 2: Add a Gherkin file (.scenario) \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
                     designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
                     if (notifyMeDoneDesign()) {
                         if (existsBackUpGherkin())
-                            useCaseBDLDesign();
+                            useCaseBO();
                     } else
                         System.out.println("\tThere are no saved documents\n");
                     break;
@@ -312,11 +370,15 @@ public class Cli implements MyObserver {
                     designController.addGherkin("Design", scanner.nextLine());
                     if (notifyMeDoneDesign()) {
                         System.out.println("\tScenario added.\n");
-                        useCaseBDLDesign();
+                        useCaseBO();
                     } else
                         System.out.println("\tThe file is not a .scenario or it doesn't exist. Please retry.\n");
                     break;
                 case ("3"):
+                    viewManualController.openManualSection("DESIGN:");
+                    viewManualController.openManualSection("GHERKIN:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -339,32 +401,9 @@ public class Cli implements MyObserver {
         }
     }//existsBackupGherkin
 
-    private void useCaseBDLDesign() throws IOException {
-        while(true) {
-            System.out.println("Use case:\n 1: Add a BDL (.BDL) \n 2: Back ");
-            choice = scanner.nextLine();
-            switch (choice) {
-                case ("1"):
-                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.BDL or /home/User/example.BDL)");
-                    designController.addBDL(scanner.nextLine());
-                    if (notifyMeDoneDesign()) {
-                        System.out.println("\tBDL added.\n");
-                        useCaseBO();
-                        return;
-                    } else
-                        System.out.println("\tThe file is not a .BDL or it doesn't exist. Please retry.\n");
-                    break;
-                case ("2"):
-                    return;
-                default:
-                    System.out.println("\tInvalid choice. Please retry.\n");
-            }//switch
-        }//while
-    }//useCaseBDLDesign
-
     private void useCaseBO() throws IOException {
         while(true) {
-            System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Back ");
+            System.out.println("Use case:\n 1: Add a Business Ontology (.json) [optional] \n 2: Extract BAL \n 3: Guide \n 4: Back ");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -380,6 +419,10 @@ public class Cli implements MyObserver {
                     useCaseBAL();
                     return;
                 case ("3"):
+                    viewManualController.openManualSection("BO:");
+                    viewManualController.openManualSection("BAL:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
@@ -409,7 +452,7 @@ public class Cli implements MyObserver {
     private void useCaseDevelop() throws IOException{
         System.out.println("\t\t--DEVELOP--");
         while(true) {
-            System.out.println("Use case: \n 1: Check for saved documents\n 2: Add a new BAL (.json) \n 3: Back");
+            System.out.println("Use case: \n 1: Check for saved documents\n 2: Select a BAL \n 3: Guide \n 4: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -421,20 +464,51 @@ public class Cli implements MyObserver {
                         System.out.println("\tThere are no saved documents\n");
                     break;
                 case ("2"):
-                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
-                    developController.addBAL("Develop", scanner.nextLine());
-                    if (!notifyMeDoneDevelop())
-                        System.out.println("\tThe file is not a .json or it doesn't exist. Please retry.\n");
-                    else
+                    System.out.println("Which BAL do you want to use?");
+                    if(choiceOfBAL())
                         useCasePLA();
                     break;
                 case ("3"):
+                    viewManualController.openManualSection("DEVELOP:");
+                    viewManualController.openManualSection("BAL:");
+                    break;
+                case ("4"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");
             }//switch
         }//while
     }//useCaseDevelop
+
+    private boolean choiceOfBAL() throws IOException {
+        while(true) {
+            System.out.println("Use case: \n 1: Import an external BAL \n 2: Use a BAL extracted just before \n 3: Back");
+            choice = scanner.nextLine();
+            switch (choice) {
+                case ("1"):
+                    System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.json or /home/User/example.json)");
+                    developController.addBAL("Develop", scanner.nextLine());
+                    if (!notifyMeDoneDevelop())
+                        System.out.println("\tThe file is not a .json or it doesn't exist. Please retry.\n");
+                    else
+                        return true;
+                    break;
+                case ("2"):
+                    developController.checkIfRepoBALIsEmpty();
+                    if (notifyMeDoneDevelop())
+                        System.out.println("\tThere is no BAL in memory. Please import an external one or extract one using Design.\n");
+                    else{
+                        System.out.println("\tBAL is ready to be processed\n");
+                        return true;
+                    }//else
+                    break;
+                case ("3"):
+                    return false;
+                default:
+                    System.out.println("\tInvalid choice. Please retry.\n");
+            }//switch
+        }//while
+    }//choiceOfBAL
 
     /**
      * Asks to user if he wants to reload an existing backup file.
@@ -462,7 +536,8 @@ public class Cli implements MyObserver {
      */
     private void useCasePLA() throws IOException{
         while(true) {
-            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n 3: Generate from an external PLA (.pla) \n 4: Back");
+            System.out.println("\nIn which programming language do you want to generate API? \n 1: Java \n 2: JavaScript \n " +
+                    "3: Generate from an external PLA (.pla) \n 4: Guide \n 5: Back");
             choice = scanner.nextLine();
             switch (choice) {
                 case ("1"):
@@ -488,6 +563,9 @@ public class Cli implements MyObserver {
                         System.out.println("\tPlease select a .pla file.\n");
                     break;
                 case ("4"):
+                    viewManualController.openManualSection("PLA:");
+                    break;
+                case ("5"):
                     return;
                 default:
                     System.out.println("\tInvalid choice. Please retry.\n");

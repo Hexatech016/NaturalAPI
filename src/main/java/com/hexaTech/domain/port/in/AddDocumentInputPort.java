@@ -44,4 +44,12 @@ public interface AddDocumentInputPort {
 
     void showBackup(String path) throws FileNotFoundException;
 
+    void showDocumentsList();
+
+    void isRepoEmpty();
+
+    void deleteDoc(int position);
+
+    void clearRepo();
+
 }//AddDocToParseInputPort

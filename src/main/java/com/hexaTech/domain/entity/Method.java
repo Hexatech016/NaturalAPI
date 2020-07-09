@@ -146,13 +146,13 @@ public class Method {
                 content[temp] = content[temp].replace("<--methodParamName-->", "");
             }//if_else_if
             if(content[temp].contains("<--method.start-->"))
-                content[temp]=content[temp].replace("<--method.start-->","@Given(\"" + methodName + "\")");
+                content[temp]=content[temp].replace("<--method.start-->", methodComment);
             if(content[temp].contains("<--method.end-->"))
                 content[temp]=content[temp].replace("<--method.end-->","");
             if(content[temp].contains("<--methodReturn-->"))
-                content[temp]=content[temp].replace("<--methodReturn-->","void");
+                content[temp]=content[temp].replace("<--methodReturn-->",methodReturnType);
             if(content[temp].contains("<--methodName-->"))
-                content[temp]=content[temp].replace("<--methodName-->",methodName+"Test");
+                content[temp]=content[temp].replace("<--methodName-->",methodName);
             if(content[temp].contains("<--methodComment-->"))
                 content[temp]=content[temp].replace("<--methodComment-->","Insert a test implementation"/*"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");"*/);
             result.append(content[temp]).append("\n");

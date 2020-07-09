@@ -102,10 +102,8 @@ public class MethodBAL {
                         "			\"get\": {\n"+
                         "				\"operationId\": \""+name+"\",\n"+
                         "				\"description\": \""+description+"\",\n"+
-                        "      				\"tags\": [\n"+//qua andrebbe una funzione per stampare i tags
-                        "                                 \"{Nouns:["+tag.get(0)+"]}\",\n"+
-                        "                                 \"{Verbs:["+tag.get(1)+"]}\",\n"+
-                        "                                 \"{Predicates:["+tag.get(2)+"]}\"\n"+
+                        "      				\"tags\": [\n"+
+                        "                                 \"=\"\n"+
                         "    				 ],\n"+
                         "			        \"parameters\": [\n";
         int last=parameters.size()-1;

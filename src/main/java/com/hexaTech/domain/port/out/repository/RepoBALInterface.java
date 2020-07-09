@@ -29,4 +29,6 @@ public interface RepoBALInterface{
      */
     BAL getBAL();
 
+    boolean isEmpty();
+
 }//RepoBALInterface

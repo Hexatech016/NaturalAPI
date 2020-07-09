@@ -20,8 +20,6 @@ public class DiscoverController {
 
     private final AddGherkinToDiscoverInputPort addGherkinToDiscoverInputPort;
 
-    //private final ViewManualInputPort viewManualInputPort;
-
     @Autowired
     public DiscoverController(AddDocumentInputPort addDocumentInputPort, CreateBDLInputPort createBDLInputPort,
                               CheckBetweenBDLAndGherkinInputPort checkBetweenBDLAndGherkinInputPort, AddBDLToDiscoverInputPort addBDLToDiscoverInputPort,
@@ -31,7 +29,6 @@ public class DiscoverController {
         this.checkBetweenBDLAndGherkinInputPort = checkBetweenBDLAndGherkinInputPort;
         this.addBDLToDiscoverInputPort = addBDLToDiscoverInputPort;
         this.addGherkinToDiscoverInputPort = addGherkinToDiscoverInputPort;
-        //this.viewManualInputPort = viewManualInputPort;
     }
 
     /**
@@ -97,8 +94,20 @@ public class DiscoverController {
         addDocumentInputPort.showBackup(path);
     }
 
-    /*public void openManual(String path) throws IOException {
-        viewManualInputPort.openManual(path);
-    }*/
+    public void showDocumentsList(){
+        addDocumentInputPort.showDocumentsList();
+    }
+
+    public void isRepoEmpty(){
+        addDocumentInputPort.isRepoEmpty();
+    }
+
+    public void deleteDoc(int position){
+        addDocumentInputPort.deleteDoc(position);
+    }
+
+    public void clearRepo(){
+        addDocumentInputPort.clearRepo();
+    }
 
 }

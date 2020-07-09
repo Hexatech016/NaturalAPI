@@ -54,4 +54,6 @@ public interface MyObserver {
      */
     boolean notifyMeDoneDevelop();
 
+    void notifyMeManual();
+
 }//MyObserver

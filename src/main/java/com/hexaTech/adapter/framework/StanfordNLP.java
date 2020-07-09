@@ -103,19 +103,29 @@ public class StanfordNLP implements TextsParsingInterface {
 
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();
-        String[] gherkinSplit = text.split("[\n]+[\n]");
-        for (String scenario : gherkinSplit) {
+        //String[] gherkinSplit = text.split("[\n]+[\n]");
+        String[] gherkinSplit = text.split("Scenario:");
+        String restore = "Scenario:";
+        ArrayList<String> gherkinSplitted = new ArrayList<>();
+        for (int i = 0; i < gherkinSplit.length - 1 ; i++) {
+            gherkinSplitted.add(restore+gherkinSplit[i+1]);
+        }
+        for (String scenario : gherkinSplitted) {
             String[] arr = scenario.split("[\n]+");
             Gherkin toAdd = new Gherkin();
             String sentinel = "";
+            toAdd.setDescription(scenario.replace("\n", "---"));
             for (String str : arr) {
                 CoreDocument documents = new CoreDocument(str);
                 pipeline.annotate(documents);
                 StringBuilder builder = new StringBuilder();
-                String firstToken = documents.sentences().get(0).tokensAsStrings().get(0);
-                if (firstToken.equalsIgnoreCase("AND")) {
-                    firstToken = sentinel;
-                }//if
+                String firstToken="";
+                if(!documents.sentences().isEmpty()) {
+                    firstToken = documents.sentences().get(0).tokensAsStrings().get(0);
+                    if (firstToken.equalsIgnoreCase("AND")) {
+                        firstToken = sentinel;
+                    }//if
+                }
                 Annotation document = new Annotation(str);
                 pipeline.annotate(document);
                 GrammaticalStructure gStruct = depparser.predict(document);
