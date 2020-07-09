@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -168,8 +169,9 @@ public class OpenAPI implements JsonParsingInterface {
 
     private Method getTest(String step){
         Method test=new Method();
-        test.setMethodName(step.toLowerCase().replace(" ",""));//TEST_NAME
         test.setMethodComment("@("+step+")");//TEST_DESCRIPTION
+        step = CaseUtils.toCamelCase(step,false, ' ');
+        test.setMethodName(step);//TEST_NAME
         test.setMethodReturnType("void");//TEST_RETURN_TYPE
         return test;
     }//getMethod
