@@ -264,4 +264,8 @@ public class BDL {
         verbs.entrySet().removeIf(e -> e.getValue().equals(1));
     }
 
+    public void removeIrrelevantPredicates(List<String> keyWordList) {
+        for(String word: keyWordList)
+        predicates.entrySet().removeIf(e -> e.getValue().equals(1) && !e.getKey().contains(word));
+    }
 }//BDL

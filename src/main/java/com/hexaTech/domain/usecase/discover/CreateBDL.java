@@ -24,10 +24,12 @@ import com.hexaTech.domain.port.out.repository.RepoBOInterface;
 import com.hexaTech.domain.port.out.repository.RepoDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import smile.nlp.collocation.NGram;
+import smile.nlp.keyword.CooccurrenceKeywords;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,11 +67,26 @@ public class CreateBDL implements CreateBDLInputPort {
             List<StructureBAL> extractedBO=textsParsingInterface.extractBOFromText(document);
             BO boToMerge=new BO();
             boToMerge.setOntologyObjects(extractedBO);
+
+
+            NGram[] keyWords = CooccurrenceKeywords.of(document);
+
+            List<String> keyWordList = new ArrayList<>();
+            for (NGram keyWord : keyWords) {
+                String[] wordArray = keyWord.words;
+                String wordString = String.join(" ", wordArray);
+                keyWordList.add(wordString);
+            }
+
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
             bdl.removeLowFrequencies();
+            bdl.removeIrrelevantPredicates(keyWordList);
             boToMerge.checkElements(bdl);
             bo.mergeBO(boToMerge);
+
+
+
         }//for
         bo.setOntologyName(BDLpath+"BO");
         repoBDLInterface.saveBDL(BDLpath);
