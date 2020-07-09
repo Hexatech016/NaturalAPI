@@ -11,9 +11,12 @@
 
 package com.hexaTech;
 
+import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
+import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 import com.hexaTech.application.Cli;
 import com.hexaTech.application.Gui.MainGui;
 import com.hexaTech.application.config.SpringConfig;
+import com.hexaTech.domain.port.in.*;
 import net.didion.jwnl.JWNLException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -24,7 +27,9 @@ import java.io.IOException;
  */
 
 public class Main{
+
     public static void main(String[] args) throws IOException, JWNLException {
+
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
         //Cli client=context.getBean("cli",Cli.class);
         //client.useCaseNaturalAPI();
