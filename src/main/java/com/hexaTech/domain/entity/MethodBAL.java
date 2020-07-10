@@ -102,10 +102,8 @@ public class MethodBAL {
                         "			\"get\": {\n"+
                         "				\"operationId\": \""+name+"\",\n"+
                         "				\"description\": \""+description+"\",\n"+
-                        "      				\"tags\": [\n"+
-                        "                                 \"=\"\n"+
-                        "    				 ],\n"+
-                        "			        \"parameters\": [\n";
+                        "			     3" +
+                        "\"parameters\": [\n";
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parametersIterator: parameters){
