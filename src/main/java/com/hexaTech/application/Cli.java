@@ -217,7 +217,7 @@ public class Cli implements MyObserver {
      * @throws IOException if the document path specified in backup is not valid anymore.
      */
     private boolean existsBackUpDocument() throws IOException {
-        System.out.println("Do you want to load them? (Y/N)");
+        System.out.println("Do you want to load them? (Y/N)\nIf you type N, you'll clear all previous backup documents");
         while(true) {
             choice = scanner.nextLine();
             if (choice.equalsIgnoreCase("y")) {

@@ -66,7 +66,7 @@ public class CreateBAL implements CreateBALInputPort {
     public void createBAL(String nameBAL) throws IOException {
         String path=repoGherkinInterface.getGherkin().getPath();
         String document = repoGherkinInterface.getContentFromPath(path);
-        List<Gherkin> gherkins =textsParsingInterface.extractFromGherkin(document);
+        List<Gherkin> gherkins = textsParsingInterface.extractFromGherkin(document);
         BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, nameBAL);
         bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
         repoBALInterface.setBAL(bal);
