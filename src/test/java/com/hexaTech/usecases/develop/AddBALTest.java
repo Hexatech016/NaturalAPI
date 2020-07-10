@@ -37,9 +37,6 @@ public class AddBALTest{
     RepoBALDocumentInterface repoBALDocumentInterface;
 
     @Mock
-    RepoBALInterface repoBALInterface;
-
-    @Mock
     DiscoverController discoverController;
 
     @Mock
@@ -54,8 +51,7 @@ public class AddBALTest{
     @Before
     public void before(){
         repoBALDocumentInterface=Mockito.spy(new RepoBALDocument());
-        repoBALInterface=Mockito.spy(new RepoBAL());
-        addBAL=Mockito.spy(new AddBAL(addBALOutputPort, repoBALDocumentInterface, repoBALInterface));
+        addBAL=Mockito.spy(new AddBAL(addBALOutputPort, repoBALDocumentInterface));
         discoverController =new DiscoverController(
                 Mockito.mock(AddDocumentInputPort.class),
                 Mockito.mock(CreateBDLInputPort.class),

@@ -231,4 +231,12 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         out.close();
     }//saveDocDesign
 
+    public boolean isEmpty(){
+        try{
+            return BAL.getPath().equals("") || BAL.getPath() == null;
+        }catch(NullPointerException e){
+            return true;
+        }//try_catch
+    }//isEmpty
+
 }//RepoBALDocument

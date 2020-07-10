@@ -80,4 +80,6 @@ public interface RepoBALDocumentInterface {
 
     void openFile(String path) throws IOException;
 
+    boolean isEmpty();
+
 }//RepoBALDocumentInterface

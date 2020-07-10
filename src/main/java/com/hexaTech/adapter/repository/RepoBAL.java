@@ -33,8 +33,4 @@ public class RepoBAL implements RepoBALInterface {
         return BAL;
     }
 
-    public boolean isEmpty(){
-        return BAL.getMethods().isEmpty();
-    }
-
 }//RepoBAL

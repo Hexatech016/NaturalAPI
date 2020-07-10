@@ -167,6 +167,7 @@ public class RepoDocument implements RepoDocumentInterface {
     @Override
     public void loadBackup(String directory) throws IOException {
         Scanner s = new Scanner(new File("." + File.separator + "" + directory + "" + File.separator + "BackupDocument.txt"));
+        makeEmpty();
         String temp=s.nextLine();
         while (temp!=null){
             documents.add(new Document((temp.substring(temp.lastIndexOf("" + File.separator + "")+1)), temp));

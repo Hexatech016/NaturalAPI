@@ -27,19 +27,16 @@ import java.io.IOException;
 public class AddBAL implements AddBALInputPort {
     private final AddBALOutputPort addBALOutputPort;
     private final RepoBALDocumentInterface repoBALDocumentInterface;
-    private final RepoBALInterface repoBALInterface;
 
     /**
      * Add document standard constructor.
      * @param addBALOutputPort AddBALOutputPort - used to send output notifications.
      * @param repoBALDocumentInterface RepoBALDocumentInterface - used to communicate with Repo.
-     * @param repoBALInterface RepoBALInterface - used to communicate with Repo.
      */
     @Autowired
-    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface, RepoBALInterface repoBALInterface) {
+    public AddBAL(AddBALOutputPort addBALOutputPort, RepoBALDocumentInterface repoBALDocumentInterface) {
         this.addBALOutputPort=addBALOutputPort;
         this.repoBALDocumentInterface=repoBALDocumentInterface;
-        this.repoBALInterface=repoBALInterface;
     }
 
     /**
@@ -76,7 +73,7 @@ public class AddBAL implements AddBALInputPort {
     }//deleteDoc
 
     public void checkIfRepoBALIsEmpty(){
-        addBALOutputPort.showDone(repoBALInterface.isEmpty());
+        addBALOutputPort.showDone(repoBALDocumentInterface.isEmpty());
     }
 
 }//AddBAL
