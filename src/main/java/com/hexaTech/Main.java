@@ -33,7 +33,7 @@ public class Main{
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
         //Cli client=context.getBean("cli",Cli.class);
         //client.useCaseNaturalAPI();
-        MainGui test = context.getBean("gui",MainGui.class);
+        MainGui test = context.getBean("mainGui",MainGui.class);
 
         context.close();
     }//main
