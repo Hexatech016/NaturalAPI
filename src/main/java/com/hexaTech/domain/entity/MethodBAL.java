@@ -98,11 +98,11 @@ public class MethodBAL {
      */
     public String toString(){
         String toReturnString=
-                "		\"/"+name+"\": {\n"+
+                "		\"/"+name+"\": {"+
                         "			\"get\": {\n"+
-                        "				\"operationId\": \""+name+"\",\n"+
-                        "				\"description\": \""+description+"\",\n"+
-                        "			    \"parameters\": [\n";
+                        "				\"operationId\": \""+name+"\","+
+                        "				\"description\": \""+description+"\","+
+                        "			    \"parameters\": [";
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parametersIterator: parameters){
@@ -112,10 +112,10 @@ public class MethodBAL {
             }//if
             count+=1;
         }//for
-        toReturnString+="        			],\n";
-        toReturnString+="        			\"responses\":{\n";
+        toReturnString+="        			],";
+        toReturnString+="        			\"responses\":{";
         toReturnString+= toReturn.toString();
-        toReturnString+="\n}\n}\n}\n";
+        toReturnString+="}}}";
         return toReturnString;
     }//toString
 

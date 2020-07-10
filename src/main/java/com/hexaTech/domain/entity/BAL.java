@@ -11,6 +11,9 @@
 package com.hexaTech.domain.entity;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,17 +65,18 @@ public class BAL{
      * @return string - BAL's content.
      */
     public String toString(){
+        ObjectMapper mapper = new ObjectMapper();
         StringBuilder toRit=
-                new StringBuilder("{\n"+
-                        "	\"openapi\": \"3.0.0\",\n"+
-                        "	\"info\": {\n"+
-                        "		\"version\": \"1.0.0\",\n"+
-                        "		\"title\": \"" + name +"\",\n"+
-                        "		\"license\": {\n"+
-                        "			\"name\": \"MIT\"\n	"+
-                        "		}\n	"+
-                        "	},\n"+
-                        "	\"paths\": {\n");
+                new StringBuilder("{"+
+                        "	\"openapi\": \"3.0.0\","+
+                        "	\"info\": {"+
+                        "		\"version\": \"1.0.0\","+
+                        "		\"title\": \"" + name +"\","+
+                        "		\"license\": {"+
+                        "			\"name\": \"MIT\"	"+
+                        "		}	"+
+                        "	},"+
+                        "	\"paths\": {");
         //
         int last=methods.size()-1;
         int count=0;
@@ -83,7 +87,7 @@ public class BAL{
 
             count++;
         }//for
-        toRit.append("\n},"+"   \"components\": {\n"+"   \"schemas\": {\n");
+        toRit.append("},"+"   \"components\": {"+"   \"schemas\": {");
         last=structures.size()-1;
         count=0;
         for(StructureBAL structure: this.structures){
@@ -92,8 +96,14 @@ public class BAL{
                 toRit.append(",");
             count++;
         }//for
-        toRit.append("\n}\n}\n}");
-        return toRit.toString();
+        toRit.append("}}}");
+        try {
+            Object jsonObject = mapper.readValue(toRit.toString(), Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }//toString
 
 }//BAL
