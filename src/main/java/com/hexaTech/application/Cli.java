@@ -21,11 +21,13 @@ import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 import net.didion.jwnl.JWNLException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -444,6 +446,193 @@ public class Cli implements MyObserver {
         }//while
     }//useCaseBAL
 
+    private void methodsSuggestions(String nameBAL) throws IOException {
+        int sentinel=0, identifier=0;
+        designController.checkIfHasMethod(sentinel);
+        while(notifyMeDoneDesign()){
+            designController.showMethod(sentinel);
+            System.out.println("\tDo you want to change return type? (Y/N)");
+            choice=scanner.nextLine();
+            while(true){
+                if(choice.equalsIgnoreCase("y")){
+                    System.out.println("\tPlease choose the correct type: \n\tV: void \n\tS: string\n\tI: integer\n\tF: float\n\tB: boolean\n\tC: complex object");
+                    choice=scanner.nextLine();
+                    while(!checkAnswer(choice) && !choice.equalsIgnoreCase("v")){
+                        System.out.println("\tWrong character. Please retry.");
+                        choice=scanner.nextLine();
+                    }
+                    if(choice.equalsIgnoreCase("v"))
+                        designController.alterMethodReturn(sentinel,"void",false,false);
+                    else if(getType(choice.toUpperCase()).equalsIgnoreCase("")) {
+                        chooseObject(sentinel);
+                    }else
+                        designController.alterMethodReturn(sentinel,getType(choice.toUpperCase()),isAnArray(true),false);
+                    break;
+                }else if(choice.equalsIgnoreCase("n")){
+                    break;
+                }else{
+                    System.out.println("\tPlease insert Y or N.");
+                    choice=scanner.nextLine();
+                }//if_else
+            }//internal_while
+            designController.checkIfHasParameter(sentinel,identifier);
+            while(notifyMeDoneDesign()){
+                designController.showParameter(sentinel,identifier);
+                System.out.println("\t\tDo you want to change parameter type? (Y/N)");
+                choice=scanner.nextLine();
+                while(true){
+                    if(choice.equalsIgnoreCase("y")){
+                        System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
+                        choice=scanner.nextLine();
+                        while(!checkAnswer(choice)){
+                            System.out.println("\tWrong character. Please retry.");
+                            choice=scanner.nextLine();
+                        }
+                        if(getType(choice.toUpperCase()).equalsIgnoreCase(""))
+                            chooseObject(sentinel,identifier);
+                        else
+                            designController.alterParameterType(sentinel,identifier,getType(choice.toUpperCase()),isAnArray(false),false);
+                        break;
+                    }else if(choice.equalsIgnoreCase("n")){
+                        break;
+                    }else{
+                        System.out.println("\tPlease insert Y or N.");
+                        choice=scanner.nextLine();
+                    }//if_else
+                }//internal_while
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
+            }//external_while
+            sentinel++;
+            identifier=0;
+            designController.checkIfHasMethod(sentinel);
+        }//external_while
+        designController.updateBAL(nameBAL);
+    }//methodsSuggestions
+
+    private boolean checkAnswer(String line){
+        return line.equalsIgnoreCase("s") || line.equalsIgnoreCase("i")
+                || line.equalsIgnoreCase("f") || line.equalsIgnoreCase("b") || line.equalsIgnoreCase("c");
+    }//checkAnswer
+
+    private boolean checkAnswerObject(String line){
+        return line.equalsIgnoreCase("s") || line.equalsIgnoreCase("i")
+                || line.equalsIgnoreCase("f") || line.equalsIgnoreCase("b");
+    }//checkAnswer
+
+    private String getType(String line){
+        switch(line){
+            case("S"):
+                return "string";
+            case("I"):
+                return "integer";
+            case("F"):
+                return "float";
+            case("B"):
+                return "boolean";
+            default:
+                return "";
+        }//switch
+    }//getType
+
+    private boolean isAnArray(boolean method){
+        if(method)
+            System.out.println("\tIs method's return type an array? (Y/N)");
+        else
+            System.out.println("\tIs the parameter an array? (Y/N)");
+        choice=scanner.nextLine();
+        while(!choice.equalsIgnoreCase("n") && !choice.equalsIgnoreCase("y")){
+            System.out.println("\tPlease type Y or N");
+            choice=scanner.nextLine();
+        }//while
+        return choice.equalsIgnoreCase("y");
+    }//isAnArray
+
+    private void chooseObject(int sentinel){
+        System.out.println("\tPlease select your choice: \n\t0: create a new object");
+        designController.showObjects();
+        choice=scanner.nextLine();
+        while(true){
+            if(StringUtils.isNumeric(choice)){
+                if(choice.equals("0"))
+                    break;
+                designController.chooseObject(Integer.parseInt(choice));
+                if(!notifyMeDoneDesign()) {
+                    System.out.println("\tWrong character. Please retry.");
+                    choice = scanner.nextLine();
+                }else
+                    break;
+            }else{
+                System.out.println("\tWrong character. Please retry.");
+                choice = scanner.nextLine();
+            }//if_else
+        }//while
+        if(Integer.parseInt(choice)!=0)
+            designController.alterMethodReturn(sentinel,choice,isAnArray(true),true);
+        else
+            designController.alterMethodReturn(sentinel,getNewObject(),isAnArray(true),false);
+    }//chooseObject
+
+    private void chooseObject(int sentinel,int identifier){
+        System.out.println("\tPlease select your choice: \n\t0: create a new object");
+        designController.showObjects();
+        choice=scanner.nextLine();
+        while(true){
+            if(StringUtils.isNumeric(choice)){
+                if(choice.equals("0"))
+                    break;
+                designController.chooseObject(Integer.parseInt(choice));
+                if(!notifyMeDoneDesign()) {
+                    System.out.println("\tWrong character. Please retry.");
+                    choice = scanner.nextLine();
+                }else
+                    break;
+            }else{
+                System.out.println("\tWrong character. Please retry.");
+                choice = scanner.nextLine();
+            }//if_else
+        }//while
+        if(Integer.parseInt(choice)!=0)
+            designController.alterParameterType(sentinel,identifier,choice,isAnArray(true),true);
+        else
+            designController.alterParameterType(sentinel,identifier,getNewObject(),isAnArray(false),false);
+    }//chooseObject
+
+    private String getNewObject(){
+        System.out.println("\n\tPlease insert the new object's name: ");
+        choice=scanner.nextLine();
+        notNumericCheck();
+        String name=CaseUtils.toCamelCase(choice,false,' ');
+        System.out.println("\tPlease insert the new object's parameters. Type EXIT instead of name to stop." +
+                "\n\n\tParameter name: ");
+        choice=scanner.nextLine();
+        String paramName,paramType;
+        while(!choice.equals("EXIT")){
+            notNumericCheck();
+            paramName=CaseUtils.toCamelCase(choice,false,' ');
+            System.out.println("\tPlease choose the correct type: \n\tS: string\n\tI: integer\n\tF: float\n\tB: boolean\n\t");
+            choice=scanner.nextLine();
+            while(!checkAnswerObject(choice)){
+                System.out.println("\t\tWrong character. Please retry.");
+                choice=scanner.nextLine();
+            }
+            paramType=getType(choice.toUpperCase());
+            if(isAnArray(false))
+                paramType=paramType+"[]";
+            designController.addStructure(name,paramName,paramType);
+            System.out.println("\t\tType EXIT to stop.\n\n\tParameter name: ");
+            choice=scanner.nextLine();
+        }//while
+        return name;
+    }//getNewObject
+
+    private void notNumericCheck(){
+        while(StringUtils.isNumeric(choice)){
+            System.out.println("\tThe value can't be numeric. Please retry.");
+            choice=scanner.nextLine();
+        }//while
+    }//notNumericCheck
+
     /* ************************ DEVELOP ************************ */
 
     /**
@@ -597,145 +786,6 @@ public class Cli implements MyObserver {
         }//switch
         return false;
     }//checkUseCase
-
-
-
-
-    private void methodsSuggestions(String nameBAL) throws IOException {
-        int sentinel=0, identifier=0;
-        designController.checkIfHasMethod(sentinel);
-        while(notifyMeDoneDesign()){
-            designController.showMethod(sentinel);
-            System.out.println("\tDo you want to change return type? (Y/N)");
-            choice=scanner.nextLine();
-            while(true){
-                if(choice.equalsIgnoreCase("y")){
-                    System.out.println("\tPlease choose the correct type: \n\tV: void \n\tS: string\n\tI: integer\n\tF: float\n\tB: boolean\n\tC: complex object");
-                    choice=scanner.nextLine();
-                    while(!checkAnswer(choice) && !choice.equalsIgnoreCase("v")){
-                        System.out.println("\tWrong character. Please retry.");
-                        choice=scanner.nextLine();
-                    }
-                    if(choice.equalsIgnoreCase("v"))
-                        designController.alterMethodReturn(sentinel,"void",false,false);
-                    else if(getType(choice.toUpperCase()).equalsIgnoreCase("")) {
-                        chooseObject(sentinel);
-                    }else
-                        designController.alterMethodReturn(sentinel,getType(choice.toUpperCase()),isAnArray(true),false);
-                    break;
-                }else if(choice.equalsIgnoreCase("n")){
-                    break;
-                }else{
-                    System.out.println("\tPlease insert Y or N.");
-                    choice=scanner.nextLine();
-                }//if_else
-            }//internal_while
-            designController.checkIfHasParameter(sentinel,identifier);
-            while(notifyMeDoneDesign()){
-                designController.showParameter(sentinel,identifier);
-                System.out.println("\t\tDo you want to change parameter type? (Y/N)");
-                choice=scanner.nextLine();
-                while(true){
-                    if(choice.equalsIgnoreCase("y")){
-                        System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
-                        choice=scanner.nextLine();
-                        while(!checkAnswer(choice)){
-                            System.out.println("\tWrong character. Please retry.");
-                            choice=scanner.nextLine();
-                        }
-                        if(getType(choice.toUpperCase()).equalsIgnoreCase(""))
-                            chooseObject(sentinel,identifier);
-                        else
-                            designController.alterParameterType(sentinel,identifier,getType(choice.toUpperCase()),isAnArray(false),false);
-                        break;
-                    }else if(choice.equalsIgnoreCase("n")){
-                        break;
-                    }else{
-                        System.out.println("\tPlease insert Y or N.");
-                        choice=scanner.nextLine();
-                    }//if_else
-                }//internal_while
-                identifier++;
-                designController.checkIfHasParameter(sentinel,identifier);
-            }//external_while
-            sentinel++;
-            identifier=0;
-            designController.checkIfHasMethod(sentinel);
-        }//external_while
-        designController.updateBAL(nameBAL);
-    }//methodsSuggestions
-
-    private boolean checkAnswer(String line){
-        return line.equalsIgnoreCase("s") || line.equalsIgnoreCase("i")
-                || line.equalsIgnoreCase("f") || line.equalsIgnoreCase("b") || line.equalsIgnoreCase("c");
-    }//checkAnswer
-
-    private String getType(String line){
-        switch(line){
-            case("S"):
-                return "string";
-            case("I"):
-                return "integer";
-            case("F"):
-                return "float";
-            case("B"):
-                return "boolean";
-            default:
-                return "";
-        }//switch
-    }//getType
-
-    private boolean isAnArray(boolean method){
-        if(method)
-            System.out.println("\tIs method's return type an array? (Y/N)");
-        else
-            System.out.println("\tIs the parameter an array? (Y/N)");
-        choice=scanner.nextLine();
-        while(!choice.equalsIgnoreCase("n") && !choice.equalsIgnoreCase("y")){
-            System.out.println("\tPlease type Y or N");
-            choice=scanner.nextLine();
-        }//while
-        return choice.equalsIgnoreCase("y");
-    }//isAnArray
-
-    private void chooseObject(int sentinel){
-        System.out.println("\tPlease select your choice: \n\t0: create a new object");
-        designController.showObjects();
-        choice=scanner.nextLine();
-        designController.chooseObject(Integer.parseInt(choice));
-        while(!notifyMeDoneDesign()){
-            System.out.println("\tWrong character. Please retry.");
-            choice=scanner.nextLine();
-            designController.chooseObject(Integer.parseInt(choice));
-        }
-        if(Integer.parseInt(choice)!=0)
-            designController.alterMethodReturn(sentinel,choice,isAnArray(true),true);
-        /*else
-            getNewObject();*/
-    }//chooseObject
-
-    private void chooseObject(int sentinel,int identifier){
-        System.out.println("\tPlease select your choice: \n\t0: create a new object");
-        designController.showObjects();
-        choice=scanner.nextLine();
-        while(true){
-            if(StringUtils.isNumeric(choice)) {
-                designController.chooseObject(Integer.parseInt(choice));
-                if(!notifyMeDoneDesign()) {
-                    System.out.println("\tWrong character. Please retry.");
-                    choice = scanner.nextLine();
-                }else
-                    break;
-            }else{
-                System.out.println("\tWrong character. Please retry.");
-                choice = scanner.nextLine();
-            }//if_else
-        }//while
-        if(Integer.parseInt(choice)!=0)
-            designController.alterParameterType(sentinel,identifier,choice,isAnArray(true),true);
-        /*else
-            getNewObject();*/
-    }//chooseObject
 
 }//CLI
 

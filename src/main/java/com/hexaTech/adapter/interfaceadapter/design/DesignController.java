@@ -101,4 +101,8 @@ public class DesignController {
         createBALInputPort.chooseObject(position);
     }
 
+    public void addStructure(String structName,String paramName,String paramType){
+        createBALInputPort.addObject(structName,paramName,paramType);
+    }
+
 }//DesignController

@@ -41,4 +41,6 @@ public interface CreateBALInputPort {
 
     void chooseObject(int position);
 
+    void addObject(String structName,String paramName,String paramType);
+
 }//CreateBALInputPort

@@ -2,9 +2,12 @@ package com.hexaTech.adapter.repository;
 
 import com.hexaTech.domain.entity.BAL;
 import com.hexaTech.domain.entity.Parameter;
+import com.hexaTech.domain.entity.Structure;
 import com.hexaTech.domain.entity.StructureBAL;
 import com.hexaTech.domain.port.out.repository.RepoBALInterface;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RepoBAL implements RepoBALInterface {
@@ -73,12 +76,35 @@ public class RepoBAL implements RepoBALInterface {
         StringBuilder message=new StringBuilder();
         int count=1;
         for(StructureBAL structure:BAL.getStructures()){
-            message.append("\n\t").append(count).append(": ").append(structure.getName());
+            message.append("\t").append(count).append(": ").append(structure.getName()).append("\n");
             for(Parameter parameter:structure.getParameters())
-                message.append("\n\t\t- ").append(parameter.getType()).append(" ").append(parameter.getName());
+                message.append("\t\t- ").append(parameter.getType()).append(" ").append(parameter.getName()).append("\n");
             count++;
         }//for
         return message.toString();
     }//getObjects
+
+    public void addObject(String structName,String paramName,String paramType){
+        Parameter tempParam=new Parameter();
+        tempParam.setType(paramType);
+        tempParam.setName(paramName);
+        int count=0;
+        boolean found=false;
+        for(StructureBAL structure:BAL.getStructures()){
+            if(structure.getName().equals(structName)) {
+                found=true;
+                break;
+            }//if
+            count++;
+        }//for
+        if(found)
+            BAL.getStructures().get(count).setParameters(tempParam);
+        else{
+            StructureBAL tempStructure=new StructureBAL();
+            tempStructure.setName(structName);
+            tempStructure.setParameters(tempParam);
+            BAL.addStructure(tempStructure);
+        }//if_else
+    }//addObject
 
 }//RepoBAL

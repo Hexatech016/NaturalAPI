@@ -47,4 +47,6 @@ public interface RepoBALInterface{
 
     String getObjects();
 
+    void addObject(String structName,String paramName,String paramType);
+
 }//RepoBALInterface

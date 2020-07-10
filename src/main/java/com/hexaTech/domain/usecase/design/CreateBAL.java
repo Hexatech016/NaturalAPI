@@ -78,116 +78,6 @@ public class CreateBAL implements CreateBALInputPort {
     }//createBAL
 
     /*
-    public void checkTypes(String nameBAL) throws IOException {
-        BAL bal=repoBALInterface.getBAL();
-        String suggestion,line;
-        Scanner scan=new Scanner(System.in);
-        boolean b;
-        for(MethodBAL methodBAL:bal.getMethods()){
-            b=true;
-            suggestion="\nMethod name: "+methodBAL.getName();
-            suggestion+="\nReturn type: "+methodBAL.getToReturn().getType();
-            createBALOutputPort.showMessage(suggestion+"\n Do you want to change return type? (Y/N)");
-            line=scan.nextLine();
-            while(b){
-                if(line.equalsIgnoreCase("y")){
-                    b=false;
-                    createBALOutputPort.showMessage(" Please choose the correct type: \nV: void \nS: string\nI: integer\nF: float\nB: boolean\nC: complex object");
-                    line=scan.nextLine();
-                    while(!checkAnswer(line) && !line.equalsIgnoreCase("v")){
-                        createBALOutputPort.showErrorBAL(" Wrong character. Please retry.");
-                        line=scan.nextLine();
-                    }
-                    if(line.equalsIgnoreCase("v"))
-                        methodBAL.setToRet("void");
-                    else if(getType(line.toUpperCase()).equalsIgnoreCase(""))
-                        methodBAL.setToRet(getObj(bal));
-                    else
-                        methodBAL.setToRet(isAnArray(getType(line.toUpperCase())));
-                }else if(line.equalsIgnoreCase("n")){
-                    b=false;
-                }else{
-                    createBALOutputPort.showErrorBAL(" Please type Y or N.");
-                    line=scan.nextLine();
-                }//if_else
-            }//while
-            for(Parameter parameter:methodBAL.getParameters()){
-                b=true;
-                suggestion="\n\tParameter name: "+parameter.getName();
-                suggestion+="\n\tParameter type: "+parameter.getType();
-                createBALOutputPort.showMessage(suggestion+"\n\t Do you want to change parameter type? (Y/N)");
-                line=scan.nextLine();
-                while(b){
-                    if(line.equalsIgnoreCase("y")){
-                        b=false;
-                        createBALOutputPort.showMessage("\t Please choose the correct type: \n\tS: string\n\tI: integer\n\tF: float\n\tB: boolean\n\tC: complex object");
-                        line=scan.nextLine();
-                        while(!checkAnswer(line)){
-                            createBALOutputPort.showErrorBAL("\t Wrong character. Please retry.");
-                            line=scan.nextLine();
-                        }
-                        if(getType(line.toUpperCase()).equalsIgnoreCase(""))
-                            parameter.setType(getObj(bal));
-                        else
-                            parameter.setType(isAnArray(getType(line.toUpperCase())));
-                    }else if(line.equalsIgnoreCase("n")){
-                        b=false;
-                    }else{
-                        createBALOutputPort.showErrorBAL("\t Please type Y or N.");
-                        line=scan.nextLine();
-                    }//if_else
-                }//while
-            }//for_parameters
-        }//for_methods
-        repoBALInterface.setBAL(bal);
-        repoBALDocumentInterface.saveBAL(bal,nameBAL);
-        createBALOutputPort.showCreatedBAL("BAL updated into folder Design.\n");
-        repoGherkinInterface.deleteDoc("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-        repoBALDocumentInterface.openFile("." + File.separator + "Design" + File.separator + nameBAL + "BAL.json");
-    }//checkTypes
-
-
-    private boolean checkAnswer(String line){
-        return line.equalsIgnoreCase("s") || line.equalsIgnoreCase("i")
-                || line.equalsIgnoreCase("f") || line.equalsIgnoreCase("b") || line.equalsIgnoreCase("c");
-    }//checkAnswer
-
-    private String getType(String line){
-        switch(line){
-            case("S"):
-                return "string";
-            case("I"):
-                return "integer";
-            case("F"):
-                return "float";
-            case("B"):
-                return "boolean";
-            default:
-                return "";
-        }//switch
-    }//getType
-
-    private String getObj(BAL bal){
-        Scanner scan=new Scanner(System.in);
-        StringBuilder message=new StringBuilder("\t Please select your choice: \n0: create a new object");
-        int count=1;
-        for(StructureBAL structure:bal.getStructures()){
-            message.append("\n").append(count).append(": ").append(structure.getName());
-            for(Parameter parameter:structure.getParameters())
-                message.append("\n\t").append(parameter.getType()).append(" ").append(parameter.getName());
-            count++;
-        }//for
-        createBALOutputPort.showMessage(message.toString());
-        String line=scan.nextLine();
-        while(!StringUtils.isNumeric(line) || !(0<=Integer.parseInt(line) && Integer.parseInt(line)<=count-1)){
-            createBALOutputPort.showErrorBAL("\t Wrong character. Please retry.");
-            line=scan.nextLine();
-        }//while
-        if(line.equals("0"))
-            return isAnArray(addObj(bal));
-        else
-            return isAnArray(bal.getStructures().get(Integer.parseInt(line)-1).getName());
-    }//getObj
 
     private String addObj(BAL bal){
         createBALOutputPort.showMessage("\n\t Please insert the new object's name: ");
@@ -217,28 +107,6 @@ public class CreateBAL implements CreateBALInputPort {
         return name;
     }//addObj
 
-    private String notNumericCheck(String line){
-        Scanner scanner=new Scanner(System.in);
-        while(StringUtils.isNumeric(line)){
-            createBALOutputPort.showErrorBAL("\tThe value can't be numeric. Please retry.");
-            line=scanner.nextLine();
-        }//while
-        return line;
-    }//notNumericCheck
-
-    private String isAnArray(String name){
-        Scanner scanner=new Scanner(System.in);
-        String line;
-        createBALOutputPort.showMessage("\t Is it an array? (Y/N)");
-        line=scanner.nextLine();
-        while(!line.equalsIgnoreCase("n") && !line.equalsIgnoreCase("y")){
-            createBALOutputPort.showErrorBAL("Please type Y or N");
-            line=scanner.nextLine();
-        }//while
-        if(line.equalsIgnoreCase("y"))
-            name+="[]";
-        return name;
-    }//isAnArray
     */
 
     public void hasMethod(int sentinel){
@@ -279,6 +147,10 @@ public class CreateBAL implements CreateBALInputPort {
 
     public void chooseObject(int position){
         createBALOutputPort.showDone(repoBALInterface.hasObject(position-1));
+    }
+
+    public void addObject(String structName,String paramName,String paramType){
+        repoBALInterface.addObject(structName,paramName,paramType);
     }
 
     public void updateBAL(String nameBAL) throws IOException {
