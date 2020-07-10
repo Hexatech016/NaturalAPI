@@ -111,7 +111,7 @@ public class Cli implements MyObserver {
                 }
                 break;
             case ("2"):
-                System.out.println("Insert document's path: (ex. C:Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
+                System.out.println("Insert document's path: (ex. C:\\Users\\User\\Desktop\\example.txt or /home/User/example.txt)");
                 discoverController.addTextDoc("Discover",scanner.nextLine());
                 if(!notifyMeDoneDiscover()) {
                     System.out.println("The file is not a .txt or it doesn't exist. Please retry.");
@@ -237,7 +237,7 @@ public class Cli implements MyObserver {
      * @throws IOException if the document path specified in backup is not valid anymore.
      */
     public boolean existsBackUpDocument() throws IOException {
-        System.out.println("Some documents are already stored. Do you want to load them? (Y/N)");
+        System.out.println("Some documents are already stored. Do you want to load them? (Y/N)\nType N to clear all previous backup documents");
         choice = scanner.nextLine();
         if(choice.equalsIgnoreCase("y")) {
             discoverController.restoreTextDoc("Discover");

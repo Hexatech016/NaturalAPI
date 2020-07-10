@@ -58,12 +58,13 @@ public class MainGui implements MyObserver {
 //            this.choice="";
 
         this.window = new JFrame();
+        window.setSize(800,500);
         this.homePanel = new JPanel();
-        this.discoverWindow = new DiscoverWindow(discoverController,discoverPresenter);
+        this.discoverWindow = new DiscoverWindow(homePanel, discoverController,discoverPresenter);
         this.homePanel = new JPanel();
         //this.discoverPanel = new JPanel();
         this.button1= new JButton("Discover");
-        this.button2= new JButton("Designer");
+        this.button2= new JButton("Design");
         this.button3= new JButton("Develop");
         homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.PAGE_AXIS));
         //buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -85,18 +86,24 @@ public class MainGui implements MyObserver {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 window.add(discoverWindow);
                 homePanel.setVisible(false);
                 discoverWindow.setVisible(true);
+                try {
+                    discoverWindow.getMessage(0);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                window.add(discoverWindow);
+                //window.add(designWindow);
                 homePanel.setVisible(false);
-                discoverWindow.setVisible(true);
+                //designWindow.setVisible(true);
             }
         });
         button3.addActionListener(new ActionListener() {
