@@ -17,6 +17,7 @@ import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -140,25 +141,31 @@ public class StanfordNLP implements TextsParsingInterface {
                 GrammaticalStructure gStruct = depparser.predict(document);
                 Collection<TypedDependency> dependencies = gStruct.typedDependencies();
                 switch (firstToken.toLowerCase()) {
-                    case ("scenario"):
-                        for (int i = 2; i < documents.sentences().get(0).lemmas().size(); i++) {
-                            if (i > 2)
-                                builder.append(documents.sentences().get(0).lemmas().get(i).substring(0, 1).toUpperCase()).append(documents.sentences().get(0).lemmas().get(i).substring(1));
-                            else
-                                builder.append(documents.sentences().get(0).lemmas().get(i));
-                        }//for
-                        toAdd.setScenario(builder.toString());
-                        break;
                     case ("given"):
                         toAdd.setGiven("given");
                         sentinel = "given";
                         break;
                     case ("when"):
+                        StringBuilder builder2 = new StringBuilder();
+                        String directObj="";
                         for (TypedDependency dep : dependencies) {
-                            if (dep.reln().getShortName().equalsIgnoreCase("obj"))
-                                builder.append(dep.dep().lemma()).append(" ");
+                            if (dep.reln().getShortName().equalsIgnoreCase("root"))
+                                builder2.append(dep.dep().lemma()).append(" ");
+                            if (dep.reln().getShortName().equalsIgnoreCase("obj")) {
+                                directObj=dep.dep().lemma();
+                                String tmp=dep.dep().lemma();
+                                builder2.append(dep.dep().lemma()).append(" ");
+                                toAdd.getWhen().add(tmp);
+                            }
+                            if (dep.reln().getShortName().equalsIgnoreCase("conj") && dep.gov().lemma().equalsIgnoreCase(directObj)) {
+                                String tmp=dep.dep().lemma();
+                                builder2.append(dep.dep().lemma()).append(" ");
+                                toAdd.getWhen().add(tmp);
+                            }
                         }//for
-                        toAdd.getWhen().add(builder.toString());
+                        //builder2 per il titolo del metodo
+                        //builder per i parametri
+                        toAdd.setScenario(CaseUtils.toCamelCase(builder2.toString(),false, ' '));
                         sentinel = "when";
                         break;
                     case ("then"):
