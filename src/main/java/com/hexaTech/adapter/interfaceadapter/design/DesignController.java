@@ -1,6 +1,5 @@
 package com.hexaTech.adapter.interfaceadapter.design;
 
-import com.hexaTech.domain.port.in.AddBDLInputPort;
 import com.hexaTech.domain.port.in.AddBOInputPort;
 import com.hexaTech.domain.port.in.AddGherkinInputPort;
 import com.hexaTech.domain.port.in.CreateBALInputPort;
@@ -11,7 +10,6 @@ import java.io.IOException;
 
 @Component
 public class DesignController {
-    private final AddBDLInputPort addBDLInputPort;
 
     private final AddGherkinInputPort addGherkinInputPort;
 
@@ -20,20 +18,11 @@ public class DesignController {
     private final AddBOInputPort addBOInputPort;
 
     @Autowired
-    public DesignController(AddBDLInputPort addBDLInputPort, AddGherkinInputPort
+    public DesignController(AddGherkinInputPort
             addGherkinInputPort, CreateBALInputPort createBALInputPort, AddBOInputPort addBOInputPort) {
-        this.addBDLInputPort = addBDLInputPort;
         this.addGherkinInputPort = addGherkinInputPort;
         this.createBALInputPort = createBALInputPort;
         this.addBOInputPort = addBOInputPort;
-    }
-
-    /**
-     * Invokes AddBDL method to add a BDL.
-     * @throws IOException if the document to add doesn't exist.
-     */
-    public void addBDL(String document) throws IOException {
-        addBDLInputPort.addBDL(document);
     }
 
     /**
@@ -66,20 +55,50 @@ public class DesignController {
      */
     public void createBAL(String name) throws IOException {
         createBALInputPort.createBAL(name);
-        //addBOInputPort.addBO();
     }
 
     public void createBO(String directory,String document) throws IOException {
         addBOInputPort.addBO(directory,document);
     }
 
-    public void checkSuggestions(String nameBAL) throws IOException {
-        createBALInputPort.checkTypes(nameBAL);
+    public void checkIfHasMethod(int sentinel){
+        createBALInputPort.hasMethod(sentinel);
     }
 
     public void existsGherkin(String path){
         addGherkinInputPort.existsDoc(path);
     }
 
+    public void showMethod(int sentinel){
+        createBALInputPort.showMethod(sentinel);
+    }
 
-}
+    public void alterMethodReturn(int sentinel,String type,boolean isArray,boolean isObject){
+        createBALInputPort.alterMethod(sentinel,type,isArray,isObject);
+    }
+
+    public void checkIfHasParameter(int sentinel,int identifier){
+        createBALInputPort.hasParameter(sentinel,identifier);
+    }
+
+    public void showParameter(int sentinel,int identifier){
+        createBALInputPort.showParameter(sentinel,identifier);
+    }
+
+    public void alterParameterType(int sentinel,int identifier,String type,boolean isArray,boolean isObject){
+        createBALInputPort.alterParameter(sentinel,identifier,type,isArray,isObject);
+    }
+
+    public void updateBAL(String nameBAL) throws IOException {
+        createBALInputPort.updateBAL(nameBAL);
+    }
+
+    public void showObjects(){
+        createBALInputPort.showObjects();
+    }
+
+    public void chooseObject(int position){
+        createBALInputPort.chooseObject(position);
+    }
+
+}//DesignController

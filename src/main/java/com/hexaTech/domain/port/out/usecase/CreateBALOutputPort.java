@@ -21,8 +21,6 @@ public interface CreateBALOutputPort {
      */
     void showCreatedBAL(String result);
 
-    void showErrorBAL(String result);
-
-    void showMessage(String result);
+    void showDone(boolean done);
 
 }//CreateBAL

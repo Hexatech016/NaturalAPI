@@ -29,4 +29,22 @@ public interface RepoBALInterface{
      */
     BAL getBAL();
 
+    boolean hasMethod(int position);
+
+    String getMethod(int position);
+
+    void alterMethod(int position,String type);
+
+    boolean hasParameter(int position,int identifier);
+
+    String getParameter(int position,int identifier);
+
+    void alterParameter(int position,int identifier,String type);
+
+    boolean hasObject(int position);
+
+    String getObjectType(int position);
+
+    String getObjects();
+
 }//RepoBALInterface

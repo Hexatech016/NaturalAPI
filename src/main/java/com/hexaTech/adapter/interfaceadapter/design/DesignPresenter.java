@@ -13,22 +13,12 @@ public class DesignPresenter extends DesignSubject implements AddBDLOutputPort, 
 
     private boolean done;
 
-    private int code;
-
     /**
      * Returns presenter message status.
      * @return string - message.
      */
     public String getMessage() {
         return message;
-    }
-
-    /**
-     * Returns presenter error code.
-     * @return integer - error code.
-     */
-    public int getCode() {
-        return code;
     }
 
     /**

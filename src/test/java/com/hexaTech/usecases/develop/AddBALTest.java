@@ -58,8 +58,7 @@ public class AddBALTest{
                 Mockito.mock(CheckBetweenBDLAndGherkinInputPort.class),
                 Mockito.mock(AddBDLToDiscoverInputPort.class),
                 Mockito.mock(AddGherkinToDiscoverInputPort.class));
-        designController= new DesignController(Mockito.mock(AddBDLInputPort.class),
-                Mockito.mock(AddGherkinInputPort.class),
+        designController= new DesignController(Mockito.mock(AddGherkinInputPort.class),
                 Mockito.mock(CreateBALInputPort.class),
                 Mockito.mock(AddBOInputPort.class));
         developController= new DevelopController(Mockito.mock(AddPLAInputPort.class),addBAL,

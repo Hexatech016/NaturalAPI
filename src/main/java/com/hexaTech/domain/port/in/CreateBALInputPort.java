@@ -23,6 +23,22 @@ public interface CreateBALInputPort {
      */
     void createBAL(String name) throws IOException;
 
-    void checkTypes(String name) throws IOException;
+    void hasMethod(int sentinel);
+
+    void showMethod(int sentinel);
+
+    void alterMethod(int sentinel,String type,boolean isArray,boolean isObject);
+
+    void hasParameter(int sentinel,int identifier);
+
+    void showParameter(int sentinel,int identifier);
+
+    void alterParameter(int sentinel,int identifier,String type,boolean isArray,boolean isObject);
+
+    void updateBAL(String nameBAL) throws IOException;
+
+    void showObjects();
+
+    void chooseObject(int position);
 
 }//CreateBALInputPort
