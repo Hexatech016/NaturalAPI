@@ -84,15 +84,24 @@ public class StanfordNLP implements TextsParsingInterface {
     }//extractBOFromText
 
     private StructureBAL extractBO(Properties properties, CoreMap sentence){
-        Sentence phrase=new Sentence(sentence.toString());
-        SemanticGraph semanticGraph=phrase.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
-        Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
+        //Sentence phrase=new Sentence(sentence.toString());
+        //SemanticGraph semanticGraph=phrase.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
+        //Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
+        GrammaticalStructure gStruct = depparser.predict(sentence);
+        Collection<TypedDependency> dependencies = gStruct.typedDependencies();
         StructureBAL bo=new StructureBAL();
+        String directObj="";
         for (TypedDependency dep : dependencies) {
             if(dep.reln().getShortName().equalsIgnoreCase("nsubj"))
                 bo.setName(getLemma(dep.dep().toString()).substring(0,1).toUpperCase()+getLemma(dep.dep().toString()).substring(1));
-            if(dep.reln().getShortName().equalsIgnoreCase("obj"))
+            if(dep.reln().getShortName().equalsIgnoreCase("obj")) {
                 bo.setParameters(new Parameter("", getLemma(dep.dep().toString()), "string"));
+                directObj = dep.dep().lemma();
+            }
+            if(dep.reln().getShortName().equalsIgnoreCase("conj") && dep.gov().lemma().equalsIgnoreCase(directObj)) {
+                bo.setParameters(new Parameter("", getLemma(dep.dep().toString()), "string"));
+            }
+
         }//for
         return bo;
     }//extractBO

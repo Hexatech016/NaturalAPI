@@ -1,34 +1,34 @@
 MAIN:
-Scegli il modulo che preferisci.
+Pick the desired tool.
 
 DISCOVER:
-Con discover puoi fare un sacco di cose.
-E sono tutte bellissime.
+The tool Discover takes one or more .txt files as input and processes them into a Business Domain Language (BDL).
+It can also confront an already created BDL and a collection of already written Gherkin scenarios to check how well they match.
 
 DESIGN:
-Con design puoi fare un sacco di cose.
-E sono tutte bellissime.
+The tool Design takes a .scenario file and processes it into a Business Application Language (BAL).
+During the process it's possible to change the return types of the found methods and the types of the found parameters.
 
 DEVELOP:
-Con develop puoi fare un sacco di cose.
-E sono tutte bellissime.
+The tool Develop takes a .json file, written in the OpenAPI specification, and processes it into the stub of an API and it's relative tests.
+In our case the .json is the BAL created in the Design tool.
 
 BDL:
-Il BDL è un documento bellissimo.
-E serve ad un sacco di cose.
+The Business Domain Language (BDL) is a list of nouns, verbs and predicates and their relative frequency.
+A stakeholder can use this list to write better Gherkin scenarios or to verify how well they match the Domain Language.
 
 GHERKIN:
-Lo scenario è un documento bellissimo.
-E serve ad un sacco di cose.
+A file .scenario contains the scenarios that a stakeholders wants to represent in the desired product.
+These scenarios are written with the Gherkin keywords "Given - When - Than - And", like described in the User Manual.
 
 BO:
-La Business Ontology è un documento bellissimo.
-E serve ad un sacco di cose.
+A Business Ontology (.BO) is a file used to import complex types during the creation of the BAL.
 
 BAL:
-Il BAL è un documento bellissimo.
-E serve ad un sacco di cose.
+The Business Application Language (BAL) is a .json file written accordingly to the OpenAPI specification.
+It acts as an intermediate step between the natural language and the API.
 
 PLA:
-Il PLA è un documento bellissimo.
-E serve ad un sacco di cose.
+The Programming Language Adapter (PLA) is a file that describes the desired syntax of a programming language.
+PLAs for the languages Java and Javascript are already included within the tool and more can be imported by creating them
+according to the guidelines described in the User Manual.

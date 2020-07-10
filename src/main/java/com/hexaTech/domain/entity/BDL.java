@@ -259,4 +259,13 @@ public class BDL {
         }//for
     }//addPred
 
+    public void removeLowFrequencies() {
+        nouns.entrySet().removeIf(e -> e.getValue().equals(1));
+        verbs.entrySet().removeIf(e -> e.getValue().equals(1));
+    }
+
+    public void removeIrrelevantPredicates(List<String> keyWordList) {
+        for(String word: keyWordList)
+        predicates.entrySet().removeIf(e -> e.getValue().equals(1) && !e.getKey().contains(word));
+    }
 }//BDL
