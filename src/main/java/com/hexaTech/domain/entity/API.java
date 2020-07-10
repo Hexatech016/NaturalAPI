@@ -150,8 +150,6 @@ public class API{
     public String createTests(String PLA) {
         String[] content=PLA.split("\n");
         int startMethod,endMethod,methodHere;
-        String[] types=searchTypes(content);
-        boolean typed=isTyped(types);
         startMethod=findSubString(content,"<--method.start-->");
         endMethod=findSubString(content,"<--method.end-->");
         methodHere=findSubString(content,"<--method.here-->");
@@ -162,8 +160,16 @@ public class API{
                 content[findSubString(content,"<--classComment-->")].replace("<--classComment-->",APIComment);
 
         StringBuilder tests=new StringBuilder();
-        for(Method test:APITests)
-            tests.append(test.createTests(content.clone(), startMethod, endMethod, types, typed, getAPIName())).append("\n");
+        int counter = 0;
+        String mName = "";
+        for(Method test:APITests){
+            if(test.methodName.substring(0,4).equals("when")){
+                mName = APIMethods.get(counter).methodName;
+                counter++;
+            }
+            tests.append(test.createTests(content.clone(), startMethod, endMethod, APIName, mName)).append("\n");
+            mName = "";
+        }
         content[methodHere]=tests.toString();
         return String.join("\n", Arrays.copyOfRange(content,endMethod+1,content.length));
     }//createTests

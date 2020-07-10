@@ -133,7 +133,7 @@ public class Method {
         return result.toString();
     }//createAPI
 
-    public String createTests(String[] PLA, int start, int end, String[] types, boolean typed, String name) {
+    public String createTests(String[] PLA, int start, int end, String apiName, String mName) {
         String[] content=PLA;
         StringBuilder result=new StringBuilder();
         for(int temp=start;temp<end;temp++){
@@ -154,7 +154,10 @@ public class Method {
             if(content[temp].contains("<--methodName-->"))
                 content[temp]=content[temp].replace("<--methodName-->",methodName);
             if(content[temp].contains("<--methodComment-->"))
-                content[temp]=content[temp].replace("<--methodComment-->","Insert a test implementation"/*"\n\t"+name.toLowerCase()+"."+methodName+"("+getStringTests(types,typed)+");"*/);
+                if(!mName.equals(""))
+                    content[temp]=content[temp].replace("<--methodComment-->","Insert a test implementation\n \t"+apiName+"."+mName+"();");
+                else
+                    content[temp]=content[temp].replace("<--methodComment-->","Insert a test implementation");
             result.append(content[temp]).append("\n");
         }//for
         return result.toString();

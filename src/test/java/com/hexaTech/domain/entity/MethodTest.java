@@ -97,7 +97,7 @@ public class MethodTest{
     @Test(expected=NullPointerException.class)
     public void createTestsNullPLATest(){
         String[] types={"int","float"};
-        method.createTests(null,0,2,types,true,"");
+        method.createTests(null,0,2, "hello", "world");
     }
 
     @Test(expected=ArrayIndexOutOfBoundsException.class)
@@ -109,7 +109,7 @@ public class MethodTest{
     @Test(expected=ArrayIndexOutOfBoundsException.class)
     public void createTestsArrayOutTest(){
         String[] pla={"hello","world"};
-        method.createTests(pla,2,3,null,true,"");
+        method.createTests(pla,2,3, "hello", "world");
     }
 
     @Test
@@ -138,8 +138,7 @@ public class MethodTest{
         method.setMethodReturnType("integer");
         method.setMethodName("name");
         String[] pla={"<--methodReturn-->-<--methodName-->"};
-        String[] types={"int"};
-        assertEquals("void-nameTest\n",method.createTests(pla,0,1,types,true,""));
+        assertEquals("void-nameTest\n",method.createTests(pla,0,1, "hello", "world"));
     }
 
     @Test
@@ -150,8 +149,7 @@ public class MethodTest{
         param.put("param","integer");
         method.setMethodParam(param);
         String[] pla={"<--methodReturn-->-<--methodName-->"};
-        String[] types={"int"};
-        assertEquals("void-nameTest\n",method.createTests(pla,0,1,types,false,""));
+        assertEquals("void-nameTest\n",method.createTests(pla,0,1,"hello", "world"));
     }
 
 }//MethodTest
