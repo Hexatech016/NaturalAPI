@@ -11,6 +11,7 @@
 
 package com.hexaTech;
 
+import com.hexaTech.application.Gui.MainGui;
 import com.hexaTech.application.config.SpringConfig;
 import com.hexaTech.application.Cli;
 import net.didion.jwnl.JWNLException;
@@ -27,6 +28,7 @@ public class Main{
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
         Cli client=context.getBean("cli",Cli.class);
         client.useCaseNaturalAPI();
+        //MainGui client = context.getBean("mainGui",MainGui.class);
         context.close();
     }//main
 }//MainDevelop
