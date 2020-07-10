@@ -18,16 +18,12 @@ import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
 import com.hexaTech.domain.port.out.repository.RepoBALInterface;
 import com.hexaTech.domain.port.out.repository.RepoBOInterface;
 import com.hexaTech.domain.port.out.repository.RepoGherkinInterface;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Class used to manage a BAL creation.
@@ -76,38 +72,6 @@ public class CreateBAL implements CreateBALInputPort {
         repoBALDocumentInterface.saveBAL(bal,nameBAL);
         createBALOutputPort.showCreatedBAL("BAL created into folder: Design.");
     }//createBAL
-
-    /*
-
-    private String addObj(BAL bal){
-        createBALOutputPort.showMessage("\n\t Please insert the new object's name: ");
-        Scanner scanner=new Scanner(System.in);
-        String line=scanner.nextLine(),name;
-        name=notNumericCheck(line);
-        name=CaseUtils.toCamelCase(name,false, ' ');
-        List<Parameter> parameterList=new ArrayList<>();
-        createBALOutputPort.showMessage("\t Please insert the new object's parameters. Type EXIT instead of name to stop.\n\tParameter name: ");
-        line=scanner.nextLine();
-        while(!line.equals("EXIT")){
-            String paramName,paramType;
-            paramName=notNumericCheck(line);
-            paramName=CaseUtils.toCamelCase(paramName,false,' ');
-            createBALOutputPort.showMessage("\t\t Parameter type (S: string/I: integer/F: float/B: boolean):");
-            line=scanner.nextLine();
-            while(!checkAnswer(line)){
-                createBALOutputPort.showErrorBAL("\t\t Wrong character. Please retry.");
-                line=scanner.nextLine();
-            }//while
-            paramType=isAnArray(getType(line.toUpperCase()));
-            parameterList.add(new Parameter("description",paramName,paramType));
-            createBALOutputPort.showMessage("\t\t Type EXIT to stop. \n\t\tParameter name: ");
-            line=scanner.nextLine();
-        }//while
-        bal.addStructure(new StructureBAL(name,parameterList));
-        return name;
-    }//addObj
-
-    */
 
     public void hasMethod(int sentinel){
         createBALOutputPort.showDone(repoBALInterface.hasMethod(sentinel));
