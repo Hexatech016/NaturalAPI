@@ -54,16 +54,7 @@ public class ToReturn {
      * @return string - return's content.
      */
     public String toString(){
-        return  "          				\""+response+"\": {"+
-                "           					\"description\": \""+description+"\","+
-                "                               \"content\": {"+
-                "                                   \"*/*\":  {"+
-                "            					         \"schema\": {"+
-                "              						         \"type\": \""+type+"\""+
-                "            					         }"+
-                "                                   }"+
-                "                              }"+
-                "          				}";
+        return  "\""+response+"\":{\"description\":\""+description+"\",\"content\":{\"*/*\":{\"schema\":{\"type\": \""+type+"\"}}}}";
     }//toString
 
 }//ToReturn

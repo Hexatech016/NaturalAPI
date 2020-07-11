@@ -80,16 +80,7 @@ public class Parameter {
      * @return string - parameter's content.
      */
     public String toString(){
-        return "         				{"+
-                "            				\"in\": \"query\","+
-                "            				\"name\": \""+name+"\","+
-                "            				\"description\": \""+description+"\","+
-                "            				\"required\": true,"+
-                "                           \"schema\": {"+
-                "             				    \"type\": \""+type+"\" "+
-                "                           }\n	"+
-                "         				}\n";
-
+        return "{\"in\":\"query\",\"name\":\""+name+"\",\"description\":\""+description+"\",\"required\":true,\"schema\":{\"type\":\""+type+"\"}}";
     }//toString
 
 

@@ -223,11 +223,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
         // Open given file in append mode.
         BufferedWriter out = new BufferedWriter(
                 new FileWriter(directory + "/" + path));
-        String[] rows=doc.split("\n");
-        for(String riga: rows){
-            out.write(riga);
-            out.newLine();
-        }//for
+        out.write(doc);
         out.close();
     }//saveDocDesign
 

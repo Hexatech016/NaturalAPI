@@ -66,17 +66,8 @@ public class BAL{
      */
     public String toString(){
         ObjectMapper mapper = new ObjectMapper();
-        StringBuilder toRit=
-                new StringBuilder("{"+
-                        "	\"openapi\": \"3.0.0\","+
-                        "	\"info\": {"+
-                        "		\"version\": \"1.0.0\","+
-                        "		\"title\": \"" + name +"\","+
-                        "		\"license\": {"+
-                        "			\"name\": \"MIT\"	"+
-                        "		}	"+
-                        "	},"+
-                        "	\"paths\": {");
+        StringBuilder toRit =
+                new StringBuilder("{\"openapi\":\"3.0.0\",\"info\":{\"version\":\"1.0.0\",\"title\":\"" + name + "\",\"license\":{\"name\": \"MIT\"}},\"paths\":{");
         //
         int last=methods.size()-1;
         int count=0;
@@ -84,10 +75,9 @@ public class BAL{
             toRit.append(method.toString());
             if (count<last)
                 toRit.append(",");
-
             count++;
         }//for
-        toRit.append("},"+"   \"components\": {"+"   \"schemas\": {");
+        toRit.append("},\"components\":{\"schemas\":{");
         last=structures.size()-1;
         count=0;
         for(StructureBAL structure: this.structures){
@@ -103,7 +93,7 @@ public class BAL{
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return "";
+        return toRit.toString();
     }//toString
 
 }//BAL

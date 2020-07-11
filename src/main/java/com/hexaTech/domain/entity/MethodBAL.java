@@ -97,26 +97,18 @@ public class MethodBAL {
      * @return string - method's content.
      */
     public String toString(){
-        String toReturnString=
-                "		\"/"+name+"\": {"+
-                        "			\"get\": {\n"+
-                        "				\"operationId\": \""+name+"\","+
-                        "				\"description\": \""+description+"\","+
-                        "			    \"parameters\": [";
+        StringBuilder toReturnString = new StringBuilder("\"/"+name+"\":{\"get\":{\"operationId\":\""+name+"\",\"description\":\""+description+"\",\"parameters\":[");
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parametersIterator: parameters){
-            toReturnString+=parametersIterator.toString();
+            toReturnString.append(parametersIterator.toString());
             if (count<last){
-                toReturnString+=",";
+                toReturnString.append(",");
             }//if
             count+=1;
         }//for
-        toReturnString+="        			],";
-        toReturnString+="        			\"responses\":{";
-        toReturnString+= toReturn.toString();
-        toReturnString+="}}}";
-        return toReturnString;
+        toReturnString.append("],\"responses\":{"+toReturn.toString()+"}}}");
+        return toReturnString.toString();
     }//toString
 
 }//MethodBAL

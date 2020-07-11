@@ -50,22 +50,18 @@ public class StructureBAL {
     }
 
     public String toString(){
-        String toReturnString=
-                "\""+name+"\": {"+
-                 "			\"type\": \"object\","+
-                 "				\"properties\": {";
+        StringBuilder toReturnString = new StringBuilder("\""+name+"\":{\"type\":\"object\",\"properties\":{");
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parameter: parameters){
-            toReturnString+="\""+parameter.getName()+"\":{";
-            toReturnString+="\"type\":\""+parameter.getType()+"\"}";
+            toReturnString.append("\""+parameter.getName()+"\":{\"type\":\""+parameter.getType()+"\"}");
             if (count<last){
-                toReturnString+=",";
+                toReturnString.append(",");
             }//if
             count+=1;
         }//for
-        toReturnString+="}}";
-        return toReturnString;
+        toReturnString.append("}}");
+        return toReturnString.toString();
     }//toString
 
 }//StructureBAL

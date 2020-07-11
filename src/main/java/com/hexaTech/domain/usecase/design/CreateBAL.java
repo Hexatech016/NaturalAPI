@@ -66,7 +66,7 @@ public class CreateBAL implements CreateBALInputPort {
         BAL bal=repoBALDocumentInterface.setBALFromGherkin(gherkins, nameBAL);
         bal.joinBO(repoBOInterface.getBoOpenAPI().getOntologyObjects());
         repoBALInterface.setBAL(bal);
-        Document savedBAL=new Document();
+        Document savedBAL = new Document();
         savedBAL.setPath("." + File.separator + "Design" + File.separator + nameBAL + "BAL.json");
         repoBALDocumentInterface.setBAL(savedBAL);
         repoBALDocumentInterface.saveBAL(bal,nameBAL);
