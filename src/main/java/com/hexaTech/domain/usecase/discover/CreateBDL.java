@@ -29,6 +29,7 @@ import smile.nlp.keyword.CooccurrenceKeywords;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,25 +64,32 @@ public class CreateBDL implements CreateBDLInputPort {
         for(Document doc: repoDocumentInterface.getDocuments()) {
             String path=doc.getPath();
             String document = repoDocumentInterface.getContentFromPath(path);
-            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractBDLFromText(document);
-            List<StructureBAL> extractedBO=textsParsingInterface.extractBOFromText(document);
+
+            byte[] bytes = document.getBytes(StandardCharsets.UTF_8);
+            String utf8EncodedString = new String(bytes, StandardCharsets.UTF_8);
+
+            List<DoubleStruct> usedForBDLConstruction=textsParsingInterface.extractBDLFromText(utf8EncodedString);
+            List<StructureBAL> extractedBO=textsParsingInterface.extractBOFromText(utf8EncodedString);
             BO boToMerge=new BO();
             boToMerge.setOntologyObjects(extractedBO);
 
 
-            NGram[] keyWords = CooccurrenceKeywords.of(document);
+            BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
+            bdl.mergeBDL(bdlToMerge);
+            //String predicatesForSmile=bdl.predToCSV();
+
+            NGram[] keyWords = CooccurrenceKeywords.of(utf8EncodedString);
 
             List<String> keyWordList = new ArrayList<>();
             for (NGram keyWord : keyWords) {
+                System.out.println(keyWord + "\n");
                 String[] wordArray = keyWord.words;
                 String wordString = String.join(" ", wordArray);
                 keyWordList.add(wordString);
             }
 
-            BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
-            bdl.mergeBDL(bdlToMerge);
             bdl.removeLowFrequencies();
-            bdl.removeIrrelevantPredicates(keyWordList);
+            //bdl.removeIrrelevantPredicates(keyWordList);
             boToMerge.checkElements(bdl);
             bo.mergeBO(boToMerge);
 
