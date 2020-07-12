@@ -262,6 +262,10 @@ public class BDL {
     public void removeLowFrequencies() {
         nouns.entrySet().removeIf(e -> e.getValue().equals(1));
         verbs.entrySet().removeIf(e -> e.getValue().equals(1));
+        nouns.entrySet().removeIf(e->e.getKey().length()==1);
+        verbs.entrySet().removeIf(e->e.getKey().length()==1);
+        nouns.entrySet().removeIf(e->e.getKey().length()==2 && e.getKey().matches(".*+\\.+.*"));
+        verbs.entrySet().removeIf(e->e.getKey().length()==2 && e.getKey().matches(".*+\\.+.*"));
     }
 
     public void removeIrrelevantPredicates(List<String> keyWordList) {
