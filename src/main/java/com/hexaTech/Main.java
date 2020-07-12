@@ -28,7 +28,7 @@ public class Main{
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
         Cli client=context.getBean("cli",Cli.class);
         client.useCaseNaturalAPI();
-        //MainGui client = context.getBean("mainGui",MainGui.class);
+        MainGui gui = context.getBean("mainGui",MainGui.class);
         context.close();
     }//main
 }//MainDevelop

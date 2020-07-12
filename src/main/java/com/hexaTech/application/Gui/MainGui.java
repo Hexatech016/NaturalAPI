@@ -31,6 +31,8 @@ public class MainGui implements MyObserver {
     private JFrame window;
     private JPanel homePanel;
     private DiscoverWindow discoverWindow;
+    private DesignWindow designWindow;
+    private DevelopWindow developWindow;
     private JPanel developPanel;
     private JPanel designPanel;
     private JButton button1;
@@ -54,25 +56,27 @@ public class MainGui implements MyObserver {
         this.discoverPresenter.addObserver(this);
         this.designPresenter.addObserver(this);
         this.developPresenter.addObserver(this);
-//            this.scanner=new Scanner(System.in);
-//            this.choice="";
 
         this.window = new JFrame();
-        window.setPreferredSize(new Dimension(800,500));
+        window.setPreferredSize(new Dimension(400,600));
+        window.pack();
+        window.setLocationRelativeTo(null);
+
         this.homePanel = new JPanel();
-        homePanel.setSize(800,500);
         this.discoverWindow = new DiscoverWindow(this, discoverController,discoverPresenter);
-        this.homePanel = new JPanel();
-        //this.discoverPanel = new JPanel();
+        this.designWindow = new DesignWindow(this, designController,designPresenter);
+        this.developWindow = new DevelopWindow(this, developController,developPresenter);
+
         this.button1= new JButton("Discover");
         this.button2= new JButton("Design");
         this.button3= new JButton("Develop");
+
         homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.PAGE_AXIS));
         //buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         //this.fc = new JFileChooser("..\\NaturalAPI_Design\\gherkin_documents");
-        button1.setSize(300,80);
-        button2.setSize(300,80);
-        button3.setSize(300,80);
+        button1.setPreferredSize(new Dimension(200,100));
+        button2.setSize(50,80);
+        button3.setSize(50,80);
         //homePanel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
         //obj.setLayout(new GridLayout());
         homePanel.add(button1);
@@ -84,34 +88,37 @@ public class MainGui implements MyObserver {
         window.setTitle("NaturalAPI");
         window.pack();
         window.setVisible(true);
+
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 window.add(discoverWindow);
                 homePanel.setVisible(false);
                 discoverWindow.setVisible(true);
                 try {
-                    discoverWindow.getMessage(0);
+                    discoverWindow.useCaseDiscover(0);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             }
         });
+
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                //window.add(designWindow);
+                window.add(designWindow);
                 homePanel.setVisible(false);
-                //designWindow.setVisible(true);
+                designWindow.setVisible(true);
             }
         });
+
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Test GUI");
+                window.add(developWindow);
                 homePanel.setVisible(false);
+                developWindow.setVisible(true);
             }
         });
 

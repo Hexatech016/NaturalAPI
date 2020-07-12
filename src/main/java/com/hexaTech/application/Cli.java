@@ -236,20 +236,20 @@ public class Cli implements MyObserver {
     private void deleteDocument(){
         System.out.println("The following document(s) are already stored: ");
         discoverController.showDocumentsList();
-        System.out.println("Which document you want to delete?\nInsert 'n' to cancel.");
+        System.out.println("Which document you want to delete?\nInsert the number of the document you want to remove or\ntype 'q' to go back.");
         while(true){
             choice=scanner.nextLine();
-            if(choice.equalsIgnoreCase("n")){
+            if(choice.equalsIgnoreCase("q")){
                 return;
             }else if(!StringUtils.isNumeric(choice)){
-                System.out.println("\tPlease insert a valid number or N to cancel.\n");
+                System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
             }else{
                 discoverController.deleteDoc(Integer.parseInt(choice)-1);
                 if(notifyMeDoneDiscover()) {
                     System.out.println("\tDocument deleted.\n");
                     return;
                 }else
-                    System.out.println("\tPlease insert a valid number or N to cancel.\n");
+                    System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
             }//if
         }//while
     }//deleteDocument
