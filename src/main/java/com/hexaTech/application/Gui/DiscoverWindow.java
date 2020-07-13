@@ -102,7 +102,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         add(guideButton);
 
 
-        //getMessage(0); chiamato automaticamente in MainGui, quindi qui non serve
+        //getMessage(0);// chiamato automaticamente in MainGui, quindi qui non serve
 
         loadDocButton.addActionListener(new ActionListener() {
             @Override

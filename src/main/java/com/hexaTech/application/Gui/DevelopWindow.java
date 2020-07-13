@@ -25,20 +25,42 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class DevelopWindow extends JPanel {
+public class DevelopWindow extends JPanel implements MyObserver{
 
     private final DevelopController developController;
     private final DevelopPresenter developPresenter;
     private MainGui mainGui;
     private JButton homeButton;
+    private JButton javaButton;
+    private JButton javascriptButton;
+    private JButton addBALButton;
+    private JButton addPLAButton;
+    private JButton guideButton;
+    private JButton extractAPIButton;
+    private JButton backButton;
+    private JLabel message;
+    private JPanel extractBalPanel;
 
     public DevelopWindow(MainGui parent, DevelopController developController,DevelopPresenter developPresenter) throws IOException {
         this.developController=developController;
         this.developPresenter=developPresenter;
         this.mainGui=parent;
-
+        javaButton= new JButton("Java");
+        javascriptButton = new JButton("Javascript");
+        addBALButton= new JButton("Add BAL");
+        addPLAButton= new JButton("Add external PLA");
+        guideButton= new JButton("Guide");
+        extractAPIButton= new JButton("Extract API");
+        message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
         homeButton = new JButton("Home");
+        backButton = new JButton("Back");
         add(homeButton);
+        add(message);
+        add(addBALButton);
+        add(addPLAButton);
+        add(guideButton);
+        add(extractAPIButton);
+        extractAPIButton.setEnabled(false);
 
         homeButton.addActionListener(new ActionListener() {
             @Override
@@ -47,7 +69,260 @@ public class DevelopWindow extends JPanel {
                 setVisible(false);
             }
         });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.getHomePanel().setVisible(false);
+                extractBalPanel.setVisible(false);
+                setVisible(true);
+            }
+        });
+
+        javaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "java.pla");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                try {
+                    developController.createAPI();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+        javascriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "js.pla");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                try {
+                    developController.createAPI();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+
+        extractAPIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                extractBalPanel=new JPanel();
+                extractBalPanel.add(javaButton);
+                extractBalPanel.add(javascriptButton);
+                extractBalPanel.add(addPLAButton);
+                extractBalPanel.add(guideButton);
+                //extractBalPanel.add(homeButton);
+                extractBalPanel.add(backButton);
+                parent.getHomeWindow().add(extractBalPanel);
+                extractBalPanel.setVisible(true);
+                parent.getHomePanel().setVisible(false);
+                setVisible(false);
+            }
+        });
+
+        addBALButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame dialog = new JFrame();
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+                chooser.setFileFilter(filter);
+                dialog.getContentPane().add(chooser);
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(false);
+                dialog.dispose();
+                int returnVal = chooser.showOpenDialog(dialog);
+                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    try {
+                        developController.addBAL("Develop",i);
+                        notifyMeDevelop();
+                        extractAPIButton.setEnabled(true);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    try {
+                        useCaseDevelop(1);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    return;
+                }else{
+                    try {
+                        useCaseDevelop(2);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    return;
+                }//if_else
+
+            }
+        });
+
+        addPLAButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame dialog = new JFrame();
+                JFileChooser chooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("File pla", "pla");
+                chooser.setFileFilter(filter);
+                dialog.getContentPane().add(chooser);
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(false);
+                dialog.dispose();
+                int returnVal = chooser.showOpenDialog(dialog);
+                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("pla") ){
+                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    try {
+                        developController.addPLA("Develop",i);
+                        notifyMeDevelop();
+
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    try {
+                        useCaseDevelop(3);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    return;
+                }else{
+                    try {
+                        useCaseDevelop(4);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    return;
+                }//if_else
+
+            }
+        });
+
     }
 
 
+    public void useCaseDevelop(int i) throws IOException {
+        switch (i) {
+            case(0):
+                developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
+                if(notifyMeDoneDevelop()){
+                    // designController.showDocumentsList();
+                    notifyMeDevelop();
+                    // listModel.addElement(aaaa); //altrimenti element.getText()
+                    if(existsBackUpBAL()) {
+                        message.setText("Backup restored");
+                        extractAPIButton.setEnabled(true);
+                    }
+                }
+                break;
+            case(1):
+                message.setText("BAL added.");
+                JOptionPane.showMessageDialog(this,
+                        "BAL added.");
+                break;
+            case(2):
+                message.setText("The file is not a .json or it doesn't exist. Please retry.");
+                JOptionPane.showMessageDialog(this,
+                        "The file is not a .json or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case(3):
+                message.setText("PLA added.");
+                JOptionPane.showMessageDialog(this,
+                        "PLA added.");
+                break;
+            case(4):
+                message.setText("The file is not a .PLA or it doesn't exist. Please retry.");
+                JOptionPane.showMessageDialog(this,
+                        "The file is not a .PLA or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+        }
+
+    }
+
+    public boolean existsBackUpBAL() throws IOException {
+        Object[] choices = {"Yes", "No"};
+        Object defaultChoice = choices[0];
+        int choice = JOptionPane.showOptionDialog(this,
+                "A BAL is already stored. Do you want to load it?",
+                "Title message",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                choices,
+                defaultChoice);
+        if(choice==0) {
+            developController.restoreBAL("Develop");
+           // discoverController.restoreTextDoc("Discover");
+            return true;
+        }else if(choice==1){
+            developController.deleteBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
+            //discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+           // discoverController.clearRepo();
+            return false;
+        }
+        else{
+            homeButton.getAction(); ///sistemare
+            return existsBackUpBAL(); //sistemare
+        }//if_else
+
+//        }else if (choice==2){
+//            System.out.println("Please insert Y or N.");
+//            return existsBackUpDocument();
+//        }//if_else
+        //return false;
+    }
+
+
+
+
+
+    @Override
+    public void notifyMeDiscover() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDiscover() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDesign() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDesign() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDevelop() {
+
+    }
+
+    @Override
+    public int notifyMeErrorDevelop() {
+        return 0;
+    }
+
+    @Override
+    public boolean notifyMeDoneDevelop() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeManual() {
+
+    }
 }
