@@ -46,7 +46,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
     private ExtractBDL extractBDL;
     private MainGui mainGui;
 
-    private String aaaa;
+    private String backupString;
     private DefaultListModel listModel;
     private JList list;
     private String stringManual;
@@ -67,6 +67,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         message = new JLabel();
         loadedText = new JLabel("Stored documents:");
+        backupString = "";
         message.setText("Welcome! Please add at least one document to proceed");
 
 
@@ -80,7 +81,6 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         add(message);
         add(loadDocButton);
         add(deleteDocButton);
-
         add(loadedText);
 
         //extractBDLButton.setEnabled(false);
@@ -107,49 +107,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         loadDocButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File Txt", "txt");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
-                    String i=chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        String[] arr = aaaa.split("\n");
-                        int initialLength=arr.length;
-
-                        discoverController.addTextDoc("Discover",i);
-                        extractBDLButton.setEnabled(true);
-                        discoverController.showDocumentsList();
-                        notifyMeDiscover();
-                        String[] arr2 = aaaa.split("\n");
-                        int finalLength=arr2.length;
-                        if(initialLength!=finalLength) {
-                            String lastDocument = arr2[arr2.length - 1];
-                            listModel.addElement(lastDocument);
-                            useCaseDiscover(1);
-                        }
-                        else{
-                            useCaseDiscover(3);
-                        }
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-
-                    return;
-                }else{
-                    try {
-                        useCaseDiscover(2);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    return;
-                }//if_else
-
+                loadDocument();
             }
         });
 
@@ -170,6 +128,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                 parent.getHomePanel().setVisible(true);
                 setVisible(false);
                 listModel.clear();
+                //backupString = "";
             }
         });
 
@@ -206,44 +165,88 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
     }
 
-    public void useCaseDiscover(int i) throws IOException {
-        switch (i) {
-            case(0):
-                discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
-                if(notifyMeDoneDiscover()){
-                    if(existsBackUpDocument()) {
-                        message.setText("Backup restored");
-                        extractBDLButton.setEnabled(true);
-                        discoverController.showDocumentsList();
-                        notifyMeDiscover();
-                        String[] arr=aaaa.split("\n");
-                        for(int j=0; j<arr.length; j++)
-                        {
-                            listModel.addElement(arr[j]);
-                        }
-                    }
+    public void checkForSavedDocs() throws IOException {
+        discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+        if(notifyMeDoneDiscover()){
+            if(existsBackUpDocument()) {
+                discoverController.showDocumentsList();
+                notifyMeDiscover();
+                String[] files = backupString.split("\n");
+                for(int j=0; j<files.length; j++)
+                {
+                    listModel.addElement(files[j]);
                 }
-                break;
-            case(1):
+                message.setText("Backup restored");
+                extractBDLButton.setEnabled(true);
+            }
+        }
+    }
+
+    public void loadDocument() {
+        JFrame dialog = new JFrame();
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("File Txt", "txt");
+        chooser.setFileFilter(filter);
+        dialog.getContentPane().add(chooser);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(false);
+        dialog.dispose();
+        int returnVal = chooser.showOpenDialog(dialog);
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            if(!backupString.contains(path)) {
+                try {
+                    discoverController.addTextDoc("Discover", path);
+                    if (!extractBDLButton.isEnabled()) extractBDLButton.setEnabled(true);
+                    discoverController.showDocumentsList();
+                    notifyMeDiscover();
+                    String[] temp = backupString.split("\n");
+                    listModel.addElement(temp[temp.length-1]);
+                    viewMessage("Success");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    viewMessage("AlreadyLoaded");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        }else if(returnVal != JFileChooser.CANCEL_OPTION){
+            try {
+                viewMessage("WrongFile");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }//if_else
+        return;
+    }
+
+
+    public void viewMessage(String type) throws IOException {
+        switch (type) {
+            case("Success"):
                 message.setText("Document added.");
                 JOptionPane.showMessageDialog(this,
                         "Document added.");
                 break;
-            case(2):
+            case("WrongFile"):
                 message.setText("The file is not a .txt or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .txt or it doesn't exist. Please retry.",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-            case(3):
+            case("AlreadyLoaded"):
                 message.setText("You're trying to add a document which is already loaded.");
                 JOptionPane.showMessageDialog(this,
                         "You're trying to add a document which is already loaded.",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-            case(4):
+            case("NoSelection"):
                 message.setText("No document selected");
                 JOptionPane.showMessageDialog(this,
                         "No document selected",
@@ -254,13 +257,12 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
     }
 
-
     public boolean existsBackUpDocument() throws IOException {
         Object[] choices = {"Yes", "No"};
         Object defaultChoice = choices[0];
         int choice = JOptionPane.showOptionDialog(this,
-                "Some documents are already stored. Do you want to load them?\nIf you click no, you'll clear all previous backup documents",
-                "Title message",
+                "Some documents are already stored. Do you want to load them?\nIf you click No, you'll clear all previous backup documents",
+                "Load Backup?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -278,33 +280,25 @@ public class DiscoverWindow extends JPanel implements MyObserver{
             homeButton.getAction(); ///sistemare
             return existsBackUpDocument(); //sistemare
         }//if_else
-
-//        }else if (choice==2){
-//            System.out.println("Please insert Y or N.");
-//            return existsBackUpDocument();
-//        }//if_else
-        //return false;
     }//existsBackupDocument
-    /*
-    dialog.setAlwaysOnTop(true);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-    */
 
     private void deleteDocument() throws IOException {
-        if(list.getSelectedIndex()<0){
-            useCaseDiscover(4);
+        int index = list.getSelectedIndex();
+        if(index<0){
+            viewMessage("NoSelection");
         }
         else{
-            discoverController.deleteDoc(list.getSelectedIndex()+1);
+            discoverController.deleteDoc(index);
             message.setText("Document deleted");
             //if(list.getindex<0)extractBDLButton.setEnabled(true); se tolgo unico elemento, non mi fa piu andare su create bdl
             discoverController.showDocumentsList();
             notifyMeDiscover();
-            String[] arr=aaaa.split("\n");
-            for(int j=0; j<arr.length; j++)
-            {
-                listModel.removeElement(arr[j]);
+            listModel.clear();
+            if(!backupString.equals("")) {
+                String[] files = backupString.split("\n");
+                for (int j = 0; j < files.length; j++) {
+                    listModel.addElement(files[j]);
+                }
             }
             if(notifyMeDoneDiscover()) {
                 System.out.println("\tDocument deleted.\n");
@@ -315,28 +309,8 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
     @Override
     public void notifyMeDiscover() {
-        aaaa=discoverPresenter.getMessage();
+        backupString = discoverPresenter.getMessage();
     }
-
-    public String split() {
-        String[] arr = aaaa.split("\n");
-        if (arr != null) {
-            // get last line using : arr[arr.length - 1]
-            return arr[arr.length - 1];
-
-        }
-        return "";
-    }
-
- /*   public boolean isNew() {
-        String[] arr = aaaa.split("\n");
-        if (arr != null) {
-            // get last line using : arr[arr.length - 1]
-            return arr[arr.length - 1];
-
-        }
-        return "";
-    }*/
 
     /**
      * Receives presenterDiscover's boolean status.

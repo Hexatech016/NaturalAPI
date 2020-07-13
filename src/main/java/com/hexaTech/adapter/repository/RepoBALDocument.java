@@ -130,29 +130,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      * @return boolean - false if something goes wrong, true if not.
      */
     @Override
-    public boolean importDoc(String directory,String document){
-        //GUI INSERTION
-        /*String temp;
-        JFrame dialog = new JFrame();
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File JSON", "json");
-        chooser.setFileFilter(filter);
-        dialog.getContentPane().add(chooser);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(false);
-        dialog.dispose();
-        int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-            temp=chooser.getSelectedFile().getAbsolutePath();
-        }else{
-            temp="";
-        }//if_else
-        if(!temp.equalsIgnoreCase("")) {
-            BAL=new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp);
-            saveDoc("." + File.separator + "BackupBAL.txt", directory);
-            return true;
-        }else
-            return false;*/
+    public boolean importDoc(String directory, String document){
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".json"))

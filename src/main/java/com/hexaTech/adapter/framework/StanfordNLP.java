@@ -27,17 +27,16 @@ import java.util.*;
 public class StanfordNLP implements TextsParsingInterface {
     private final StanfordCoreNLP pipeline;
 
-    //private final DependencyParser depparser;
+    private final DependencyParser depparser;
 
     private final Properties props;
 
     @Autowired
     public StanfordNLP() {
         this.props = new Properties();
-        this.props.put("annotators", "tokenize");
-        //this.props.put("annotators", "tokenize, ssplit, pos, lemma");
+        this.props.put("annotators", "tokenize, ssplit, pos, lemma");
         this.pipeline = new StanfordCoreNLP(this.props);
-        //this.depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
+        this.depparser = DependencyParser.loadFromModelFile("edu/stanford/nlp/models/parser/nndep/english_UD.gz");
     }
 
     /**
@@ -48,7 +47,7 @@ public class StanfordNLP implements TextsParsingInterface {
      */
     public List<DoubleStruct> extractBDLFromText(String content) {
         List<DoubleStruct> doubleStructs = new ArrayList<>();
-        /*Annotation document = new Annotation(content);
+        Annotation document = new Annotation(content);
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         for (CoreMap sentence : sentences) {
@@ -63,13 +62,13 @@ public class StanfordNLP implements TextsParsingInterface {
                     if (!isACommonVerb(token.lemma()))
                         doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
-        }//for*/
+        }//for
         return doubleStructs;
     }//extractBDLFromText
 
     public List<StructureBAL> extractBOFromText(String content) {
         List<StructureBAL> structureBALList=new ArrayList<>();
-        /*Annotation document = new Annotation(content);
+        Annotation document = new Annotation(content);
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         for (CoreMap sentence : sentences) {
@@ -81,7 +80,7 @@ public class StanfordNLP implements TextsParsingInterface {
                         structureBALList.add(extractBO(props,sentence));
                 }//if
             }//for
-        }//for*/
+        }//for
         return structureBALList;
     }//extractBOFromText
 
@@ -89,10 +88,10 @@ public class StanfordNLP implements TextsParsingInterface {
         //Sentence phrase=new Sentence(sentence.toString());
         //SemanticGraph semanticGraph=phrase.dependencyGraph(properties, SemanticGraphFactory.Mode.ENHANCED);
         //Collection<TypedDependency> dependencies = semanticGraph.typedDependencies();
-        //GrammaticalStructure gStruct = depparser.predict(sentence);
-        //Collection<TypedDependency> dependencies = gStruct.typedDependencies();
+        GrammaticalStructure gStruct = depparser.predict(sentence);
+        Collection<TypedDependency> dependencies = gStruct.typedDependencies();
         StructureBAL bo=new StructureBAL();
-        /*String directObj="";
+        String directObj="";
         for (TypedDependency dep : dependencies) {
             if(dep.reln().getShortName().equalsIgnoreCase("nsubj"))
                 bo.setName(getLemma(dep.dep().toString()).substring(0,1).toUpperCase()+getLemma(dep.dep().toString()).substring(1));
@@ -104,7 +103,7 @@ public class StanfordNLP implements TextsParsingInterface {
                 bo.setParameters(new Parameter("", getLemma(dep.dep().toString()), "string"));
             }
 
-        }//for*/
+        }//for
         return bo;
     }//extractBO
 
@@ -115,7 +114,7 @@ public class StanfordNLP implements TextsParsingInterface {
     public List<Gherkin> extractFromGherkin(String text) {
         List<Gherkin> toRet = new ArrayList<>();
         //String[] gherkinSplit = text.split("[\n]+[\n]");
-        /*String[] gherkinSplit = text.split("Scenario:");
+        String[] gherkinSplit = text.split("Scenario:");
         String restore = "Scenario:";
         ArrayList<String> gherkinSplitted = new ArrayList<>();
         for (int i = 0; i < gherkinSplit.length - 1 ; i++) {
@@ -180,13 +179,13 @@ public class StanfordNLP implements TextsParsingInterface {
                 }//switch
             }//for
             toRet.add(toAdd);
-        }//for*/
+        }//for
         return toRet;
     }//extractFromGherkin
 
     public List<DoubleStruct> extractBDLFromGherkin(String content){
         List<DoubleStruct> doubleStructs = new ArrayList<>();
-        /*Annotation document = new Annotation(content);
+        Annotation document = new Annotation(content);
         pipeline.annotate(document);
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
         for (CoreMap sentence : sentences) {
@@ -205,7 +204,7 @@ public class StanfordNLP implements TextsParsingInterface {
                     if (!isACommonVerb(token.lemma()))
                         doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
-        }//for*/
+        }//for
         return doubleStructs;
 
     }

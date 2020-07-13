@@ -123,7 +123,7 @@ public class RepoDocument implements RepoDocumentInterface {
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".txt"))
             return false;
         if(!alreadyLoaded(document)){
-            documents.add(new Document(document.substring(document.lastIndexOf("" + File.separator + "")+1), document));
+            documents.add(new Document(document.substring(document.lastIndexOf(File.separator)+1), document));
             saveDoc("BackupDocument.txt", directory);
             return true;
         }else

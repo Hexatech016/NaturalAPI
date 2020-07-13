@@ -113,7 +113,7 @@ public class MainGui implements MyObserver {
                 discoverWindow.setVisible(true);
                 discoverWindow.extractBDLButton.setEnabled(false);
                 try {
-                    discoverWindow.useCaseDiscover(0);
+                    discoverWindow.checkForSavedDocs();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
