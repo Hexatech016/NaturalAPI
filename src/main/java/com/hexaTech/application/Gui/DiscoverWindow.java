@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -28,32 +30,38 @@ import java.util.Scanner;
 
 public class DiscoverWindow extends JPanel implements MyObserver{
 
-    private JButton back;
-    private JButton next;
     private JButton loadDocButton;
     private JButton homeButton;
-    private JButton extractBDLButton;
+    public JButton extractBDLButton;
     private JButton deleteDocButton;
+    private JButton guideButton;
+
+
     private JLabel message;
     private JLabel loadedText;
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
     private ExtractBDL extractBDL;
     private MainGui mainGui;
 
     private String aaaa;
-    private JTextArea textArea;
     private DefaultListModel listModel;
     private JList list;
+    private String stringManual;
 
 
     //private JFileChooser insertDocs;
 
-    public DiscoverWindow(MainGui parent, DiscoverController discoverController,DiscoverPresenter discoverPresenter) throws IOException {
+    public DiscoverWindow(MainGui parent, DiscoverController discoverController, ViewManualController viewManualController,
+                          DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
 
         this.discoverController=discoverController;
         this.discoverPresenter=discoverPresenter;
         this.mainGui=parent;
+        this.viewManualController = viewManualController;
+        this.viewManualPresenter = viewManualPresenter;
         extractBDL=new ExtractBDL(this, discoverController, discoverPresenter);
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -64,6 +72,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         homeButton = new JButton("Home");
         extractBDLButton = new JButton("Extract BDL");
         deleteDocButton = new JButton("Delete selected document");
+        guideButton= new JButton("Guide");
         //loadedText.setText("Stored documents:");
         add(homeButton);
         add(message);
@@ -72,22 +81,24 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
         add(loadedText);
 
-        extractBDLButton.setEnabled(false);
-
+        //extractBDLButton.setEnabled(false);
+        //setLayout(new BorderLayout());
         listModel = new DefaultListModel();
         listModel.addElement("Cicciobello pasticcino");
         //Create the list and put it in a scroll pane.
-        list = new JList(listModel);
+        list = new JList<String>(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setPreferredSize(new Dimension(200, 50));
-        list.setSelectedIndex(0);
+        //list.setPreferredSize(new Dimension(200, 50));
+        //list.setSelectedIndex(0);
         //list.addListSelectionListener(this); sistemare
         list.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(list);
-        add(list);
-        //add(listScrollPane, BorderLayout.CENTER);
+        //add(list);
+        add(listScrollPane, BorderLayout.CENTER);
+
 
         add(extractBDLButton);
+        add(guideButton);
 
 
         //getMessage(0); chiamato automaticamente in MainGui, quindi qui non serve
@@ -109,7 +120,9 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                     try {
                         discoverController.addTextDoc("Discover",i);
                         extractBDLButton.setEnabled(true);
+                        discoverController.showDocumentsList();
                         notifyMeDiscover();
+                        String lastDocument=split();
                         listModel.addElement(aaaa);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
@@ -160,6 +173,27 @@ public class DiscoverWindow extends JPanel implements MyObserver{
             }
         });
 
+        guideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    viewManualController.openManualSection("MAIN:");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                //JDialog dialog = new JDialog(window, true); // parent, isModal
+                //dialog.setVisible(true); // blocks until dialog is closed
+                JFrame popup=new JFrame();
+                JPanel panel=new JPanel();
+                JLabel manual=new JLabel(stringManual);
+                popup.add(panel);
+                panel.add(manual);
+                popup.setVisible(true);
+                //JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                        //stringManual);
+            }
+        });
+
     }
 
     public void useCaseDiscover(int i) throws IOException {
@@ -174,8 +208,6 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                         message.setText("Backup restored");
                         extractBDLButton.setEnabled(true);
                     }
-                }else {
-                    message.setText("There are no saved documents");
                 }
                 break;
             case(1):
@@ -199,7 +231,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         Object[] choices = {"Yes", "No"};
         Object defaultChoice = choices[0];
         int choice = JOptionPane.showOptionDialog(this,
-                "Some documents are already stored. Do you want to load them?\nIf you type no or exit, you'll clear all previous backup documents",
+                "Some documents are already stored. Do you want to load them?\nIf you click no, you'll clear all previous backup documents",
                 "Title message",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -252,7 +284,17 @@ public class DiscoverWindow extends JPanel implements MyObserver{
     @Override
     public void notifyMeDiscover() {
         aaaa=discoverPresenter.getMessage(); //valutare se mettere stringbuilder per l'efficienza
+    }
 
+    public String split() {
+        //String ret=aaaa;
+        String[] arr = aaaa.split("\n");
+        if (arr != null) {
+            // get last line using : arr[arr.length - 1]
+            return arr[arr.length - 1];
+            //System.out.println("Last    =====     " + arr[arr.length - 1]);
+        }
+        return "";
     }
 
     /**
@@ -290,12 +332,17 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
     @Override
     public void notifyMeManual() {
-
+        stringManual=viewManualPresenter.getMessage();
     }
 
 
     public MainGui getMainGui() {
         return mainGui;
     }
+
+    public void setMessage(JLabel message) {
+        this.message = message;
+    }
+
 
 }

@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Scanner;
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -28,6 +30,8 @@ public class MainGui implements MyObserver {
     private final DiscoverPresenter discoverPresenter;
     private final DesignPresenter designPresenter;
     private final DevelopPresenter developPresenter;
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
     private JFrame window;
     private JPanel homePanel;
     private DiscoverWindow discoverWindow;
@@ -35,27 +39,34 @@ public class MainGui implements MyObserver {
     private DevelopWindow developWindow;
     private JPanel developPanel;
     private JPanel designPanel;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
+    private JButton discoverButton;
+    private JButton designButton;
+    private JButton developButton;
+    private JButton guideButton;
+
+    private String stringManual;
     //private final JFileChooser fc;
 
     @Autowired
     public MainGui(DiscoverController discoverController, DesignController designController,
-                   DevelopController developController, DiscoverPresenter discoverPresenter,
-                   DesignPresenter designPresenter, DevelopPresenter developPresenter) throws IOException {
+                   DevelopController developController, ViewManualController viewManualController,
+                   DiscoverPresenter discoverPresenter, DesignPresenter designPresenter,
+                   DevelopPresenter developPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
 
         this.discoverController = discoverController;
         this.designController = designController;
         this.developController = developController;
+        this.viewManualController = viewManualController;
 
         this.discoverPresenter = discoverPresenter;
         this.designPresenter = designPresenter;
         this.developPresenter = developPresenter;
+        this.viewManualPresenter = viewManualPresenter;
 
         this.discoverPresenter.addObserver(this);
         this.designPresenter.addObserver(this);
         this.developPresenter.addObserver(this);
+        this.viewManualPresenter.addObserver(this);
 
         this.window = new JFrame();
         window.setPreferredSize(new Dimension(400,600));
@@ -63,25 +74,29 @@ public class MainGui implements MyObserver {
         window.setLocationRelativeTo(null);
 
         this.homePanel = new JPanel();
-        this.discoverWindow = new DiscoverWindow(this, discoverController,discoverPresenter);
+        this.discoverWindow = new DiscoverWindow(this, discoverController,viewManualController,discoverPresenter,viewManualPresenter);
         this.designWindow = new DesignWindow(this, designController,designPresenter);
         this.developWindow = new DevelopWindow(this, developController,developPresenter);
 
-        this.button1= new JButton("Discover");
-        this.button2= new JButton("Design");
-        this.button3= new JButton("Develop");
+        this.discoverButton= new JButton("Discover");
+        this.designButton= new JButton("Design");
+        this.developButton= new JButton("Develop");
+        this.guideButton= new JButton("Guide");
 
         homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.PAGE_AXIS));
         //buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         //this.fc = new JFileChooser("..\\NaturalAPI_Design\\gherkin_documents");
-        button1.setPreferredSize(new Dimension(200,100));
-        button2.setSize(50,80);
-        button3.setSize(50,80);
+        discoverButton.setPreferredSize(new Dimension(200,100));
+        designButton.setSize(50,80);
+        developButton.setSize(50,80);
+
+        //button1.setAlignmentY((float)(homePanel.getSize())/2);
         //homePanel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
         //obj.setLayout(new GridLayout());
-        homePanel.add(button1);
-        homePanel.add(button2);
-        homePanel.add(button3);
+        homePanel.add(discoverButton);
+        homePanel.add(designButton);
+        homePanel.add(developButton);
+        homePanel.add(guideButton);
         //Obj.add(fc);
         window.add(homePanel);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,12 +105,14 @@ public class MainGui implements MyObserver {
         window.setVisible(true);
 
 
-        button1.addActionListener(new ActionListener() {
+        discoverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.add(discoverWindow);
                 homePanel.setVisible(false);
                 discoverWindow.setVisible(true);
+                discoverWindow.extractBDLButton.setEnabled(false);
+                discoverWindow.setMessage(new JLabel("Welcome! You need to load at least one document to extract BDL."));
                 try {
                     discoverWindow.useCaseDiscover(0);
                 } catch (IOException ioException) {
@@ -104,7 +121,7 @@ public class MainGui implements MyObserver {
             }
         });
 
-        button2.addActionListener(new ActionListener() {
+        designButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.add(designWindow);
@@ -113,12 +130,31 @@ public class MainGui implements MyObserver {
             }
         });
 
-        button3.addActionListener(new ActionListener() {
+        developButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 window.add(developWindow);
                 homePanel.setVisible(false);
                 developWindow.setVisible(true);
+            }
+        });
+
+        guideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    viewManualController.openManualSection("MAIN:");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                //JDialog dialog = new JDialog(window, true); // parent, isModal
+                //dialog.setVisible(true); // blocks until dialog is closed
+                //JFrame popup=new JFrame();
+                //JLabel manual=new JLabel(stringManual);
+                //dialog.set;
+                //popup.setVisible(true);
+                JOptionPane.showMessageDialog(window,
+                        stringManual);
             }
         });
 
@@ -161,8 +197,9 @@ public class MainGui implements MyObserver {
 
     @Override
     public void notifyMeManual() {
-
+        stringManual=viewManualPresenter.getMessage();
     }
+
 
     public JFrame getHomeWindow() {
         return window;
