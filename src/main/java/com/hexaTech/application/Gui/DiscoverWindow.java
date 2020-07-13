@@ -65,8 +65,10 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         extractBDL=new ExtractBDL(this, discoverController, discoverPresenter);
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        message = new JLabel("Welcome! Please add at least one document to proceed");
+        message = new JLabel();
         loadedText = new JLabel("Stored documents:");
+        message.setText("Welcome! Please add at least one document to proceed");
+
 
         loadDocButton = new JButton("Load document");
         homeButton = new JButton("Home");
@@ -84,7 +86,6 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         //extractBDLButton.setEnabled(false);
         //setLayout(new BorderLayout());
         listModel = new DefaultListModel();
-        listModel.addElement("Cicciobello pasticcino");
         //Create the list and put it in a scroll pane.
         list = new JList<String>(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -118,20 +119,27 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                 if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
                     String i=chooser.getSelectedFile().getAbsolutePath();
                     try {
+                        String[] arr = aaaa.split("\n");
+                        int initialLength=arr.length;
+
                         discoverController.addTextDoc("Discover",i);
                         extractBDLButton.setEnabled(true);
                         discoverController.showDocumentsList();
                         notifyMeDiscover();
-                        String lastDocument=split();
-                        listModel.addElement(aaaa);
+                        String[] arr2 = aaaa.split("\n");
+                        int finalLength=arr2.length;
+                        if(initialLength!=finalLength) {
+                            String lastDocument = arr2[arr2.length - 1];
+                            listModel.addElement(lastDocument);
+                            useCaseDiscover(1);
+                        }
+                        else{
+                            useCaseDiscover(3);
+                        }
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    try {
-                        useCaseDiscover(1);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+
                     return;
                 }else{
                     try {
@@ -148,9 +156,11 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         deleteDocButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(true);
-                setVisible(false);
-
+                try {
+                    deleteDocument();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -159,7 +169,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
             public void actionPerformed(ActionEvent e) {
                 parent.getHomePanel().setVisible(true);
                 setVisible(false);
-
+                listModel.clear();
             }
         });
 
@@ -201,12 +211,16 @@ public class DiscoverWindow extends JPanel implements MyObserver{
             case(0):
                 discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
                 if(notifyMeDoneDiscover()){
-                    discoverController.showDocumentsList();
-                    notifyMeDiscover();
-                    listModel.addElement(aaaa); //altrimenti element.getText()
                     if(existsBackUpDocument()) {
                         message.setText("Backup restored");
                         extractBDLButton.setEnabled(true);
+                        discoverController.showDocumentsList();
+                        notifyMeDiscover();
+                        String[] arr=aaaa.split("\n");
+                        for(int j=0; j<arr.length; j++)
+                        {
+                            listModel.addElement(arr[j]);
+                        }
                     }
                 }
                 break;
@@ -219,6 +233,20 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                 message.setText("The file is not a .txt or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .txt or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case(3):
+                message.setText("You're trying to add a document which is already loaded.");
+                JOptionPane.showMessageDialog(this,
+                        "You're trying to add a document which is already loaded.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case(4):
+                message.setText("No document selected");
+                JOptionPane.showMessageDialog(this,
+                        "No document selected",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
@@ -263,39 +291,52 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         dialog.setLocationRelativeTo(null);
     */
 
-    /*private void deleteDocument(){
-        while(true){
-            choice=scanner.nextLine();
-            if(choice.equalsIgnoreCase("q")){
-                return;
-            }else if(!StringUtils.isNumeric(choice)){
+    private void deleteDocument() throws IOException {
+        if(list.getSelectedIndex()<0){
+            useCaseDiscover(4);
+        }
+        else{
+            discoverController.deleteDoc(list.getSelectedIndex()+1);
+            message.setText("Document deleted");
+            //if(list.getindex<0)extractBDLButton.setEnabled(true); se tolgo unico elemento, non mi fa piu andare su create bdl
+            discoverController.showDocumentsList();
+            notifyMeDiscover();
+            String[] arr=aaaa.split("\n");
+            for(int j=0; j<arr.length; j++)
+            {
+                listModel.removeElement(arr[j]);
+            }
+            if(notifyMeDoneDiscover()) {
+                System.out.println("\tDocument deleted.\n");
+            }else
                 System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
-            }else{
-                discoverController.deleteDoc(Integer.parseInt(choice)-1);
-                if(notifyMeDoneDiscover()) {
-                    System.out.println("\tDocument deleted.\n");
-                    return;
-                }else
-                    System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
-            }//if
-        }//while
-    }//deleteDocument*/
+        }
+    }//deleteDocument
 
     @Override
     public void notifyMeDiscover() {
-        aaaa=discoverPresenter.getMessage(); //valutare se mettere stringbuilder per l'efficienza
+        aaaa=discoverPresenter.getMessage();
     }
 
     public String split() {
-        //String ret=aaaa;
         String[] arr = aaaa.split("\n");
         if (arr != null) {
             // get last line using : arr[arr.length - 1]
             return arr[arr.length - 1];
-            //System.out.println("Last    =====     " + arr[arr.length - 1]);
+
         }
         return "";
     }
+
+ /*   public boolean isNew() {
+        String[] arr = aaaa.split("\n");
+        if (arr != null) {
+            // get last line using : arr[arr.length - 1]
+            return arr[arr.length - 1];
+
+        }
+        return "";
+    }*/
 
     /**
      * Receives presenterDiscover's boolean status.

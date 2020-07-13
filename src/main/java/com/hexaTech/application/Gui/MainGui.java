@@ -112,7 +112,6 @@ public class MainGui implements MyObserver {
                 homePanel.setVisible(false);
                 discoverWindow.setVisible(true);
                 discoverWindow.extractBDLButton.setEnabled(false);
-                discoverWindow.setMessage(new JLabel("Welcome! You need to load at least one document to extract BDL."));
                 try {
                     discoverWindow.useCaseDiscover(0);
                 } catch (IOException ioException) {
