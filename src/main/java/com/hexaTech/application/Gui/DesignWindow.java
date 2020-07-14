@@ -28,11 +28,18 @@ public class DesignWindow extends JPanel implements MyObserver{
     private JButton resetButton;
     private JLabel message;
 
+    private JTextField txtArea;
+
     private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
+
+    private String testMethod;
+    private JButton typeButton;
+    private String typeName;
+    private JComboBox typeList;
 
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
                         ViewManualPresenter viewManualPresenter) throws IOException {
@@ -48,12 +55,31 @@ public class DesignWindow extends JPanel implements MyObserver{
         addScenarioButton= new JButton("Add Scenario");
         homeButton = new JButton("Home");
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
+
+        testMethod="";
+        txtArea=new JTextField();
+        txtArea.setText(testMethod);
+
+        String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
+        typeList = new JComboBox(types);
+        typeList.setSelectedIndex(0);
+        //typeList.setPreferredSize(new Dimension(200, 130));
+        //typeList.addActionListener(this);
+        typeButton=new JButton("ok tipo");
+
+
+
         backupString = "";
         add(message);
         add(homeButton);
         add(addScenarioButton);
         add(addBOButton);
         add(resetButton);
+
+        add(txtArea);
+        add(typeButton);
+
+
         add(extractBALButton);
         add(guideButton);
         extractBALButton.setEnabled(false);
@@ -83,6 +109,7 @@ public class DesignWindow extends JPanel implements MyObserver{
 
                     if ((s != null) && (s.length() > 0)) {
                         designController.createBAL(s);
+                        methodsSuggestions(s);
                     }
                     else{
                         JOptionPane.showMessageDialog(new JPanel(),
@@ -174,6 +201,15 @@ public class DesignWindow extends JPanel implements MyObserver{
                         stringManual);
                 }
         });
+
+        typeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                typeList = (JComboBox)e.getSource();
+                typeName = (String)typeList.getSelectedItem();
+
+            }
+        });
     }
 
     public void viewMessage(String type) throws IOException {
@@ -239,6 +275,82 @@ public class DesignWindow extends JPanel implements MyObserver{
             }
         }
     }
+
+    /*private void methodsSuggestions(String nameBAL) throws IOException {
+        int sentinel=0, identifier=0;
+        designController.checkIfHasMethod(sentinel);
+        while(notifyMeDoneDesign()){
+            designController.showMethod(sentinel);
+            txtArea.setText(backupString);
+
+
+
+
+                        //designController.alterMethodReturn(sentinel,"void",false,false);
+
+                        //designController.alterMethodReturn(sentinel,getType(choice.toUpperCase()),isAnArray(true),false);
+
+
+
+
+            designController.checkIfHasParameter(sentinel,identifier);
+            while(notifyMeDoneDesign()){
+                designController.showParameter(sentinel,identifier);
+                System.out.println("\t\tDo you want to change parameter type? (Y/N)");
+                choice=scanner.nextLine();
+
+
+                        System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
+                        choice=scanner.nextLine();
+                        while(!checkAnswer(choice)){
+                            System.out.println("\tWrong character. Please retry.");
+                            choice=scanner.nextLine();
+                        }
+                        if(getType(choice.toUpperCase()).equalsIgnoreCase(""))
+                            chooseObject(sentinel,identifier);
+                        else
+                            designController.alterParameterType(sentinel,identifier,getType(choice.toUpperCase()),isAnArray(false),false);
+                        break;
+
+
+
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
+            }//external_while
+            sentinel++;
+            identifier=0;
+            designController.checkIfHasMethod(sentinel);
+        }//external_while
+        designController.updateBAL(nameBAL);
+    }//methodsSuggestions*/
+
+    private void methodsSuggestions(String nameBAL) throws IOException {
+        int sentinel=0, identifier=0;
+        designController.checkIfHasMethod(sentinel);
+        while(notifyMeDoneDesign()){
+            designController.showMethod(sentinel);
+            designController.checkIfHasParameter(sentinel,identifier);
+            txtArea.setText(backupString);
+            while(notifyMeDoneDesign()){
+                designController.showParameter(sentinel,identifier);
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
+                txtArea.setText(backupString);
+            }//external_while
+            sentinel++;
+            identifier=0;
+            designController.checkIfHasMethod(sentinel);
+        }//external_while
+        designController.updateBAL(nameBAL);
+    }//methodsSuggestions
+
+
+
+
+
+
+
+
 
     @Override
     public void notifyMeDiscover() {
