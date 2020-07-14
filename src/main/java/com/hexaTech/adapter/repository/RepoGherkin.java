@@ -22,27 +22,6 @@ public class RepoGherkin implements RepoGherkinInterface {
 
     @Override
     public boolean importDoc(String directory,String document){
-        /*String temp;
-        JFrame dialog = new JFrame();
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Gherkin file", "scenario");
-        chooser.setFileFilter(filter);
-        dialog.getContentPane().add(chooser);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(false);
-        dialog.dispose();
-        int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario")){
-            temp=chooser.getSelectedFile().getAbsolutePath();
-        }else{
-            temp= "";
-        }//if_else
-        if(!temp.equalsIgnoreCase("")) {
-            gherkins.add(new Document(temp.substring(temp.lastIndexOf("" + File.separator + "")+1),temp));
-            saveDoc("." + File.separator + "BackupGherkin.txt", directory);
-            return true;
-        }else
-            return false;*/
         if(document.equals("") || !existsDoc(document))
             return false;
         if(!document.contains(".") || !document.substring(document.lastIndexOf(".")).equalsIgnoreCase(".scenario"))

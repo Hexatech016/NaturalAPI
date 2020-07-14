@@ -34,7 +34,7 @@ public class MainGui implements MyObserver {
     private final ViewManualPresenter viewManualPresenter;
     private JFrame window;
     private JPanel homePanel;
-    private DiscoverWindow discoverWindow;
+    private DiscoverNavigation discoverNavigation;
     private DesignWindow designWindow;
     private DevelopWindow developWindow;
     private JPanel developPanel;
@@ -74,7 +74,7 @@ public class MainGui implements MyObserver {
         window.setLocationRelativeTo(null);
 
         this.homePanel = new JPanel();
-        this.discoverWindow = new DiscoverWindow(this, discoverController, viewManualController, discoverPresenter, viewManualPresenter);
+        this.discoverNavigation = new DiscoverNavigation(this, discoverController, viewManualController, discoverPresenter, viewManualPresenter);
         this.designWindow = new DesignWindow(this, designController,designPresenter, viewManualController, viewManualPresenter);
         this.developWindow = new DevelopWindow(this, developController,developPresenter, viewManualController, viewManualPresenter);
 
@@ -108,15 +108,9 @@ public class MainGui implements MyObserver {
         discoverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                window.add(discoverWindow);
+                window.add(discoverNavigation);
                 homePanel.setVisible(false);
-                discoverWindow.setVisible(true);
-                discoverWindow.extractBDLButton.setEnabled(false);
-                try {
-                    discoverWindow.checkForSavedDocs();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                discoverNavigation.setVisible(true);
             }
         });
 

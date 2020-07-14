@@ -13,25 +13,14 @@ import java.io.IOException;
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.ViewManualController;
 import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
-import com.hexaTech.adapter.interfaceadapter.design.DesignController;
-import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
-import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
-import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
-import net.didion.jwnl.JWNLException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-
-public class DiscoverWindow extends JPanel implements MyObserver{
+public class DiscoverCreate extends JPanel implements MyObserver{
 
     private JButton loadDocButton;
     private JButton homeButton;
+    private JButton backButton;
     public JButton extractBDLButton;
     private JButton deleteDocButton;
     private JButton guideButton;
@@ -43,8 +32,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
     private final DiscoverPresenter discoverPresenter;
     private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
-    private ExtractBDL extractBDL;
-    private MainGui mainGui;
+    private DiscoverNavigation discoverNavigation;
 
     private String backupString;
     private DefaultListModel listModel;
@@ -54,15 +42,14 @@ public class DiscoverWindow extends JPanel implements MyObserver{
 
     //private JFileChooser insertDocs;
 
-    public DiscoverWindow(MainGui parent, DiscoverController discoverController, ViewManualController viewManualController,
+    public DiscoverCreate(DiscoverNavigation parent, DiscoverController discoverController, ViewManualController viewManualController,
                           DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
 
         this.discoverController=discoverController;
         this.discoverPresenter=discoverPresenter;
-        this.mainGui=parent;
+        this.discoverNavigation = parent;
         this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
-        extractBDL=new ExtractBDL(this, discoverController, discoverPresenter);
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         message = new JLabel();
@@ -76,12 +63,14 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         extractBDLButton = new JButton("Extract BDL");
         deleteDocButton = new JButton("Delete selected document");
         guideButton= new JButton("Guide");
+        backButton = new JButton("Back");
         //loadedText.setText("Stored documents:");
         add(homeButton);
         add(message);
         add(loadDocButton);
         add(deleteDocButton);
         add(loadedText);
+        add(backButton);
 
         //extractBDLButton.setEnabled(false);
         //setLayout(new BorderLayout());
@@ -125,20 +114,33 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(true);
+                message.setText("Welcome! Please add at least one document to proceed");
+                parent.getMainGui().getHomePanel().setVisible(true);
                 setVisible(false);
                 listModel.clear();
-                //backupString = "";
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                message.setText("Welcome! Please add at least one document to proceed");
+                parent.setVisible(true);
+                setVisible(false);
+                listModel.clear();
             }
         });
 
         extractBDLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parent.getHomeWindow().add(extractBDL);
-                extractBDL.setVisible(true);
-                setVisible(false);
-
+                String name = insertBDLName();
+                try {
+                    discoverController.createBDL(name);
+                    viewMessage("Created");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -146,23 +148,27 @@ public class DiscoverWindow extends JPanel implements MyObserver{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    viewManualController.openManualSection("MAIN:");
+                    viewManualController.openManualSection("DISCOVER:");
+                    notifyMeManual();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                //JDialog dialog = new JDialog(window, true); // parent, isModal
-                //dialog.setVisible(true); // blocks until dialog is closed
-                JFrame popup=new JFrame();
-                JPanel panel=new JPanel();
-                JLabel manual=new JLabel(stringManual);
-                popup.add(panel);
-                panel.add(manual);
-                popup.setVisible(true);
-                //JOptionPane.showMessageDialog(parent.getHomeWindow(),
-                        //stringManual);
+                JOptionPane.showMessageDialog(parent.getMainGui().getHomeWindow(),
+                        stringManual);
             }
         });
 
+    }
+
+    public String insertBDLName() {
+        return (String)JOptionPane.showInputDialog(
+                this,
+                "Insert a name for the BDL",
+                "Insert BDL name",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "");
     }
 
     public void checkForSavedDocs() throws IOException {
@@ -253,6 +259,10 @@ public class DiscoverWindow extends JPanel implements MyObserver{
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
+            case("Created"):
+                message.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
+                JOptionPane.showMessageDialog(this,
+                        "BDL has been created successfully");
         }
 
     }
@@ -274,6 +284,7 @@ public class DiscoverWindow extends JPanel implements MyObserver{
         }else if(choice==1){
             discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
             discoverController.clearRepo();
+            backupString="";
             return false;
         }
         else{
@@ -348,11 +359,6 @@ public class DiscoverWindow extends JPanel implements MyObserver{
     @Override
     public void notifyMeManual() {
         stringManual=viewManualPresenter.getMessage();
-    }
-
-
-    public MainGui getMainGui() {
-        return mainGui;
     }
 
     public void setMessage(JLabel message) {

@@ -245,9 +245,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
             case(0):
                 developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
                 if(notifyMeDoneDevelop()){
-                    // designController.showDocumentsList();
                     notifyMeDevelop();
-                    // listModel.addElement(aaaa); //altrimenti element.getText()
                     if(existsBackUpBAL()) {
                         message.setText("Backup restored");
                         extractAPIButton.setEnabled(true);
@@ -295,24 +293,15 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 defaultChoice);
         if(choice==0) {
             developController.restoreBAL("Develop");
-           // discoverController.restoreTextDoc("Discover");
             return true;
         }else if(choice==1){
             developController.deleteBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
-            //discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
-           // discoverController.clearRepo();
             return false;
         }
         else{
             homeButton.getAction(); ///sistemare
             return existsBackUpBAL(); //sistemare
         }//if_else
-
-//        }else if (choice==2){
-//            System.out.println("Please insert Y or N.");
-//            return existsBackUpDocument();
-//        }//if_else
-        //return false;
     }
 
     public void checkForSavedDocs() throws IOException {
