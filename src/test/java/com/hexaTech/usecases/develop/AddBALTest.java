@@ -72,8 +72,8 @@ public class AddBALTest{
 
     @Test
     public void addBALTest() throws IOException {
-        Document bal=new Document("balOA.json","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
-        addBAL.addBAL("Develop","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
+        Document bal=new Document("bal.json","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "bal.json");
+        addBAL.addBAL("Develop","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "bal.json");
         assertEquals(repoBALDocumentInterface.getBAL().getPath(), bal.getPath());
         verify(repoBALDocumentInterface).saveDoc(anyString(),anyString());
     }
@@ -86,7 +86,7 @@ public class AddBALTest{
 
     @Test
     public void existsDocTrueTest(){
-        addBAL.existsDoc("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
+        addBAL.existsDoc("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "bal.json");
         verify(addBALOutputPort).showDone(true);
     }
 

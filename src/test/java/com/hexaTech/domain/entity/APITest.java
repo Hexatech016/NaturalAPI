@@ -92,8 +92,8 @@ public class APITest {
         assertEquals("Name",api.createAPI("<--className-->"));
     }
 
-    @Test(expected=NullPointerException.class)
-    public void createTestsNullPointerTest(){
+    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    public void createTestsArrayIndexOutOfBoundsExceptionTest(){
         api.setAPIName("name");
         assertEquals("NameTest",api.createTests("<--className-->"));
     }

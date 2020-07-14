@@ -1,228 +1,219 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "API to withdraw money from ATM.\n",
-    "version": "0.0.1",
-    "title": "ATM"
-  },
-  "paths": {
-    "/withdrawMoney": {
-      "get": {
-        "operationId": "Withdraw Selected Money",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "money",
-            "description": "Money I want to withdraw",
-            "required": true,
-            "type" : "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Give cash and tell how much cash is left in the account",
-            "schema": {
-              "$ref": "returnType",
-              "items": {
-                "$ref": "#/definitions/returnType"
-              }
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/noParameter": {
-      "get": {
-        "operationId": "prova senza parametri",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-              "$ref": "returnType",
-              "items": {
-                "$ref": "#/definitions/returnType"
-              }
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/dueParametri": {
-      "get": {
-        "operationId": "Prova con due parametri",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "money",
-            "description": "Money I want to withdraw",
-            "required": true,
-            "type" : "integer"
-          },
-          {
-            "in": "query",
-            "name": "bankID",
-            "description": "my bank",
-            "required": true,
-            "type" : "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-              "$ref": "returnType",
-              "items": {
-                "$ref": "#/definitions/returnType"
-              }
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/noReturn": {
-      "get": {
-        "operationId": "prova senza ritorno",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/returnTipoSemplice": {
-      "get": {
-        "operationId": "return easy",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/returnArrayString": {
-      "get": {
-        "operationId": "return array string",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/returnArrayTipo": {
-      "get": {
-        "operationId": "return array tipo",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/returnType"
-              }
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/parametroArrayInt": {
-      "get": {
-        "operationId": "parametro array int",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "array",
-            "description": "prova",
-            "required": true,
-            "type" : "array",
-            "items": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
-    },
-    "/parametroArrayTipo": {
-      "get": {
-        "operationId": "parametro array tipo",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "array",
-            "description": "prova",
-            "type" : "array",
-            "required": true,
-            "items": {
-              "$ref": "#/definitions/returnType"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "prova",
-            "schema": {
-            }
-          }
-        },
-        "x-swagger-router-controller": "Default"
-      }
+  "openapi" : "3.0.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "streaming",
+    "license" : {
+      "name" : "MIT"
     }
   },
-  "definitions": {
-    "returnType": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "description": "Feedback message"
-        },
-        "result": {
-          "type": "integer",
-          "description": "Method result"
+  "paths" : {
+    "/chooseVideo" : {
+      "get" : {
+        "operationId" : "chooseVideo",
+        "description" : "Scenario: select video---Given I started the app correctly---And I want to watch a video---When I choose the video---Then I will get the page of the video ------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "video",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "page ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
         }
       }
     },
-    "ciaoneType": {
-      "type": "object",
-      "properties": {
-        "saluti": {
-          "type": "integer",
-          "description": "Tot saluti"
-        },
-        "chi": {
-          "type": "string",
-          "description": "chi saluto"
+    "/giveCommand" : {
+      "get" : {
+        "operationId" : "giveCommand",
+        "description" : "Scenario: stream video---Given I selected a video ---And I want to stream the video---When I selected a video---And I give the play command---Then The app will start the video------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "video",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "command",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "video ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inputPassword" : {
+      "get" : {
+        "operationId" : "inputPassword",
+        "description" : "Scenario: log in---Given I started the app correctly---And I want to access my account---When I input my username---And I input my password---Then I will obtain access to my account------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "username",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "password",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "access ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pressVideo" : {
+      "get" : {
+        "operationId" : "pressVideo",
+        "description" : "Scenario: download video---Given I have premium subscription---And I selected a video---When I press download video---Then I will obtain the video------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "video",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "video ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/haveBandwith" : {
+      "get" : {
+        "operationId" : "haveBandwith",
+        "description" : "Scenario: video stream not available---Given I selected a video---And I want to play the video---When I give play the video---And I have no bandwith---Then I will get an error------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "video",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "bandwith",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "error ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pressCommand" : {
+      "get" : {
+        "operationId" : "pressCommand",
+        "description" : "Scenario: change volume---Given I am streaming a video---And I want to change the volume of the video---When I press the volume command---Then I will change the volume---------------------",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "command",
+          "description" : "Default",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "volume ",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Music" : {
+        "type" : "object",
+        "properties" : {
+          "length" : {
+            "type" : "string"
+          },
+          "format" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Storage" : {
+        "type" : "object",
+        "properties" : {
+          "volume" : {
+            "type" : "string"
+          }
         }
       }
     }

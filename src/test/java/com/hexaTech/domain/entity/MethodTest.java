@@ -138,7 +138,7 @@ public class MethodTest{
         method.setMethodReturnType("integer");
         method.setMethodName("name");
         String[] pla={"<--methodReturn-->-<--methodName-->"};
-        assertEquals("void-nameTest\n",method.createTests(pla,0,1, "hello", "world"));
+        assertEquals("integer-name\n",method.createTests(pla,0,1, "hello", "world"));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class MethodTest{
         param.put("param","integer");
         method.setMethodParam(param);
         String[] pla={"<--methodReturn-->-<--methodName-->"};
-        assertEquals("void-nameTest\n",method.createTests(pla,0,1,"hello", "world"));
+        assertEquals("integer-name\n",method.createTests(pla,0,1,"hello", "world"));
     }
 
 }//MethodTest

@@ -16,13 +16,7 @@ public class OpenAPITest {
     OpenAPI openAPI;
 
     @Test
-    public void extractAPIOpenAPITest(){
-        File test=new File("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json");
-        assertNotNull(openAPI.extractAPI(test.getPath()));
-    }
-
-    @Test
-    public void extractAPISwaggerTest(){
+    public void extractAPITest(){
         File test=new File("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "bal.json");
         assertNotNull(openAPI.extractAPI(test.getPath()));
     }

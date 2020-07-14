@@ -61,7 +61,7 @@ public class CreateAPITest{
         repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "pla.pla","plaTest"));
         repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
-        verify(createAPIOutputPort).showErrorCodeAPI(0);
+        verify(createAPIOutputPort).showErrorCodeAPI(2);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class CreateAPITest{
         repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "emptyFile.txt","empty"));
         repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
-        verify(createAPIOutputPort).showErrorCodeAPI(4);
+        verify(createAPIOutputPort).showErrorCodeAPI(2);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class CreateAPITest{
         repoPLAInterface.setPLA(new PLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json","its_BAL"));
         repoBALDocumentInterface.setBAL(new Document("bal","." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "testFiles" + File.separator + "balOA.json"));
         createAPI.createAPI();
-        verify(createAPIOutputPort).showErrorCodeAPI(4);
+        verify(createAPIOutputPort).showErrorCodeAPI(1);
     }
 
 }//CreateAPITes
