@@ -3,6 +3,7 @@ package com.hexaTech.application.Gui;
 import com.google.common.io.Files;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,12 +31,14 @@ public class DesignWindow extends JPanel implements MyObserver{
     private JLabel message;
 
     private JTextField txtArea;
+    private final Box objectsBox;
 
     private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
+    private JScrollPane scrollPane;
 
     private String testMethod;
     private JButton typeButton;
@@ -56,16 +59,17 @@ public class DesignWindow extends JPanel implements MyObserver{
         addScenarioButton= new JButton("Add Scenario");
         homeButton = new JButton("Home");
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
-
+        objectsBox =Box.createVerticalBox();
         testMethod="";
         txtArea=new JTextField();
         txtArea.setText(testMethod);
+        scrollPane= new JScrollPane();
 
-        String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
-        typeList = new JComboBox(types);
-        typeList.setSelectedIndex(0);
-        typeList.setPreferredSize(new Dimension(200, 100));
-        txtArea.setPreferredSize(new Dimension(200, 100));
+//        String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
+//        typeList = new JComboBox(types);
+//        typeList.setSelectedIndex(0);
+//        typeList.setPreferredSize(new Dimension(200, 100));
+//        txtArea.setPreferredSize(new Dimension(200, 100));
         //typeList.addActionListener(this);
         typeButton=new JButton("ok tipo");
 
@@ -76,11 +80,11 @@ public class DesignWindow extends JPanel implements MyObserver{
         add(addScenarioButton);
         add(addBOButton);
         add(resetButton);
-        add(typeList);
+        add(objectsBox);
+        //add(typeList);
         add(txtArea);
         add(typeButton);
-
-
+        add(scrollPane);
         add(extractBALButton);
         add(guideButton);
         extractBALButton.setEnabled(false);
@@ -109,6 +113,7 @@ public class DesignWindow extends JPanel implements MyObserver{
                     String s = (String)JOptionPane.showInputDialog("Insert name BAL","Default");
 
                     if ((s != null) && (s.length() > 0)) {
+                        objectsBox.removeAll();
                         designController.createBAL(s);
                         methodsSuggestions(s);
                     }
@@ -203,14 +208,14 @@ public class DesignWindow extends JPanel implements MyObserver{
                 }
         });
 
-        typeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                typeList = (JComboBox)e.getSource();
-                typeName = (String)typeList.getSelectedItem();
-
-            }
-        });
+//        typeButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                typeList = (JComboBox)e.getSource();
+//                typeName = (String)typeList.getSelectedItem();
+//
+//            }
+//        });
     }
 
     public void viewMessage(String type) throws IOException {
@@ -273,10 +278,22 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             designController.checkIfHasParameter(sentinel,identifier);
             notifyMeDesign();
-            JTextArea tmpMethod=new JTextArea();
-            tmpMethod.setText(backupString);
-            tmpMethod.setPreferredSize(new Dimension(200, 50));
-            add(tmpMethod);
+//            JTextArea tmpMethod=new JTextArea();
+//            tmpMethod.setText(backupString);
+            SuggestionsDesign suggestionsDesign = new SuggestionsDesign();
+            suggestionsDesign.getTxtArea().setText(backupString);
+            JPanel cocco = new JPanel();
+            cocco.setLayout(new GridLayout(2,2));
+            cocco.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+
+            //actionTypeComboBox = new JComboBox();
+            //tmpMethod.setPreferredSize(new Dimension(300, 50));
+            JCheckBox provaBtn = new JCheckBox();
+
+            cocco.add(suggestionsDesign);
+
+            //cocco.add(tmpMethod);
+            //objectsBox.add(tmpMethod);
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 identifier++;
@@ -284,13 +301,18 @@ public class DesignWindow extends JPanel implements MyObserver{
                 notifyMeDesign();
                 JTextArea tmpParam=new JTextArea();
                 tmpParam.setText(backupString);
-                tmpParam.setPreferredSize(new Dimension(200, 500));
-                add(tmpParam);
+                tmpParam.setPreferredSize(new Dimension(300, 50));
+                //objectsBox.add(tmpParam);
+                //cocco.add(typeList);
+                cocco.add(tmpParam);
             }//external_while
+            objectsBox.add(cocco);
             sentinel++;
             identifier=0;
             designController.checkIfHasMethod(sentinel);
         }//external_while
+        //da sistemare --> scrollPane.add(objectsBox);
+        add(objectsBox);
         designController.updateBAL(nameBAL);
     }//methodsSuggestions
 
