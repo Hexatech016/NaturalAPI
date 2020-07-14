@@ -4,29 +4,16 @@ import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import com.hexaTech.Main;
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.ViewManualController;
 import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
-import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
-import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
-import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
-import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
-import net.didion.jwnl.JWNLException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class DesignWindow extends JPanel implements MyObserver{
 
@@ -124,37 +111,23 @@ public class DesignWindow extends JPanel implements MyObserver{
                 dialog.dispose();
                 int returnVal = chooser.showOpenDialog(dialog);
                 if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    String path = chooser.getSelectedFile().getAbsolutePath();
                     try {
-                        designController.createBO("Design",i);
-                        //designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+                        designController.createBO("Design", path);
                         notifyMeDesign();
-                        // String lastDocument=split();
-                        // listModel.addElement(aaaa);
+                        viewMessage("SuccessBO");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
+                } else if(returnVal != JFileChooser.CANCEL_OPTION){
                     try {
-                        useCaseDesign(3);
+                        viewMessage("WrongFileBO");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    return;
-                }else{
-                    try {
-                        useCaseDesign(4);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    return;
                 }//if_else
-
             }
         });
-
-
-
-
 
         addScenarioButton.addActionListener(new ActionListener() {
             @Override
@@ -169,32 +142,22 @@ public class DesignWindow extends JPanel implements MyObserver{
                 dialog.dispose();
                 int returnVal = chooser.showOpenDialog(dialog);
                 if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
-                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    String path = chooser.getSelectedFile().getAbsolutePath();
                     try {
-                        designController.addGherkin("Design",i);
+                        designController.addGherkin("Design",path);
                         extractBALButton.setEnabled(true);
-                        //designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
                         notifyMeDesign();
-                       // String lastDocument=split();
-                       // listModel.addElement(aaaa);
+                        viewMessage("SuccessGherkin");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
+                }else if(returnVal != JFileChooser.CANCEL_OPTION){
                     try {
-                        useCaseDesign(1);
+                        viewMessage("WrongFileGherkin");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    return;
-                }else{
-                    try {
-                        useCaseDesign(2);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    return;
                 }//if_else
-
             }
         });
 
@@ -207,55 +170,32 @@ public class DesignWindow extends JPanel implements MyObserver{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                //JDialog dialog = new JDialog(window, true); // parent, isModal
-                //dialog.setVisible(true); // blocks until dialog is closed
-                //JFrame popup=new JFrame();
-                //JLabel manual=new JLabel(stringManual);
-                //dialog.set;
-                //popup.setVisible(true);
                 JOptionPane.showMessageDialog(parent.getHomeWindow(),
                         stringManual);
                 }
-
         });
-
-
-
     }
 
-
-    public void useCaseDesign(int i) throws IOException {
-        switch (i) {
-            case(0):
-                designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-                if(notifyMeDoneDesign()){
-                   // designController.showDocumentsList();
-                    notifyMeDesign();
-                   // listModel.addElement(aaaa); //altrimenti element.getText()
-                    if(existsBackUpDocument()) {
-                        message.setText("Backup restored");
-                        extractBALButton.setEnabled(true);
-                    }
-                }
-                break;
-            case(1):
+    public void viewMessage(String type) throws IOException {
+        switch (type) {
+            case("SuccessGherkin"):
                 message.setText("Scenario added.");
                 JOptionPane.showMessageDialog(this,
                         "Scenario added.");
                 break;
-            case(2):
+            case("WrongFileGherkin"):
                 message.setText("The file is not a .scenario or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .scenario or it doesn't exist. Please retry.",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-            case(3):
+            case("SuccessBO"):
                 message.setText("BO added.");
                 JOptionPane.showMessageDialog(this,
                         "BO added.");
                 break;
-            case(4):
+            case("WrongFileBO"):
                 message.setText("The file is not a .json or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .json or it doesn't exist. Please retry.",
@@ -263,7 +203,6 @@ public class DesignWindow extends JPanel implements MyObserver{
                         JOptionPane.ERROR_MESSAGE);
                 break;
         }
-
     }
 
     public boolean existsBackUpDocument() throws IOException {
@@ -283,19 +222,10 @@ public class DesignWindow extends JPanel implements MyObserver{
         }else if(choice==1){
           designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
           extractBALButton.setEnabled(false);
-          // discoverController.clearRepo();
             return false;
-        }
-        else{
-            homeButton.getAction(); ///sistemare
-            return existsBackUpDocument(); //sistemare
+        }else{
+            return existsBackUpDocument();
         }//if_else
-
-//        }else if (choice==2){
-//            System.out.println("Please insert Y or N.");
-//            return existsBackUpDocument();
-//        }//if_else
-        //return false;
     }//existsBackupDocument
 
 
@@ -309,13 +239,6 @@ public class DesignWindow extends JPanel implements MyObserver{
             }
         }
     }
-
-
-
-
-
-
-
 
     @Override
     public void notifyMeDiscover() {

@@ -386,7 +386,7 @@ public class Cli implements MyObserver {
                     System.out.println("\tInvalid choice. Please retry.\n");
             }//switch
         }//while
-    }//useCaseDesign
+    }//viewMessage
 
     private boolean existsBackUpGherkin() throws IOException {
         System.out.println("A Gherkin Scenario is already stored. Do you want to load it? (Y/N)");

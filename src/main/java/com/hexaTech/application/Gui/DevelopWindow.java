@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,19 +12,8 @@ import java.io.IOException;
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.ViewManualController;
 import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
-import com.hexaTech.adapter.interfaceadapter.design.DesignController;
-import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
-import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
-import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
-import net.didion.jwnl.JWNLException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class DevelopWindow extends JPanel implements MyObserver{
 
@@ -62,7 +50,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
         addPLAButton= new JButton("Add external PLA");
         guideButton= new JButton("Guide");
         extractAPIButton= new JButton("Extract API");
-        message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
+        message = new JLabel("Welcome! Please add a BAL to proceed");
         homeButton = new JButton("Home");
         backButton = new JButton("Back");
         backupString = "";
@@ -104,6 +92,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 }
             }
         });
+
         javascriptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,7 +117,6 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 extractBalPanel.add(javascriptButton);
                 extractBalPanel.add(addPLAButton);
                 extractBalPanel.add(guideButton);
-                //extractBalPanel.add(homeButton);
                 extractBalPanel.add(backButton);
                 parent.getHomeWindow().add(extractBalPanel);
                 extractBalPanel.setVisible(true);
@@ -150,29 +138,22 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 dialog.dispose();
                 int returnVal = chooser.showOpenDialog(dialog);
                 if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    String path = chooser.getSelectedFile().getAbsolutePath();
                     try {
-                        developController.addBAL("Develop",i);
+                        developController.addBAL("Develop", path);
                         notifyMeDevelop();
                         extractAPIButton.setEnabled(true);
+                        viewMessage("SuccessBAL");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
+                }else if(returnVal != JFileChooser.CANCEL_OPTION){
                     try {
-                        useCaseDevelop(1);
+                        viewMessage("WrongFileBAL");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    return;
-                }else{
-                    try {
-                        useCaseDevelop(2);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    return;
                 }//if_else
-
             }
         });
 
@@ -189,30 +170,22 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 dialog.dispose();
                 int returnVal = chooser.showOpenDialog(dialog);
                 if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("pla") ){
-                    String i=chooser.getSelectedFile().getAbsolutePath();
+                    String path = chooser.getSelectedFile().getAbsolutePath();
                     try {
-                        developController.addPLA("Develop",i);
+                        developController.addPLA("Develop", path);
                         developController.createAPI();
                         notifyMeDevelop();
-
+                        viewMessage("SuccessPLA");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
+                }else if(returnVal != JFileChooser.CANCEL_OPTION){
                     try {
-                        useCaseDevelop(3);
+                        viewMessage("WrongFilePLA");
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
-                    return;
-                }else{
-                    try {
-                        useCaseDevelop(4);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                    return;
                 }//if_else
-
             }
         });
 
@@ -225,12 +198,6 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                //JDialog dialog = new JDialog(window, true); // parent, isModal
-                //dialog.setVisible(true); // blocks until dialog is closed
-                //JFrame popup=new JFrame();
-                //JLabel manual=new JLabel(stringManual);
-                //dialog.set;
-                //popup.setVisible(true);
                 JOptionPane.showMessageDialog(parent.getHomeWindow(),
                         stringManual);
             }
@@ -239,37 +206,26 @@ public class DevelopWindow extends JPanel implements MyObserver{
 
     }
 
-
-    public void useCaseDevelop(int i) throws IOException {
-        switch (i) {
-            case(0):
-                developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
-                if(notifyMeDoneDevelop()){
-                    notifyMeDevelop();
-                    if(existsBackUpBAL()) {
-                        message.setText("Backup restored");
-                        extractAPIButton.setEnabled(true);
-                    }
-                }
-                break;
-            case(1):
+    public void viewMessage(String type) throws IOException {
+        switch (type) {
+            case("SuccessBAL"):
                 message.setText("BAL added.");
                 JOptionPane.showMessageDialog(this,
                         "BAL added.");
                 break;
-            case(2):
+            case("WrongFileBAL"):
                 message.setText("The file is not a .json or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .json or it doesn't exist. Please retry.",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
-            case(3):
+            case("SuccessPLA"):
                 message.setText("PLA added.");
                 JOptionPane.showMessageDialog(this,
                         "PLA added.");
                 break;
-            case(4):
+            case("WrongFilePLA"):
                 message.setText("The file is not a .PLA or it doesn't exist. Please retry.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .PLA or it doesn't exist. Please retry.",
@@ -299,8 +255,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
             return false;
         }
         else{
-            homeButton.getAction(); ///sistemare
-            return existsBackUpBAL(); //sistemare
+            return existsBackUpBAL();
         }//if_else
     }
 
