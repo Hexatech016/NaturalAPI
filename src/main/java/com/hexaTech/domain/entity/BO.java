@@ -17,7 +17,7 @@ import java.util.*;
  */
 
 public class BO {
-    String ontologyName;
+    String ontologyName="";
     List<StructureBAL> ontologyObjects= new ArrayList<StructureBAL>();
 
     /**

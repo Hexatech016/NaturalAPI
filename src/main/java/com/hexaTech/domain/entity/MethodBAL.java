@@ -10,6 +10,7 @@
 
 package com.hexaTech.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,11 +18,11 @@ import java.util.List;
  */
 
 public class MethodBAL {
-    String name;
-    String description;
-    List<String> tag;
-    ToReturn toReturn;
-    List<Parameter> parameters;
+    String name="";
+    String description="";
+    List<String> tag=new ArrayList<>();
+    ToReturn toReturn=new ToReturn();
+    List<Parameter> parameters=new ArrayList<>();
 
 
     public List<String> getTag() {
