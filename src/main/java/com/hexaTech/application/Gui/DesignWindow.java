@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -63,10 +64,10 @@ public class DesignWindow extends JPanel implements MyObserver{
         String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
         typeList = new JComboBox(types);
         typeList.setSelectedIndex(0);
-        //typeList.setPreferredSize(new Dimension(200, 130));
+        typeList.setPreferredSize(new Dimension(200, 100));
+        txtArea.setPreferredSize(new Dimension(200, 100));
         //typeList.addActionListener(this);
         typeButton=new JButton("ok tipo");
-
 
 
         backupString = "";
@@ -75,7 +76,7 @@ public class DesignWindow extends JPanel implements MyObserver{
         add(addScenarioButton);
         add(addBOButton);
         add(resetButton);
-
+        add(typeList);
         add(txtArea);
         add(typeButton);
 
@@ -264,6 +265,34 @@ public class DesignWindow extends JPanel implements MyObserver{
         }//if_else
     }//existsBackupDocument
 
+    private void methodsSuggestions(String nameBAL) throws IOException {
+        int sentinel=0, identifier=0;
+        message.setText("sono entrato");
+        designController.checkIfHasMethod(sentinel);
+        while(notifyMeDoneDesign()){
+            designController.showMethod(sentinel);
+            designController.checkIfHasParameter(sentinel,identifier);
+            notifyMeDesign();
+            JTextArea tmpMethod=new JTextArea();
+            tmpMethod.setText(backupString);
+            tmpMethod.setPreferredSize(new Dimension(200, 50));
+            add(tmpMethod);
+            while(notifyMeDoneDesign()){
+                designController.showParameter(sentinel,identifier);
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
+                notifyMeDesign();
+                JTextArea tmpParam=new JTextArea();
+                tmpParam.setText(backupString);
+                tmpParam.setPreferredSize(new Dimension(200, 500));
+                add(tmpParam);
+            }//external_while
+            sentinel++;
+            identifier=0;
+            designController.checkIfHasMethod(sentinel);
+        }//external_while
+        designController.updateBAL(nameBAL);
+    }//methodsSuggestions
 
     public void checkForSavedDocs() throws IOException {
         designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
@@ -324,25 +353,6 @@ public class DesignWindow extends JPanel implements MyObserver{
         designController.updateBAL(nameBAL);
     }//methodsSuggestions*/
 
-    private void methodsSuggestions(String nameBAL) throws IOException {
-        int sentinel=0, identifier=0;
-        designController.checkIfHasMethod(sentinel);
-        while(notifyMeDoneDesign()){
-            designController.showMethod(sentinel);
-            designController.checkIfHasParameter(sentinel,identifier);
-            txtArea.setText(backupString);
-            while(notifyMeDoneDesign()){
-                designController.showParameter(sentinel,identifier);
-                identifier++;
-                designController.checkIfHasParameter(sentinel,identifier);
-                txtArea.setText(backupString);
-            }//external_while
-            sentinel++;
-            identifier=0;
-            designController.checkIfHasMethod(sentinel);
-        }//external_while
-        designController.updateBAL(nameBAL);
-    }//methodsSuggestions
 
 
 
