@@ -10,7 +10,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import com.hexaTech.Main;
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -38,9 +41,18 @@ public class DesignWindow extends JPanel implements MyObserver{
     private JButton resetButton;
     private JLabel message;
 
-    public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter) throws IOException {
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
+
+    private String backupString;
+    private String stringManual;
+
+    public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
+                        ViewManualPresenter viewManualPresenter) throws IOException {
         this.designController=designController;
         this.designPresenter=designPresenter;
+        this.viewManualController = viewManualController;
+        this.viewManualPresenter = viewManualPresenter;
         this.mainGui=parent;
         resetButton= new JButton("Reset");
         extractBALButton= new JButton("Extract BAL");
@@ -49,6 +61,7 @@ public class DesignWindow extends JPanel implements MyObserver{
         addScenarioButton= new JButton("Add Scenario");
         homeButton = new JButton("Home");
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
+        backupString = "";
         add(message);
         add(homeButton);
         add(addScenarioButton);
@@ -83,7 +96,7 @@ public class DesignWindow extends JPanel implements MyObserver{
 
                     if ((s != null) && (s.length() > 0)) {
                         designController.createBAL(s);
-                                        }
+                    }
                     else{
                         JOptionPane.showMessageDialog(new JPanel(),
                                 "Invalid name",
@@ -185,7 +198,26 @@ public class DesignWindow extends JPanel implements MyObserver{
             }
         });
 
+        guideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    viewManualController.openManualSection("DESIGN:");
+                    notifyMeManual();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                //JDialog dialog = new JDialog(window, true); // parent, isModal
+                //dialog.setVisible(true); // blocks until dialog is closed
+                //JFrame popup=new JFrame();
+                //JLabel manual=new JLabel(stringManual);
+                //dialog.set;
+                //popup.setVisible(true);
+                JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                        stringManual);
+                }
 
+        });
 
 
 
@@ -234,9 +266,6 @@ public class DesignWindow extends JPanel implements MyObserver{
 
     }
 
-
-
-
     public boolean existsBackUpDocument() throws IOException {
         Object[] choices = {"Yes", "No"};
         Object defaultChoice = choices[0];
@@ -253,6 +282,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             return true;
         }else if(choice==1){
           designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+          extractBALButton.setEnabled(false);
           // discoverController.clearRepo();
             return false;
         }
@@ -268,6 +298,17 @@ public class DesignWindow extends JPanel implements MyObserver{
         //return false;
     }//existsBackupDocument
 
+
+    public void checkForSavedDocs() throws IOException {
+        designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+        if(notifyMeDoneDesign()){
+            if(existsBackUpDocument()) {
+                notifyMeDesign();
+                message.setText(backupString);
+                extractBALButton.setEnabled(true);
+            }
+        }
+    }
 
 
 
@@ -288,12 +329,12 @@ public class DesignWindow extends JPanel implements MyObserver{
 
     @Override
     public void notifyMeDesign() {
-
+        backupString = designPresenter.getMessage();
     }
 
     @Override
     public boolean notifyMeDoneDesign() {
-        return false;
+        return designPresenter.isDone();
     }
 
     @Override
@@ -312,7 +353,6 @@ public class DesignWindow extends JPanel implements MyObserver{
     }
 
     @Override
-    public void notifyMeManual() {
-
+    public void notifyMeManual() {stringManual=viewManualPresenter.getMessage();
     }
 }

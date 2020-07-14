@@ -74,9 +74,9 @@ public class MainGui implements MyObserver {
         window.setLocationRelativeTo(null);
 
         this.homePanel = new JPanel();
-        this.discoverWindow = new DiscoverWindow(this, discoverController,viewManualController,discoverPresenter,viewManualPresenter);
-        this.designWindow = new DesignWindow(this, designController,designPresenter);
-        this.developWindow = new DevelopWindow(this, developController,developPresenter);
+        this.discoverWindow = new DiscoverWindow(this, discoverController, viewManualController, discoverPresenter, viewManualPresenter);
+        this.designWindow = new DesignWindow(this, designController,designPresenter, viewManualController, viewManualPresenter);
+        this.developWindow = new DevelopWindow(this, developController,developPresenter, viewManualController, viewManualPresenter);
 
         this.discoverButton= new JButton("Discover");
         this.designButton= new JButton("Design");
@@ -126,6 +126,11 @@ public class MainGui implements MyObserver {
                 window.add(designWindow);
                 homePanel.setVisible(false);
                 designWindow.setVisible(true);
+                try {
+                    designWindow.checkForSavedDocs();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -135,6 +140,11 @@ public class MainGui implements MyObserver {
                 window.add(developWindow);
                 homePanel.setVisible(false);
                 developWindow.setVisible(true);
+                try {
+                    developWindow.checkForSavedDocs();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 

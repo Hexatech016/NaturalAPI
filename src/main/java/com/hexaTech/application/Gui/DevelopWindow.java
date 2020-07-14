@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
@@ -41,10 +43,19 @@ public class DevelopWindow extends JPanel implements MyObserver{
     private JLabel message;
     private JPanel extractBalPanel;
 
-    public DevelopWindow(MainGui parent, DevelopController developController,DevelopPresenter developPresenter) throws IOException {
+    private final ViewManualController viewManualController;
+    private final ViewManualPresenter viewManualPresenter;
+
+    private String backupString;
+    private String stringManual;
+
+    public DevelopWindow(MainGui parent, DevelopController developController,DevelopPresenter developPresenter, ViewManualController viewManualController,
+                         ViewManualPresenter viewManualPresenter) throws IOException {
         this.developController=developController;
         this.developPresenter=developPresenter;
         this.mainGui=parent;
+        this.viewManualController = viewManualController;
+        this.viewManualPresenter = viewManualPresenter;
         javaButton= new JButton("Java");
         javascriptButton = new JButton("Javascript");
         addBALButton= new JButton("Add BAL");
@@ -54,10 +65,10 @@ public class DevelopWindow extends JPanel implements MyObserver{
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
         homeButton = new JButton("Home");
         backButton = new JButton("Back");
+        backupString = "";
         add(homeButton);
         add(message);
         add(addBALButton);
-        add(addPLAButton);
         add(guideButton);
         add(extractAPIButton);
         extractAPIButton.setEnabled(false);
@@ -181,6 +192,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
                     String i=chooser.getSelectedFile().getAbsolutePath();
                     try {
                         developController.addPLA("Develop",i);
+                        developController.createAPI();
                         notifyMeDevelop();
 
                     } catch (IOException ioException) {
@@ -202,6 +214,27 @@ public class DevelopWindow extends JPanel implements MyObserver{
                 }//if_else
 
             }
+        });
+
+        guideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    viewManualController.openManualSection("DEVELOP:");
+                    notifyMeManual();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                //JDialog dialog = new JDialog(window, true); // parent, isModal
+                //dialog.setVisible(true); // blocks until dialog is closed
+                //JFrame popup=new JFrame();
+                //JLabel manual=new JLabel(stringManual);
+                //dialog.set;
+                //popup.setVisible(true);
+                JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                        stringManual);
+            }
+
         });
 
     }
@@ -282,7 +315,16 @@ public class DevelopWindow extends JPanel implements MyObserver{
         //return false;
     }
 
-
+    public void checkForSavedDocs() throws IOException {
+        developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
+        if(notifyMeDoneDevelop()){
+            if(existsBackUpBAL()) {
+                notifyMeDevelop();
+                message.setText(backupString);
+                extractAPIButton.setEnabled(true);
+            }
+        }
+    }
 
 
 
@@ -308,7 +350,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
 
     @Override
     public void notifyMeDevelop() {
-
+        backupString = developPresenter.getMessage();
     }
 
     @Override
@@ -318,11 +360,11 @@ public class DevelopWindow extends JPanel implements MyObserver{
 
     @Override
     public boolean notifyMeDoneDevelop() {
-        return false;
+        return developPresenter.isDone();
     }
 
     @Override
     public void notifyMeManual() {
-
+        stringManual=viewManualPresenter.getMessage();
     }
 }
