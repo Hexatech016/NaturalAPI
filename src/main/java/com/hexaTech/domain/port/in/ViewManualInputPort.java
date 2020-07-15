@@ -13,4 +13,6 @@ public interface ViewManualInputPort {
      */
     void openManual(String title) throws IOException;
 
+    void openDocument() throws IOException;
+
 }//ViewManualInputPort
