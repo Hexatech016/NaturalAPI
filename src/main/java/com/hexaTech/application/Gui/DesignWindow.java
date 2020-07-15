@@ -44,7 +44,7 @@ public class DesignWindow extends JPanel implements MyObserver{
     private String name;
     private JComboBox typeList;
 
-    public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
+    public DesignWindow(MainGui parent, DesignController designController, DesignPresenter designPresenter, ViewManualController viewManualController,
                         ViewManualPresenter viewManualPresenter) throws IOException {
         this.designController=designController;
         this.designPresenter=designPresenter;

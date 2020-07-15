@@ -37,7 +37,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
     private String backupString;
     private String stringManual;
 
-    public DevelopWindow(MainGui parent, DevelopController developController,DevelopPresenter developPresenter, ViewManualController viewManualController,
+    public DevelopWindow(MainGui parent, DevelopController developController, DevelopPresenter developPresenter, ViewManualController viewManualController,
                          ViewManualPresenter viewManualPresenter) throws IOException {
         this.developController=developController;
         this.developPresenter=developPresenter;
