@@ -4,7 +4,6 @@ import com.hexaTech.domain.entity.DoubleStruct;
 import com.hexaTech.domain.entity.Gherkin;
 import com.hexaTech.domain.entity.StructureBAL;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface TextsParsingInterface {

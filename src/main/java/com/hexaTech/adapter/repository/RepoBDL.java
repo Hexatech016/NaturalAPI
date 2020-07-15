@@ -20,7 +20,7 @@ public class RepoBDL implements RepoBDLInterface {
         BDL=new BDL();
     }
 
-    public BDL createBDL(List<DoubleStruct> tagsForBDLConstruction) throws IOException {
+    public BDL createBDL(List<DoubleStruct> tagsForBDLConstruction) {
         BDL toRet=new BDL();
         toRet.addSostFromDoubleStruct(tagsForBDLConstruction);
         toRet.addVerbFromDoubleStruct(tagsForBDLConstruction);
@@ -60,7 +60,7 @@ public class RepoBDL implements RepoBDLInterface {
         return mapper.readValue(jsonInString, BDL.class);
     }
 
-    public void saveDocDiscover(String doc, String path) throws IOException {
+    public void saveDocDiscover(String doc, String path) {
         try {
             // Open given file in append mode.
             File directory = new File("Discover");
@@ -144,7 +144,7 @@ public class RepoBDL implements RepoBDLInterface {
 
 
     @Override
-    public void loadBackup(String directory) throws IOException {
+    public void loadBackup(String directory) {
 
     }
 

@@ -5,8 +5,6 @@ import com.google.common.io.Files;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -18,32 +16,27 @@ import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 
 public class DiscoverCreate extends JPanel implements MyObserver{
 
-    private JButton loadDocButton;
-    private JButton homeButton;
-    private JButton backButton;
+    private final JButton homeButton;
     public JButton extractBDLButton;
-    private JButton deleteDocButton;
-    private JButton guideButton;
 
 
     private JLabel message;
-    private JLabel loadedText;
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
     private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
-    private DiscoverNavigation discoverNavigation;
+    private final DiscoverNavigation discoverNavigation;
 
     private String backupString;
-    private DefaultListModel listModel;
-    private JList list;
+    private final DefaultListModel listModel;
+    private final JList list;
     private String stringManual;
 
 
     //private JFileChooser insertDocs;
 
     public DiscoverCreate(DiscoverNavigation parent, DiscoverController discoverController, ViewManualController viewManualController,
-                          DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
+                          DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) {
 
         this.discoverController=discoverController;
         this.discoverPresenter=discoverPresenter;
@@ -53,122 +46,92 @@ public class DiscoverCreate extends JPanel implements MyObserver{
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         message = new JLabel();
-        loadedText = new JLabel("Stored documents:");
+        JLabel loadedText = new JLabel("Stored documents:");
         backupString = "";
         message.setText("Welcome! Please add at least one document to proceed");
 
 
-        loadDocButton = new JButton("Load document");
+        JButton loadDocButton = new JButton("Load document");
         homeButton = new JButton("Home");
         extractBDLButton = new JButton("Extract BDL");
-        deleteDocButton = new JButton("Delete selected document");
-        guideButton= new JButton("Guide");
-        backButton = new JButton("Back");
-        //loadedText.setText("Stored documents:");
+        JButton deleteDocButton = new JButton("Delete selected document");
+        JButton guideButton = new JButton("Guide");
+        JButton backButton = new JButton("Back");
         add(homeButton);
         add(message);
         add(loadDocButton);
         add(deleteDocButton);
         add(loadedText);
         add(backButton);
-
-        //extractBDLButton.setEnabled(false);
-        //setLayout(new BorderLayout());
         listModel = new DefaultListModel();
-        //Create the list and put it in a scroll pane.
         list = new JList<String>(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //list.setPreferredSize(new Dimension(200, 50));
-        //list.setSelectedIndex(0);
-        //list.addListSelectionListener(this); sistemare
         list.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(list);
-        //add(list);
         add(listScrollPane, BorderLayout.CENTER);
-
 
         add(extractBDLButton);
         add(guideButton);
 
+        loadDocButton.addActionListener(e -> loadDocument());
 
-        //getMessage(0);// chiamato automaticamente in MainGui, quindi qui non serve
-
-        loadDocButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadDocument();
+        deleteDocButton.addActionListener(e -> {
+            try {
+                deleteDocument();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
-        deleteDocButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    deleteDocument();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+        homeButton.addActionListener(e -> {
+            message.setText("Welcome! Please add at least one document to proceed");
+            discoverNavigation.getMainGui().getHomePanel().setVisible(true);
+            setVisible(false);
+            listModel.clear();
+            backupString = "";
+        });
+
+        backButton.addActionListener(e -> {
+            message.setText("Welcome! Please add at least one document to proceed");
+            discoverNavigation.setVisible(true);
+            setVisible(false);
+            listModel.clear();
+            backupString = "";
+        });
+
+        extractBDLButton.addActionListener(e -> {
+            String name = (String)JOptionPane.showInputDialog(
+                    this,
+                    "Insert a name for the BDL",
+                    "Insert BDL name",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "Default");
+            if(!(name == null)) {
+                if (!name.equals("")) {
+                    try {
+                        discoverController.createBDL(name);
+                        viewMessage("Created");
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                } else {
+                    viewMessage("InvalidName");
                 }
             }
         });
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                message.setText("Welcome! Please add at least one document to proceed");
-                parent.getMainGui().getHomePanel().setVisible(true);
-                setVisible(false);
-                listModel.clear();
+        guideButton.addActionListener(e -> {
+            try {
+                this.viewManualController.openManualSection("DISCOVER:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+            JOptionPane.showMessageDialog(discoverNavigation.getMainGui().getHomeWindow(),
+                    stringManual);
         });
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                message.setText("Welcome! Please add at least one document to proceed");
-                parent.setVisible(true);
-                setVisible(false);
-                listModel.clear();
-            }
-        });
-
-        extractBDLButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = insertBDLName();
-                try {
-                    discoverController.createBDL(name);
-                    viewMessage("Created");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManualSection("DISCOVER:");
-                    notifyMeManual();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(parent.getMainGui().getHomeWindow(),
-                        stringManual);
-            }
-        });
-
-    }
-
-    public String insertBDLName() {
-        return (String)JOptionPane.showInputDialog(
-                this,
-                "Insert a name for the BDL",
-                "Insert BDL name",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                null,
-                "");
     }
 
     public void checkForSavedDocs() throws IOException {
@@ -178,9 +141,8 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                 discoverController.showDocumentsList();
                 notifyMeDiscover();
                 String[] files = backupString.split("\n");
-                for(int j=0; j<files.length; j++)
-                {
-                    listModel.addElement(files[j]);
+                for (String file : files) {
+                    listModel.addElement(file);
                 }
                 message.setText("Backup restored");
                 extractBDLButton.setEnabled(true);
@@ -214,24 +176,15 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                 }
             }
             else {
-                try {
-                    viewMessage("AlreadyLoaded");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                viewMessage("AlreadyLoaded");
             }
         }else if(returnVal != JFileChooser.CANCEL_OPTION){
-            try {
-                viewMessage("WrongFile");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            viewMessage("WrongFile");
         }//if_else
-        return;
     }
 
 
-    public void viewMessage(String type) throws IOException {
+    public void viewMessage(String type) {
         switch (type) {
             case("Success"):
                 message.setText("Document added.");
@@ -263,6 +216,14 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                 message.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
                 JOptionPane.showMessageDialog(this,
                         "BDL has been created successfully");
+                break;
+            case("InvalidName"):
+                message.setText("Invalid Name");
+                JOptionPane.showMessageDialog(this,
+                        "The name cannot be empty",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
         }
 
     }
@@ -307,8 +268,8 @@ public class DiscoverCreate extends JPanel implements MyObserver{
             listModel.clear();
             if(!backupString.equals("")) {
                 String[] files = backupString.split("\n");
-                for (int j = 0; j < files.length; j++) {
-                    listModel.addElement(files[j]);
+                for (String file : files) {
+                    listModel.addElement(file);
                 }
             }
             if(notifyMeDoneDiscover()) {

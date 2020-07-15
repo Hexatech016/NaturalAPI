@@ -18,7 +18,7 @@ import java.util.*;
 
 public class BO {
     String ontologyName="";
-    List<StructureBAL> ontologyObjects= new ArrayList<StructureBAL>();
+    List<StructureBAL> ontologyObjects= new ArrayList<>();
 
     /**
      * BO class empty constructor.
@@ -82,7 +82,7 @@ public class BO {
 
     @Override
     public String toString() {
-        return "BO{" +
+        return "{" +
                 "ontologyName='" + ontologyName + '\'' +
                 ", ontologyObjects=" + ontologyObjects.toString() +
                 '}';

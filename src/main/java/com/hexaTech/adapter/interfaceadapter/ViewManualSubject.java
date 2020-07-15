@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class ViewManualSubject {
 
-    private List<MyObserver> observers=new ArrayList<>();
+    private final List<MyObserver> observers=new ArrayList<>();
 
     /**
      * Adds an observer to subject's observers list.

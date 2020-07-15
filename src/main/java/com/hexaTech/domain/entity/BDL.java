@@ -146,7 +146,7 @@ public class BDL {
             if (compare == 0) return 1;
             else return compare;
         };
-        Map<String, Integer> sortedByValues = new TreeMap<String, Integer>(valueComparator);
+        Map<String, Integer> sortedByValues = new TreeMap<>(valueComparator);
         sortedByValues.putAll(map);
         return sortedByValues;
     }
@@ -160,12 +160,8 @@ public class BDL {
         List<Map.Entry<String, Integer>> list =
                 new LinkedList<>(hm.entrySet());
         // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return (o2.getValue()).compareTo(o1.getValue());
-            }//compare
-        });
+        //compare
+        list.sort((o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
         // put data from sorted list to hashmap
         HashMap<String, Integer> temp = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> aa : list) {
@@ -268,8 +264,8 @@ public class BDL {
         verbs.entrySet().removeIf(e->e.getKey().length()==2 && e.getKey().matches(".*+\\.+.*"));
     }
 
-    public void removeIrrelevantPredicates(List<String> keyWordList) {
+    /*public void removeIrrelevantPredicates(List<String> keyWordList) {
         for(String word: keyWordList)
         predicates.entrySet().removeIf(e -> e.getValue().equals(1) && !e.getKey().contains(word));
-    }
+    }*/
 }//BDL

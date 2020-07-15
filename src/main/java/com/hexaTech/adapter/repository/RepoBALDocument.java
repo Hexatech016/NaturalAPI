@@ -41,7 +41,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
      */
     public BAL setBALFromGherkin(List<Gherkin> gherkins, String nameBal){
         BAL BAL = new BAL(nameBal);
-        ArrayList<MethodBAL> methods = new ArrayList<MethodBAL>();
+        ArrayList<MethodBAL> methods = new ArrayList<>();
         for (Gherkin gherkin: gherkins) {
             MethodBAL meth = new MethodBAL();
             meth.setName(gherkin.getScenario());
@@ -49,7 +49,7 @@ public class RepoBALDocument implements RepoBALDocumentInterface {
             ToReturn toRet=new ToReturn();
             toRet.setDescription(gherkin.getThen());
             meth.setToRet(toRet);
-            ArrayList<Parameter> params = new ArrayList<Parameter>();
+            ArrayList<Parameter> params = new ArrayList<>();
             for(String parameter : gherkin.getWhen()){
                 Parameter param = new Parameter();
                 param.setDescription("Default");

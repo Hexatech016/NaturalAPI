@@ -10,9 +10,9 @@
 
 package com.hexaTech.domain.usecase.develop;
 
-import com.hexaTech.adapter.repository.RepoBAL;
+
 import com.hexaTech.domain.port.in.AddBALInputPort;
-import com.hexaTech.domain.port.out.repository.RepoBALInterface;
+
 import com.hexaTech.domain.port.out.usecase.AddBALOutputPort;
 import com.hexaTech.domain.port.out.repository.RepoBALDocumentInterface;
 import org.springframework.beans.factory.annotation.Autowired;

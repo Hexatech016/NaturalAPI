@@ -5,8 +5,6 @@ import com.google.common.io.Files;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,56 +18,35 @@ public class DesignWindow extends JPanel implements MyObserver{
 
     private final DesignController designController;
     private final DesignPresenter designPresenter;
-    private MainGui mainGui;
-    private JButton homeButton;
-    private JButton addScenarioButton;
-    private JButton guideButton;
-    private JButton extractBALButton;
-    private JButton addBOButton;
-    private JButton resetButton;
-    private JButton confirmButton;
-    private JLabel message;
+    private final JButton extractBALButton;
+    private final JButton confirmButton;
+    private final JLabel message;
 
-    private JTextField txtArea;
     private final Box objectsBox;
 
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
-    private JScrollPane scrollPane;
-
-    private String testMethod;
     private String name;
-    private JComboBox typeList;
 
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
-                        ViewManualPresenter viewManualPresenter) throws IOException {
+                        ViewManualPresenter viewManualPresenter) {
         this.designController=designController;
         this.designPresenter=designPresenter;
-        this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
-        this.mainGui=parent;
-        resetButton= new JButton("Reset");
         extractBALButton= new JButton("Extract BAL");
-        addBOButton= new JButton("Add BO");
-        guideButton= new JButton("Guide");
-        addScenarioButton= new JButton("Add Scenario");
-        homeButton = new JButton("Home");
+        JButton addBOButton = new JButton("Add BO");
+        JButton guideButton = new JButton("Guide");
+        JButton addScenarioButton = new JButton("Add Scenario");
+        JButton homeButton = new JButton("Home");
+        JButton addComplexType = new JButton("Add a new complex type");
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
         objectsBox =Box.createVerticalBox();
-        testMethod="";
-        txtArea=new JTextField();
+        String testMethod = "";
+        JTextField txtArea = new JTextField();
         txtArea.setText(testMethod);
-        scrollPane= new JScrollPane();
 
-//        String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
-//        typeList = new JComboBox(types);
-//        typeList.setSelectedIndex(0);
-//        typeList.setPreferredSize(new Dimension(200, 100));
-//        txtArea.setPreferredSize(new Dimension(200, 100));
-        //typeList.addActionListener(this);
         confirmButton=new JButton("Generate BAL");
         confirmButton.setEnabled(false);
         confirmButton.setVisible(false);
@@ -80,156 +57,121 @@ public class DesignWindow extends JPanel implements MyObserver{
         add(homeButton);
         add(addScenarioButton);
         add(addBOButton);
-        add(resetButton);
-        //add(objectsBox);
-        //add(txtArea);
-        add(scrollPane);
+        add(addComplexType);
         add(extractBALButton);
         add(confirmButton);
         add(guideButton);
         extractBALButton.setEnabled(false);
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(true);
-                setVisible(false);
-                objectsBox.removeAll();
-                confirmButton.setEnabled(false);
-                extractBALButton.setEnabled(false);
-                confirmButton.setVisible(false);
-                extractBALButton.setVisible(true);
+        homeButton.addActionListener(e -> {
+            parent.getHomePanel().setVisible(true);
+            setVisible(false);
+            objectsBox.removeAll();
+            confirmButton.setEnabled(false);
+            extractBALButton.setEnabled(false);
+            confirmButton.setVisible(false);
+            extractBALButton.setVisible(true);
 
-            }
         });
 
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-              extractBALButton.setEnabled(false);
-              }
-        });
-
-        extractBALButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                try {
-
-                    name = (String)JOptionPane.showInputDialog("Insert name BAL","Default");
-
-                    if ((name != null) && (name.length() > 0)) {
+        extractBALButton.addActionListener(e -> {
+            try {
+                name = JOptionPane.showInputDialog("Insert name BAL","Default");
+                if(name != null) {
+                    if (!name.equals("")) {
                         designController.createBAL(name);
                         methodsSuggestions();
                         confirmButton.setVisible(true);
                         confirmButton.setEnabled(true);
                         extractBALButton.setVisible(false);
                         extractBALButton.setEnabled(false);
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(new JPanel(),
                                 "Invalid name",
                                 "Inane error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
                 }
-            }
-
-        });
-
-        addBOButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        designController.createBO("Design", path);
-                        notifyMeDesign();
-                        viewMessage("SuccessBO");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                } else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFileBO");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
-        addScenarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        designController.addGherkin("Design",path);
-                        extractBALButton.setEnabled(true);
-                        notifyMeDesign();
-                        viewMessage("SuccessGherkin");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFileGherkin");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
-            }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addBOButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
                 try {
-                    viewManualController.openManualSection("DESIGN:");
-                    notifyMeManual();
+                    designController.createBO("Design", path);
+                    notifyMeDesign();
+                    viewMessage("SuccessBO");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                JOptionPane.showMessageDialog(parent.getHomeWindow(),
-                        stringManual);
-                }
+            } else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFileBO");
+            }//if_else
         });
 
-        confirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        addScenarioButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
                 try {
-                    designController.updateBAL(name);
+                    designController.addGherkin("Design",path);
+                    extractBALButton.setEnabled(true);
+                    notifyMeDesign();
+                    viewMessage("SuccessGherkin");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
+            }else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFileGherkin");
+            }//if_else
+        });
+
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DESIGN:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+            JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                    stringManual);
+            });
+
+        confirmButton.addActionListener(e -> {
+            try {
+                designController.updateBAL(name);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        addComplexType.addActionListener(e -> {
+            ComplexTypeCreator ctc = new ComplexTypeCreator(parent, designController);
+            ctc.openWindow();
         });
     }
 
-    public void viewMessage(String type) throws IOException {
+    public void viewMessage(String type) {
         switch (type) {
             case("SuccessGherkin"):
                 message.setText("Scenario added.");
@@ -281,7 +223,7 @@ public class DesignWindow extends JPanel implements MyObserver{
         }//if_else
     }//existsBackupDocument
 
-    private void methodsSuggestions() throws IOException {
+    private void methodsSuggestions() {
         int sentinel=0, identifier=0;
         message.setText("sono entrato");
         designController.checkIfHasMethod(sentinel);
@@ -293,7 +235,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             comboMethod.setNameMethods(backupString);
 
             JPanel methodPanel = new JPanel();
-            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));;
+            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
             methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 
             methodPanel.add(comboMethod);

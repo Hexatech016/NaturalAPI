@@ -20,7 +20,7 @@ public class Gherkin {
     String scenario;
     String description;
     String given;
-    ArrayList<String> when= new ArrayList<String>();
+    ArrayList<String> when= new ArrayList<>();
     String then;
 
     public void setDescription(String description) {

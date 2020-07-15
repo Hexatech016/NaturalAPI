@@ -6,7 +6,7 @@ import java.util.List;
 
 public class StructureBAL {
     String name;
-    List<Parameter> parameters=new ArrayList<Parameter>();
+    List<Parameter> parameters= new ArrayList<>();
 
     public StructureBAL(){}
 
@@ -35,8 +35,9 @@ public class StructureBAL {
         boolean found=false;
         for(Parameter parameterExt:parameters){
             for(Parameter parameter:this.parameters){
-                if(parameter.getName().equalsIgnoreCase(parameterExt.getName())){
-                    found=true;
+                if (parameter.getName().equalsIgnoreCase(parameterExt.getName())) {
+                    found = true;
+                    break;
                 }//if
             }//for
             if(!found)
@@ -54,7 +55,7 @@ public class StructureBAL {
         int last=parameters.size()-1;
         int count=0;
         for(Parameter parameter: parameters){
-            toReturnString.append("\""+parameter.getName()+"\":{\"type\":\""+parameter.getType()+"\"}");
+            toReturnString.append("\"").append(parameter.getName()).append("\":{\"type\":\"").append(parameter.getType()).append("\"}");
             if (count<last){
                 toReturnString.append(",");
             }//if

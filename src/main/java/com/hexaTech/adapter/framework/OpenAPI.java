@@ -205,7 +205,7 @@ public class OpenAPI implements JsonParsingInterface {
      */
     private HashMap<String,String> getStructureParam(Map.Entry<String,Schema> struct){
         HashMap<String,String> tempStruct=new HashMap<>();
-        Map<String,Schema> temp=struct.getValue().getProperties();
+        Map<String,Schema> temp = struct.getValue().getProperties();
         for(Map.Entry<String, Schema> schema:temp.entrySet()){
             tempStruct.put(schema.getKey(),schema.getValue().getType());
         }//for

@@ -6,7 +6,6 @@ import com.hexaTech.domain.port.out.usecase.ViewManualOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +57,7 @@ public class ViewManual implements ViewManualInputPort{
     public void openDocument() throws IOException {
         Path tempFile = Files.createTempFile(null, ".pdf");
         try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("userManual.pdf")) {
+            assert is != null;
             Files.copy(is, tempFile, StandardCopyOption.REPLACE_EXISTING);
         }
         catch (IOException ioException) {

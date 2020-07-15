@@ -66,10 +66,10 @@ public class DesignPresenter extends DesignSubject implements AddBDLOutputPort, 
         notifySubMe();
     }
 
-    public void showErrorBAL(String result){
+    /*public void showErrorBAL(String result){
         message=result;
         notifySubMe();
-    }
+    }*/
 
     @Override
     public void showCreatedBO(String result) {
@@ -77,8 +77,8 @@ public class DesignPresenter extends DesignSubject implements AddBDLOutputPort, 
         notifySubMe();
     }
 
-    public void showMessage(String result){
+    /*public void showMessage(String result){
         message=result;
         notifySubMe();
-    }
+    }*/
 }
