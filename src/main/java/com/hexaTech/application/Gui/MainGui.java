@@ -146,6 +146,7 @@ public class MainGui implements MyObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    viewManualController.openManual();
                     viewManualController.openManualSection("MAIN:");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();

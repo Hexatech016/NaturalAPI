@@ -6,8 +6,13 @@ import com.hexaTech.domain.port.out.usecase.ViewManualOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
  * Class used to manage user manual's opening.
@@ -49,5 +54,16 @@ public class ViewManual implements ViewManualInputPort{
         }//for
         return toReturn.toString();
     }//getManualSection
+
+    public void openDocument() throws IOException {
+        Path tempFile = Files.createTempFile(null, ".pdf");
+        try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("userManual.pdf")) {
+            Files.copy(is, tempFile, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        viewManualOutputPort.showDocument(tempFile.toFile());
+    }
 
 }//ViewManual

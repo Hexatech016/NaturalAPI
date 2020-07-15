@@ -339,22 +339,15 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             txtArea.setText(backupString);
 
-
-
-
                         //designController.alterMethodReturn(sentinel,"void",false,false);
 
                         //designController.alterMethodReturn(sentinel,getType(choice.toUpperCase()),isAnArray(true),false);
-
-
-
 
             designController.checkIfHasParameter(sentinel,identifier);
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 System.out.println("\t\tDo you want to change parameter type? (Y/N)");
                 choice=scanner.nextLine();
-
 
                         System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
                         choice=scanner.nextLine();
@@ -367,8 +360,6 @@ public class DesignWindow extends JPanel implements MyObserver{
                         else
                             designController.alterParameterType(sentinel,identifier,getType(choice.toUpperCase()),isAnArray(false),false);
                         break;
-
-
 
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);

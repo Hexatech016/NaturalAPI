@@ -1,5 +1,8 @@
 package com.hexaTech.domain.port.out.usecase;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * ViewManual output interface
  */
@@ -10,4 +13,6 @@ public interface ViewManualOutputPort {
      * @param result string - message text.
      */
     void showViewedManual(String result);
+
+    void showDocument(File file) throws IOException;
 }//ViewManualOutputPort
