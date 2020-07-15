@@ -208,14 +208,15 @@ public class DesignWindow extends JPanel implements MyObserver{
                 }
         });
 
-//        typeButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
+        typeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 //                typeList = (JComboBox)e.getSource();
 //                typeName = (String)typeList.getSelectedItem();
-//
-//            }
-//        });
+
+
+            }
+        });
     }
 
     public void viewMessage(String type) throws IOException {
@@ -278,40 +279,28 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             designController.checkIfHasParameter(sentinel,identifier);
             notifyMeDesign();
-//            JTextArea tmpMethod=new JTextArea();
-//            tmpMethod.setText(backupString);
-            SuggestionsDesign suggestionsDesign = new SuggestionsDesign();
-            //suggestionsDesign.getTxtArea().setText(backupString);
-            suggestionsDesign.setNameMethods(backupString);
+            SuggestionsDesign comboMethod = new SuggestionsDesign();
+            JButton confirmMethod = new JButton("Confirm Change");
+            confirmMethod.setAction(typeButton.getAction());
+            comboMethod.setNameMethods(backupString);
 
-            JPanel cocco = new JPanel();
-            cocco.setLayout(new GridLayout(2,2));
-            cocco.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+            JPanel methodPanel = new JPanel();
+            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));;
+            methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 
-            //actionTypeComboBox = new JComboBox();
-            //tmpMethod.setPreferredSize(new Dimension(300, 50));
-
-            cocco.add(suggestionsDesign.getNameMethods());
-            cocco.add(suggestionsDesign.getButton());
-
-            //cocco.add(tmpMethod);
-            //objectsBox.add(tmpMethod);
+            methodPanel.add(comboMethod);
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);
                 notifyMeDesign();
-                JLabel Param= new JLabel();
-                //JTextArea tmpParam=new JTextArea();
-                Param.setText(backupString);
-                //tmpParam.setText(backupString);
-                //tmpParam.setPreferredSize(new Dimension(300, 50));
-                //objectsBox.add(tmpParam);
-                //cocco.add(typeList);
-                //cocco.add(tmpParam);
-                cocco.add(Param);
+                SuggestionsDesign comboParam = new SuggestionsDesign();
+                comboParam.setNameMethods(backupString);
+                methodPanel.add(comboParam);
             }//external_while
-            objectsBox.add(cocco);
+            methodPanel.add(confirmMethod);
+            objectsBox.add(methodPanel);
+            //button set index ( per avere l'indice nella action)
             sentinel++;
             identifier=0;
             designController.checkIfHasMethod(sentinel);
