@@ -7,26 +7,26 @@ import java.awt.event.ActionListener;
 
 public class SuggestionsDesign extends JPanel{
 
-    private JComboBox button;
-    private JTextField txtArea;
+    private JComboBox comboType;
+    //private JTextField txtArea;
     private String typeName;
     private JLabel nameMethods;
 
     public SuggestionsDesign(){
 
         String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
-        button = new JComboBox(types);
-        txtArea = new JTextField();
+        comboType = new JComboBox(types);
+        //txtArea = new JTextField();
         nameMethods = new JLabel();
-        button.setSelectedIndex(0);
-        button.setPreferredSize(new Dimension(100, 20));
-        txtArea.setPreferredSize(new Dimension(200, 50));
+        comboType.setSelectedIndex(0);
+        comboType.setPreferredSize(new Dimension(100, 20));
+        //ameMethods.setPreferredSize(new Dimension(200, 50));
 
-        add(button);
         add(nameMethods);
+        add(comboType);
         //add(txtArea);
 
-        button.addActionListener(new ActionListener() {
+        comboType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox typeList = (JComboBox)e.getSource();
@@ -36,19 +36,26 @@ public class SuggestionsDesign extends JPanel{
     }
 
     public JComboBox getButton() {
-        return button;
+        return comboType;
     }
 
     public void setButton(JComboBox button) {
-        this.button = button;
+        this.comboType = button;
     }
 
-    public JTextField getTxtArea() {
-        return txtArea;
-    }
+//    public JTextField getTxtArea() {
+//        return txtArea;
+//    }
+//
+//    public void setTxtArea(JTextField txtArea) {
+//        this.txtArea = txtArea;
+//    }
 
-    public void setTxtArea(JTextField txtArea) {
-        this.txtArea = txtArea;
+    // works only with two strings.
+    public String[] getSplitSting(String methodName) {
+        String[] contents;
+        contents = methodName.split("\n");
+        return contents;
     }
 
     public String getTypeName() {
@@ -64,6 +71,7 @@ public class SuggestionsDesign extends JPanel{
     }
 
     public void setNameMethods(String name) {
-        this.nameMethods = new JLabel(name);
+        String[] temp = getSplitSting(name);
+        this.nameMethods.setText("<html>" + temp[0] + "<br/>" + temp[1] + "</html>");
     }
 }
