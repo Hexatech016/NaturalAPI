@@ -281,16 +281,18 @@ public class DesignWindow extends JPanel implements MyObserver{
 //            JTextArea tmpMethod=new JTextArea();
 //            tmpMethod.setText(backupString);
             SuggestionsDesign suggestionsDesign = new SuggestionsDesign();
-            suggestionsDesign.getTxtArea().setText(backupString);
+            //suggestionsDesign.getTxtArea().setText(backupString);
+            suggestionsDesign.setNameMethods(backupString);
+
             JPanel cocco = new JPanel();
             cocco.setLayout(new GridLayout(2,2));
             cocco.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 
             //actionTypeComboBox = new JComboBox();
             //tmpMethod.setPreferredSize(new Dimension(300, 50));
-            JCheckBox provaBtn = new JCheckBox();
 
-            cocco.add(suggestionsDesign);
+            cocco.add(suggestionsDesign.getNameMethods());
+            cocco.add(suggestionsDesign.getButton());
 
             //cocco.add(tmpMethod);
             //objectsBox.add(tmpMethod);
@@ -299,12 +301,15 @@ public class DesignWindow extends JPanel implements MyObserver{
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);
                 notifyMeDesign();
-                JTextArea tmpParam=new JTextArea();
-                tmpParam.setText(backupString);
-                tmpParam.setPreferredSize(new Dimension(300, 50));
+                JLabel Param= new JLabel();
+                //JTextArea tmpParam=new JTextArea();
+                Param.setText(backupString);
+                //tmpParam.setText(backupString);
+                //tmpParam.setPreferredSize(new Dimension(300, 50));
                 //objectsBox.add(tmpParam);
                 //cocco.add(typeList);
-                cocco.add(tmpParam);
+                //cocco.add(tmpParam);
+                cocco.add(Param);
             }//external_while
             objectsBox.add(cocco);
             sentinel++;
