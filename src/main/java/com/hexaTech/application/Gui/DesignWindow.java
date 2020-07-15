@@ -5,7 +5,6 @@ import com.google.common.io.Files;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,6 +27,7 @@ public class DesignWindow extends JPanel implements MyObserver{
     private JButton extractBALButton;
     private JButton addBOButton;
     private JButton resetButton;
+    private JButton confirmButton;
     private JLabel message;
 
     private JTextField txtArea;
@@ -41,8 +41,7 @@ public class DesignWindow extends JPanel implements MyObserver{
     private JScrollPane scrollPane;
 
     private String testMethod;
-    private JButton typeButton;
-    private String typeName;
+    private String name;
     private JComboBox typeList;
 
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
@@ -71,8 +70,10 @@ public class DesignWindow extends JPanel implements MyObserver{
 //        typeList.setPreferredSize(new Dimension(200, 100));
 //        txtArea.setPreferredSize(new Dimension(200, 100));
         //typeList.addActionListener(this);
-        typeButton=new JButton("ok tipo");
-
+        confirmButton=new JButton("Generate BAL");
+        confirmButton.setEnabled(false);
+        confirmButton.setVisible(false);
+        extractBALButton.setEnabled(false);
 
         backupString = "";
         add(message);
@@ -80,12 +81,11 @@ public class DesignWindow extends JPanel implements MyObserver{
         add(addScenarioButton);
         add(addBOButton);
         add(resetButton);
-        add(objectsBox);
-        //add(typeList);
-        add(txtArea);
-        add(typeButton);
+        //add(objectsBox);
+        //add(txtArea);
         add(scrollPane);
         add(extractBALButton);
+        add(confirmButton);
         add(guideButton);
         extractBALButton.setEnabled(false);
 
@@ -94,6 +94,12 @@ public class DesignWindow extends JPanel implements MyObserver{
             public void actionPerformed(ActionEvent e) {
                 parent.getHomePanel().setVisible(true);
                 setVisible(false);
+                objectsBox.removeAll();
+                confirmButton.setEnabled(false);
+                extractBALButton.setEnabled(false);
+                confirmButton.setVisible(false);
+                extractBALButton.setVisible(true);
+
             }
         });
 
@@ -110,12 +116,15 @@ public class DesignWindow extends JPanel implements MyObserver{
             public void actionPerformed(ActionEvent e){
                 try {
 
-                    String s = (String)JOptionPane.showInputDialog("Insert name BAL","Default");
+                    name = (String)JOptionPane.showInputDialog("Insert name BAL","Default");
 
-                    if ((s != null) && (s.length() > 0)) {
-                        objectsBox.removeAll();
-                        designController.createBAL(s);
-                        methodsSuggestions(s);
+                    if ((name != null) && (name.length() > 0)) {
+                        designController.createBAL(name);
+                        methodsSuggestions();
+                        confirmButton.setVisible(true);
+                        confirmButton.setEnabled(true);
+                        extractBALButton.setVisible(false);
+                        extractBALButton.setEnabled(false);
                     }
                     else{
                         JOptionPane.showMessageDialog(new JPanel(),
@@ -208,13 +217,14 @@ public class DesignWindow extends JPanel implements MyObserver{
                 }
         });
 
-        typeButton.addActionListener(new ActionListener() {
+        confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                typeList = (JComboBox)e.getSource();
-//                typeName = (String)typeList.getSelectedItem();
-
-
+                try {
+                    designController.updateBAL(name);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
     }
@@ -271,7 +281,7 @@ public class DesignWindow extends JPanel implements MyObserver{
         }//if_else
     }//existsBackupDocument
 
-    private void methodsSuggestions(String nameBAL) throws IOException {
+    private void methodsSuggestions() throws IOException {
         int sentinel=0, identifier=0;
         message.setText("sono entrato");
         designController.checkIfHasMethod(sentinel);
@@ -279,9 +289,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             designController.checkIfHasParameter(sentinel,identifier);
             notifyMeDesign();
-            SuggestionsDesign comboMethod = new SuggestionsDesign();
-            JButton confirmMethod = new JButton("Confirm Change");
-            confirmMethod.setAction(typeButton.getAction());
+            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController);
             comboMethod.setNameMethods(backupString);
 
             JPanel methodPanel = new JPanel();
@@ -291,14 +299,13 @@ public class DesignWindow extends JPanel implements MyObserver{
             methodPanel.add(comboMethod);
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
-                identifier++;
-                designController.checkIfHasParameter(sentinel,identifier);
                 notifyMeDesign();
-                SuggestionsDesign comboParam = new SuggestionsDesign();
+                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController);
                 comboParam.setNameMethods(backupString);
                 methodPanel.add(comboParam);
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
             }//external_while
-            methodPanel.add(confirmMethod);
             objectsBox.add(methodPanel);
             //button set index ( per avere l'indice nella action)
             sentinel++;
@@ -307,7 +314,6 @@ public class DesignWindow extends JPanel implements MyObserver{
         }//external_while
         //da sistemare --> scrollPane.add(objectsBox);
         add(objectsBox);
-        designController.updateBAL(nameBAL);
     }//methodsSuggestions
 
     public void checkForSavedDocs() throws IOException {
@@ -320,54 +326,6 @@ public class DesignWindow extends JPanel implements MyObserver{
             }
         }
     }
-
-    /*private void methodsSuggestions(String nameBAL) throws IOException {
-        int sentinel=0, identifier=0;
-        designController.checkIfHasMethod(sentinel);
-        while(notifyMeDoneDesign()){
-            designController.showMethod(sentinel);
-            txtArea.setText(backupString);
-
-                        //designController.alterMethodReturn(sentinel,"void",false,false);
-
-                        //designController.alterMethodReturn(sentinel,getType(choice.toUpperCase()),isAnArray(true),false);
-
-            designController.checkIfHasParameter(sentinel,identifier);
-            while(notifyMeDoneDesign()){
-                designController.showParameter(sentinel,identifier);
-                System.out.println("\t\tDo you want to change parameter type? (Y/N)");
-                choice=scanner.nextLine();
-
-                        System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
-                        choice=scanner.nextLine();
-                        while(!checkAnswer(choice)){
-                            System.out.println("\tWrong character. Please retry.");
-                            choice=scanner.nextLine();
-                        }
-                        if(getType(choice.toUpperCase()).equalsIgnoreCase(""))
-                            chooseObject(sentinel,identifier);
-                        else
-                            designController.alterParameterType(sentinel,identifier,getType(choice.toUpperCase()),isAnArray(false),false);
-                        break;
-
-                identifier++;
-                designController.checkIfHasParameter(sentinel,identifier);
-            }//external_while
-            sentinel++;
-            identifier=0;
-            designController.checkIfHasMethod(sentinel);
-        }//external_while
-        designController.updateBAL(nameBAL);
-    }//methodsSuggestions*/
-
-
-
-
-
-
-
-
-
 
     @Override
     public void notifyMeDiscover() {
