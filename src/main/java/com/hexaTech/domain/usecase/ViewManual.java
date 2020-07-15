@@ -19,7 +19,7 @@ public class ViewManual implements ViewManualInputPort{
     RepoDocumentInterface repoDocumentInterface;
 
     @Autowired
-    ViewManual(ViewManualOutputPort viewManualOutputPort,RepoDocumentInterface repoDocumentInterface){
+    public ViewManual(ViewManualOutputPort viewManualOutputPort,RepoDocumentInterface repoDocumentInterface){
         this.viewManualOutputPort=viewManualOutputPort;
         this.repoDocumentInterface=repoDocumentInterface;
     }
