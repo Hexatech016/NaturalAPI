@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public interface RepoGherkinInterface {
 
+    void setGherkin(Document gherkin);
+
     Document getGherkin();
     /**
      * Loads a new document from file system.

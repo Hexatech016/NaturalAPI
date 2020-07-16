@@ -12,6 +12,10 @@ import java.util.*;
 public class RepoGherkin implements RepoGherkinInterface {
     private Document gherkin;
 
+    public void setGherkin(Document gherkin){
+        this.gherkin=gherkin;
+    }
+
     public RepoGherkin() {
         this.gherkin = new Document();
     }
