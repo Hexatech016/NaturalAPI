@@ -11,12 +11,14 @@
 
 package com.hexaTech;
 
+import com.hexaTech.application.Gui.DiscoverNavigation;
 import com.hexaTech.application.Gui.MainGui;
 import com.hexaTech.application.config.SpringConfig;
 import com.hexaTech.application.Cli;
 import net.didion.jwnl.JWNLException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -29,7 +31,7 @@ public class Main{
         //Cli client = context.getBean("cli",Cli.class);
         //client.useCaseNaturalAPI();
         MainGui gui = context.getBean("mainGui", MainGui.class);
-        //gui.showGUI();
+        gui.startGUI();
         context.close();
     }//main
 }//MainDevelop

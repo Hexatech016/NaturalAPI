@@ -1,10 +1,17 @@
 package com.hexaTech.application.Gui;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,275 +21,301 @@ import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 
-public class DiscoverCreate extends JPanel implements MyObserver{
+/**
+ *
+ * @author lukin
+ */
+public class DiscoverCreate extends javax.swing.JPanel implements MyObserver{
 
-    private final JButton homeButton;
-    public JButton extractBDLButton;
-
-
-    private JLabel message;
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
     private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
-    private final DiscoverNavigation discoverNavigation;
+    private DiscoverNavigation discoverNavigation;
 
     private String backupString;
-    private final DefaultListModel listModel;
-    private final JList list;
+    private DefaultListModel listModel;
+    private JList list;
     private String stringManual;
 
-
-    //private JFileChooser insertDocs;
-
+    /**
+     * Creates new form DiscoverCreate
+     */
     public DiscoverCreate(DiscoverNavigation parent, DiscoverController discoverController, ViewManualController viewManualController,
-                          DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) {
-
+                          DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) throws IOException  {
         this.discoverController=discoverController;
         this.discoverPresenter=discoverPresenter;
         this.discoverNavigation = parent;
         this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        message = new JLabel();
-        JLabel loadedText = new JLabel("Stored documents:");
         backupString = "";
-        message.setText("Welcome! Please add at least one document to proceed");
 
+        initComponents();
 
-        JButton loadDocButton = new JButton("Load document");
-        homeButton = new JButton("Home");
-        extractBDLButton = new JButton("Extract BDL");
-        JButton deleteDocButton = new JButton("Delete selected document");
-        JButton guideButton = new JButton("Guide");
-        JButton backButton = new JButton("Back");
-        add(homeButton);
-        add(message);
-        add(loadDocButton);
-        add(deleteDocButton);
-        add(loadedText);
-        add(backButton);
-        listModel = new DefaultListModel();
-        list = new JList<String>(listModel);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setVisibleRowCount(5);
-        JScrollPane listScrollPane = new JScrollPane(list);
-        add(listScrollPane, BorderLayout.CENTER);
+        //listModel = new DefaultListModel();
 
-        add(extractBDLButton);
-        add(guideButton);
+        //list = new JList<String>(listModel);
+        //list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        loadDocButton.addActionListener(e -> loadDocument());
+        //list.setVisibleRowCount(5);
+        //JScrollPane listScrollPane = new JScrollPane(list);
 
-        deleteDocButton.addActionListener(e -> {
-            try {
-                deleteDocument();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-
-        homeButton.addActionListener(e -> {
-            message.setText("Welcome! Please add at least one document to proceed");
-            discoverNavigation.getMainGui().getHomePanel().setVisible(true);
-            setVisible(false);
-            listModel.clear();
-            backupString = "";
-        });
-
-        backButton.addActionListener(e -> {
-            message.setText("Welcome! Please add at least one document to proceed");
-            discoverNavigation.setVisible(true);
-            setVisible(false);
-            listModel.clear();
-            backupString = "";
-        });
-
-        extractBDLButton.addActionListener(e -> {
-            String name = (String)JOptionPane.showInputDialog(
-                    this,
-                    "Insert a name for the BDL",
-                    "Insert BDL name",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "Default");
-            if(!(name == null)) {
-                if (!name.equals("")) {
-                    try {
-                        discoverController.createBDL(name);
-                        viewMessage("Created");
-                        message.setText("Welcome! Please add at least one document to proceed");
-                        discoverNavigation.setVisible(true);
-                        setVisible(false);
-                        listModel.clear();
-                        backupString = "";
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                } else {
-                    viewMessage("InvalidName");
-                }
-            }
-        });
-
-        guideButton.addActionListener(e -> {
-            try {
-                this.viewManualController.openManualSection("DISCOVER:");
-                notifyMeManual();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(discoverNavigation.getMainGui().getHomeWindow(),
-                    stringManual);
-        });
+        //add(listScrollPane, BorderLayout.CENTER);
     }
 
-    public void checkForSavedDocs() throws IOException {
-        discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
-        if(notifyMeDoneDiscover()){
-            if(existsBackUpDocument()) {
-                discoverController.showDocumentsList();
-                notifyMeDiscover();
-                String[] files = backupString.split("\n");
-                for (String file : files) {
-                    listModel.addElement(file);
-                }
-                message.setText("Backup restored");
-                extractBDLButton.setEnabled(true);
-            }
-        }
-    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    public void loadDocument() {
-        JFrame dialog = new JFrame();
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File Txt", "txt");
-        chooser.setFileFilter(filter);
-        dialog.getContentPane().add(chooser);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(false);
-        dialog.dispose();
-        int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
-            String path = chooser.getSelectedFile().getAbsolutePath();
-            if(!backupString.contains(path)) {
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel5 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/discover1.png"))); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(409, 333));
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jLabel2.setText("Welcome! Please add at least one document to proceed");
+
+        jButton2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton2.setText("Home");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setBorder(null);
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+                jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 465, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+                jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 329, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(jPanel5);
+
+        jButton4.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton4.setText("Load document");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    discoverController.addTextDoc("Discover", path);
-                    if (!extractBDLButton.isEnabled()) extractBDLButton.setEnabled(true);
-                    discoverController.showDocumentsList();
-                    notifyMeDiscover();
-                    String[] temp = backupString.split("\n");
-                    listModel.addElement(temp[temp.length-1]);
-                    viewMessage("Success");
+                    jButton4ActionPerformed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton5.setText("Delete selected document");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jLabel3.setText("Stored documents:");
+
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton3.setText("Guide");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        jButton6.setText("Extract BDL");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButton4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton5))
+                                        .addComponent(jLabel3)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton4)
+                                        .addComponent(jButton5))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addContainerGap(40, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButton2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton3)
+                                                .addContainerGap())))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jLabel2.setText("Welcome! Please add at least one document to proceed");
+        discoverNavigation.getMainGui().getHomePanel().setVisible(true);
+        setVisible(false);
+        listModel.clear();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jLabel2.setText("Welcome! Please add at least one document to proceed");
+        discoverNavigation.setVisible(true);
+        setVisible(false);
+        listModel.clear();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButton4ActionPerformed
+        loadDocument();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try {
+            deleteDocument();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            viewManualController.openManualSection("DISCOVER:");
+            notifyMeManual();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(discoverNavigation.getMainGui().getHomeWindow(),
+                stringManual);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String name = (String)JOptionPane.showInputDialog(
+                this,
+                "Insert a name for the BDL",
+                "Insert BDL name",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "Default");
+        if(!(name == null)) {
+            if (!name.equals("")) {
+                try {
+                    discoverController.createBDL(name);
+                    viewMessage("Created");
+                    jLabel2.setText("Welcome! Please add at least one document to proceed");
+                    discoverNavigation.setVisible(true);
+                    setVisible(false);
+                    listModel.clear();
+                    backupString = "";
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
+            } else {
+                viewMessage("InvalidName");
             }
-            else {
-                viewMessage("AlreadyLoaded");
-            }
-        }else if(returnVal != JFileChooser.CANCEL_OPTION){
-            viewMessage("WrongFile");
-        }//if_else
-    }
-
-
-    public void viewMessage(String type) {
-        switch (type) {
-            case("Success"):
-                message.setText("Document added.");
-                JOptionPane.showMessageDialog(this,
-                        "Document added.");
-                break;
-            case("WrongFile"):
-                message.setText("The file is not a .txt or it doesn't exist. Please retry.");
-                JOptionPane.showMessageDialog(this,
-                        "The file is not a .txt or it doesn't exist. Please retry.",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-            case("AlreadyLoaded"):
-                message.setText("You're trying to add a document which is already loaded.");
-                JOptionPane.showMessageDialog(this,
-                        "You're trying to add a document which is already loaded.",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-            case("NoSelection"):
-                message.setText("No document selected");
-                JOptionPane.showMessageDialog(this,
-                        "No document selected",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-            case("Created"):
-                message.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
-                JOptionPane.showMessageDialog(this,
-                        "BDL has been created successfully. You'll be returned to the Discover Menu");
-                break;
-            case("InvalidName"):
-                message.setText("Invalid Name");
-                JOptionPane.showMessageDialog(this,
-                        "The name cannot be empty",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
         }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-    }
 
-    public boolean existsBackUpDocument() throws IOException {
-        Object[] choices = {"Yes", "No"};
-        Object defaultChoice = choices[0];
-        int choice = JOptionPane.showOptionDialog(this,
-                "Some documents are already stored. Do you want to load them?\nIf you click No, you'll clear all previous backup documents",
-                "Load Backup?",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                choices,
-                defaultChoice);
-        if(choice==0) {
-            discoverController.restoreTextDoc("Discover");
-            return true;
-        }else if(choice==1){
-            discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
-            discoverController.clearRepo();
-            backupString="";
-            return false;
-        }
-        else{
-            homeButton.getAction(); ///sistemare
-            return existsBackUpDocument(); //sistemare
-        }//if_else
-    }//existsBackupDocument
-
-    private void deleteDocument() throws IOException {
-        int index = list.getSelectedIndex();
-        if(index<0){
-            viewMessage("NoSelection");
-        }
-        else{
-            discoverController.deleteDoc(index);
-            message.setText("Document deleted");
-            //if(list.getindex<0)extractBDLButton.setEnabled(true); se tolgo unico elemento, non mi fa piu andare su create bdl
-            discoverController.showDocumentsList();
-            notifyMeDiscover();
-            listModel.clear();
-            if(!backupString.equals("")) {
-                String[] files = backupString.split("\n");
-                for (String file : files) {
-                    listModel.addElement(file);
-                }
-            }
-            if(notifyMeDoneDiscover()) {
-                System.out.println("\tDocument deleted.\n");
-            }else
-                System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
-        }
-    }//deleteDocument
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
 
     @Override
     public void notifyMeDiscover() {
@@ -293,7 +326,8 @@ public class DiscoverCreate extends JPanel implements MyObserver{
      * Receives presenterDiscover's boolean status.
      * @return boolean - presenterDevelop status.
      */
-    public boolean notifyMeDoneDiscover(){
+    @Override
+    public boolean notifyMeDoneDiscover() {
         return discoverPresenter.isDone();
     }
 
@@ -326,10 +360,154 @@ public class DiscoverCreate extends JPanel implements MyObserver{
     public void notifyMeManual() {
         stringManual=viewManualPresenter.getMessage();
     }
+    // End of variables declaration//GEN-END:variables
 
-    public void setMessage(JLabel message) {
-        this.message = message;
+    public void checkForSavedDocs() throws IOException {
+        discoverController.existsDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+        if(notifyMeDoneDiscover()){
+            if(existsBackUpDocument()) {
+                discoverController.showDocumentsList();
+                notifyMeDiscover();
+                String[] files = backupString.split("\n");
+                for (String file : files) {
+                    listModel.addElement(file);
+                }
+                jLabel2.setText("Backup restored");
+                jButton6.setEnabled(true);
+            }
+        }
+    }
+
+    public void loadDocument() throws IOException {
+        JFrame dialog = new JFrame();
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("File Txt", "txt");
+        chooser.setFileFilter(filter);
+        dialog.getContentPane().add(chooser);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(false);
+        dialog.dispose();
+        int returnVal = chooser.showOpenDialog(dialog);
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("txt") ){
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            if(!backupString.contains(path)) {
+                try {
+                    discoverController.addTextDoc("Discover", path);
+                    if (!jButton6.isEnabled()) jButton6.setEnabled(true);
+                    discoverController.showDocumentsList();
+                    notifyMeDiscover();
+                    String[] temp = backupString.split("\n");
+                    listModel.addElement(temp[temp.length-1]);
+                    viewMessage("Success");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            else {
+                viewMessage("AlreadyLoaded");
+            }
+        }else if(returnVal != JFileChooser.CANCEL_OPTION){
+            viewMessage("WrongFile");
+        }//if_else
     }
 
 
+    public void viewMessage(String type) {
+        switch (type) {
+            case("Success"):
+                jLabel2.setText("Document added.");
+                JOptionPane.showMessageDialog(this,
+                        "Document added.");
+                break;
+            case("WrongFile"):
+                jLabel2.setText("The file is not a .txt or it doesn't exist. Please retry.");
+                JOptionPane.showMessageDialog(this,
+                        "The file is not a .txt or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case("AlreadyLoaded"):
+                jLabel2.setText("You're trying to add a document which is already loaded.");
+                JOptionPane.showMessageDialog(this,
+                        "You're trying to add a document which is already loaded.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case("NoSelection"):
+                jLabel2.setText("No document selected");
+                JOptionPane.showMessageDialog(this,
+                        "No document selected",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case("Created"):
+                jLabel2.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
+                JOptionPane.showMessageDialog(this,
+                        "BDL has been created successfully. You'll be returned to the Discover Menu");
+                break;
+            case("InvalidName"):
+                jLabel2.setText("Invalid Name");
+                JOptionPane.showMessageDialog(this,
+                        "The name cannot be empty",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+        }
+    }
+
+    public boolean existsBackUpDocument() throws IOException {
+        Object[] choices = {"Yes", "No"};
+        Object defaultChoice = choices[0];
+        int choice = JOptionPane.showOptionDialog(this,
+                "Some documents are already stored. Do you want to load them?\nIf you click No, you'll clear all previous backup documents",
+                "Load Backup?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                choices,
+                defaultChoice);
+        if(choice==0) {
+            discoverController.restoreTextDoc("Discover");
+            return true;
+        }else if(choice==1){
+            discoverController.deleteTextDoc("." + File.separator + "Discover" + File.separator + "BackupDocument.txt");
+            discoverController.clearRepo();
+            backupString="";
+            return false;
+        }
+        else{
+            jButton2.getAction(); ///sistemare
+            return existsBackUpDocument(); //sistemare
+        }//if_else
+    }//existsBackupDocument
+
+    private void deleteDocument() throws IOException {
+        int index = list.getSelectedIndex();
+        if(index<0){
+            viewMessage("NoSelection");
+        }
+        else{
+            discoverController.deleteDoc(index);
+            jLabel2.setText("Document deleted");
+            //if(list.getindex<0)extractBDLButton.setEnabled(true); se tolgo unico elemento, non mi fa piu andare su create bdl
+            discoverController.showDocumentsList();
+            notifyMeDiscover();
+            listModel.clear();
+            if(!backupString.equals("")) {
+                String[] files = backupString.split("\n");
+                for (String file : files) {
+                    listModel.addElement(file);
+                }
+            }
+            if(notifyMeDoneDiscover()) {
+                System.out.println("\tDocument deleted.\n");
+            }else
+                System.out.println("\tPlease insert a valid number or 'q' to go back.\n");
+        }
+    }//deleteDocument
+
+    public void setMessage(JLabel message) {
+        this.jLabel2 = message;
+    }
 }
+

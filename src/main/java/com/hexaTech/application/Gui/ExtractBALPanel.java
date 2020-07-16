@@ -24,9 +24,8 @@ import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
  *
  * @author lukin
  */
-public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
+public class ExtractBALPanel extends javax.swing.JPanel implements MyObserver{
 
-    private ExtractBALPanel extractBALPanel;
     private final DevelopController developController;
     private final DevelopPresenter developPresenter;
     private MainGui mainGui;
@@ -38,23 +37,19 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
     private String stringManual;
 
     /**
-     * Creates new form Develop1
+     * Creates new form Develop2
      */
-    public DevelopWindow(MainGui parent, DevelopController developController, DevelopPresenter developPresenter, ViewManualController viewManualController,
-    ViewManualPresenter viewManualPresenter) throws IOException  {
+    public ExtractBALPanel(MainGui parent, DevelopController developController, ViewManualController viewManualController, DevelopPresenter developPresenter,
+                           ViewManualPresenter viewManualPresenter) throws IOException  {
         this.developController=developController;
         this.developPresenter=developPresenter;
         this.mainGui=parent;
         this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
 
-        this.extractBALPanel = new ExtractBALPanel(parent, developController,viewManualController, developPresenter,viewManualPresenter);
-
-
         initComponents();
 
         backupString = "";
-        jButton7.setEnabled(false);
     }
 
     /**
@@ -71,14 +66,14 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton3.setText("Home");
+        jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -101,22 +96,28 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
 
         jButton5.setBackground(new java.awt.Color(255, 255, 255));
         jButton5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton5.setText("Add BAL");
+        jButton5.setText("Java");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
-
-        jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton7.setText("Extract API");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
+        jButton6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton6.setText("Javascript");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton10.setBackground(new java.awt.Color(255, 255, 255));
+        jButton10.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton10.setText("Add external PLA");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
             }
         });
 
@@ -128,42 +129,42 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addComponent(jButton7, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addContainerGap())))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton3)
                                         .addComponent(jButton4))
-                                .addGap(16, 16, 16)
+                                .addGap(11, 11, 11)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton5))
+                                .addComponent(jButton5)
+                                .addGap(4, 4, 4)
+                                .addComponent(jButton6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton10)
                                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        mainGui.getHomePanel().setVisible(true);
-        setVisible(false);
+        mainGui.getHomePanel().setVisible(false);
+        this.setVisible(false);
+        setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -178,48 +179,67 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try {
+            developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "java.pla");
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        try {
+            developController.createAPI();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "js.pla");
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        try {
+            developController.createAPI();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         JFrame dialog = new JFrame();
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("File pla", "pla");
         chooser.setFileFilter(filter);
         dialog.getContentPane().add(chooser);
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(false);
         dialog.dispose();
         int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("pla") ){
             String path = chooser.getSelectedFile().getAbsolutePath();
             try {
-                developController.addBAL("Develop", path);
+                developController.addPLA("Develop", path);
+                developController.createAPI();
                 notifyMeDevelop();
-                jButton7.setEnabled(true);
-                viewMessage("SuccessBAL");
+                viewMessage("SuccessPLA");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         }else if(returnVal != JFileChooser.CANCEL_OPTION){
             try {
-                viewMessage("WrongFileBAL");
+                viewMessage("WrongFilePLA");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         }//if_else
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        mainGui.getHomeWindow().add(extractBALPanel);
-        extractBALPanel.setVisible(true);
-        mainGui.getHomePanel().setVisible(false);
-        setVisible(false);
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_jButton10ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
 
@@ -294,39 +314,6 @@ public class DevelopWindow extends javax.swing.JPanel implements MyObserver{
 
     }
 
-    public boolean existsBackUpBAL() throws IOException {
-        Object[] choices = {"Yes", "No"};
-        Object defaultChoice = choices[0];
-        int choice = JOptionPane.showOptionDialog(this,
-                "A BAL is already stored. Do you want to load it?",
-                "Title message",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                choices,
-                defaultChoice);
-        if(choice==0) {
-            developController.restoreBAL("Develop");
-            return true;
-        }else if(choice==1){
-            developController.deleteBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
-            return false;
-        }
-        else{
-            return existsBackUpBAL();
-        }//if_else
-    }
 
-    public void checkForSavedDocs() throws IOException {
-        developController.existsBAL("." + File.separator + "Develop" + File.separator + "BackupBAL.txt");
-        if(notifyMeDoneDevelop()){
-            if(existsBackUpBAL()) {
-                notifyMeDevelop();
-                jLabel4.setText(backupString);
-                jButton7.setEnabled(true);
-            }
-        }
-    }
 
 }
-
