@@ -5,36 +5,32 @@ import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ComplexTypeCreator extends JPanel {
-    private MainGui mainGui;
-    private JButton backButton;
-    private JButton addParameterButton;
-    private JButton confirmButton;
-    private JTextField objectNameTextField;
-    private JLabel objNameLabel;
-    private final Box nameBox;
-    private DesignController designController;
+    private final MainGui mainGui;
+    private final JButton confirmButton;
+    private final JTextField objectNameTextField;
     private final Box objectsBox;
 
     private JFrame complexType;
 
     String name;
-    List<String> parameterNames;
-    List<String> parameterTypes;
+    List<AuxiliaryComplexType> parameters;
 
-    public ComplexTypeCreator(MainGui parent, DesignController designController) {
-        mainGui = parent;
-        this.designController = designController;
+    public ComplexTypeCreator(MainGui maingui, DesignWindow parent, DesignController designController) {
+        mainGui = maingui;
+        this.parameters = new ArrayList<>();
 
-        objNameLabel = new JLabel("Insert the object's name:    ");
+        JLabel objNameLabel = new JLabel("Insert the object's name:    ");
         objectNameTextField = new JTextField("default");
         objectNameTextField.setMaximumSize(new Dimension(200, 25));
-        nameBox = Box.createHorizontalBox();
+        Box nameBox = Box.createHorizontalBox();
         objectsBox = Box.createVerticalBox();
-        backButton = new JButton("Back");
-        addParameterButton = new JButton("+");
+        JButton backButton = new JButton("Back");
+        JButton addParameterButton = new JButton("+");
         confirmButton = new JButton("Confirm");
         confirmButton.setEnabled(false);
 
@@ -54,6 +50,7 @@ public class ComplexTypeCreator extends JPanel {
         addParameterButton.addActionListener(e -> {
             AuxiliaryComplexType aux = new AuxiliaryComplexType();
             objectsBox.add(aux);
+            parameters.add(aux);
             complexType.validate();
             complexType.repaint();
             confirmButton.setEnabled(true);
@@ -61,6 +58,17 @@ public class ComplexTypeCreator extends JPanel {
 
         confirmButton.addActionListener(e -> {
             name = objectNameTextField.getText();
+            for(AuxiliaryComplexType parameter : parameters)
+            {
+                if(parameter.isArray.isSelected())
+                    designController.addStructure(name,parameter.parameterNameTextField.getText(),Objects.requireNonNull(parameter.typesComboBox.getSelectedItem()).toString()+"[]");
+                else
+                    designController.addStructure(name,parameter.parameterNameTextField.getText(),Objects.requireNonNull(parameter.typesComboBox.getSelectedItem()).toString());
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Complex Type added.");
+            complexType.dispose();
+            parent.refreshTypes();
         });
     }
 

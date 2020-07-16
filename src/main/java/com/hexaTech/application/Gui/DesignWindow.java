@@ -5,8 +5,11 @@ import com.google.common.io.Files;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.ViewManualController;
@@ -21,32 +24,36 @@ public class DesignWindow extends JPanel implements MyObserver{
     private final JButton extractBALButton;
     private final JButton confirmButton;
     private final JLabel message;
-
-    private final Box objectsBox;
+    private final JScrollPane scrollPane;
+    private final JPanel test;
 
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
     private String name;
+    private List<SuggestionsDesign> suggestions;
 
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
                         ViewManualPresenter viewManualPresenter) {
         this.designController=designController;
         this.designPresenter=designPresenter;
         this.viewManualPresenter = viewManualPresenter;
+        suggestions = new ArrayList<>();
         extractBALButton= new JButton("Extract BAL");
         JButton addBOButton = new JButton("Add BO");
         JButton guideButton = new JButton("Guide");
         JButton addScenarioButton = new JButton("Add Scenario");
         JButton homeButton = new JButton("Home");
         JButton addComplexType = new JButton("Add a new complex type");
+        test = new JPanel();
+        test.setLayout(new BoxLayout(test, BoxLayout.Y_AXIS));
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
-        objectsBox =Box.createVerticalBox();
         String testMethod = "";
         JTextField txtArea = new JTextField();
         txtArea.setText(testMethod);
-
+        scrollPane = new JScrollPane(test, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setMaximumSize(new Dimension(500,350));
         confirmButton=new JButton("Generate BAL");
         confirmButton.setEnabled(false);
         confirmButton.setVisible(false);
@@ -61,12 +68,13 @@ public class DesignWindow extends JPanel implements MyObserver{
         add(extractBALButton);
         add(confirmButton);
         add(guideButton);
+        add(scrollPane);
         extractBALButton.setEnabled(false);
 
         homeButton.addActionListener(e -> {
             parent.getHomePanel().setVisible(true);
             setVisible(false);
-            objectsBox.removeAll();
+            test.removeAll();
             confirmButton.setEnabled(false);
             extractBALButton.setEnabled(false);
             confirmButton.setVisible(false);
@@ -166,9 +174,16 @@ public class DesignWindow extends JPanel implements MyObserver{
         });
 
         addComplexType.addActionListener(e -> {
-            ComplexTypeCreator ctc = new ComplexTypeCreator(parent, designController);
+            ComplexTypeCreator ctc = new ComplexTypeCreator(parent, this, designController);
             ctc.openWindow();
+
         });
+    }
+
+    public void refreshTypes() {
+        for(SuggestionsDesign suggestion : suggestions) {
+
+        }
     }
 
     public void viewMessage(String type) {
@@ -233,6 +248,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             notifyMeDesign();
             SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController);
             comboMethod.setNameMethods(backupString);
+            suggestions.add(comboMethod);
 
             JPanel methodPanel = new JPanel();
             methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
@@ -244,18 +260,16 @@ public class DesignWindow extends JPanel implements MyObserver{
                 notifyMeDesign();
                 SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController);
                 comboParam.setNameMethods(backupString);
+                suggestions.add(comboParam);
                 methodPanel.add(comboParam);
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);
             }//external_while
-            objectsBox.add(methodPanel);
-            //button set index ( per avere l'indice nella action)
+            test.add(methodPanel);
             sentinel++;
             identifier=0;
             designController.checkIfHasMethod(sentinel);
         }//external_while
-        //da sistemare --> scrollPane.add(objectsBox);
-        add(objectsBox);
     }//methodsSuggestions
 
     public void checkForSavedDocs() throws IOException {

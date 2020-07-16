@@ -6,9 +6,9 @@ import java.awt.*;
 
 public class AuxiliaryComplexType extends JPanel{
 
-    private JComboBox typesComboBox;
-    private JCheckBox isArray;
-    private JTextField parameterNameTextField;
+    public JComboBox typesComboBox;
+    public JCheckBox isArray;
+    public JTextField parameterNameTextField;
     private Box paramNameBox;
     private Box paramTypeBox;
 

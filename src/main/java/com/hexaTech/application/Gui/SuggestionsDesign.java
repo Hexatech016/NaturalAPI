@@ -5,6 +5,7 @@ import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import java.util.Vector;
 
 public class SuggestionsDesign extends JPanel{
 
@@ -15,6 +16,7 @@ public class SuggestionsDesign extends JPanel{
     private final int sentinel;
     private final int identifier;
     JCheckBox isArray;
+    private Vector<String> types;
 
     public SuggestionsDesign(int sent, int id, DesignController designController){
 
@@ -22,8 +24,12 @@ public class SuggestionsDesign extends JPanel{
         this.identifier = id;
         array = false;
         typeName = "String";
-
-        String[] types = { "String", "Void", "Integer", "Float", "Boolean" };
+        types = new Vector<>();
+        types.add("String");
+        types.add("Void");
+        types.add("Integer");
+        types.add("Float");
+        types.add("Boolean");
         comboType = new JComboBox(types);
         nameMethods = new JLabel();
         comboType.setSelectedIndex(0);
@@ -63,5 +69,9 @@ public class SuggestionsDesign extends JPanel{
     public void setNameMethods(String name) {
         String[] temp = getSplitSting(name);
         this.nameMethods.setText("<html>" + temp[0] + "<br/>" + temp[1] + "</html>");
+    }
+
+    public void updateTypes() {
+
     }
 }

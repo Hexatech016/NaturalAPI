@@ -54,7 +54,7 @@ public class MainGui implements MyObserver {
         //JFrame.setDefaultLookAndFeelDecorated(true);
 
         this.window = new JFrame();
-        window.setPreferredSize(new Dimension(800,600));
+        window.setPreferredSize(new Dimension(1400,900));
         url = Thread.currentThread().getContextClassLoader().getResource("style/logo.png");
         window.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
         window.setFont(new javax.swing.plaf.FontUIResource("Verdana",Font.PLAIN,22));

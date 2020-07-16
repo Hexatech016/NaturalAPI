@@ -113,6 +113,11 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                     try {
                         discoverController.createBDL(name);
                         viewMessage("Created");
+                        message.setText("Welcome! Please add at least one document to proceed");
+                        discoverNavigation.setVisible(true);
+                        setVisible(false);
+                        listModel.clear();
+                        backupString = "";
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -215,7 +220,7 @@ public class DiscoverCreate extends JPanel implements MyObserver{
             case("Created"):
                 message.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
                 JOptionPane.showMessageDialog(this,
-                        "BDL has been created successfully");
+                        "BDL has been created successfully. You'll be returned to the Discover Menu");
                 break;
             case("InvalidName"):
                 message.setText("Invalid Name");
