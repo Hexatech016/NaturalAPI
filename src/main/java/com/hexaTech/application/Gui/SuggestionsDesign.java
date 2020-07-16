@@ -1,37 +1,45 @@
 package com.hexaTech.application.Gui;
 
+import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
+import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Objects;
+import java.util.Vector;
 
-public class SuggestionsDesign extends JPanel{
+public class SuggestionsDesign extends JPanel implements MyObserver {
 
-    private JComboBox comboType;
-    private JLabel nameMethods;
+    private final JComboBox comboType;
+    private final JLabel nameMethods;
     private String typeName;
     private boolean array;
-    private int sentinel;
-    private int identifier;
-    private DesignController designController;
+    private final int sentinel;
+    private final int identifier;
     JCheckBox isArray;
+    private Vector<String> types;
+    String extraTypes;
+    DesignController designController;
+    DesignPresenter designPresenter;
 
-    public SuggestionsDesign(int sent, int id, DesignController designController){
-
+    public SuggestionsDesign(int sent, int id, DesignController designController, DesignPresenter designPresenter){
+        this.designPresenter = designPresenter;
+        this.designController = designController;
         this.sentinel = sent;
         this.identifier = id;
-        this.designController = designController;
         array = false;
         typeName = "String";
-
-        String[] types = { "String", "Void", "Integer", "Float", "Boolean", "Complex object" };
+        types = new Vector<>();
+        types.add("String");
+        types.add("Void");
+        types.add("Integer");
+        types.add("Float");
+        types.add("Boolean");
         comboType = new JComboBox(types);
         nameMethods = new JLabel();
         comboType.setSelectedIndex(0);
         comboType.setPreferredSize(new Dimension(100, 20));
-        //ameMethods.setPreferredSize(new Dimension(200, 50));
 
         isArray = new JCheckBox("Array");
         isArray.setSelected(false);
@@ -40,44 +48,22 @@ public class SuggestionsDesign extends JPanel{
         add(comboType);
         add(isArray);
 
-        comboType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                typeName = comboType.getSelectedItem().toString();
-                if(identifier == -1)
-                    designController.alterMethodReturn(sentinel,typeName,array,false);
-                else
-                    designController.alterParameterType(sentinel, identifier, typeName, array, false);
-            }
+        comboType.addActionListener(e -> {
+            typeName = Objects.requireNonNull(comboType.getSelectedItem()).toString();
+            if(identifier == -1)
+                designController.alterMethodReturn(sentinel,typeName,array,false);
+            else
+                designController.alterParameterType(sentinel, identifier, typeName, array, false);
         });
 
-        isArray.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                array = isArray.isSelected();
-                if(identifier == -1)
-                     designController.alterMethodReturn(sentinel,typeName, array,false);
-                else
-                    designController.alterParameterType(sentinel, identifier, typeName, array, false);
-            }
+        isArray.addActionListener(e -> {
+            array = isArray.isSelected();
+            if(identifier == -1)
+                 designController.alterMethodReturn(sentinel,typeName, array,false);
+            else
+                designController.alterParameterType(sentinel, identifier, typeName, array, false);
         });
     }
-
-    public JComboBox getButton() {
-        return comboType;
-    }
-
-    public void setButton(JComboBox button) {
-        this.comboType = button;
-    }
-
-//    public JTextField getTxtArea() {
-//        return txtArea;
-//    }
-//
-//    public void setTxtArea(JTextField txtArea) {
-//        this.txtArea = txtArea;
-//    }
 
     // works only with two strings.
     public String[] getSplitSting(String methodName) {
@@ -86,20 +72,61 @@ public class SuggestionsDesign extends JPanel{
         return contents;
     }
 
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public JLabel getNameMethods() {
-        return nameMethods;
-    }
-
     public void setNameMethods(String name) {
         String[] temp = getSplitSting(name);
         this.nameMethods.setText("<html>" + temp[0] + "<br/>" + temp[1] + "</html>");
+    }
+
+    public void updateTypes() {
+        designController.showObjects();
+        notifyMeDesign();
+        String[] temp = extraTypes.split("\n");
+        for(String type : temp) {
+            if (type.contains(": ")) {
+                String toAdd = type.replaceFirst("^(.*?): ", "");
+                if(!types.contains(toAdd))
+                    types.add(toAdd);
+            }
+        }
+    }
+
+    @Override
+    public void notifyMeDiscover() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDiscover() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDesign() {
+        extraTypes = designPresenter.getMessage();
+    }
+
+    @Override
+    public boolean notifyMeDoneDesign() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDevelop() {
+
+    }
+
+    @Override
+    public int notifyMeErrorDevelop() {
+        return 0;
+    }
+
+    @Override
+    public boolean notifyMeDoneDevelop() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeManual() {
+
     }
 }

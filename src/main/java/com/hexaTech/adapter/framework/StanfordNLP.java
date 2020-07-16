@@ -11,9 +11,6 @@ import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.semgraph.SemanticGraph;
-import edu.stanford.nlp.semgraph.SemanticGraphFactory;
-import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.util.CoreMap;
@@ -21,7 +18,10 @@ import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 
 @Component
 public class StanfordNLP implements TextsParsingInterface {
@@ -59,7 +59,7 @@ public class StanfordNLP implements TextsParsingInterface {
             }//for
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 if (token.tag().contains("VB") || token.tag().contains("NN"))
-                    if (!isACommonVerb(token.lemma()))
+                    if (isACommonVerb(token.lemma()))
                         doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
         }//for
@@ -201,7 +201,7 @@ public class StanfordNLP implements TextsParsingInterface {
                 if (token.tag().contains("VB") || token.tag().contains("NN") &&
                         !token.lemma().equalsIgnoreCase("feature")&&
                         !token.lemma().equalsIgnoreCase("scenario"))
-                    if (!isACommonVerb(token.lemma()))
+                    if (isACommonVerb(token.lemma()))
                         doubleStructs.add(new DoubleStruct(token.tag(), token.lemma()));
             }//for
         }//for
@@ -215,8 +215,8 @@ public class StanfordNLP implements TextsParsingInterface {
                 "work"};
         for (String commonV : commonVerbs) {
             if (commonV.equalsIgnoreCase(verb))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 }//StanfordNLP

@@ -171,14 +171,14 @@ public class RepoBO implements RepoBOInterface{
         s.close();
     }
 
-    public BO setBOFromJSON(String text) throws JsonProcessingException{
+    public BO setBOFromJSON(String text) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode node = objectMapper.readTree(text);
             BO bo = new BO();
             bo.setOntologyName(node.get("ontologyName").asText());
             JsonNode objlist = node.get("ontologyObjects");
-            List<JsonNode> objects = new ArrayList<JsonNode>();
+            List<JsonNode> objects = new ArrayList<>();
             if (objlist.isArray()) {
                 for (JsonNode tmp : objlist) {
                     objects.add(tmp);
@@ -211,7 +211,7 @@ public class RepoBO implements RepoBOInterface{
     @Override
     public void saveBO(String BOpath) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = mapper.writeValueAsString(boOpenAPI);
+        String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(boOpenAPI);
         saveDocDiscover(jsonInString,"." + File.separator + BOpath + "BO.json");
     }
 
@@ -222,11 +222,7 @@ public class RepoBO implements RepoBOInterface{
                 directory.mkdir();
             BufferedWriter out = new BufferedWriter(
                     new FileWriter(directory + "/" +path));
-            String[] rows=doc.split("\n");
-            for(String row: rows){
-                out.write(row);
-                out.newLine();
-            }//for
+            out.write(doc);
             out.close();
         }catch (IOException e) {
             System.out.println("exception occurred " + e);

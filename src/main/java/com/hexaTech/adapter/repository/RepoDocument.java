@@ -25,7 +25,7 @@ import java.util.Scanner;
  */
 @Component
 public class RepoDocument implements RepoDocumentInterface {
-    private List<Document> documents;
+    private final List<Document> documents;
 
     /**
      * RepoDocument empty constructor.

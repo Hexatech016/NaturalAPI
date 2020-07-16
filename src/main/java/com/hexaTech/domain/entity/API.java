@@ -163,7 +163,7 @@ public class API{
         int counter = 0;
         String mName = "";
         for(Method test:APITests){
-            if(test.methodName.substring(0,4).equals("when")){
+            if(test.methodName.startsWith("when")){
                 mName = APIMethods.get(counter).methodName;
                 counter++;
             }

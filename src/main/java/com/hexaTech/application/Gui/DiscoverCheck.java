@@ -10,27 +10,18 @@ import net.didion.jwnl.JWNLException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 public class DiscoverCheck extends JPanel implements MyObserver {
 
-    private JButton homeButton;
-    private JButton backButton;
-    private JButton loadBDLButton;
-    private JButton loadGherkinButton;
+    private final JButton homeButton;
     public JButton checkButton;
-    private JButton guideButton;
 
-    private JLabel message;
+    private final JLabel message;
 
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
-    private DiscoverNavigation discoverNavigation;
 
     boolean boolBdl;
     boolean boolGherkin;
@@ -38,19 +29,17 @@ public class DiscoverCheck extends JPanel implements MyObserver {
     String stringManual;
 
     public DiscoverCheck(DiscoverNavigation parent, DiscoverController discoverController, ViewManualController viewManualController,
-                         DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
+                         DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter) {
         this.discoverController = discoverController;
         this.discoverPresenter = discoverPresenter;
-        this.discoverNavigation = parent;
-        this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
 
         homeButton = new JButton("Home");
-        backButton = new JButton("Back");
+        JButton backButton = new JButton("Back");
         checkButton = new JButton("Check between BDL and scenarios");
-        loadBDLButton = new JButton("Load BDL");
-        loadGherkinButton = new JButton("Load Gherkin scenarios");
-        guideButton = new JButton("Guide");
+        JButton loadBDLButton = new JButton("Load BDL");
+        JButton loadGherkinButton = new JButton("Load Gherkin scenarios");
+        JButton guideButton = new JButton("Guide");
         message = new JLabel();
 
         message.setText("Welcome! Please add both documents to proceed");
@@ -66,74 +55,50 @@ public class DiscoverCheck extends JPanel implements MyObserver {
         boolBdl = false;
         boolGherkin = false;
 
-        loadBDLButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                discoverController.checkIfRepoBDLIsEmpty();
-                if (notifyMeDoneDiscover())
+        loadBDLButton.addActionListener(e -> {
+            discoverController.checkIfRepoBDLIsEmpty();
+            if (notifyMeDoneDiscover())
+                loadBDL();
+            else{
+                if(!existsBDL())
                     loadBDL();
-                else{
-                    try {
-                        if(!existsBDL())
-                            loadBDL();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//else
+            }//else
+        });
+
+        loadGherkinButton.addActionListener(e -> loadGherkin());
+
+        checkButton.addActionListener(e -> {
+            try {
+                discoverController.checkBetweenBDLAndGherkin("Discover");
+                notifyMeDiscover();
+                message.setText("Report created.");
+                showRating();
+            } catch (IOException | JWNLException ioException) {
+                ioException.printStackTrace();
             }
         });
 
-        loadGherkinButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadGherkin();
-            }
+        homeButton.addActionListener(e -> {
+            message.setText("Welcome! Please add both documents to proceed");
+            parent.getMainGui().getHomePanel().setVisible(true);
+            setVisible(false);
         });
 
-        checkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    discoverController.checkBetweenBDLAndGherkin("Discover");
-                    notifyMeDiscover();
-                    message.setText("Report created.");
-                    showRating();
-                } catch (IOException | JWNLException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
+        backButton.addActionListener(e -> {
+            message.setText("Welcome! Please add both documents to proceed");
+            parent.setVisible(true);
+            setVisible(false);
         });
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                message.setText("Welcome! Please add both documents to proceed");
-                parent.getMainGui().getHomePanel().setVisible(true);
-                setVisible(false);
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DISCOVER:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-        });
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                message.setText("Welcome! Please add both documents to proceed");
-                parent.setVisible(true);
-                setVisible(false);
-            }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManualSection("DISCOVER:");
-                    notifyMeManual();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(parent.getMainGui().getHomeWindow(),
-                        stringManual);
-            }
+            JOptionPane.showMessageDialog(parent.getMainGui().getHomeWindow(),
+                    stringManual);
         });
     }
 
@@ -163,11 +128,7 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 ioException.printStackTrace();
             }
         }else if(returnVal != JFileChooser.CANCEL_OPTION){
-            try {
-                viewMessage("WrongFileBDL");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            viewMessage("WrongFileBDL");
         }//if_else
     }
 
@@ -197,15 +158,11 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 ioException.printStackTrace();
             }
         }else if(returnVal != JFileChooser.CANCEL_OPTION){
-            try {
-                viewMessage("WrongFileGherkin");
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            viewMessage("WrongFileGherkin");
         }//if_else
     }
 
-    public void viewMessage(String type) throws IOException {
+    public void viewMessage(String type) {
         switch (type) {
             case("SuccessBDL"):
                 message.setText("BDL added.");
@@ -246,7 +203,7 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 rating);
     }
 
-    public boolean existsBDL() throws IOException {
+    public boolean existsBDL() {
         Object[] choices = {"Yes", "No"};
         Object defaultChoice = choices[0];
         int choice = JOptionPane.showOptionDialog(this,

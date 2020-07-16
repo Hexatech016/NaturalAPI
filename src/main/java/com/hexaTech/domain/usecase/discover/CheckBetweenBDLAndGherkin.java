@@ -26,8 +26,6 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
 
     private final RepoGherkinInterface repoGherkinInterface;
 
-    private final WordParsingInterface wordParsingInterface;
-
     private final TextsParsingInterface textsParsingInterface;
 
     private Integer matches=0;
@@ -38,16 +36,14 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     public CheckBetweenBDLAndGherkin(CheckBetweenBDLAndGherkinOutputPort checkBetweenBDLAndGherkinOutputPort,
                                      RepoBDLInterface repoBDLInterface,
                                      RepoGherkinInterface repoGherkinInterface,
-                                     WordParsingInterface wordParsingInterface,
                                      TextsParsingInterface textsParsingInterface) {
         this.checkBetweenBDLAndGherkinOutputPort = checkBetweenBDLAndGherkinOutputPort;
         this.repoBDLInterface = repoBDLInterface;
         this.repoGherkinInterface = repoGherkinInterface;
-        this.wordParsingInterface = wordParsingInterface;
         this.textsParsingInterface = textsParsingInterface;
     }
 
-    public void check(String directory) throws IOException, JWNLException {
+    public void check(String directory) throws IOException {
         BDL bdlOfTexts=repoBDLInterface.getBDL();
         BDL bdlOfGherkin=new BDL();
         String path=repoGherkinInterface.getGherkin().getPath();
@@ -131,7 +127,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 "You may need to use the following predicates in your Gherkin: \n" + shouldUse.toString() + "\n\n";
     }
 
-    private String checkNounsOfGherkin(BDL bdlOfTexts, BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
+    private String checkNounsOfGherkin(BDL bdlOfTexts, BDL bdlOfGherkin) {
         StringBuilder notCommon= new StringBuilder();
         StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> nounsOfGherkin : bdlOfGherkin.getNouns().entrySet()) {
@@ -170,7 +166,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                 + notCommon.toString() + "\n\n";
     }
 
-    private String checkVerbsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) throws FileNotFoundException, JWNLException {
+    private String checkVerbsOfGherkin(BDL bdlOfTexts,BDL bdlOfGherkin) {
         StringBuilder notCommon= new StringBuilder();
         StringBuilder alternatives= new StringBuilder();
         for (Map.Entry<String, Integer> verbsOfGherkin : bdlOfGherkin.getVerbs().entrySet()) {
@@ -239,7 +235,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
         int result= (matches * 100 /  toCheck) + 20;
         if (result>100)
                 result=100;
-        String toPrint="";
+        String toPrint;
         if(result<25)
             toPrint="\tBe careful, there is no match!\n";
         else if (result<50)

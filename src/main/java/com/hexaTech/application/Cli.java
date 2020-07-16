@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 /**
@@ -457,7 +456,7 @@ public class Cli implements MyObserver {
                 if(choice.equalsIgnoreCase("y")){
                     System.out.println("\tPlease choose the correct type: \n\tV: void \n\tS: string\n\tI: integer\n\tF: float\n\tB: boolean\n\tC: complex object");
                     choice=scanner.nextLine();
-                    while(!checkAnswer(choice) && !choice.equalsIgnoreCase("v")){
+                    while(checkAnswer(choice) && !choice.equalsIgnoreCase("v")){
                         System.out.println("\tWrong character. Please retry.");
                         choice=scanner.nextLine();
                     }
@@ -484,7 +483,7 @@ public class Cli implements MyObserver {
                     if(choice.equalsIgnoreCase("y")){
                         System.out.println("\t\tPlease choose the correct type: \n\t\tS: string\n\t\tI: integer\n\t\tF: float\n\t\tB: boolean\n\t\tC: complex object");
                         choice=scanner.nextLine();
-                        while(!checkAnswer(choice)){
+                        while(checkAnswer(choice)){
                             System.out.println("\tWrong character. Please retry.");
                             choice=scanner.nextLine();
                         }
@@ -511,8 +510,8 @@ public class Cli implements MyObserver {
     }//methodsSuggestions
 
     private boolean checkAnswer(String line){
-        return line.equalsIgnoreCase("s") || line.equalsIgnoreCase("i")
-                || line.equalsIgnoreCase("f") || line.equalsIgnoreCase("b") || line.equalsIgnoreCase("c");
+        return !line.equalsIgnoreCase("s") && !line.equalsIgnoreCase("i")
+                && !line.equalsIgnoreCase("f") && !line.equalsIgnoreCase("b") && !line.equalsIgnoreCase("c");
     }//checkAnswer
 
     private boolean checkAnswerObject(String line){
@@ -733,13 +732,13 @@ public class Cli implements MyObserver {
                 case ("1"):
                     developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "java.pla");
                     developController.createAPI();
-                    if(!checkUseCase(notifyMeErrorDevelop()))
+                    if(checkUseCase(notifyMeErrorDevelop()))
                         return;
                     break;
                 case ("2"):
                     developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "js.pla");
                     developController.createAPI();
-                    if(!checkUseCase(notifyMeErrorDevelop()))
+                    if(checkUseCase(notifyMeErrorDevelop()))
                         return;
                     break;
                 case ("3"):
@@ -747,7 +746,7 @@ public class Cli implements MyObserver {
                     developController.addPLA("Develop", scanner.nextLine());
                     if (notifyMeDoneDevelop()) {
                         developController.createAPI();
-                        if(!checkUseCase(notifyMeErrorDevelop()))
+                        if(checkUseCase(notifyMeErrorDevelop()))
                             return;
                     } else
                         System.out.println("\tPlease select a .pla file.\n");
@@ -770,21 +769,21 @@ public class Cli implements MyObserver {
     private boolean checkUseCase(int code){
         switch(code){
             case(0):
-                return true;
+                return false;
             case(1):
                 System.out.println("\tAdd a PLA or choose a programming language.\n");
-                return true;
+                return false;
             case(2):
                 System.out.println("\tAdd a BAL.\n");
-                return false;
+                return true;
             case(3):
                 System.out.println("\tAdd a valid BAL.\n");
-                return false;
+                return true;
             case(4):
                 System.out.println("\tAdd a valid PLA.\n");
-                return true;
+                return false;
         }//switch
-        return false;
+        return true;
     }//checkUseCase
 
 }//CLI

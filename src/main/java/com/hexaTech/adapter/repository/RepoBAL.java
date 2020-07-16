@@ -2,12 +2,9 @@ package com.hexaTech.adapter.repository;
 
 import com.hexaTech.domain.entity.BAL;
 import com.hexaTech.domain.entity.Parameter;
-import com.hexaTech.domain.entity.Structure;
 import com.hexaTech.domain.entity.StructureBAL;
 import com.hexaTech.domain.port.out.repository.RepoBALInterface;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class RepoBAL implements RepoBALInterface {

@@ -7,34 +7,21 @@ import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class DiscoverNavigation extends JPanel implements MyObserver {
 
-    private JButton createButton;
-    private JButton homeButton;
-    private JButton checkButton;
-    private JButton guideButton;
+    private final DiscoverCreate discoverCreate;
+    private final DiscoverCheck discoverCheck;
 
-    private DiscoverCreate discoverCreate;
-    private DiscoverCheck discoverCheck;
-
-    private final DiscoverController discoverController;
-    private final DiscoverPresenter discoverPresenter;
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
-    private MainGui mainGui;
+    private final MainGui mainGui;
 
     String stringManual;
 
     public DiscoverNavigation(MainGui home, DiscoverController discoverController, ViewManualController viewManualController,
-                              DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter ) throws IOException {
-        this.discoverController = discoverController;
-        this.discoverPresenter = discoverPresenter;
+                              DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter ) {
         this.mainGui = home;
-        this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
 
         this.discoverCreate = new DiscoverCreate(this, discoverController,viewManualController,discoverPresenter,viewManualPresenter);
@@ -42,63 +29,51 @@ public class DiscoverNavigation extends JPanel implements MyObserver {
 
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        createButton = new JButton("Process .txt into a BDL");
-        checkButton = new JButton("Check the compatibility of a BDL and your scenarios");
-        homeButton = new JButton("Home");
-        guideButton = new JButton("Guide");
+        JButton createButton = new JButton("Process .txt into a BDL");
+        JButton checkButton = new JButton("Check the compatibility of a BDL and your scenarios");
+        JButton homeButton = new JButton("Home");
+        JButton guideButton = new JButton("Guide");
 
         add(homeButton);
         add(guideButton);
         add(createButton);
         add(checkButton);
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                home.getHomePanel().setVisible(true);
-                setVisible(false);
+        homeButton.addActionListener(e -> {
+            home.getHomePanel().setVisible(true);
+            setVisible(false);
+        });
+
+        createButton.addActionListener(e -> {
+            home.getHomeWindow().add(discoverCreate);
+            setVisible(false);
+            discoverCreate.setVisible(true);
+            discoverCreate.extractBDLButton.setEnabled(false);
+            try {
+                discoverCreate.checkForSavedDocs();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                home.getHomeWindow().add(discoverCreate);
-                setVisible(false);
-                discoverCreate.setVisible(true);
-                discoverCreate.extractBDLButton.setEnabled(false);
-                try {
-                    discoverCreate.checkForSavedDocs();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
+        checkButton.addActionListener(e -> {
+            home.getHomeWindow().add(discoverCheck);
+            discoverCheck.checkButton.setEnabled(false);
+            discoverCheck.boolGherkin = false;
+            discoverCheck.boolBdl = false;
+            setVisible(false);
+            discoverCheck.setVisible(true);
         });
 
-        checkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                home.getHomeWindow().add(discoverCheck);
-                discoverCheck.checkButton.setEnabled(false);
-                discoverCheck.boolGherkin = false;
-                discoverCheck.boolBdl = false;
-                setVisible(false);
-                discoverCheck.setVisible(true);
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DISCOVER:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManualSection("DISCOVER:");
-                    notifyMeManual();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(home.getHomeWindow(),
-                        stringManual);
-            }
+            JOptionPane.showMessageDialog(home.getHomeWindow(),
+                    stringManual);
         });
     }
 

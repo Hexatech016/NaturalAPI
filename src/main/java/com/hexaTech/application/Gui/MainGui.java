@@ -3,8 +3,6 @@ package com.hexaTech.application.Gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -38,14 +36,16 @@ public class MainGui implements MyObserver {
     private JButton discoverButton;
     private JPanel homePanel;
 
-    private final DiscoverController discoverController;
-    private final DesignController designController;
-    private final DevelopController developController;
-    private final DiscoverPresenter discoverPresenter;
-    private final DesignPresenter designPresenter;
-    private final DevelopPresenter developPresenter;
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
+    private final JFrame window;
+    private final JPanel homePanel;
+    private final DiscoverNavigation discoverNavigation;
+    private final DesignWindow designWindow;
+    private final DevelopWindow developWindow;
+    private final JButton discoverButton;
+    private final JButton designButton;
+    private final JButton developButton;
+    private final JButton guideButton;
 
     private JFrame window;
     private DiscoverNavigation discoverNavigation;
@@ -53,27 +53,20 @@ public class MainGui implements MyObserver {
     private DevelopWindow developWindow;
 
     private String stringManual;
+    public URL url;
 
 
     @Autowired
     public MainGui(DiscoverController discoverController, DesignController designController,
                    DevelopController developController, ViewManualController viewManualController,
                    DiscoverPresenter discoverPresenter, DesignPresenter designPresenter,
-                   DevelopPresenter developPresenter, ViewManualPresenter viewManualPresenter) throws IOException {
+                   DevelopPresenter developPresenter, ViewManualPresenter viewManualPresenter) {
 
-        this.discoverController = discoverController;
-        this.designController = designController;
-        this.developController = developController;
-        this.viewManualController = viewManualController;
-
-        this.discoverPresenter = discoverPresenter;
-        this.designPresenter = designPresenter;
-        this.developPresenter = developPresenter;
         this.viewManualPresenter = viewManualPresenter;
 
-        this.discoverPresenter.addObserver(this);
-        this.designPresenter.addObserver(this);
-        this.developPresenter.addObserver(this);
+        discoverPresenter.addObserver(this);
+        designPresenter.addObserver(this);
+        developPresenter.addObserver(this);
         this.viewManualPresenter.addObserver(this);
 
         this.discoverNavigation = new DiscoverNavigation(this, discoverController, viewManualController, discoverPresenter, viewManualPresenter);
@@ -83,6 +76,8 @@ public class MainGui implements MyObserver {
         //JFrame.setDefaultLookAndFeelDecorated(true);
 
         this.window = new JFrame();
+        window.setPreferredSize(new Dimension(1400,900));
+        url = Thread.currentThread().getContextClassLoader().getResource("style/logo.png");
         window.setPreferredSize(new Dimension(800, 600));
         final URL url = Thread.currentThread().getContextClassLoader().getResource("style/logo.png");
         window.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
@@ -123,13 +118,10 @@ public class MainGui implements MyObserver {
             }
         });
 
-        discoverButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.add(discoverNavigation);
-                homePanel.setVisible(false);
-                discoverNavigation.setVisible(true);
-            }
+        discoverButton.addActionListener(e -> {
+            window.add(discoverNavigation);
+            homePanel.setVisible(false);
+            discoverNavigation.setVisible(true);
         });
 
         designButton.addMouseListener(new MouseAdapter() {
@@ -147,17 +139,18 @@ public class MainGui implements MyObserver {
             }
         });
 
-        designButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.add(designWindow);
-                homePanel.setVisible(false);
-                designWindow.setVisible(true);
-                try {
-                    designWindow.checkForSavedDocs();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+        designButton.addActionListener(e -> {
+            window.add(designWindow);
+            homePanel.setVisible(false);
+            designWindow.extractBALButton.setEnabled(false);
+            designWindow.addBOButton.setEnabled(false);
+            designWindow.addComplexType.setEnabled(false);
+            designWindow.scrollPane.setVisible(false);
+            designWindow.setVisible(true);
+            try {
+                designWindow.checkForSavedDocs();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
@@ -176,17 +169,14 @@ public class MainGui implements MyObserver {
             }
         });
 
-        developButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.add(developWindow);
-                homePanel.setVisible(false);
-                developWindow.setVisible(true);
-                try {
-                    developWindow.checkForSavedDocs();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+        developButton.addActionListener(e -> {
+            window.add(developWindow);
+            homePanel.setVisible(false);
+            developWindow.setVisible(true);
+            try {
+                developWindow.checkForSavedDocs();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
@@ -205,23 +195,18 @@ public class MainGui implements MyObserver {
             }
         });
 
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManual();
-                    viewManualController.openManualSection("MAIN:");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(window,
-                        stringManual);
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManual();
+                viewManualController.openManualSection("MAIN:");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+            JOptionPane.showMessageDialog(window,
+                    stringManual);
         });
 
     }
-
-    ;
 
     @Override
     public void notifyMeDiscover() {
@@ -300,6 +285,8 @@ public class MainGui implements MyObserver {
         frame.setVisible(true);*/
     }
 
+    //public void showGUI(){
+}
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<

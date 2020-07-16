@@ -4,8 +4,6 @@ import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,39 +17,33 @@ public class DevelopWindow extends JPanel implements MyObserver{
 
     private final DevelopController developController;
     private final DevelopPresenter developPresenter;
-    private MainGui mainGui;
-    private JButton homeButton;
-    private JButton javaButton;
-    private JButton javascriptButton;
-    private JButton addBALButton;
-    private JButton addPLAButton;
-    private JButton guideButton;
-    private JButton extractAPIButton;
-    private JButton backButton;
-    private JLabel message;
+    private final JButton javaButton;
+    private final JButton javascriptButton;
+    private final JButton addPLAButton;
+    private final JButton guideButton;
+    private final JButton extractAPIButton;
+    private final JButton backButton;
+    private final JLabel message;
     private JPanel extractBalPanel;
 
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
 
-    public DevelopWindow(MainGui parent, DevelopController developController, DevelopPresenter developPresenter, ViewManualController viewManualController,
-                         ViewManualPresenter viewManualPresenter) throws IOException {
+    public DevelopWindow(MainGui parent, DevelopController developController,DevelopPresenter developPresenter, ViewManualController viewManualController,
+                         ViewManualPresenter viewManualPresenter) {
         this.developController=developController;
         this.developPresenter=developPresenter;
-        this.mainGui=parent;
-        this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
         javaButton= new JButton("Java");
         javascriptButton = new JButton("Javascript");
-        addBALButton= new JButton("Add BAL");
+        JButton addBALButton = new JButton("Add BAL");
         addPLAButton= new JButton("Add external PLA");
         guideButton= new JButton("Guide");
         extractAPIButton= new JButton("Extract API");
         message = new JLabel("Welcome! Please add a BAL to proceed");
-        homeButton = new JButton("Home");
+        JButton homeButton = new JButton("Home");
         backButton = new JButton("Back");
         backupString = "";
         add(homeButton);
@@ -61,152 +53,119 @@ public class DevelopWindow extends JPanel implements MyObserver{
         add(extractAPIButton);
         extractAPIButton.setEnabled(false);
 
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(true);
-                setVisible(false);
-            }
+        homeButton.addActionListener(e -> {
+            parent.getHomePanel().setVisible(true);
+            setVisible(false);
         });
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(false);
-                extractBalPanel.setVisible(false);
-                setVisible(true);
+        backButton.addActionListener(e -> {
+            parent.getHomePanel().setVisible(false);
+            extractBalPanel.setVisible(false);
+            setVisible(true);
+        });
+
+        javaButton.addActionListener(e -> {
+            try {
+                developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "java.pla");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            try {
+                developController.createAPI();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
 
-        javaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        javascriptButton.addActionListener(e -> {
+            try {
+                developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "js.pla");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            try {
+                developController.createAPI();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        extractAPIButton.addActionListener(e -> {
+            extractBalPanel=new JPanel();
+            extractBalPanel.add(javaButton);
+            extractBalPanel.add(javascriptButton);
+            extractBalPanel.add(addPLAButton);
+            extractBalPanel.add(guideButton);
+            extractBalPanel.add(backButton);
+            parent.getHomeWindow().add(extractBalPanel);
+            extractBalPanel.setVisible(true);
+            parent.getHomePanel().setVisible(false);
+            setVisible(false);
+        });
+
+        addBALButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
                 try {
-                    developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "java.pla");
+                    developController.addBAL("Develop", path);
+                    notifyMeDevelop();
+                    extractAPIButton.setEnabled(true);
+                    viewMessage("SuccessBAL");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
+            }else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFileBAL");
+            }//if_else
+        });
+
+        addPLAButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File pla", "pla");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("pla") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
                 try {
+                    developController.addPLA("Develop", path);
                     developController.createAPI();
+                    notifyMeDevelop();
+                    viewMessage("SuccessPLA");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-            }
+            }else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFilePLA");
+            }//if_else
         });
 
-        javascriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    developController.refreshPLA("." + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "js.pla");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                try {
-                    developController.createAPI();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DEVELOP:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-        });
-
-        extractAPIButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                extractBalPanel=new JPanel();
-                extractBalPanel.add(javaButton);
-                extractBalPanel.add(javascriptButton);
-                extractBalPanel.add(addPLAButton);
-                extractBalPanel.add(guideButton);
-                extractBalPanel.add(backButton);
-                parent.getHomeWindow().add(extractBalPanel);
-                extractBalPanel.setVisible(true);
-                parent.getHomePanel().setVisible(false);
-                setVisible(false);
-            }
-        });
-
-        addBALButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        developController.addBAL("Develop", path);
-                        notifyMeDevelop();
-                        extractAPIButton.setEnabled(true);
-                        viewMessage("SuccessBAL");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFileBAL");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
-            }
-        });
-
-        addPLAButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File pla", "pla");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("pla") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        developController.addPLA("Develop", path);
-                        developController.createAPI();
-                        notifyMeDevelop();
-                        viewMessage("SuccessPLA");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFilePLA");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
-            }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManualSection("DEVELOP:");
-                    notifyMeManual();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(parent.getHomeWindow(),
-                        stringManual);
-            }
-
+            JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                    stringManual);
         });
 
     }
 
-    public void viewMessage(String type) throws IOException {
+    public void viewMessage(String type) {
         switch (type) {
             case("SuccessBAL"):
                 message.setText("BAL added.");

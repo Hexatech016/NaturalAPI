@@ -1,9 +1,7 @@
 package com.hexaTech.domain.usecase.discover;
 
-import com.hexaTech.domain.port.in.AddGherkinInputPort;
 import com.hexaTech.domain.port.in.AddGherkinToDiscoverInputPort;
 import com.hexaTech.domain.port.out.repository.RepoGherkinInterface;
-import com.hexaTech.domain.port.out.usecase.AddGherkinOutputPort;
 import com.hexaTech.domain.port.out.usecase.AddGherkinToDiscoverOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,10 +33,7 @@ public class AddGherkinToDiscover implements AddGherkinToDiscoverInputPort {
      */
     @Override
     public void addGherkin(String directory,String document) throws IOException {
-        if(repoGherkinInterface.importDoc(directory,document)) {
-            addGherkinToDiscoverOutputPort.showDone(true);
-        }else {
-            addGherkinToDiscoverOutputPort.showDone(false);
-        }//if_else
+        //if_else
+        addGherkinToDiscoverOutputPort.showDone(repoGherkinInterface.importDoc(directory, document));
     }//addGherkin
 }

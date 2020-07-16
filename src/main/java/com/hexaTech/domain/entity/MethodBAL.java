@@ -56,14 +56,14 @@ public class MethodBAL {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /**
-     * Sets method's tag to the new value.
-     * @param BDLtag string - new tag.
-     */
-    public void setTags(List<String> BDLtag) {
+    /*
+        /**
+         * Sets method's tag to the new value.
+         * @param BDLtag string - new tag.
+         */
+    /*public void setTags(List<String> BDLtag) {
         this.tag = BDLtag;
-    }
+    }*/
 
     /**
      * Sets method's return type to the new vale.
@@ -108,7 +108,7 @@ public class MethodBAL {
             }//if
             count+=1;
         }//for
-        toReturnString.append("],\"responses\":{"+toReturn.toString()+"}}}");
+        toReturnString.append("],\"responses\":{").append(toReturn.toString()).append("}}}");
         return toReturnString.toString();
     }//toString
 
