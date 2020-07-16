@@ -1,14 +1,21 @@
 package com.hexaTech.application.Gui;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 import com.google.common.io.Files;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.ViewManualController;
@@ -16,220 +23,353 @@ import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
-public class DesignWindow extends JPanel implements MyObserver{
+/**
+ *
+ * @author lukin
+ */
+public class DesignWindow extends javax.swing.JPanel implements MyObserver{
 
+    private final MainGui mainGui;
     private final DesignController designController;
     private final DesignPresenter designPresenter;
-    private MainGui mainGui;
-    private JButton homeButton;
-    private JButton addScenarioButton;
-    private JButton guideButton;
-    private JButton extractBALButton;
-    private JButton addBOButton;
-    private JButton resetButton;
-    private JButton confirmButton;
-    private JLabel message;
 
-    private JTextField txtArea;
-    private final Box objectsBox;
-
-    private final ViewManualController viewManualController;
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
-    private JScrollPane scrollPane;
-
-    private String testMethod;
     private String name;
-    private JComboBox typeList;
+    private final List<SuggestionsDesign> suggestions;
 
-    public DesignWindow(MainGui parent, DesignController designController, DesignPresenter designPresenter, ViewManualController viewManualController,
-                        ViewManualPresenter viewManualPresenter) throws IOException {
+    /**
+     * Creates new form NewJPanel
+     */
+    public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
+                        ViewManualPresenter viewManualPresenter)  {
+
+        this.mainGui = parent;
         this.designController=designController;
         this.designPresenter=designPresenter;
-        this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
-        this.mainGui=parent;
-        resetButton= new JButton("Reset");
-        extractBALButton= new JButton("Extract BAL");
-        addBOButton= new JButton("Add BO");
-        guideButton= new JButton("Guide");
-        addScenarioButton= new JButton("Add Scenario");
-        homeButton = new JButton("Home");
-        message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
-        objectsBox =Box.createVerticalBox();
-        testMethod="";
-        txtArea=new JTextField();
-        txtArea.setText(testMethod);
-        scrollPane= new JScrollPane();
+        suggestions = new ArrayList<>();
 
-//        String[] types = { "Void", "String", "Integer", "Float", "Boolean", "Complex object" };
-//        typeList = new JComboBox(types);
-//        typeList.setSelectedIndex(0);
-//        typeList.setPreferredSize(new Dimension(200, 100));
-//        txtArea.setPreferredSize(new Dimension(200, 100));
-        //typeList.addActionListener(this);
-        confirmButton=new JButton("Generate BAL");
-        confirmButton.setEnabled(false);
-        confirmButton.setVisible(false);
-        extractBALButton.setEnabled(false);
+        initComponents();
+
+        String testMethod = "";
+        jTextArea1.setText(testMethod);
 
         backupString = "";
-        add(message);
-        add(homeButton);
-        add(addScenarioButton);
-        add(addBOButton);
-        add(resetButton);
-        //add(objectsBox);
-        //add(txtArea);
-        add(scrollPane);
-        add(extractBALButton);
-        add(confirmButton);
-        add(guideButton);
-        extractBALButton.setEnabled(false);
-
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                parent.getHomePanel().setVisible(true);
-                setVisible(false);
-                objectsBox.removeAll();
-                confirmButton.setEnabled(false);
-                extractBALButton.setEnabled(false);
-                confirmButton.setVisible(false);
-                extractBALButton.setVisible(true);
-
-            }
-        });
-
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-              extractBALButton.setEnabled(false);
-              }
-        });
-
-        extractBALButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                try {
-
-                    name = (String)JOptionPane.showInputDialog("Insert name BAL","Default");
-
-                    if ((name != null) && (name.length() > 0)) {
-                        designController.createBAL(name);
-                        methodsSuggestions();
-                        confirmButton.setVisible(true);
-                        confirmButton.setEnabled(true);
-                        extractBALButton.setVisible(false);
-                        extractBALButton.setEnabled(false);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(new JPanel(),
-                                "Invalid name",
-                                "Inane error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-
-        });
-
-        addBOButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        designController.createBO("Design", path);
-                        notifyMeDesign();
-                        viewMessage("SuccessBO");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                } else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFileBO");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
-            }
-        });
-
-        addScenarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame dialog = new JFrame();
-                JFileChooser chooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
-                chooser.setFileFilter(filter);
-                dialog.getContentPane().add(chooser);
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(false);
-                dialog.dispose();
-                int returnVal = chooser.showOpenDialog(dialog);
-                if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
-                    String path = chooser.getSelectedFile().getAbsolutePath();
-                    try {
-                        designController.addGherkin("Design",path);
-                        extractBALButton.setEnabled(true);
-                        notifyMeDesign();
-                        viewMessage("SuccessGherkin");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }else if(returnVal != JFileChooser.CANCEL_OPTION){
-                    try {
-                        viewMessage("WrongFileGherkin");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                }//if_else
-            }
-        });
-
-        guideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    viewManualController.openManualSection("DESIGN:");
-                    notifyMeManual();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(parent.getHomeWindow(),
-                        stringManual);
-                }
-        });
-
-        confirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    designController.updateBAL(name);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        });
+        jButton8.setEnabled(false);
     }
 
-    public void viewMessage(String type) throws IOException {
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton3.setText("Home");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setBackground(new java.awt.Color(255, 255, 255));
+        jButton4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton4.setText("Guide");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setBackground(new java.awt.Color(255, 255, 255));
+        jButton5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton5.setText("Add Scenario");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setBackground(new java.awt.Color(255, 255, 255));
+        jButton6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton6.setText("Add BO");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setBackground(new java.awt.Color(255, 255, 255));
+        jButton7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton7.setText("Add a new complex type");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setBackground(new java.awt.Color(255, 255, 255));
+        jButton8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jButton8.setText("Generate BAL");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design.png"))); // NOI18N
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Ciao come va\ntutto bene");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png"))); // NOI18N
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
+                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jButton7, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton8, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton3)
+                                        .addComponent(jButton4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton6)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton8)
+                                .addGap(6, 6, 6))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        parent.getHomePanel().setVisible(true);
+        setVisible(false);
+        test.removeAll();
+        confirmButton.setEnabled(false);
+        extractBALButton.setEnabled(false);
+        confirmButton.setVisible(false);
+        extractBALButton.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            viewManualController.openManualSection("DESIGN:");
+            notifyMeManual();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                stringManual);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JFrame dialog = new JFrame();
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
+        chooser.setFileFilter(filter);
+        dialog.getContentPane().add(chooser);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(false);
+        dialog.dispose();
+        int returnVal = chooser.showOpenDialog(dialog);
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            try {
+                designController.addGherkin("Design",path);
+                extractBALButton.setEnabled(true);
+                notifyMeDesign();
+                viewMessage("SuccessGherkin");
+                extractBALButton.setEnabled(true);
+                addBOButton.setEnabled(true);
+                addComplexType.setEnabled(true);
+
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }else if(returnVal != JFileChooser.CANCEL_OPTION){
+            viewMessage("WrongFileGherkin");
+        }//if_else
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        JFrame dialog = new JFrame();
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+        chooser.setFileFilter(filter);
+        dialog.getContentPane().add(chooser);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(false);
+        dialog.dispose();
+        int returnVal = chooser.showOpenDialog(dialog);
+        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            try {
+                designController.createBO("Design", path);
+                notifyMeDesign();
+                viewMessage("SuccessBO");
+                refreshTypes();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        } else if(returnVal != JFileChooser.CANCEL_OPTION){
+            viewMessage("WrongFileBO");
+        }//if_else
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        ComplexTypeCreator ctc = new ComplexTypeCreator(parent, this, designController);
+        ctc.openWindow();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        try {
+            name = JOptionPane.showInputDialog("Insert name BAL","Default");
+            if(name != null) {
+                if (!name.equals("")) {
+                    designController.createBAL(name);
+                    methodsSuggestions();
+                    confirmButton.setVisible(true);
+                    confirmButton.setEnabled(true);
+                    extractBALButton.setVisible(false);
+                    extractBALButton.setEnabled(false);
+                    scrollPane.setVisible(true);
+                    refreshTypes();
+                } else {
+                    JOptionPane.showMessageDialog(new JPanel(),
+                            "Invalid name",
+                            "Inane error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+
+    @Override
+    public void notifyMeDiscover() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDiscover() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDesign() {
+        backupString = designPresenter.getMessage();
+    }
+
+    @Override
+    public boolean notifyMeDoneDesign() {
+        return designPresenter.isDone();
+    }
+
+    @Override
+    public void notifyMeDevelop() {
+
+    }
+
+    @Override
+    public int notifyMeErrorDevelop() {
+        return 0;
+    }
+
+    @Override
+    public boolean notifyMeDoneDevelop() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeManual() {
+        stringManual=viewManualPresenter.getMessage();
+    }
+    // End of variables declaration//GEN-END:variables
+
+    public void refreshTypes() {
+        for(SuggestionsDesign suggestion : suggestions) {
+            suggestion.updateTypes();
+        }
+    }
+
+    public void viewMessage(String type) {
         switch (type) {
             case("SuccessGherkin"):
                 message.setText("Scenario added.");
@@ -273,15 +413,15 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.restoreBackup("Design");
             return true;
         }else if(choice==1){
-          designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-          extractBALButton.setEnabled(false);
+            designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+            extractBALButton.setEnabled(false);
             return false;
         }else{
             return existsBackUpDocument();
         }//if_else
     }//existsBackupDocument
 
-    private void methodsSuggestions() throws IOException {
+    private void methodsSuggestions() {
         int sentinel=0, identifier=0;
         message.setText("sono entrato");
         designController.checkIfHasMethod(sentinel);
@@ -289,31 +429,30 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             designController.checkIfHasParameter(sentinel,identifier);
             notifyMeDesign();
-            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController);
+            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController, designPresenter);
             comboMethod.setNameMethods(backupString);
+            suggestions.add(comboMethod);
 
             JPanel methodPanel = new JPanel();
-            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));;
+            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
             methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 
             methodPanel.add(comboMethod);
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 notifyMeDesign();
-                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController);
+                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController, designPresenter);
                 comboParam.setNameMethods(backupString);
+                suggestions.add(comboParam);
                 methodPanel.add(comboParam);
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);
             }//external_while
-            objectsBox.add(methodPanel);
-            //button set index ( per avere l'indice nella action)
+            test.add(methodPanel);
             sentinel++;
             identifier=0;
             designController.checkIfHasMethod(sentinel);
         }//external_while
-        //da sistemare --> scrollPane.add(objectsBox);
-        add(objectsBox);
     }//methodsSuggestions
 
     public void checkForSavedDocs() throws IOException {
@@ -323,46 +462,10 @@ public class DesignWindow extends JPanel implements MyObserver{
                 notifyMeDesign();
                 message.setText(backupString);
                 extractBALButton.setEnabled(true);
+                addBOButton.setEnabled(true);
+                addComplexType.setEnabled(true);
             }
         }
     }
-
-    @Override
-    public void notifyMeDiscover() {
-
-    }
-
-    @Override
-    public boolean notifyMeDoneDiscover() {
-        return false;
-    }
-
-    @Override
-    public void notifyMeDesign() {
-        backupString = designPresenter.getMessage();
-    }
-
-    @Override
-    public boolean notifyMeDoneDesign() {
-        return designPresenter.isDone();
-    }
-
-    @Override
-    public void notifyMeDevelop() {
-
-    }
-
-    @Override
-    public int notifyMeErrorDevelop() {
-        return 0;
-    }
-
-    @Override
-    public boolean notifyMeDoneDevelop() {
-        return false;
-    }
-
-    @Override
-    public void notifyMeManual() {stringManual=viewManualPresenter.getMessage();
-    }
 }
+
