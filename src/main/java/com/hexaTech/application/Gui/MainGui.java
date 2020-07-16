@@ -150,6 +150,10 @@ public class MainGui implements MyObserver {
         designButton.addActionListener(e -> {
             window.add(designWindow);
             homePanel.setVisible(false);
+            designWindow.extractBALButton.setEnabled(false);
+            designWindow.addBOButton.setEnabled(false);
+            designWindow.addComplexType.setEnabled(false);
+            designWindow.scrollPane.setVisible(false);
             designWindow.setVisible(true);
             try {
                 designWindow.checkForSavedDocs();

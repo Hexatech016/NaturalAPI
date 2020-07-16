@@ -1,13 +1,15 @@
 package com.hexaTech.application.Gui;
 
+import com.hexaTech.adapter.interfaceadapter.MyObserver;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
+import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Vector;
 
-public class SuggestionsDesign extends JPanel{
+public class SuggestionsDesign extends JPanel implements MyObserver {
 
     private final JComboBox comboType;
     private final JLabel nameMethods;
@@ -17,9 +19,13 @@ public class SuggestionsDesign extends JPanel{
     private final int identifier;
     JCheckBox isArray;
     private Vector<String> types;
+    String extraTypes;
+    DesignController designController;
+    DesignPresenter designPresenter;
 
-    public SuggestionsDesign(int sent, int id, DesignController designController){
-
+    public SuggestionsDesign(int sent, int id, DesignController designController, DesignPresenter designPresenter){
+        this.designPresenter = designPresenter;
+        this.designController = designController;
         this.sentinel = sent;
         this.identifier = id;
         array = false;
@@ -72,6 +78,55 @@ public class SuggestionsDesign extends JPanel{
     }
 
     public void updateTypes() {
+        designController.showObjects();
+        notifyMeDesign();
+        String[] temp = extraTypes.split("\n");
+        for(String type : temp) {
+            if (type.contains(": ")) {
+                String toAdd = type.replaceFirst("^(.*?): ", "");
+                if(!types.contains(toAdd))
+                    types.add(toAdd);
+            }
+        }
+    }
+
+    @Override
+    public void notifyMeDiscover() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDiscover() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDesign() {
+        extraTypes = designPresenter.getMessage();
+    }
+
+    @Override
+    public boolean notifyMeDoneDesign() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDevelop() {
+
+    }
+
+    @Override
+    public int notifyMeErrorDevelop() {
+        return 0;
+    }
+
+    @Override
+    public boolean notifyMeDoneDevelop() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeManual() {
 
     }
 }

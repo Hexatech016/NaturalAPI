@@ -19,33 +19,37 @@ import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
 public class DesignWindow extends JPanel implements MyObserver{
 
+    private final MainGui mainGui;
     private final DesignController designController;
     private final DesignPresenter designPresenter;
-    private final JButton extractBALButton;
+    public final JButton extractBALButton;
     private final JButton confirmButton;
     private final JLabel message;
-    private final JScrollPane scrollPane;
+    public final JScrollPane scrollPane;
     private final JPanel test;
+    public final JButton addBOButton;
+    public final JButton addComplexType;
 
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
     private String name;
-    private List<SuggestionsDesign> suggestions;
+    private final List<SuggestionsDesign> suggestions;
 
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
                         ViewManualPresenter viewManualPresenter) {
+        this.mainGui = parent;
         this.designController=designController;
         this.designPresenter=designPresenter;
         this.viewManualPresenter = viewManualPresenter;
         suggestions = new ArrayList<>();
         extractBALButton= new JButton("Extract BAL");
-        JButton addBOButton = new JButton("Add BO");
+        addBOButton = new JButton("Add BO");
         JButton guideButton = new JButton("Guide");
         JButton addScenarioButton = new JButton("Add Scenario");
         JButton homeButton = new JButton("Home");
-        JButton addComplexType = new JButton("Add a new complex type");
+        addComplexType = new JButton("Add a new complex type");
         test = new JPanel();
         test.setLayout(new BoxLayout(test, BoxLayout.Y_AXIS));
         message = new JLabel("Welcome! Please add a gherkin scenario to proceed");
@@ -79,7 +83,6 @@ public class DesignWindow extends JPanel implements MyObserver{
             extractBALButton.setEnabled(false);
             confirmButton.setVisible(false);
             extractBALButton.setVisible(true);
-
         });
 
         extractBALButton.addActionListener(e -> {
@@ -93,6 +96,8 @@ public class DesignWindow extends JPanel implements MyObserver{
                         confirmButton.setEnabled(true);
                         extractBALButton.setVisible(false);
                         extractBALButton.setEnabled(false);
+                        scrollPane.setVisible(true);
+                        refreshTypes();
                     } else {
                         JOptionPane.showMessageDialog(new JPanel(),
                                 "Invalid name",
@@ -121,6 +126,7 @@ public class DesignWindow extends JPanel implements MyObserver{
                     designController.createBO("Design", path);
                     notifyMeDesign();
                     viewMessage("SuccessBO");
+                    refreshTypes();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -146,6 +152,10 @@ public class DesignWindow extends JPanel implements MyObserver{
                     extractBALButton.setEnabled(true);
                     notifyMeDesign();
                     viewMessage("SuccessGherkin");
+                    extractBALButton.setEnabled(true);
+                    addBOButton.setEnabled(true);
+                    addComplexType.setEnabled(true);
+
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -182,7 +192,7 @@ public class DesignWindow extends JPanel implements MyObserver{
 
     public void refreshTypes() {
         for(SuggestionsDesign suggestion : suggestions) {
-
+            suggestion.updateTypes();
         }
     }
 
@@ -246,7 +256,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             designController.showMethod(sentinel);
             designController.checkIfHasParameter(sentinel,identifier);
             notifyMeDesign();
-            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController);
+            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController, designPresenter);
             comboMethod.setNameMethods(backupString);
             suggestions.add(comboMethod);
 
@@ -258,7 +268,7 @@ public class DesignWindow extends JPanel implements MyObserver{
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 notifyMeDesign();
-                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController);
+                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController, designPresenter);
                 comboParam.setNameMethods(backupString);
                 suggestions.add(comboParam);
                 methodPanel.add(comboParam);
@@ -279,6 +289,8 @@ public class DesignWindow extends JPanel implements MyObserver{
                 notifyMeDesign();
                 message.setText(backupString);
                 extractBALButton.setEnabled(true);
+                addBOButton.setEnabled(true);
+                addComplexType.setEnabled(true);
             }
         }
     }
