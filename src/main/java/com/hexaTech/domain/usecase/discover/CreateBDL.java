@@ -73,7 +73,6 @@ public class CreateBDL implements CreateBDLInputPort {
             BO boToMerge=new BO();
             boToMerge.setOntologyObjects(extractedBO);
 
-
             BDL bdlToMerge=repoBDLInterface.createBDL(usedForBDLConstruction);
             bdl.mergeBDL(bdlToMerge);
             //String predicatesForSmile=bdl.predToCSV();
@@ -87,14 +86,10 @@ public class CreateBDL implements CreateBDLInputPort {
                 String wordString = String.join(" ", wordArray);
                 keyWordList.add(wordString);
             }
-
             bdl.removeLowFrequencies();
             //bdl.removeIrrelevantPredicates(keyWordList);
             boToMerge.checkElements(bdl);
             bo.mergeBO(boToMerge);
-
-
-
         }//for
         bo.setOntologyName(BDLpath+"BO");
         repoBDLInterface.saveBDL(BDLpath);
