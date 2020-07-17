@@ -28,10 +28,9 @@ import java.io.IOException;
 public class Main{
     public static void main(String[] args) throws IOException, JWNLException {
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(SpringConfig.class);
-        //Cli client = context.getBean("cli",Cli.class);
-        //client.useCaseNaturalAPI();
-        MainGui gui = context.getBean("mainGui", MainGui.class);
-        gui.startGUI();
+        Cli client = context.getBean("cli",Cli.class);
+        client.useCaseNaturalAPI();
+        MainGui gui = context.getBean("mainGui",MainGui.class);
         context.close();
     }//main
 }//MainDevelop
