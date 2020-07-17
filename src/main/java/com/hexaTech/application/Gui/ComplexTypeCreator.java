@@ -20,7 +20,7 @@ public class ComplexTypeCreator extends JPanel {
     String name;
     List<AuxiliaryComplexType> parameters;
 
-    public ComplexTypeCreator(MainGui maingui, DesignWindow parent, DesignController designController) {
+    public ComplexTypeCreator(MainGui maingui, DesignController designController) {
         mainGui = maingui;
         this.parameters = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class ComplexTypeCreator extends JPanel {
             JOptionPane.showMessageDialog(this,
                     "Complex Type added.");
             complexType.dispose();
-            parent.refreshTypes();
+            //parent.refreshTypes();
         });
     }
 

@@ -5,14 +5,22 @@ import com.hexaTech.adapter.interfaceadapter.ViewManualController;
 import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverController;
 import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
+import org.mozilla.javascript.tools.debugger.Dim;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 public class DiscoverNavigation extends JPanel implements MyObserver {
 
     private final DiscoverCreate discoverCreate;
     private final DiscoverCheck discoverCheck;
+
+    private JButton createButton;
+    private JButton checkButton;
+    private JButton homeButton;
+    private JButton guideButton;
+    private JLabel image;
 
     private final ViewManualPresenter viewManualPresenter;
     private final MainGui mainGui;
@@ -23,21 +31,10 @@ public class DiscoverNavigation extends JPanel implements MyObserver {
                               DiscoverPresenter discoverPresenter, ViewManualPresenter viewManualPresenter ) {
         this.mainGui = home;
         this.viewManualPresenter = viewManualPresenter;
-
         this.discoverCreate = new DiscoverCreate(this, discoverController,viewManualController,discoverPresenter,viewManualPresenter);
         this.discoverCheck = new DiscoverCheck(this, discoverController,viewManualController,discoverPresenter,viewManualPresenter);
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        JButton createButton = new JButton("Process .txt into a BDL");
-        JButton checkButton = new JButton("Check the compatibility of a BDL and your scenarios");
-        JButton homeButton = new JButton("Home");
-        JButton guideButton = new JButton("Guide");
-
-        add(homeButton);
-        add(guideButton);
-        add(createButton);
-        add(checkButton);
+        initComponents();
 
         homeButton.addActionListener(e -> {
             home.getHomePanel().setVisible(true);
@@ -46,6 +43,7 @@ public class DiscoverNavigation extends JPanel implements MyObserver {
 
         createButton.addActionListener(e -> {
             home.getHomeWindow().add(discoverCreate);
+            home.getHomeWindow().setSize(new Dimension(420,450));
             setVisible(false);
             discoverCreate.setVisible(true);
             discoverCreate.extractBDLButton.setEnabled(false);
@@ -58,6 +56,7 @@ public class DiscoverNavigation extends JPanel implements MyObserver {
 
         checkButton.addActionListener(e -> {
             home.getHomeWindow().add(discoverCheck);
+            home.getHomeWindow().setSize(new Dimension(260,270));
             discoverCheck.checkButton.setEnabled(false);
             discoverCheck.boolGherkin = false;
             discoverCheck.boolBdl = false;
@@ -75,6 +74,66 @@ public class DiscoverNavigation extends JPanel implements MyObserver {
             JOptionPane.showMessageDialog(home.getHomeWindow(),
                     stringManual);
         });
+    }
+
+    private void initComponents() {
+
+        homeButton = new javax.swing.JButton("Home");
+        guideButton = new javax.swing.JButton("Guide");
+        image = new javax.swing.JLabel();
+        createButton = new javax.swing.JButton("Process.txt into a BDL");
+        checkButton = new javax.swing.JButton("Check compatibility (BDL/scenarios)");
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        homeButton.setBackground(new java.awt.Color(255, 255, 255));
+        homeButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        guideButton.setBackground(new java.awt.Color(255, 255, 255));
+        guideButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/discover.png"))); // NOI18N
+
+        createButton.setBackground(new java.awt.Color(255, 255, 255));
+        createButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        checkButton.setBackground(new java.awt.Color(255, 255, 255));
+        checkButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        checkButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        checkButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(checkButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(guideButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(homeButton)
+                                        .addComponent(guideButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                                .addComponent(createButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(checkButton)
+                                .addContainerGap())
+        );
     }
 
     public MainGui getMainGui() {

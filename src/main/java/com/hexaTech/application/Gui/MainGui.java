@@ -26,14 +26,15 @@ public class MainGui implements MyObserver {
 
     private final ViewManualPresenter viewManualPresenter;
     private final JFrame window;
-    private final JPanel homePanel;
+    private JPanel homePanel;
     private final DiscoverNavigation discoverNavigation;
     private final DesignWindow designWindow;
     private final DevelopWindow developWindow;
-    private final JButton discoverButton;
-    private final JButton designButton;
-    private final JButton developButton;
-    private final JButton guideButton;
+    private JButton discoverButton;
+    private JButton designButton;
+    private JButton developButton;
+    private JButton guideButton;
+    private JLabel image;
 
     private String stringManual;
     public URL url;
@@ -53,78 +54,13 @@ public class MainGui implements MyObserver {
 
         //JFrame.setDefaultLookAndFeelDecorated(true);
 
-        this.window = new JFrame();
-        window.setPreferredSize(new Dimension(1400,900));
-        url = Thread.currentThread().getContextClassLoader().getResource("style/logo.png");
-        window.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
-        window.setFont(new javax.swing.plaf.FontUIResource("Verdana",Font.PLAIN,22));
-        window.pack();
-        window.setLocationRelativeTo(null);
-
-        this.homePanel = new JPanel();
         this.discoverNavigation = new DiscoverNavigation(this, discoverController, viewManualController, discoverPresenter, viewManualPresenter);
         this.designWindow = new DesignWindow(this, designController,designPresenter, viewManualController, viewManualPresenter);
         this.developWindow = new DevelopWindow(this, developController,developPresenter, viewManualController, viewManualPresenter);
 
-        this.discoverButton= new JButton("Discover");
-        this.designButton= new JButton("Design");
-        this.developButton= new JButton("Develop");
-        this.guideButton= new JButton("Guide");
+        this.window = new JFrame();
 
-        //homePanel.setLayout(new BoxLayout(homePanel, BoxLayout.PAGE_AXIS));
-        //buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-        //homePanel.setLayout(new BorderLayout());
-        //homePanel.setPreferredSize(new Dimension(200, 100));
-        //homePanel.setLayout(new GridLayout(4,1, 2, 2));
-        //homePanel.setBackground(new Color(0x5e78fa));
-        homePanel.setBorder(BorderFactory.createLineBorder(new Color(27, 31, 234)));
-        BoxLayout boxlayout = new BoxLayout(homePanel, BoxLayout.Y_AXIS);
-        homePanel.setLayout(boxlayout);
-        homePanel.setBorder(new EmptyBorder(new Insets(100, 150, 100, 150)));
-        discoverButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        discoverButton.setPreferredSize(new Dimension(100,50));
-        discoverButton.setBackground(new Color(0x5e78fa));
-        designButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        designButton.setPreferredSize(new Dimension(100,50));
-        designButton.setBackground(new Color(0x5e78fa));
-        developButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        developButton.setPreferredSize(new Dimension(100,50));
-        developButton.setBackground(new Color(0x5e78fa));
-        guideButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        guideButton.setPreferredSize(new Dimension(100,50));
-        guideButton.setBackground(new Color(0x5e78fa));
-
-        //homePanel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-        //obj.setLayout(new GridLayout());
-        homePanel.add(discoverButton);
-        homePanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        homePanel.add(designButton);
-        homePanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        homePanel.add(developButton);
-        homePanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        homePanel.add(guideButton);
-        //Obj.add(fc);
-        window.add(homePanel, BorderLayout.CENTER);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setTitle("NaturalAPI");
-        window.pack();
-        window.setVisible(true);
-
-
-        discoverButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                discoverButton.setBackground(new Color(27, 31, 234));
-                //  discoverButton.setBorderPainted(false);
-            }
-        });
-        discoverButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                discoverButton.setBackground(new Color(0x5e78fa));
-                //  discoverButton.setBorderPainted(true);
-            }
-        });
+        initComponents();
 
         discoverButton.addActionListener(e -> {
             window.add(discoverNavigation);
@@ -132,48 +68,15 @@ public class MainGui implements MyObserver {
             discoverNavigation.setVisible(true);
         });
 
-        designButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                designButton.setBackground(new Color(27, 31, 234));
-                // designButton.setBorderPainted(false);
-            }
-        });
-        designButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                designButton.setBackground(new Color(0x5e78fa));
-                // designButton.setBorderPainted(true);
-            }
-        });
-
         designButton.addActionListener(e -> {
             window.add(designWindow);
             homePanel.setVisible(false);
-            designWindow.extractBALButton.setEnabled(false);
             designWindow.addBOButton.setEnabled(false);
-            designWindow.addComplexType.setEnabled(false);
-            designWindow.scrollPane.setVisible(false);
             designWindow.setVisible(true);
             try {
                 designWindow.checkForSavedDocs();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-            }
-        });
-
-        developButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                developButton.setBackground(new Color(27, 31, 234));
-                // developButton.setBorderPainted(false);
-            }
-        });
-        developButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                developButton.setBackground(new Color(0x5e78fa));
-                // developButton.setBorderPainted(true);
             }
         });
 
@@ -188,21 +91,6 @@ public class MainGui implements MyObserver {
             }
         });
 
-        guideButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                guideButton.setBackground(new Color(27, 31, 234));
-                // guideButton.setBorderPainted(false);
-            }
-        });
-        guideButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                guideButton.setBackground(new Color(0x5e78fa));
-                // guideButton.setBorderPainted(true);
-            }
-        });
-
         guideButton.addActionListener(e -> {
             try {
                 viewManualController.openManual();
@@ -214,6 +102,80 @@ public class MainGui implements MyObserver {
                     stringManual);
         });
     }
+
+    private void initComponents() {
+
+        homePanel = new javax.swing.JPanel();
+        discoverButton = new javax.swing.JButton("Discover");
+        designButton = new javax.swing.JButton("Design");
+        developButton = new javax.swing.JButton("Develop");
+        guideButton = new javax.swing.JButton("Guide");
+        image = new javax.swing.JLabel();
+
+        url = Thread.currentThread().getContextClassLoader().getResource("style/logo.png");
+        window.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
+        window.setFont(new javax.swing.plaf.FontUIResource("Verdana",Font.PLAIN,22));
+
+        this.homePanel = new JPanel();
+
+        window.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        window.setBackground(new java.awt.Color(255, 255, 255));
+
+        homePanel.setBackground(new java.awt.Color(255, 255, 255));
+        homePanel.setForeground(new java.awt.Color(255, 255, 255));
+
+        discoverButton.setBackground(new java.awt.Color(255, 255, 255));
+        discoverButton.setFont(new java.awt.Font("SansSerif", Font.PLAIN, 12)); // NOI18N
+
+        designButton.setBackground(new java.awt.Color(255, 255, 255));
+        designButton.setFont(new java.awt.Font("SansSerif", Font.PLAIN, 12)); // NOI18N
+
+        developButton.setBackground(new java.awt.Color(255, 255, 255));
+        developButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        guideButton.setBackground(new java.awt.Color(255, 255, 255));
+        guideButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addContainerGap(77, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                        .addComponent(designButton)
+                                        .addComponent(developButton)
+                                        .addComponent(guideButton)
+                                        .addComponent(discoverButton))
+                                .addGap(66, 66, 66))
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addGap(18, 18, 18)
+                                .addComponent(discoverButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(designButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(developButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(guideButton)
+                                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        window.add(homePanel, BorderLayout.CENTER);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setTitle("NaturalAPI");
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setSize(new Dimension(246,440));
+        window.setResizable(false);
+        window.setVisible(true);
+    }
+
 
     @Override
     public void notifyMeDiscover() {

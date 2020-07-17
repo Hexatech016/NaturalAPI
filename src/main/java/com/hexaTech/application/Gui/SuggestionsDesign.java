@@ -5,90 +5,172 @@ import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.Objects;
-import java.util.Vector;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SuggestionsDesign extends JPanel implements MyObserver {
 
-    private final JComboBox comboType;
-    private final JLabel nameMethods;
-    private String typeName;
-    private boolean array;
-    private final int sentinel;
-    private final int identifier;
-    JCheckBox isArray;
-    private Vector<String> types;
-    String extraTypes;
+    private MainGui mainGui;
+
     DesignController designController;
     DesignPresenter designPresenter;
 
-    public SuggestionsDesign(int sent, int id, DesignController designController, DesignPresenter designPresenter){
+    private JLabel image;
+    private JButton backButton;
+    private JButton confirmButton;
+    private JButton addComplexTypeButton;
+
+    private JScrollPane scrollArea;
+
+    private final List<AuxiliarySuggestion> suggestions;
+    JFrame suggestion;
+    private String nameMethod;
+
+    public SuggestionsDesign(MainGui mainGui, DesignController designController, DesignPresenter designPresenter, String nameBal){
         this.designPresenter = designPresenter;
         this.designController = designController;
-        this.sentinel = sent;
-        this.identifier = id;
-        array = false;
-        typeName = "String";
-        types = new Vector<>();
-        types.add("String");
-        types.add("Void");
-        types.add("Integer");
-        types.add("Float");
-        types.add("Boolean");
-        comboType = new JComboBox(types);
-        nameMethods = new JLabel();
-        comboType.setSelectedIndex(0);
-        comboType.setPreferredSize(new Dimension(100, 20));
+        this.mainGui = mainGui;
 
-        isArray = new JCheckBox("Array");
-        isArray.setSelected(false);
+        suggestions = new ArrayList<>();
 
-        add(nameMethods);
-        add(comboType);
-        add(isArray);
+        initComponents();
 
-        comboType.addActionListener(e -> {
-            typeName = Objects.requireNonNull(comboType.getSelectedItem()).toString();
-            if(identifier == -1)
-                designController.alterMethodReturn(sentinel,typeName,array,false);
-            else
-                designController.alterParameterType(sentinel, identifier, typeName, array, false);
+        backButton.addActionListener(e-> {
+            suggestion.dispose();
         });
 
-        isArray.addActionListener(e -> {
-            array = isArray.isSelected();
-            if(identifier == -1)
-                 designController.alterMethodReturn(sentinel,typeName, array,false);
-            else
-                designController.alterParameterType(sentinel, identifier, typeName, array, false);
-        });
-    }
-
-    // works only with two strings.
-    public String[] getSplitSting(String methodName) {
-        String[] contents;
-        contents = methodName.split("\n");
-        return contents;
-    }
-
-    public void setNameMethods(String name) {
-        String[] temp = getSplitSting(name);
-        this.nameMethods.setText("<html>" + temp[0] + "<br/>" + temp[1] + "</html>");
-    }
-
-    public void updateTypes() {
-        designController.showObjects();
-        notifyMeDesign();
-        String[] temp = extraTypes.split("\n");
-        for(String type : temp) {
-            if (type.contains(": ")) {
-                String toAdd = type.replaceFirst("^(.*?): ", "");
-                if(!types.contains(toAdd))
-                    types.add(toAdd);
+        confirmButton.addActionListener(e -> {
+            try {
+                designController.updateBAL(nameBal);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
+            suggestion.dispose();
+        });
+
+        addComplexTypeButton.addActionListener(e -> {
+            ComplexTypeCreator ctc = new ComplexTypeCreator(mainGui, designController);
+            ctc.openWindow();
+        });
+    }
+
+    public void openWindow() {
+        suggestion = new JFrame();
+        suggestion.setLayout(new GridLayout(0, 1));
+        suggestion.setPreferredSize(new Dimension(470,600));
+        suggestion.setResizable(false);
+        suggestion.setIconImage(Toolkit.getDefaultToolkit().getImage(mainGui.url));
+        suggestion.setFont(new javax.swing.plaf.FontUIResource("Verdana",Font.PLAIN,22));
+        suggestion.pack();
+        suggestion.setLocationRelativeTo(null);
+        suggestion.add(this, BorderLayout.CENTER);
+        suggestion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        suggestion.setTitle("Create a new Complex Type");
+        suggestion.setVisible(true);
+
+        methodsSuggestions();
+        refreshTypes();
+    }
+
+    private void methodsSuggestions() {
+        int sentinel=0, identifier=0;
+        designController.checkIfHasMethod(sentinel);
+        while(notifyMeDoneDesign()){
+            designController.showMethod(sentinel);
+            designController.checkIfHasParameter(sentinel,identifier);
+            notifyMeDesign();
+            AuxiliarySuggestion method = new AuxiliarySuggestion(sentinel, -1, designController, designPresenter);
+            method.setNameMethods(nameMethod);
+            suggestions.add(method);
+
+            JPanel methodPanel = new JPanel();
+            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
+            methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+
+            methodPanel.add(method);
+            while(notifyMeDoneDesign()){
+                designController.showParameter(sentinel,identifier);
+                notifyMeDesign();
+                AuxiliarySuggestion param = new AuxiliarySuggestion(sentinel, identifier, designController, designPresenter);
+                param.setNameMethods(nameMethod);
+                suggestions.add(param);
+                methodPanel.add(param);
+                identifier++;
+                designController.checkIfHasParameter(sentinel,identifier);
+            }//external_while
+            //test.add(methodPanel);
+            sentinel++;
+            identifier=0;
+            designController.checkIfHasMethod(sentinel);
+        }//external_while
+    }//methodsSuggestions
+
+    public void refreshTypes() {
+        for(AuxiliarySuggestion suggestion : suggestions) {
+            suggestion.updateTypes();
         }
     }
+
+    private void initComponents() {
+        confirmButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
+        scrollArea = new javax.swing.JScrollPane();
+        addComplexTypeButton = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        confirmButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        confirmButton.setText("Confirm");
+
+        backButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        backButton.setText("Back");
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/designsuggestions.png"))); // NOI18N
+
+        scrollArea.setBackground(new java.awt.Color(255, 255, 255));
+        scrollArea.setBorder(null);
+
+        addComplexTypeButton.setBackground(new java.awt.Color(255, 255, 255));
+        addComplexTypeButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        addComplexTypeButton.setText("Add a new complex type");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 409, Short.MAX_VALUE)
+                        .addComponent(scrollArea, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(addComplexTypeButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(scrollArea, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(confirmButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(backButton))
+                                        .addComponent(addComplexTypeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(13, Short.MAX_VALUE))
+        );
+    }
+
+
 
     @Override
     public void notifyMeDiscover() {
@@ -102,7 +184,7 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
 
     @Override
     public void notifyMeDesign() {
-        extraTypes = designPresenter.getMessage();
+        nameMethod = designPresenter.getMessage();
     }
 
     @Override

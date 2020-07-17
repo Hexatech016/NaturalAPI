@@ -10,14 +10,24 @@ import net.didion.jwnl.JWNLException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.IOException;
 
 public class DiscoverCheck extends JPanel implements MyObserver {
 
-    private final JButton homeButton;
+    private JButton homeButton;
     public JButton checkButton;
+    private JButton loadBDLButton;
+    private JButton loadGherkinButton;
+    private JButton guideButton;
+    private JButton backButton;
 
-    private final JLabel message;
+    private JLabel message;
+    private JLabel bdlCheck;
+    private JLabel gherkinCheck;
+    private JLabel image;
+
+    private JPanel panel;
 
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
@@ -35,25 +45,12 @@ public class DiscoverCheck extends JPanel implements MyObserver {
         this.viewManualPresenter = viewManualPresenter;
 
         homeButton = new JButton("Home");
-        JButton backButton = new JButton("Back");
-        checkButton = new JButton("Check between BDL and scenarios");
-        JButton loadBDLButton = new JButton("Load BDL");
-        JButton loadGherkinButton = new JButton("Load Gherkin scenarios");
-        JButton guideButton = new JButton("Guide");
-        message = new JLabel();
 
-        message.setText("Welcome! Please add both documents to proceed");
-
-        add(homeButton);
-        add(backButton);
-        add(message);
-        add(loadBDLButton);
-        add(loadGherkinButton);
-        add(checkButton);
-        add(guideButton);
 
         boolBdl = false;
         boolGherkin = false;
+
+        initComponents();
 
         loadBDLButton.addActionListener(e -> {
             discoverController.checkIfRepoBDLIsEmpty();
@@ -79,15 +76,21 @@ public class DiscoverCheck extends JPanel implements MyObserver {
         });
 
         homeButton.addActionListener(e -> {
-            message.setText("Welcome! Please add both documents to proceed");
+            message.setText("Please add both documents to proceed");
+            parent.getMainGui().getHomeWindow().setSize(new Dimension(246,440));
             parent.getMainGui().getHomePanel().setVisible(true);
             setVisible(false);
+            bdlCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
+            gherkinCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
         });
 
         backButton.addActionListener(e -> {
-            message.setText("Welcome! Please add both documents to proceed");
+            message.setText("Please add both documents to proceed");
+            parent.getMainGui().getHomeWindow().setSize(new Dimension(246,440));
             parent.setVisible(true);
             setVisible(false);
+            bdlCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
+            gherkinCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
         });
 
         guideButton.addActionListener(e -> {
@@ -100,6 +103,122 @@ public class DiscoverCheck extends JPanel implements MyObserver {
             JOptionPane.showMessageDialog(parent.getMainGui().getHomeWindow(),
                     stringManual);
         });
+    }
+
+    private void initComponents() {
+
+        image = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        homeButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+        guideButton = new javax.swing.JButton();
+        message = new javax.swing.JLabel();
+        gherkinCheck = new javax.swing.JLabel();
+        bdlCheck = new javax.swing.JLabel();
+        loadBDLButton = new javax.swing.JButton();
+        loadGherkinButton = new javax.swing.JButton();
+        checkButton = new javax.swing.JButton();
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/discover1.png"))); // NOI18N
+
+        panel.setBackground(new java.awt.Color(255, 255, 255));
+        panel.setPreferredSize(new java.awt.Dimension(409, 333));
+
+        homeButton.setBackground(new java.awt.Color(255, 255, 255));
+        homeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        homeButton.setText("Home");
+
+        backButton.setBackground(new java.awt.Color(255, 255, 255));
+        backButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        backButton.setText("Back");
+
+        guideButton.setBackground(new java.awt.Color(255, 255, 255));
+        guideButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        guideButton.setText("Guide");
+
+        message.setText("Please add both documents to proceed");
+
+        gherkinCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gherkinCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
+
+        bdlCheck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bdlCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
+
+        loadBDLButton.setBackground(new java.awt.Color(255, 255, 255));
+        loadBDLButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        loadBDLButton.setText("Load BDL");
+
+        loadGherkinButton.setBackground(new java.awt.Color(255, 255, 255));
+        loadGherkinButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        loadGherkinButton.setText("Load Gherkin scenarios");
+
+        checkButton.setBackground(new java.awt.Color(255, 255, 255));
+        checkButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        checkButton.setText("Check between BDL and Gherkin");
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+                panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(panelLayout.createSequentialGroup()
+                                                .addComponent(homeButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(guideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(checkButton)
+                                        .addGroup(panelLayout.createSequentialGroup()
+                                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(bdlCheck)
+                                                        .addComponent(gherkinCheck))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(loadGherkinButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(loadBDLButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap())
+        );
+        panelLayout.setVerticalGroup(
+                panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(homeButton)
+                                        .addComponent(guideButton)
+                                        .addComponent(backButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(message)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(bdlCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(loadBDLButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(loadGherkinButton)
+                                        .addComponent(gherkinCheck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 270, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE))
+        );
     }
 
     public void loadBDL() {
@@ -119,6 +238,7 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 if(notifyMeDoneDiscover()) {
                     viewMessage("SuccessBDL");
                     boolBdl = true;
+                    bdlCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
                     if (boolGherkin)
                         checkButton.setEnabled(true);
                 }
@@ -148,6 +268,7 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 discoverController.addGherkin("Design", path);
                 if(notifyMeDoneDiscover()) {
                     viewMessage("SuccessGherkin");
+                    gherkinCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
                     boolGherkin = true;
                     if (boolBdl)
                         checkButton.setEnabled(true);
@@ -175,14 +296,14 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                         "Scenarios added.");
                 break;
             case("WrongFileBDL"):
-                message.setText("The file is not a .BDL or it doesn't exist. Please retry.");
+                message.setText("Not a .BDL or it doesn't exist.");
                 JOptionPane.showMessageDialog(this,
-                        "The file is not a .txt or it doesn't exist. Please retry.",
+                        "The file is not a .BDL or it doesn't exist. Please retry.",
                         "Inane error",
                         JOptionPane.ERROR_MESSAGE);
                 break;
             case("WrongFileGherkin"):
-                message.setText("The file is not a .scenario or it doesn't exist. Please retry.");
+                message.setText("Not a .scenario or it doesn't exist.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .scenario or it doesn't exist. Please retry.",
                         "Inane error",
@@ -216,6 +337,7 @@ public class DiscoverCheck extends JPanel implements MyObserver {
                 defaultChoice);
         if(choice==0) {
             viewMessage("SuccessBDL");
+            bdlCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
             boolBdl = true;
             if(boolGherkin)
                 checkButton.setEnabled(true);

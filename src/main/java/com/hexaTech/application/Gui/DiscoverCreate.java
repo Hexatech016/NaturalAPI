@@ -16,11 +16,19 @@ import com.hexaTech.adapter.interfaceadapter.discover.DiscoverPresenter;
 
 public class DiscoverCreate extends JPanel implements MyObserver{
 
-    private final JButton homeButton;
+    private JButton homeButton;
     public JButton extractBDLButton;
+    private JButton loadDocButton;
+    private JButton deleteDocButton;
+    private JButton guideButton;
+    private JButton backButton;
 
-
+    private JLabel image;
     private JLabel message;
+    private JLabel fixedString;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JScrollPane scrollPane;
     private final DiscoverController discoverController;
     private final DiscoverPresenter discoverPresenter;
     private final ViewManualController viewManualController;
@@ -28,8 +36,8 @@ public class DiscoverCreate extends JPanel implements MyObserver{
     private final DiscoverNavigation discoverNavigation;
 
     private String backupString;
-    private final DefaultListModel listModel;
-    private final JList list;
+    private DefaultListModel listModel;
+    private JList list;
     private String stringManual;
 
 
@@ -44,34 +52,14 @@ public class DiscoverCreate extends JPanel implements MyObserver{
         this.viewManualController = viewManualController;
         this.viewManualPresenter = viewManualPresenter;
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        message = new JLabel();
-        JLabel loadedText = new JLabel("Stored documents:");
         backupString = "";
-        message.setText("Welcome! Please add at least one document to proceed");
 
 
-        JButton loadDocButton = new JButton("Load document");
-        homeButton = new JButton("Home");
-        extractBDLButton = new JButton("Extract BDL");
-        JButton deleteDocButton = new JButton("Delete selected document");
-        JButton guideButton = new JButton("Guide");
-        JButton backButton = new JButton("Back");
-        add(homeButton);
-        add(message);
-        add(loadDocButton);
-        add(deleteDocButton);
-        add(loadedText);
-        add(backButton);
-        listModel = new DefaultListModel();
-        list = new JList<String>(listModel);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setVisibleRowCount(5);
+
         JScrollPane listScrollPane = new JScrollPane(list);
-        add(listScrollPane, BorderLayout.CENTER);
+        //add(listScrollPane, BorderLayout.CENTER);
 
-        add(extractBDLButton);
-        add(guideButton);
+        initComponents();
 
         loadDocButton.addActionListener(e -> loadDocument());
 
@@ -85,6 +73,7 @@ public class DiscoverCreate extends JPanel implements MyObserver{
 
         homeButton.addActionListener(e -> {
             message.setText("Welcome! Please add at least one document to proceed");
+            parent.getMainGui().getHomeWindow().setSize(new Dimension(246,440));
             discoverNavigation.getMainGui().getHomePanel().setVisible(true);
             setVisible(false);
             listModel.clear();
@@ -93,6 +82,7 @@ public class DiscoverCreate extends JPanel implements MyObserver{
 
         backButton.addActionListener(e -> {
             message.setText("Welcome! Please add at least one document to proceed");
+            parent.getMainGui().getHomeWindow().setSize(new Dimension(246,440));
             discoverNavigation.setVisible(true);
             setVisible(false);
             listModel.clear();
@@ -137,6 +127,144 @@ public class DiscoverCreate extends JPanel implements MyObserver{
             JOptionPane.showMessageDialog(discoverNavigation.getMainGui().getHomeWindow(),
                     stringManual);
         });
+    }
+
+    private void initComponents() {
+
+        image = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        message = new javax.swing.JLabel();
+        homeButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+
+        listModel = new DefaultListModel();
+        list = new JList<String>(listModel);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.setVisibleRowCount(5);
+
+        scrollPane = new javax.swing.JScrollPane(list);
+        jPanel2 = new javax.swing.JPanel();
+        loadDocButton = new javax.swing.JButton();
+        deleteDocButton = new javax.swing.JButton();
+        fixedString = new javax.swing.JLabel();
+        guideButton = new javax.swing.JButton();
+        extractBDLButton = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/discover1.png"))); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(409, 333));
+
+        message.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        message.setText("Welcome! Please add at least one document to proceed");
+
+        homeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        homeButton.setText("Home");
+
+        backButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        backButton.setText("Back");
+
+        scrollPane.setBorder(null);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 465, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 329, Short.MAX_VALUE)
+        );
+
+        //scrollPane.setViewportView(jPanel2);
+
+        loadDocButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        loadDocButton.setText("Load document");
+
+        deleteDocButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        deleteDocButton.setText("Delete selected document");
+
+        fixedString.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        fixedString.setText("Stored documents:");
+
+        guideButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        guideButton.setText("Guide");
+
+        extractBDLButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        extractBDLButton.setText("Extract BDL");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(message)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(loadDocButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(deleteDocButton))
+                                        .addComponent(fixedString)
+                                        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(extractBDLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(backButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(guideButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(homeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(message)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(loadDocButton)
+                                        .addComponent(deleteDocButton))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(fixedString)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(extractBDLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addContainerGap(40, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(homeButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(backButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(guideButton)
+                                                .addContainerGap())))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(image)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
+        );
     }
 
     public void checkForSavedDocs() throws IOException {
