@@ -81,7 +81,6 @@ public class CreateBDL implements CreateBDLInputPort {
 
             List<String> keyWordList = new ArrayList<>();
             for (NGram keyWord : keyWords) {
-                System.out.println(keyWord + "\n");
                 String[] wordArray = keyWord.words;
                 String wordString = String.join(" ", wordArray);
                 keyWordList.add(wordString);
