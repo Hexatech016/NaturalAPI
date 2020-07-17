@@ -1,11 +1,5 @@
 package com.hexaTech.application.Gui;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import com.google.common.io.Files;
 
 import javax.swing.*;
@@ -23,304 +17,287 @@ import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.design.DesignController;
 import com.hexaTech.adapter.interfaceadapter.design.DesignPresenter;
 
-/**
- *
- * @author lukin
- */
-public class DesignWindow extends javax.swing.JPanel implements MyObserver{
+public class DesignWindow extends JPanel implements MyObserver{
 
-    private final MainGui mainGui;
-    private final DesignController designController;
-    private final DesignPresenter designPresenter;
+    private MainGui mainGui;
+    private DesignController designController;
+    private DesignPresenter designPresenter;
+    public JButton extractBALButton;
+    private JLabel message;
+    private JLabel image;
+    private JLabel checkScenario;
+    private JLabel checkBO;
+    public JButton addBOButton;
+    private JButton guideButton;
+    private JButton addScenarioButton;
+    private JButton homeButton;
 
     private final ViewManualPresenter viewManualPresenter;
 
     private String backupString;
     private String stringManual;
-    private String name;
-    private final List<SuggestionsDesign> suggestions;
 
-    /**
-     * Creates new form NewJPanel
-     */
     public DesignWindow(MainGui parent, DesignController designController,DesignPresenter designPresenter, ViewManualController viewManualController,
-                        ViewManualPresenter viewManualPresenter)  {
-
+                        ViewManualPresenter viewManualPresenter) {
         this.mainGui = parent;
         this.designController=designController;
         this.designPresenter=designPresenter;
         this.viewManualPresenter = viewManualPresenter;
-        suggestions = new ArrayList<>();
+        backupString = "";
 
         initComponents();
 
-        String testMethod = "";
-        jTextArea1.setText(testMethod);
+        homeButton.addActionListener(e -> {
+            parent.getHomePanel().setVisible(true);
+            setVisible(false);
+            extractBALButton.setEnabled(false);
+            checkScenario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
+            checkBO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png")));
+        });
 
-        backupString = "";
-        jButton8.setEnabled(false);
+        extractBALButton.addActionListener(e -> {
+            String name = JOptionPane.showInputDialog("Insert name BAL","Default");
+            try {
+                if(name != null) {
+                    if (!name.equals("")) {
+                        designController.createBAL(name);
+                    } else {
+                        JOptionPane.showMessageDialog(new JPanel(),
+                                "Invalid name",
+                                "Inane error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            SuggestionsDesign suggestionsDesign = new SuggestionsDesign(mainGui, designController, designPresenter, name);
+            suggestionsDesign.openWindow();
+        });
+
+        addBOButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
+                try {
+                    designController.createBO("Design", path);
+                    checkBO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
+                    viewMessage("SuccessBO");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFileBO");
+            }//if_else
+        });
+
+        addScenarioButton.addActionListener(e -> {
+            JFrame dialog = new JFrame();
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
+            chooser.setFileFilter(filter);
+            dialog.getContentPane().add(chooser);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(false);
+            dialog.dispose();
+            int returnVal = chooser.showOpenDialog(dialog);
+            if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
+                String path = chooser.getSelectedFile().getAbsolutePath();
+                try {
+                    designController.addGherkin("Design",path);
+                    extractBALButton.setEnabled(true);
+                    viewMessage("SuccessGherkin");
+                    checkScenario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
+                    extractBALButton.setEnabled(true);
+                    addBOButton.setEnabled(true);
+
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }else if(returnVal != JFileChooser.CANCEL_OPTION){
+                viewMessage("WrongFileGherkin");
+            }//if_else
+        });
+
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DESIGN:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(parent.getHomeWindow(),
+                    stringManual);
+            });
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        homeButton = new javax.swing.JButton();
+        guideButton = new javax.swing.JButton();
+        addScenarioButton = new javax.swing.JButton();
+        addBOButton = new javax.swing.JButton();
+        extractBALButton = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
+        checkScenario = new javax.swing.JLabel();
+        checkBO = new javax.swing.JLabel();
+        message = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton3.setText("Home");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        homeButton.setBackground(new java.awt.Color(255, 255, 255));
+        homeButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        homeButton.setText("Home");
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton4.setText("Guide");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+        guideButton.setBackground(new java.awt.Color(255, 255, 255));
+        guideButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        guideButton.setText("Guide");
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton5.setText("Add Scenario");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
+        addScenarioButton.setBackground(new java.awt.Color(255, 255, 255));
+        addScenarioButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        addScenarioButton.setText("Add Scenario");
 
-        jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton6.setText("Add BO");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
+        addBOButton.setBackground(new java.awt.Color(255, 255, 255));
+        addBOButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        addBOButton.setText("Add BO");
 
-        jButton7.setBackground(new java.awt.Color(255, 255, 255));
-        jButton7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton7.setText("Add a new complex type");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
+        extractBALButton.setBackground(new java.awt.Color(255, 255, 255));
+        extractBALButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        extractBALButton.setText("Generate BAL");
 
-        jButton8.setBackground(new java.awt.Color(255, 255, 255));
-        jButton8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jButton8.setText("Generate BAL");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
+        message.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        message.setText("Please add a gherkin scenario to proceed");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design.png"))); // NOI18N
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/design.png"))); // NOI18N
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Ciao come va\ntutto bene");
-        jScrollPane1.setViewportView(jTextArea1);
+        checkScenario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        checkScenario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png"))); // NOI18N
+        checkBO.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        checkBO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/criss-cross.png"))); // NOI18N
+        extractBALButton.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1)
                                         .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jButton7, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton8, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(guideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(extractBALButton, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(checkScenario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(checkBO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))))
+                                                        .addComponent(addBOButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(addScenarioButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)))
+                                        .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(image)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton3)
-                                        .addComponent(jButton4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(homeButton)
+                                        .addComponent(guideButton))
+                                .addGap(18, 18, 18)
+                                .addComponent(message)
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(checkScenario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(addScenarioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton6)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(addBOButton)
+                                        .addComponent(checkBO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton8)
+                                .addComponent(extractBALButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(6, 6, 6))
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        parent.getHomePanel().setVisible(true);
-        setVisible(false);
-        test.removeAll();
-        confirmButton.setEnabled(false);
-        extractBALButton.setEnabled(false);
-        confirmButton.setVisible(false);
-        extractBALButton.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            viewManualController.openManualSection("DESIGN:");
-            notifyMeManual();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+
+    public void viewMessage(String type) {
+        switch (type) {
+            case("SuccessGherkin"):
+                message.setText("Scenario added.");
+                JOptionPane.showMessageDialog(this,
+                        "Scenario added.");
+                break;
+            case("WrongFileGherkin"):
+                message.setText("Not a .scenario or it doesn't exist.");
+                JOptionPane.showMessageDialog(this,
+                        "The file is not a .scenario or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            case("SuccessBO"):
+                message.setText("BO added.");
+                JOptionPane.showMessageDialog(this,
+                        "BO added.");
+                break;
+            case("WrongFileBO"):
+                message.setText("Not a .json or it doesn't exist.");
+                JOptionPane.showMessageDialog(this,
+                        "The file is not a .json or it doesn't exist. Please retry.",
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
         }
-        JOptionPane.showMessageDialog(parent.getHomeWindow(),
-                stringManual);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        JFrame dialog = new JFrame();
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File scenario", "scenario");
-        chooser.setFileFilter(filter);
-        dialog.getContentPane().add(chooser);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(false);
-        dialog.dispose();
-        int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("scenario") ){
-            String path = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                designController.addGherkin("Design",path);
-                extractBALButton.setEnabled(true);
-                notifyMeDesign();
-                viewMessage("SuccessGherkin");
+    public boolean existsBackUpDocument() throws IOException {
+        Object[] choices = {"Yes", "No"};
+        Object defaultChoice = choices[0];
+        int choice = JOptionPane.showOptionDialog(this,
+                "Some documents are already stored. Do you want to load them?\nIf you click no, you'll clear all previous backup documents",
+                "Title message",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                choices,
+                defaultChoice);
+        if(choice==0) {
+            designController.restoreBackup("Design");
+            checkScenario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tick.png")));
+            return true;
+        }else if(choice==1){
+          designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+          extractBALButton.setEnabled(false);
+            return false;
+        }else{
+            return existsBackUpDocument();
+        }//if_else
+    }//existsBackupDocument
+
+    public void checkForSavedDocs() throws IOException {
+        designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
+        if(notifyMeDoneDesign()){
+            if(existsBackUpDocument()) {
                 extractBALButton.setEnabled(true);
                 addBOButton.setEnabled(true);
-                addComplexType.setEnabled(true);
-
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
             }
-        }else if(returnVal != JFileChooser.CANCEL_OPTION){
-            viewMessage("WrongFileGherkin");
-        }//if_else
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        JFrame dialog = new JFrame();
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("File json", "json");
-        chooser.setFileFilter(filter);
-        dialog.getContentPane().add(chooser);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(false);
-        dialog.dispose();
-        int returnVal = chooser.showOpenDialog(dialog);
-        if (returnVal == JFileChooser.APPROVE_OPTION && Files.getFileExtension(chooser.getSelectedFile().getAbsolutePath()).equals("json") ){
-            String path = chooser.getSelectedFile().getAbsolutePath();
-            try {
-                designController.createBO("Design", path);
-                notifyMeDesign();
-                viewMessage("SuccessBO");
-                refreshTypes();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        } else if(returnVal != JFileChooser.CANCEL_OPTION){
-            viewMessage("WrongFileBO");
-        }//if_else
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        ComplexTypeCreator ctc = new ComplexTypeCreator(parent, this, designController);
-        ctc.openWindow();
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        try {
-            name = JOptionPane.showInputDialog("Insert name BAL","Default");
-            if(name != null) {
-                if (!name.equals("")) {
-                    designController.createBAL(name);
-                    methodsSuggestions();
-                    confirmButton.setVisible(true);
-                    confirmButton.setEnabled(true);
-                    extractBALButton.setVisible(false);
-                    extractBALButton.setEnabled(false);
-                    scrollPane.setVisible(true);
-                    refreshTypes();
-                } else {
-                    JOptionPane.showMessageDialog(new JPanel(),
-                            "Invalid name",
-                            "Inane error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
         }
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    }
 
     @Override
     public void notifyMeDiscover() {
@@ -334,7 +311,7 @@ public class DesignWindow extends javax.swing.JPanel implements MyObserver{
 
     @Override
     public void notifyMeDesign() {
-        backupString = designPresenter.getMessage();
+
     }
 
     @Override
@@ -358,114 +335,6 @@ public class DesignWindow extends javax.swing.JPanel implements MyObserver{
     }
 
     @Override
-    public void notifyMeManual() {
-        stringManual=viewManualPresenter.getMessage();
-    }
-    // End of variables declaration//GEN-END:variables
-
-    public void refreshTypes() {
-        for(SuggestionsDesign suggestion : suggestions) {
-            suggestion.updateTypes();
-        }
-    }
-
-    public void viewMessage(String type) {
-        switch (type) {
-            case("SuccessGherkin"):
-                message.setText("Scenario added.");
-                JOptionPane.showMessageDialog(this,
-                        "Scenario added.");
-                break;
-            case("WrongFileGherkin"):
-                message.setText("The file is not a .scenario or it doesn't exist. Please retry.");
-                JOptionPane.showMessageDialog(this,
-                        "The file is not a .scenario or it doesn't exist. Please retry.",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-            case("SuccessBO"):
-                message.setText("BO added.");
-                JOptionPane.showMessageDialog(this,
-                        "BO added.");
-                break;
-            case("WrongFileBO"):
-                message.setText("The file is not a .json or it doesn't exist. Please retry.");
-                JOptionPane.showMessageDialog(this,
-                        "The file is not a .json or it doesn't exist. Please retry.",
-                        "Inane error",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-        }
-    }
-
-    public boolean existsBackUpDocument() throws IOException {
-        Object[] choices = {"Yes", "No"};
-        Object defaultChoice = choices[0];
-        int choice = JOptionPane.showOptionDialog(this,
-                "Some documents are already stored. Do you want to load them?\nIf you click no, you'll clear all previous backup documents",
-                "Title message",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                choices,
-                defaultChoice);
-        if(choice==0) {
-            designController.restoreBackup("Design");
-            return true;
-        }else if(choice==1){
-            designController.deleteGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-            extractBALButton.setEnabled(false);
-            return false;
-        }else{
-            return existsBackUpDocument();
-        }//if_else
-    }//existsBackupDocument
-
-    private void methodsSuggestions() {
-        int sentinel=0, identifier=0;
-        message.setText("sono entrato");
-        designController.checkIfHasMethod(sentinel);
-        while(notifyMeDoneDesign()){
-            designController.showMethod(sentinel);
-            designController.checkIfHasParameter(sentinel,identifier);
-            notifyMeDesign();
-            SuggestionsDesign comboMethod = new SuggestionsDesign(sentinel, -1, designController, designPresenter);
-            comboMethod.setNameMethods(backupString);
-            suggestions.add(comboMethod);
-
-            JPanel methodPanel = new JPanel();
-            methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
-            methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-
-            methodPanel.add(comboMethod);
-            while(notifyMeDoneDesign()){
-                designController.showParameter(sentinel,identifier);
-                notifyMeDesign();
-                SuggestionsDesign comboParam = new SuggestionsDesign(sentinel, identifier, designController, designPresenter);
-                comboParam.setNameMethods(backupString);
-                suggestions.add(comboParam);
-                methodPanel.add(comboParam);
-                identifier++;
-                designController.checkIfHasParameter(sentinel,identifier);
-            }//external_while
-            test.add(methodPanel);
-            sentinel++;
-            identifier=0;
-            designController.checkIfHasMethod(sentinel);
-        }//external_while
-    }//methodsSuggestions
-
-    public void checkForSavedDocs() throws IOException {
-        designController.existsGherkin("." + File.separator + "Design" + File.separator + "BackupGherkin.txt");
-        if(notifyMeDoneDesign()){
-            if(existsBackUpDocument()) {
-                notifyMeDesign();
-                message.setText(backupString);
-                extractBALButton.setEnabled(true);
-                addBOButton.setEnabled(true);
-                addComplexType.setEnabled(true);
-            }
-        }
+    public void notifyMeManual() {stringManual=viewManualPresenter.getMessage();
     }
 }
-
