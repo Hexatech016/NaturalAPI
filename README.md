@@ -11,7 +11,7 @@ The project is created by the **HexaTech** team for the _**Software Engineering*
 2. Click on the download button; 
 3. You can start the program via Command Line Interface (CLI) or Graphic User Interface (GUI).
 
-_**Follow the instruction in the [User manual v.1.0.0](link) to know about the files needed by NaturalAPI**_ 
+_**Follow the instruction in the [User manual v.1.0.0](https://github.com/Hexatech016/Website-NaturalAPI.github.io/blob/master/Documents/userManual.pdf) to know about the files needed by NaturalAPI**_ 
 
 
 ### To download the entire repo:
