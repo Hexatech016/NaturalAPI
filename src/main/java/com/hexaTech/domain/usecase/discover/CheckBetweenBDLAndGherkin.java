@@ -5,7 +5,6 @@ import com.hexaTech.domain.entity.DoubleStruct;
 import com.hexaTech.domain.port.in.CheckBetweenBDLAndGherkinInputPort;
 import com.hexaTech.domain.port.out.usecase.CheckBetweenBDLAndGherkinOutputPort;
 import com.hexaTech.domain.port.out.framework.TextsParsingInterface;
-import com.hexaTech.domain.port.out.framework.WordParsingInterface;
 import com.hexaTech.domain.port.out.repository.RepoBDLInterface;
 import com.hexaTech.domain.port.out.repository.RepoGherkinInterface;
 import net.didion.jwnl.JWNLException;
@@ -140,24 +139,6 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                         break;
                     }
                 }
-                    /*if (!found) {
-                        for (Map.Entry<String, Integer> nounsOfTexts : bdlOfTexts.getNouns().entrySet()) {
-                            if (thisNounIsRelevant(nounsOfTexts.getValue(),
-                                    repoBDLInterface.getTotalFrequency(bdlOfTexts.getNouns())) && wordParsingInterface.
-                                    thisNounIsASynonymOf(nounsOfGherkin.getKey(),
-                                            nounsOfTexts.getKey())) {
-                                alternatives.append("You could use " + "\"")
-                                        .append(nounsOfTexts.getKey())
-                                        .append("\"")
-                                        .append(" instead of ")
-                                        .append("\"")
-                                        .append(nounsOfGherkin.getKey())
-                                        .append("\";\n");
-                                found = true;
-                                matches++;
-                            }
-                        }
-                    }*/
                     if (!found && nounsOfGherkin.getValue()>1)
                         notCommon.append(nounsOfGherkin.getKey()).append("; ");
         }//for
@@ -179,24 +160,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
                     break;
                 }
             }
-            /*if (!found) {
-                for (Map.Entry<String, Integer> verbsOfTexts : bdlOfTexts.getVerbs().entrySet()) {
-                    if (thisNounIsRelevant(verbsOfTexts.getValue(),
-                            repoBDLInterface.getTotalFrequency(bdlOfTexts.getVerbs())) && wordParsingInterface.
-                            thisVerbIsASynonymOf(verbsOfGherkin.getKey(),
-                                    verbsOfTexts.getKey())) {
-                        alternatives.append("You could use " + "\"")
-                                .append(verbsOfTexts.getKey())
-                                .append("\"")
-                                .append(" instead of ")
-                                .append("\"")
-                                .append(verbsOfGherkin.getKey())
-                                .append("\";\n");
-                        found = true;
-                        matches++;
-                    }
-                }
-            }*/
+
             if(!found && verbsOfGherkin.getValue()>1)
                 notCommon.append(verbsOfGherkin.getKey()).append("; ");
         }//for
@@ -227,6 +191,7 @@ public class CheckBetweenBDLAndGherkin implements CheckBetweenBDLAndGherkinInput
     private boolean thisNounIsRelevant(int value, int totalFrequency){
         return value * 1.0 / totalFrequency * 100 > 1;
     }
+
     private boolean thisVerbIsRelevant(int value, int totalFrequency){
         return value * 1.0 / totalFrequency * 100 > 0.5;
     }
