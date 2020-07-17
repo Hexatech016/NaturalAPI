@@ -16,8 +16,8 @@ public class AuxiliarySuggestion extends JPanel implements MyObserver {
     int sentinel;
     int identifier;
     String extraTypes;
-    private final JComboBox comboType;
-    private final JLabel nameMethods;
+    private JComboBox comboType;
+    private JLabel nameMethods;
     private String typeName;
     private boolean array;
     JCheckBox isArray;
@@ -29,21 +29,7 @@ public class AuxiliarySuggestion extends JPanel implements MyObserver {
         this.sentinel = sent;
         this.identifier = id;
 
-        array = false;
-        typeName = "String";
-        types = new Vector<>();
-        types.add("String");
-        types.add("Void");
-        types.add("Integer");
-        types.add("Float");
-        types.add("Boolean");
-        comboType = new JComboBox(types);
-        nameMethods = new JLabel();
-        comboType.setSelectedIndex(0);
-        comboType.setPreferredSize(new Dimension(100, 20));
-
-        isArray = new JCheckBox("Array");
-        isArray.setSelected(false);
+        initComponents();
 
         comboType.addActionListener(e -> {
             typeName = Objects.requireNonNull(comboType.getSelectedItem()).toString();
@@ -62,15 +48,10 @@ public class AuxiliarySuggestion extends JPanel implements MyObserver {
         });
     }
 
-    public String[] getSplitSting(String methodName) {
-        String[] contents;
-        contents = methodName.split("\n");
-        return contents;
-    }
-
     public void setNameMethods(String name) {
-        String[] temp = getSplitSting(name);
-        this.nameMethods.setText("<html>" + temp[0] + "<br/>" + temp[1] + "</html>");
+        String[] contents;
+        contents = name.split("\n");
+        this.nameMethods.setText("<html>" + contents[0] + "<br/>" + contents[1].substring(0,contents[1].lastIndexOf(":")+1) + "</html>");
     }
 
     public void updateTypes() {
@@ -86,69 +67,63 @@ public class AuxiliarySuggestion extends JPanel implements MyObserver {
         }
     }
 
-    /*
     private void initComponents() {
-        jPanel4 = new javax.swing.JPanel();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Suggestions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 0, 11))); // NOI18N
+        array = false;
+        typeName = "String";
+        types = new Vector<>();
+        types.add("String");
+        types.add("Void");
+        types.add("Integer");
+        types.add("Float");
+        types.add("Boolean");
 
-        jCheckBox3.setBackground(new java.awt.Color(255, 255, 255));
-        jCheckBox3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jCheckBox3.setText("Array");
-        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox3ActionPerformed(evt);
-            }
-        });
+        isArray = new javax.swing.JCheckBox();
+        nameMethods = new javax.swing.JLabel();
+        comboType = new javax.swing.JComboBox<>(types);
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jLabel6.setText("Method name: chooseVideo");
+        nameMethods = new JLabel();
+        comboType.setSelectedIndex(0);
+        comboType.setPreferredSize(new Dimension(100, 20));
 
-        jComboBox3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Void", "String", "Integer", "Float", "Boolean", "Complex object" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
+        this.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
+        isArray.setBackground(new java.awt.Color(255, 255, 255));
+        isArray.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        isArray.setText("Array");
+        isArray.setSelected(false);
+
+        nameMethods.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+
+        comboType.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+
+        javax.swing.GroupLayout thisLayout = new javax.swing.GroupLayout(this);
+        this.setLayout(thisLayout);
+        thisLayout.setHorizontalGroup(
+                thisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(thisLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel7))
+                                .addComponent(nameMethods)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                                .addComponent(jCheckBox3)
+                                .addComponent(isArray)
                                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jLabel6)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel7))
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
+        thisLayout.setVerticalGroup(
+                thisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(thisLayout.createSequentialGroup()
+                                .addGroup(thisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(nameMethods)
+                                        .addGroup(thisLayout.createSequentialGroup()
                                                 .addGap(21, 21, 21)
-                                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jCheckBox3))))
-                                .addContainerGap(106, Short.MAX_VALUE))
+                                                .addGroup(thisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(comboType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(isArray))))
+                                .addContainerGap(15, 15))
         );
+        this.setVisible(true);
     }
-     */
 
     @Override
     public void notifyMeDiscover() {

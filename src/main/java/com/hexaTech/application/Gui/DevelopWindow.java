@@ -17,7 +17,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
 
     private final DevelopController developController;
     private final DevelopPresenter developPresenter;
-
+    public MainGui parent;
     private JButton guideButton;
     private JButton extractAPIButton;
 
@@ -38,6 +38,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
         this.developController=developController;
         this.developPresenter=developPresenter;
         this.viewManualPresenter = viewManualPresenter;
+        this.parent = parent;
         backupString = "";
 
         initComponents();
@@ -50,7 +51,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
         });
 
         extractAPIButton.addActionListener(e -> {
-            ApiCreation create = new ApiCreation(this, developController);
+            ApiCreation create = new ApiCreation(this, developController, developPresenter, viewManualController, viewManualPresenter);
             parent.getHomeWindow().add(create);
             create.setVisible(true);
             setVisible(false);
@@ -187,7 +188,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
                         "BAL added.");
                 break;
             case("WrongFileBAL"):
-                message.setText("The file is not a .json or it doesn't exist. Please retry.");
+                message.setText("Not a .json or it doesn't exist.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .json or it doesn't exist. Please retry.",
                         "Inane error",
@@ -199,7 +200,7 @@ public class DevelopWindow extends JPanel implements MyObserver{
                         "PLA added.");
                 break;
             case("WrongFilePLA"):
-                message.setText("The file is not a .PLA or it doesn't exist. Please retry.");
+                message.setText("Not a .PLA or it doesn't exist.");
                 JOptionPane.showMessageDialog(this,
                         "The file is not a .PLA or it doesn't exist. Please retry.",
                         "Inane error",

@@ -103,6 +103,7 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                     try {
                         discoverController.createBDL(name);
                         viewMessage("Created");
+                        parent.getMainGui().getHomeWindow().setSize(new Dimension(246,440));
                         message.setText("Welcome! Please add at least one document to proceed");
                         discoverNavigation.setVisible(true);
                         setVisible(false);
@@ -346,7 +347,7 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                         JOptionPane.ERROR_MESSAGE);
                 break;
             case("Created"):
-                message.setText("BDL has been created into folder Discover. A business ontology has also been created into the same folder.");
+                message.setText("BDL has been created into folder Discover.");
                 JOptionPane.showMessageDialog(this,
                         "BDL has been created successfully. You'll be returned to the Discover Menu");
                 break;
@@ -405,6 +406,8 @@ public class DiscoverCreate extends JPanel implements MyObserver{
                     listModel.addElement(file);
                 }
             }
+            else
+                extractBDLButton.setEnabled(false);
             if(notifyMeDoneDiscover()) {
                 System.out.println("\tDocument deleted.\n");
             }else

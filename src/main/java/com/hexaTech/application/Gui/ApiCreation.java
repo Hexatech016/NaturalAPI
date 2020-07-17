@@ -1,14 +1,18 @@
 package com.hexaTech.application.Gui;
 
 import com.google.common.io.Files;
+import com.hexaTech.adapter.interfaceadapter.MyObserver;
+import com.hexaTech.adapter.interfaceadapter.ViewManualController;
+import com.hexaTech.adapter.interfaceadapter.ViewManualPresenter;
 import com.hexaTech.adapter.interfaceadapter.develop.DevelopController;
+import com.hexaTech.adapter.interfaceadapter.develop.DevelopPresenter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.io.IOException;
 
-public class ApiCreation extends JPanel{
+public class ApiCreation extends JPanel implements MyObserver {
 
     private JButton javaButton;
     private JButton javascriptButton;
@@ -18,13 +22,21 @@ public class ApiCreation extends JPanel{
     private JLabel image;
     private JLabel message;
 
+    String stringManual;
+    int alert;
+
     DevelopWindow developWindow;
     DevelopController developController;
+    ViewManualController viewManualController;
+    ViewManualPresenter viewManualPresenter;
+    DevelopPresenter developPresenter;
 
-    public ApiCreation(DevelopWindow back, DevelopController developController) {
+    public ApiCreation(DevelopWindow back, DevelopController developController, DevelopPresenter developPresenter, ViewManualController vmc, ViewManualPresenter vmp) {
         developWindow = back;
+        viewManualController = vmc;
+        viewManualPresenter = vmp;
         this.developController = developController;
-
+        this.developPresenter = developPresenter;
         initComponents();
 
         backButton.addActionListener(e -> {
@@ -40,6 +52,14 @@ public class ApiCreation extends JPanel{
             }
             try {
                 developController.createAPI();
+                notifyMeDevelop();
+                if(alert == 3) {
+                    message.setText("BAL has bad syntax.");
+                    JOptionPane.showMessageDialog(this,
+                            "The BAL is badly formed and/or has bad syntax. Please retry.",
+                            "Inane error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -53,6 +73,14 @@ public class ApiCreation extends JPanel{
             }
             try {
                 developController.createAPI();
+                notifyMeDevelop();
+                if(alert == 3) {
+                    message.setText("BAL has bad syntax.");
+                    JOptionPane.showMessageDialog(this,
+                            "The BAL is badly formed and/or has bad syntax. Please retry.",
+                            "Inane error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -73,13 +101,31 @@ public class ApiCreation extends JPanel{
                 try {
                     developController.addPLA("Develop", path);
                     developController.createAPI();
-                    back.viewMessage("SuccessPLA");
+                    notifyMeDevelop();
+                    if(alert == 3) {
+                        message.setText("BAL has bad syntax.");
+                        JOptionPane.showMessageDialog(this,
+                                "The BAL is badly formed and/or has bad syntax. Please retry.",
+                                "Inane error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             }else if(returnVal != JFileChooser.CANCEL_OPTION){
                 back.viewMessage("WrongFilePLA");
             }//if_else
+        });
+
+        guideButton.addActionListener(e -> {
+            try {
+                viewManualController.openManualSection("DEVELOP:");
+                notifyMeManual();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(back.parent.getHomeWindow(),
+                    stringManual);
         });
     }
 
@@ -156,6 +202,46 @@ public class ApiCreation extends JPanel{
                                 .addComponent(addPLAButton)
                                 .addContainerGap())
         );
+    }
+
+    @Override
+    public void notifyMeDiscover() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDiscover() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDesign() {
+
+    }
+
+    @Override
+    public boolean notifyMeDoneDesign() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeDevelop() {
+        alert = developPresenter.getCode();
+    }
+
+    @Override
+    public int notifyMeErrorDevelop() {
+        return 0;
+    }
+
+    @Override
+    public boolean notifyMeDoneDevelop() {
+        return false;
+    }
+
+    @Override
+    public void notifyMeManual() {
+        stringManual=viewManualPresenter.getMessage();
     }
 }
 

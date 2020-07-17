@@ -40,6 +40,8 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
 
         backButton.addActionListener(e-> {
             suggestion.dispose();
+            mainGui.getHomeWindow().setEnabled(true);
+            mainGui.getHomeWindow().requestFocus();
         });
 
         confirmButton.addActionListener(e -> {
@@ -49,15 +51,19 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
                 ioException.printStackTrace();
             }
             suggestion.dispose();
+            mainGui.getHomeWindow().setEnabled(true);
+            mainGui.getHomeWindow().requestFocus();
         });
 
         addComplexTypeButton.addActionListener(e -> {
-            ComplexTypeCreator ctc = new ComplexTypeCreator(mainGui, designController);
+            ComplexTypeCreator ctc = new ComplexTypeCreator(mainGui, this, designController);
             ctc.openWindow();
+            refreshTypes();
         });
     }
 
     public void openWindow() {
+        mainGui.getHomeWindow().setEnabled(false);
         suggestion = new JFrame();
         suggestion.setLayout(new GridLayout(0, 1));
         suggestion.setPreferredSize(new Dimension(470,600));
@@ -68,15 +74,28 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
         suggestion.setLocationRelativeTo(null);
         suggestion.add(this, BorderLayout.CENTER);
         suggestion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        suggestion.setTitle("Create a new Complex Type");
+        suggestion.setTitle("Customize your BAL");
         suggestion.setVisible(true);
+
 
         methodsSuggestions();
         refreshTypes();
+
+        suggestion.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                mainGui.getHomeWindow().setEnabled(true);
+                mainGui.getHomeWindow().requestFocus();
+            }
+        });
     }
 
     private void methodsSuggestions() {
         int sentinel=0, identifier=0;
+        JPanel viewPanel = new JPanel();
+        viewPanel.setLayout(new BoxLayout(viewPanel, BoxLayout.Y_AXIS));
+
+
         designController.checkIfHasMethod(sentinel);
         while(notifyMeDoneDesign()){
             designController.showMethod(sentinel);
@@ -88,9 +107,9 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
 
             JPanel methodPanel = new JPanel();
             methodPanel.setLayout(new BoxLayout(methodPanel, BoxLayout.Y_AXIS));
-            methodPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), "Suggestion", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-
+            methodPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Suggestions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("SansSerif", 0, 11)));
             methodPanel.add(method);
+
             while(notifyMeDoneDesign()){
                 designController.showParameter(sentinel,identifier);
                 notifyMeDesign();
@@ -101,11 +120,14 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
                 identifier++;
                 designController.checkIfHasParameter(sentinel,identifier);
             }//external_while
-            //test.add(methodPanel);
+            methodPanel.setVisible(true);
+            viewPanel.add(methodPanel);
             sentinel++;
             identifier=0;
             designController.checkIfHasMethod(sentinel);
         }//external_while
+        viewPanel.setVisible(true);
+        scrollArea.getViewport().add(viewPanel);
     }//methodsSuggestions
 
     public void refreshTypes() {
@@ -134,7 +156,6 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
         scrollArea.setBackground(new java.awt.Color(255, 255, 255));
         scrollArea.setBorder(null);
 
-        addComplexTypeButton.setBackground(new java.awt.Color(255, 255, 255));
         addComplexTypeButton.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         addComplexTypeButton.setText("Add a new complex type");
 
@@ -189,7 +210,7 @@ public class SuggestionsDesign extends JPanel implements MyObserver {
 
     @Override
     public boolean notifyMeDoneDesign() {
-        return false;
+        return designPresenter.isDone();
     }
 
     @Override
